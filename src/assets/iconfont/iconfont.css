@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1499759592067'); /* IE9*/
-  src: url('iconfont.eot?t=1499759592067#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1499759592067') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1499759592067') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1499759592067#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1499831342836'); /* IE9*/
+  src: url('iconfont.eot?t=1499831342836#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1499831342836') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1499831342836') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1499831342836#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -17,13 +17,19 @@
 
 .icon-suoxiao:before { content: "\e63b"; }
 
+.icon-weibiaoti1:before { content: "\e600"; }
+
+.icon-baocun:before { content: "\e603"; }
+
 .icon-zhantie:before { content: "\e6de"; }
 
 .icon-textalignjustify:before { content: "\e694"; }
 
-.icon-liangchi:before { content: "\e60e"; }
+.icon-baocun1:before { content: "\e794"; }
 
-.icon-yulan:before { content: "\e62e"; }
+.icon-yulan:before { content: "\e657"; }
+
+.icon-yulan1:before { content: "\e62e"; }
 
 .icon-shanchu:before { content: "\e621"; }
 
@@ -31,11 +37,13 @@
 
 .icon-zuoduiqi:before { content: "\e6f7"; }
 
+.icon-yulan2:before { content: "\e68c"; }
+
+.icon-tuichu:before { content: "\e688"; }
+
 .icon-tuceng:before { content: "\e653"; }
 
 .icon-v-top-copy:before { content: "\e678"; }
-
-.icon-save:before { content: "\e82d"; }
 
 .icon-fuzhi:before { content: "\e689"; }
 
@@ -43,15 +51,19 @@
 
 .icon-juzhongduiqi:before { content: "\e67c"; }
 
-.icon-tianzigetubiao-:before { content: "\e601"; }
-
 .icon-jianqie:before { content: "\e72f"; }
+
+.icon-baocun2:before { content: "\e6fa"; }
+
+.icon-beijingyanse:before { content: "\e6f8"; }
+
+.icon-baocun3:before { content: "\e630"; }
+
+.icon-fenbianshuai:before { content: "\e658"; }
 
 .icon-dingduiqi:before { content: "\e608"; }
 
 .icon-diduiqi:before { content: "\e609"; }
-
-.icon-yizhidiceng:before { content: "\e63e"; }
 
 .icon-handle:before { content: "\e738"; }
 
@@ -60,4 +72,8 @@
 .icon-shangyiyiceng:before { content: "\e64b"; }
 
 .icon-dingceng:before { content: "\e64c"; }
+
+.icon-diceng:before { content: "\e64d"; }
+
+.icon-xuxianxuankuang:before { content: "\e622"; }
 
