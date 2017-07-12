@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- top main tool -->
     <div class="top">
       <div class="t_logo">logo</div>
       <div class="t_left">
@@ -87,6 +88,8 @@
         </div>
       </div>
     </div>
+    <!-- attribute tool -->
+    <div class="tool"></div>
   </div>
 </template>
 
@@ -146,6 +149,8 @@
     text-align: center;
   }
   *{
+    margin:0;
+    padding:0;
     font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
   }
   input::-webkit-inner-spin-button{
@@ -230,6 +235,13 @@
   .toolbar .el-input__inner{
     height: 30px;
     width: 80px;
+    color: #555;
+  }
+/*tool*/
+  .tool{
+    min-width: 1024px;
+    height: 34px;
+    border:1px solid #d9d9d9;
   }
 
 </style>
