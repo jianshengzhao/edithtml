@@ -63,12 +63,12 @@
         <div class="tl_li">
           <i class="iconfont icon-fenbianshuai"></i>
           <span>分辨率</span>
-          <ul class="toolbar" style="display: block;">          
-            <li style="width: 300px">
+          <ul class="toolbar" >          
+            <li style="width: 250px">
               <el-row>
                 <el-col :span="6">分辨率:</el-col>
-                <el-col :span="8"><el-input v-model="inp_width" placeholder="请输入内容"></el-input> </el-col>
-                <el-col :span="10"><el-input v-model="inp_height" placeholder="请输入内容"></el-input></el-col>
+                <el-col :span="9"><el-input v-model="inp_width" placeholder="宽" type="number" @change="widthRangeConstraint"></el-input> </el-col>
+                <el-col :span="9"><el-input v-model="inp_height" placeholder="高" type="number" ></el-input></el-col>
               </el-row>
             </li>
           </ul>
@@ -104,8 +104,8 @@
       return {
         bgcoloer: false,
         color1: '#20a0ff',
-        inp_width: '',
-        inp_height: ''
+        inp_width: 1200,
+        inp_height: 1600
       }
     },
     created: function () {},
@@ -121,6 +121,17 @@
       changeBgColor: function () {
         var self = this
         self.bgcoloer = false
+      },
+      widthRangeConstraint: function () {
+        var self = this
+        if (self.inp_width < 980) {
+          self.inp_width = 980
+          self.$notify({
+            title: '警告',
+            message: 'pc页面宽度最好不要低于980',
+            type: 'warning'
+          })
+        }
       }
     }
   }
@@ -136,6 +147,9 @@
   }
   *{
     font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+  }
+  input::-webkit-inner-spin-button{
+    display: none;
   }
 /*top*/
   .top{
@@ -208,9 +222,14 @@
     float: right;
     width: 500px;
     text-align: left;
-  }  
-  .tl_inp{   
-    width: 50px;  
+  } 
+  .toolbar .el-col{
+    height: 36px;
+    line-height: 36px;
+  }
+  .toolbar .el-input__inner{
+    height: 30px;
+    width: 80px;
   }
 
 </style>
