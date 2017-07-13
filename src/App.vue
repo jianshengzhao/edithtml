@@ -68,8 +68,12 @@
             <li style="width: 250px">
               <el-row>
                 <el-col :span="6">分辨率:</el-col>
-                <el-col :span="9"><el-input v-model="inp_width" placeholder="宽" type="number" @change="widthRangeConstraint"></el-input> </el-col>
-                <el-col :span="9"><el-input v-model="inp_height" placeholder="高" type="number" ></el-input></el-col>
+                <el-col :span="9">
+                  <el-input v-model="inp_width" placeholder="宽" type="number" @change="widthRangeConstraint"></el-input>
+                </el-col>
+                <el-col :span="9">
+                  <el-input v-model="inp_height" placeholder="高" type="number" @change="heightRangeConstraint"></el-input>
+                </el-col>
               </el-row>
             </li>
           </ul>
@@ -82,7 +86,7 @@
           <i class="iconfont icon-yulan2"></i>
           <span>预览</span>
         </div>
-        <div class="tl_li outline">
+        <div class="tl_li">
           <i class="iconfont icon-tuichu"></i>
           <span>退出</span>
         </div>
@@ -214,9 +218,14 @@
     <div class="editBox">
       <div class="space">
         <div class="canvas grid">
-          <div class="c_top"></div>
+          <div class="c_top">
+            <div class="hoverbar"></div>
+          </div>
           <div class="c_body"></div>
-          <div class="c_foot"></div>
+          <div class="c_foot">
+            <div class="hoverbar"></div>
+          </div>
+          <div class="hoverbar"></div>
         </div>
       </div>
     </div>
@@ -246,11 +255,26 @@
         inp_h: '',
         inp_size: '',
         color_font: '#333',
-        color_bg: '#fff'
+        color_bg: '#fff',
+        tool: {
+          pos: function (x, y) {
+            this.x = x
+            this.y = y
+          },
+          bindEvent: function () {
+            $('.c_top .hoverbar').click(function () {
+
+            })
+          }
+        }
       }
     },
     created: function () {
-      this.$nextTick(function () {
+      var self = this
+      self.$nextTick(function () {
+        let canvas = $('.canvas')
+        self.inp_width = parseInt(canvas.css('width'))
+        self.inp_height = parseInt(canvas.css('height'))
       })
     },
     methods: {
@@ -274,6 +298,20 @@
             message: 'pc页面宽度最好不要低于980',
             type: 'warning'
           })
+        } else {
+          $('.canvas').css('width', self.inp_width)
+        }
+      },
+      heightRangeConstraint: function () {
+        var self = this
+        if (self.inp_width < 980) {
+          self.inp_width = 980
+          this.$message({
+            message: 'pc页面宽度最好不要低于980',
+            type: 'warning'
+          })
+        } else {
+          $('.canvas').css('height', self.inp_height)
         }
       },
       gridHangle: function (e) {
@@ -301,6 +339,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     height: 100%;
+    cursor: default;
   }
   *{
     margin:0;
@@ -538,25 +577,48 @@
     position:absolute;
     top: 100px;
     left: 100px;
-    background-color: #fff;
+    padding: 200px 0 100px 0;
+    margin-bottom: 100px;
     width: 1200px;
     height: 1800px;
-    margin-bottom: 100px;
+    background-color: #fff;
     background-size:10px 10px;
     border:1px solid #d9d9d9;
+    box-sizing: border-box;
+    overflow: hidden;
+    cursor: default;
   } 
   .grid{
     background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
   }
   .c_top{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
     height: 200px;
     border-bottom: 1px dashed #d9d9d9;
-  }
+  }  
   .c_body{
     height: 1500px;
-    border-bottom: 1px dashed #d9d9d9;
   }
   .c_foot{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     height: 100px;
+    border-top: 1px dashed #d9d9d9;
+  }
+  .hoverbar{
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height:6px; 
+    cursor: ns-resize;
+  }
+  .c_foot .hoverbar{
+    top:-1px;
   }
 </style>
