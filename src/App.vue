@@ -58,7 +58,7 @@
           <i class="iconfont icon-beijingyanse" @click="bgColorShow"></i>
           <span>背景</span>
           <ul class="toolbar" style="min-width: 76px;display: block;" v-if="bgcoloer">          
-            <li ><el-color-picker v-model="color1" @change="changeBgColor" ></el-color-picker></li>
+            <li ><el-color-picker v-model="bgColorVal" @change="changeBgColor" ></el-color-picker></li>
           </ul>
         </div>
         <div class="tl_li">
@@ -217,7 +217,7 @@
     <!-- editBox -->
     <div class="editBox">
       <div class="space">
-        <div class="canvas grid">
+        <div class="canvas grid" >
           <div class="c_top">
             <div class="hoverbar"></div>
           </div>
@@ -225,7 +225,6 @@
           <div class="c_foot">
             <div class="hoverbar"></div>
           </div>
-          <div class="hoverbar"></div>
         </div>
       </div>
     </div>
@@ -241,12 +240,12 @@
   import Element from 'element-ui'
   import 'element-ui/lib/theme-default/index.css'
   Vue.use(Element)
-  export default {
+  export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
       return {
         bgcoloer: false,
-        color1: '#20a0ff',
+        bgColorVal: '#fff',
         inp_width: 1200,
         inp_height: 1600,
         inp_x: '',
@@ -256,14 +255,39 @@
         inp_size: '',
         color_font: '#333',
         color_bg: '#fff',
-        tool: {
+        tool: { /* 工具箱事件 */
           pos: function (x, y) {
             this.x = x
             this.y = y
           },
           bindEvent: function () {
-            $('.c_top .hoverbar').click(function () {
+            let canvas = $('.canvas')
+            let cTop = $('.c_top')
+            let cFoot = $('.c_foot')
+            let h
+            let hs
+            let y
 
+            $('.c_top .hoverbar').mousedown(function () { // top容器调整
+              y = event.pageY
+              h = parseInt(cTop.css('height'))
+              canvas.mousemove(function () {
+                hs = h + (event.pageY - y)
+                cTop.css('height', hs)
+                canvas.css('paddingTop', hs)
+              })
+            })
+            $('.c_foot .hoverbar').mousedown(function () { // top容器调整
+              y = event.pageY
+              h = parseInt(cFoot.css('height'))
+              canvas.mousemove(function () {
+                hs = h + (y - event.pageY)
+                cFoot.css('height', hs)
+                canvas.css('paddingBottom', hs)
+              })
+            })
+            canvas.mouseup(function () { // 解绑鼠标移动事件
+              canvas.unbind('mousemove')
             })
           }
         }
@@ -275,6 +299,7 @@
         let canvas = $('.canvas')
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
+        self.tool.bindEvent()
       })
     },
     methods: {
@@ -289,13 +314,15 @@
       changeBgColor: function () {
         var self = this
         self.bgcoloer = false
+        let canvas = $('.canvas')
+        canvas.css('backgroundColor', self.bgColorVal)
       },
       widthRangeConstraint: function () {
         var self = this
         if (self.inp_width < 980) {
-          self.inp_width = 980
+          // self.inp_width = 980
           this.$message({
-            message: 'pc页面宽度最好不要低于980',
+            message: 'pc页面宽度不要低于980',
             type: 'warning'
           })
         } else {
@@ -585,7 +612,7 @@
     background-size:10px 10px;
     border:1px solid #d9d9d9;
     box-sizing: border-box;
-    overflow: hidden;
+    /*overflow: hidden;*/
     cursor: default;
   } 
   .grid{
@@ -600,7 +627,7 @@
     border-bottom: 1px dashed #d9d9d9;
   }  
   .c_body{
-    height: 1500px;
+    height: 100%;
   }
   .c_foot{
     position: absolute;
