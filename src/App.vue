@@ -219,6 +219,7 @@
       <div class="space">
         <div class="canvas grid" >
           <div class="c_top">
+            <div class="asd" style="width: 200px;height: 200px;background-color: #333;"></div>
             <div class="hoverbar"></div>
           </div>
           <div class="c_body"></div>
@@ -260,7 +261,7 @@
             this.x = x
             this.y = y
           },
-          bindEvent: function () {
+          bindMouseEvent: function () {
             let canvas = $('.canvas')
             let cTop = $('.c_top')
             let cFoot = $('.c_foot')
@@ -289,6 +290,12 @@
             canvas.mouseup(function () { // 解绑鼠标移动事件
               canvas.unbind('mousemove')
             })
+          },
+          bindClickEvent: function () {
+            let canvas = $('.canvas')
+            canvas.click(function (e) {
+              console.log(e.target)
+            })
           }
         }
       }
@@ -299,7 +306,8 @@
         let canvas = $('.canvas')
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
-        self.tool.bindEvent()
+        self.tool.bindMouseEvent()
+        self.tool.bindClickEvent()
       })
     },
     methods: {
