@@ -219,17 +219,24 @@
       <div class="space">
         <div class="canvas grid" >
           <div class="c_top">
-            <div class="asd" style="width: 200px;height: 200px;background-color: #333;"></div>
-            <div class="hoverbar"></div>
+            <div class="hoverbar" ondragstart="return false"></div>
           </div>
           <div class="c_body"></div>
           <div class="c_foot">
-            <div class="hoverbar"></div>
+            <div class="hoverbar" ondragstart="return false"></div>
           </div>
+        </div>
+        <div class="row-t line"></div>
+        <div class="row-b line"></div> 
+        <div class="col-l line"></div>
+        <div class="col-r line"></div>
+      </div>
+      <div class="copyBox">
+        <div class="copyCon">
+          <div class='text module'>asdadadsadad</div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -261,40 +268,112 @@
             this.x = x
             this.y = y
           },
-          bindMouseEvent: function () {
+          bindMouseEvent: function () { // 鼠标事件集合
             let canvas = $('.canvas')
             let cTop = $('.c_top')
+            let cBody = $('.c_body')
             let cFoot = $('.c_foot')
-            let h
-            let hs
-            let y
-
+            let editBox = $('.editBox')
+            let copyBox = $('.copyBox')
+            let copyCon = $('.copyCon')
+            let h // 容器高度
+            let hs // 计算得到的高度
+            let x // 鼠标X轴
+            let y // 鼠标Y轴
+            let topRangeY = parseInt(cTop.css('height')) + 181 // top选区范围
+            let bodyRangeY = parseInt(cBody.css('height')) + topRangeY // body选区范围
+            let rowT = $('.row-t')
+            let rowB = $('.row-b')
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            let line = $('.line')
+            let scrollHeight = $('.space')[0].scrollHeight
+            colL.css('height', scrollHeight)
+            colR.css('height', scrollHeight)
             $('.c_top .hoverbar').mousedown(function () { // top容器调整
               y = event.pageY
               h = parseInt(cTop.css('height'))
+              $(this).addClass('on_hoverbar')
               canvas.mousemove(function () {
                 hs = h + (event.pageY - y)
                 cTop.css('height', hs)
                 canvas.css('paddingTop', hs)
+                topRangeY = hs + 181
+                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
               })
+              canvasMouseup()
             })
-            $('.c_foot .hoverbar').mousedown(function () { // top容器调整
+            $('.c_foot .hoverbar').mousedown(function () { // foot容器调整
               y = event.pageY
               h = parseInt(cFoot.css('height'))
+              $(this).addClass('on_hoverbar')
               canvas.mousemove(function () {
                 hs = h + (y - event.pageY)
                 cFoot.css('height', hs)
                 canvas.css('paddingBottom', hs)
+                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
               })
+              canvasMouseup()
             })
-            canvas.mouseup(function () { // 解绑鼠标移动事件
-              canvas.unbind('mousemove')
+            $('.lib_li').mousedown(function () { // 模块鼠标拖动事件
+              x = 181
+              y = event.pageY
+              let sTop = parseInt($('.space').scrollTop()) // 当前滚动条高度
+              copyBox.show()
+              copyBox.css({'top': y, 'left': x})
+              line.show()
+              let w = parseInt(copyBox.css('width'))
+              let h = parseInt(copyBox.css('height'))
+              editBox.mousemove(function (e) {
+                x = e.pageX
+                y = e.pageY
+                copyBox.css({'top': y, 'left': x})
+                rowT.css('top', y + sTop - 81)
+                rowB.css('top', y + sTop - 81 + h)
+                colL.css('left', x - 181)
+                colR.css('left', x - 181 + w)
+              })
+              editMouseup()
             })
+            function canvasMouseup () { // canvas解绑鼠标移动事件
+              canvas.mouseup(function () {
+                canvas.unbind('mousemove')
+                $('.hoverbar').removeClass('on_hoverbar')
+              })
+            }
+            function editMouseup () { // editBox解除模块拖动事件,并添加模块到canvas上
+              editBox.mouseup(function (e) {
+                editBox.unbind('mousemove mouseup')
+                let box
+                let x = event.pageX - 281
+                let y
+                let sTop = parseInt($('.space').scrollTop())
+                if (event.pageY < topRangeY) {
+                  box = cTop
+                  y = event.pageY - 181
+                } else if (event.pageY < bodyRangeY) {
+                  box = cBody
+                  y = event.pageY - topRangeY
+                } else {
+                  box = cFoot
+                  y = event.pageY - bodyRangeY
+                }
+                copyBox.hide()
+                line.hide()
+                box.append(copyCon.html())
+                let bChild = box.children()
+                bChild.eq(bChild.length - 1).css({'top': y + sTop, 'left': x})
+              })
+            }
           },
           bindClickEvent: function () {
             let canvas = $('.canvas')
             canvas.click(function (e) {
-              console.log(e.target)
+              var ele = $(e.target)
+              $('.module').removeClass('on_module')
+              if (ele.hasClass('module')) {
+                $(e.target).addClass('on_module')
+              }
             })
           }
         }
@@ -635,6 +714,7 @@
     border-bottom: 1px dashed #d9d9d9;
   }  
   .c_body{
+    position: relative;
     height: 100%;
   }
   .c_foot{
@@ -648,12 +728,72 @@
   .hoverbar{
     position: absolute;
     left: 0;
-    bottom: -1px;
+    bottom: -4px;
     width: 100%;
-    height:6px; 
-    cursor: ns-resize;
+    height:5px; 
+    cursor: ns-resize;    
+  }
+  .hoverbar:hover{
+    border-top: 1px solid #75EFF4;
+    border-bottom: 1px solid #75EFF4;
+  }
+  .on_hoverbar{
+    border-top: 1px solid #75EFF4;
+    border-bottom: 1px solid #75EFF4;
   }
   .c_foot .hoverbar{
-    top:-1px;
+    top:-4px;
+  }
+/*copyBox*/
+  .copyBox{
+    position: absolute;
+    display: block;    
+    width: 200px;
+    height: 50px;
+    background-color: rgba(245,245,245,0.8);
+   /* border: 1px dotted #333;*/
+  }
+  .copyCon{
+    display: none;
+  }
+  .text{
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    border: 1px solid #333;
+    box-sizing: border-box;
+    background-color: #35D8F1;
+    color: #fff;
+  }
+  .line{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    border:0;
+    border-style:dashed;
+    border-color: red;
+    display: none;
+  }
+  .row-t{
+    height: 1px;
+    border-bottom-width: 1px;
+  }
+  .row-b{
+    height: 1px;
+    border-top-width: 1px;
+  }
+  .col-l{
+    width: 1px;
+    border-right-width: 1px;
+  }
+  .col-r{
+    width: 1px;
+    border-left-width: 1px;
+  }
+/*module*/
+  .on_module{
+    border-color: #46a8fb;
   }
 </style>
