@@ -366,15 +366,70 @@
               })
             }
           },
-          bindClickEvent: function () {
+          bindClickEvent: function (self) {
             let canvas = $('.canvas')
+            let resize = '<div class="resize nw"></div>' +
+                         '<div class="resize sw"></div>' +
+                         '<div class="resize ne"></div>' +
+                         '<div class="resize se"></div>' +
+                         '<div class="resize e"></div>' +
+                         '<div class="resize n"></div>' +
+                         '<div class="resize w"></div>' +
+                         '<div class="resize s"></div>'
+            let rowT = $('.row-t')
+            let rowB = $('.row-b')
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            let line = $('.line')
+
             canvas.click(function (e) {
-              var ele = $(e.target)
-              $('.module').removeClass('on_module')
-              if (ele.hasClass('module')) {
-                $(e.target).addClass('on_module')
+              let ele = $(e.target)
+              // var x
+              // var y
+              var sTop = parseInt($('.space').scrollTop())
+              if (!ele.hasClass('resize')) {
+                $('.module').removeClass('on_module')
+                $('.resize').remove()
+                if (ele.hasClass('module')) {
+                  ele.addClass('on_module')
+                  ele.append(resize)
+                  line.show()
+                  selectedEvents(ele, sTop)
+                  // x = e.pageX
+                  // y = e.pageY
+                  ele.parent().mousemove(function (e) {
+                    console.log(e.pageY)
+                    // todo:鼠标移动绑定事件
+                  })
+                } else {
+                  missSeletedEbents()
+                }
               }
             })
+            function selectedEvents (ele, sTop) {
+              self.inp_x = parseInt(ele.css('left'))
+              self.inp_y = parseInt(ele.css('top'))
+              self.inp_w = parseInt(ele.css('width'))
+              self.inp_h = parseInt(ele.css('height'))
+              self.inp_size = parseInt(ele.css('fontSize'))
+              self.color_font = ele.css('color')
+              self.color_bg = ele.css('backgroundColor')
+              rowT.css('top', self.inp_y + sTop + 100)
+              rowB.css('top', self.inp_y + sTop + 100 + self.inp_h)
+              colL.css('left', self.inp_x + 100)
+              colR.css('left', self.inp_x + 100 + self.inp_w)
+            }
+            function missSeletedEbents () {
+              line.hide()
+              $('.resize').remove()
+              self.inp_x = ''
+              self.inp_y = ''
+              self.inp_w = ''
+              self.inp_h = ''
+              self.inp_size = ''
+              self.color_font = '#333'
+              self.color_bg = '#fff'
+            }
           }
         }
       }
@@ -386,7 +441,7 @@
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
         self.tool.bindMouseEvent()
-        self.tool.bindClickEvent()
+        self.tool.bindClickEvent(self)
       })
     },
     methods: {
@@ -762,7 +817,7 @@
     height: 50px;
     border: 1px solid #333;
     box-sizing: border-box;
-    background-color: #35D8F1;
+    background-color: #F487FE;
     color: #fff;
   }
   .line{
@@ -795,5 +850,76 @@
 /*module*/
   .on_module{
     border-color: #46a8fb;
+    outline:1px solid #46a8fb;
+  }
+  .resize{
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color:#fff;
+    border:1px solid #46a8fb;
+    pointer-events: auto;
+    z-index: 2;
+  }
+  .nw{
+    top: -6px;
+    left: -6px;
+    cursor: nw-resize;
+  }
+  .w{
+    top:50%;
+    left: -6px;
+    transform:translateY(-50%);
+    -ms-transform:translateY(-50%);   /* IE 9 */
+    -moz-transform:translateY(-50%);  /* Firefox */
+    -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+    -o-transform:translateY(-50%);
+    cursor: w-resize;
+  }
+  .sw{
+    bottom: -6px;
+    left:-6px;
+    cursor: sw-resize;
+  }
+  .n{
+    top: -6px;
+    left: 50%;
+    transform:translateX(-50%);
+    -ms-transform:translateX(-50%);   /* IE 9 */
+    -moz-transform:translateX(-50%);  /* Firefox */
+    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%);
+    cursor: n-resize;
+  }
+  .ne{
+    top: -6px;
+    right: -6px;
+    cursor: ne-resize;
+  }
+  .e{
+    top:50%;
+    right:-6px;
+    transform:translateY(-50%);
+    -ms-transform:translateY(-50%);   /* IE 9 */
+    -moz-transform:translateY(-50%);  /* Firefox */
+    -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+    -o-transform:translateY(-50%);
+    cursor: e-resize; 
+  }
+  .se{
+    bottom: -6px;
+    right:-6px;
+    cursor: se-resize;
+  }
+  .s{
+    bottom: -6px;
+    left:50%;
+    transform:translateX(-50%);
+    -ms-transform:translateX(-50%);   /* IE 9 */
+    -moz-transform:translateX(-50%);  /* Firefox */
+    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%);
+    cursor: s-resize;
   }
 </style>
