@@ -140,78 +140,6 @@
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
       </div>
     </div>
     <!-- editBox -->
@@ -264,11 +192,29 @@
         color_font: '#333',
         color_bg: '#fff',
         tool: { /* 工具箱事件 */
-          pos: function (x, y) {
-            this.x = x
-            this.y = y
+          linePosition: function (editBox, copyBox) {
+            let rowT = $('.row-t')
+            let rowB = $('.row-b')
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            let line = $('.line')
+            let sTop = parseInt($('.space').scrollTop()) // 当前滚动条高度
+            let w = parseInt(copyBox.css('width'))
+            let h = parseInt(copyBox.css('height'))
+            rowT.css('top', event.pageY + sTop - 81)
+            rowB.css('top', event.pageY + sTop - 81 + h)
+            colL.css('left', 0)
+            colR.css('left', w)
+            line.show()
+            editBox.mousemove(function (e) {
+              rowT.css('top', e.pageY + sTop - 81)
+              rowB.css('top', e.pageY + sTop - 81 + h)
+              colL.css('left', e.pageX - 181)
+              colR.css('left', e.pageX - 181 + w)
+            })
           },
-          bindMouseEvent: function () { // 鼠标事件集合
+          bindMouseEvent: function () { // top,foot大小调整事件，添加模块到画布的鼠标事件
+            var self = this
             let canvas = $('.canvas')
             let cTop = $('.c_top')
             let cBody = $('.c_body')
@@ -278,16 +224,14 @@
             let copyCon = $('.copyCon')
             let h // 容器高度
             let hs // 计算得到的高度
-            let x // 鼠标X轴
             let y // 鼠标Y轴
             let topRangeY = parseInt(cTop.css('height')) + 181 // top选区范围
             let bodyRangeY = parseInt(cBody.css('height')) + topRangeY // body选区范围
-            let rowT = $('.row-t')
-            let rowB = $('.row-b')
             let colL = $('.col-l')
             let colR = $('.col-r')
             let line = $('.line')
             let scrollHeight = $('.space')[0].scrollHeight
+            let editMouseupBloo = false
             colL.css('height', scrollHeight)
             colR.css('height', scrollHeight)
             $('.c_top .hoverbar').mousedown(function () { // top容器调整
@@ -315,58 +259,51 @@
               })
               canvasMouseup()
             })
-            $('.lib_li').mousedown(function () { // 模块鼠标拖动事件
-              x = 181
-              y = event.pageY
-              let sTop = parseInt($('.space').scrollTop()) // 当前滚动条高度
-              copyBox.show()
-              copyBox.css({'top': y, 'left': x})
-              line.show()
-              let w = parseInt(copyBox.css('width'))
-              let h = parseInt(copyBox.css('height'))
+            $('.lib_li').mousedown(function () { // 左边模块库鼠标拖动事件
+              copyBox.show().css({'top': event.pageY, 'left': 181})
+              if (editMouseupBloo) {
+                return
+              }
+              editMouseupBloo = true
               editBox.mousemove(function (e) {
-                x = e.pageX
-                y = e.pageY
-                copyBox.css({'top': y, 'left': x})
-                rowT.css('top', y + sTop - 81)
-                rowB.css('top', y + sTop - 81 + h)
-                colL.css('left', x - 181)
-                colR.css('left', x - 181 + w)
+                copyBox.css({'top': e.pageY, 'left': e.pageX})
               })
+              self.linePosition(editBox, copyBox)
               editMouseup()
             })
             function canvasMouseup () { // canvas解绑鼠标移动事件
               canvas.mouseup(function () {
-                canvas.unbind('mousemove')
+                canvas.unbind('mousemove mouseup')
                 $('.hoverbar').removeClass('on_hoverbar')
               })
             }
             function editMouseup () { // editBox解除模块拖动事件,并添加模块到canvas上
               editBox.mouseup(function (e) {
+                editMouseupBloo = false
                 editBox.unbind('mousemove mouseup')
                 let box
                 let x = event.pageX - 281
                 let y
                 let sTop = parseInt($('.space').scrollTop())
-                if (event.pageY < topRangeY) {
+                if (event.pageY + sTop < topRangeY) {
                   box = cTop
-                  y = event.pageY - 181
-                } else if (event.pageY < bodyRangeY) {
+                  y = event.pageY + sTop - 181
+                } else if (event.pageY + sTop < bodyRangeY) {
                   box = cBody
-                  y = event.pageY - topRangeY
+                  y = event.pageY + sTop - topRangeY
                 } else {
                   box = cFoot
-                  y = event.pageY - bodyRangeY
+                  y = event.pageY + sTop - bodyRangeY
                 }
                 copyBox.hide()
                 line.hide()
                 box.append(copyCon.html())
                 let bChild = box.children()
-                bChild.eq(bChild.length - 1).css({'top': y + sTop, 'left': x})
+                bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
               })
             }
           },
-          bindClickEvent: function (self) {
+          bindClickEvent: function (self) { // 画布内选中模块一系列操作事件
             let canvas = $('.canvas')
             let resize = '<div class="resize nw"></div>' +
                          '<div class="resize sw"></div>' +
@@ -382,31 +319,76 @@
             let colR = $('.col-r')
             let line = $('.line')
 
-            canvas.click(function (e) {
-              let ele = $(e.target)
-              // var x
-              // var y
-              var sTop = parseInt($('.space').scrollTop())
-              if (!ele.hasClass('resize')) {
-                $('.module').removeClass('on_module')
-                $('.resize').remove()
-                if (ele.hasClass('module')) {
-                  ele.addClass('on_module')
-                  ele.append(resize)
-                  line.show()
-                  selectedEvents(ele, sTop)
-                  // x = e.pageX
-                  // y = e.pageY
-                  ele.parent().mousemove(function (e) {
-                    console.log(e.pageY)
-                    // todo:鼠标移动绑定事件
-                  })
-                } else {
-                  missSeletedEbents()
-                }
-              }
+            canvas.on('click', '.module', function (e) { // 选中模块
+              let ele = $(this)
+              let sTop = parseInt($('.space').scrollTop())
+              $('.module').removeClass('on_module')
+              $('.resize').remove()
+              ele.addClass('on_module')
+              ele.append(resize)
+              selectedEvents(ele, sTop)
+              return false
             })
-            function selectedEvents (ele, sTop) {
+            canvas.on('mousedown', '.on_module', function (e) { // 选中模块移动位置
+              let x
+              let y
+              let xs
+              let ys
+              let warp
+              let areaB
+              let areaR = self.inp_width
+              let ele = $(this)
+              let sTop = parseInt($('.space').scrollTop())
+              line.show()
+              x = e.pageX
+              y = e.pageY
+              xs = self.inp_x
+              ys = self.inp_y
+              switch (ele.parent().attr('class')) {
+                case 'c_top':
+                  warp = 0
+                  areaB = $('.c_top').css('height')
+                  break
+                case 'c_body':
+                  warp = parseInt($('.c_top').css('height'))
+                  areaB = $('.c_body').css('height')
+                  break
+                case 'c_foot':
+                  warp = parseInt($('.c_top').css('height')) + parseInt($('.c_body').css('height'))
+                  areaB = $('.c_foot').css('height')
+                  break
+              }
+              changeMoveEvents(xs, ys, x, y, sTop, warp)
+              ele.parent().mousemove(function (e) {
+                let left = xs + e.pageX - x
+                let top = ys + e.pageY - y
+                if (left < 0) {
+                  left = 0
+                }
+                if (left > (areaR - self.inp_w)) {
+                  left = areaR - self.inp_w
+                }
+                if (top < 0) {
+                  top = 0
+                }
+                if (top > (parseInt(areaB) - self.inp_h)) {
+                  top = parseInt(areaB) - self.inp_h
+                }
+                self.inp_x = left
+                self.inp_y = top
+                ele.css('left', left)
+                ele.css('top', top)
+                changeMoveEvents(xs, ys, x, y, sTop, warp)
+                return false
+              })
+              changeMoveMouseup(ele, ele.parent())
+              return false
+            })
+            canvas.click(function () { // 失去焦点取消选中
+              // 失去焦点取消选中
+              missSeletedEvents()
+            })
+            function selectedEvents (ele, sTop) { // 工具栏属性值赋值
               self.inp_x = parseInt(ele.css('left'))
               self.inp_y = parseInt(ele.css('top'))
               self.inp_w = parseInt(ele.css('width'))
@@ -414,14 +396,17 @@
               self.inp_size = parseInt(ele.css('fontSize'))
               self.color_font = ele.css('color')
               self.color_bg = ele.css('backgroundColor')
-              rowT.css('top', self.inp_y + sTop + 100)
-              rowB.css('top', self.inp_y + sTop + 100 + self.inp_h)
+              rowT.css('top', self.inp_y + 100)
+              rowB.css('top', self.inp_y + 100 + self.inp_h)
               colL.css('left', self.inp_x + 100)
               colR.css('left', self.inp_x + 100 + self.inp_w)
             }
-            function missSeletedEbents () {
+            function missSeletedEvents () { // 初始化
               line.hide()
               $('.resize').remove()
+              $('.module').removeClass('on_module')
+              $('.module').parent().unbind('mousemove')
+              $('.module').unbind('mouseup')
               self.inp_x = ''
               self.inp_y = ''
               self.inp_w = ''
@@ -430,6 +415,77 @@
               self.color_font = '#333'
               self.color_bg = '#fff'
             }
+            function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
+              rowT.css('top', self.inp_y + warp + 100)
+              rowB.css('top', self.inp_y + warp + 100 + self.inp_h)
+              colL.css('left', self.inp_x + 100)
+              colR.css('left', self.inp_x + 100 + self.inp_w)
+            }
+            function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
+              ele.mouseup(function () {
+                parent.unbind('mousemove')
+                ele.unbind('mouseup')
+                line.hide()
+                return false
+              })
+            }
+            canvas.on('mousedown', '.resize', function () {
+              let $this = $(this)
+              let ele = $this.parent()
+              let x = event.pageX
+              let y = event.pageY
+              let xs = self.inp_x
+              let ys = self.inp_y
+              let ws = self.inp_w
+              let hs = self.inp_h
+              let part
+              switch ($this.attr('class')) {
+                case 'resize e':
+                  part = function () {
+                    $this.parent().css('width', ws + event.pageX - x)
+                  }
+                  break
+                case 'resize s':
+                  part = function () {
+                    $this.parent().css('height', hs + event.pageY - y)
+                  }
+                  break
+                case 'resize w':
+                  part = function () {
+                    $this.parent().css({'width': ws + x - event.pageX, 'left': xs - x + event.pageX})
+                  }
+                  break
+                case 'resize n':
+                  part = function () {
+                    $this.parent().css({'height': hs + y - event.pageY, 'top': ys - y + event.pageY})
+                  }
+                  break
+                case 'resize ne':
+                  part = function () {
+                    $this.parent().css({'height': hs + y - event.pageY, 'width': ws + event.pageX - x, 'top': ys - y + event.pageY})
+                  }
+                  break
+                case 'resize nw':
+                  part = function () {
+                    $this.parent().css({'height': hs + y - event.pageY, 'top': ys - y + event.pageY, 'width': ws + x - event.pageX, 'left': xs - x + event.pageX})
+                  }
+                  break
+                case 'resize se':
+                  part = function () {
+                    $this.parent().css({'width': ws + event.pageX - x, 'height': hs + event.pageY - y})
+                  }
+                  break
+                case 'resize sw':
+                  part = function () {
+                    $this.parent().css({'width': ws + x - event.pageX, 'height': hs + event.pageY - y, 'left': xs - x + event.pageX})
+                  }
+                  break
+              }
+              ele.parent().parent().mousemove(function (e) {
+                part()
+              })
+              return false
+            })
           }
         }
       }
@@ -849,8 +905,9 @@
   }
 /*module*/
   .on_module{
-    border-color: #46a8fb;
+    border: 0;
     outline:1px solid #46a8fb;
+    cursor: move;
   }
   .resize{
     position: absolute;
