@@ -182,7 +182,7 @@
       return {
         bgcoloer: false,
         bgColorVal: '#fff',
-        inp_width: 1200,
+        inp_width: 1000,
         inp_height: 1600,
         inp_x: '',
         inp_y: '',
@@ -304,7 +304,8 @@
             }
           },
           bindClickEvent: function (self) { // 画布内选中模块一系列操作事件
-            let canvas = $('.canvas')
+            // let canvas = $('.canvas')
+            let editBox = $('.editBox')
             let resize = '<div class="resize nw"></div>' +
                          '<div class="resize sw"></div>' +
                          '<div class="resize ne"></div>' +
@@ -319,7 +320,7 @@
             let colR = $('.col-r')
             let line = $('.line')
 
-            canvas.on('click', '.module', function (e) { // 选中模块
+            editBox.on('click', '.module', function (e) { // 选中模块
               let ele = $(this)
               let sTop = parseInt($('.space').scrollTop())
               $('.module').removeClass('on_module')
@@ -329,12 +330,12 @@
               selectedEvents(ele, sTop)
               return false
             })
-            canvas.on('mousedown', '.on_module', function (e) { // 选中模块移动位置
+            editBox.on('mousedown', '.on_module', function (e) { // 选中模块移动位置
               let x
               let y
               let xs
               let ys
-              let warp
+              let warp // 校正参考线
               let areaB
               let areaR = self.inp_width
               let ele = $(this)
@@ -359,7 +360,7 @@
                   break
               }
               changeMoveEvents(xs, ys, x, y, sTop, warp)
-              ele.parent().mousemove(function (e) {
+              editBox.mousemove(function (e) {
                 let left = xs + e.pageX - x
                 let top = ys + e.pageY - y
                 if (left < 0) {
@@ -384,7 +385,7 @@
               changeMoveMouseup(ele, ele.parent())
               return false
             })
-            canvas.click(function () { // 失去焦点取消选中
+            editBox.click(function (e) { // 失去焦点取消选中
               // 失去焦点取消选中
               missSeletedEvents()
             })
@@ -422,67 +423,163 @@
               colR.css('left', self.inp_x + 100 + self.inp_w)
             }
             function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
-              ele.mouseup(function () {
-                parent.unbind('mousemove')
-                ele.unbind('mouseup')
+              editBox.mouseup(function () {
+                editBox.unbind('mousemove mouseup')
                 line.hide()
                 return false
               })
             }
-            canvas.on('mousedown', '.resize', function () {
+            editBox.on('mousedown', '.resize', function () {
               let $this = $(this)
-              let ele = $this.parent()
               let x = event.pageX
               let y = event.pageY
               let xs = self.inp_x
               let ys = self.inp_y
               let ws = self.inp_w
               let hs = self.inp_h
+              let rowT = $('.row-t')
+              let rowB = $('.row-b')
+              let colL = $('.col-l')
+              let colR = $('.col-r')
+              let line = $('.line')
+              line.show()
+              rowT.css('top', self.inp_y + 100)
+              rowB.css('top', self.inp_y + 100 + self.inp_h)
+              colL.css('left', self.inp_x + 100)
+              colR.css('left', self.inp_x + 100 + self.inp_w)
+              let warp // 校正参考线
+              let areaB
+              let areaR = parseInt(self.inp_width)
+              switch ($this.parent().parent().attr('class')) {
+                case 'c_top':
+                  warp = 0
+                  areaB = parseInt($('.c_top').css('height'))
+                  break
+                case 'c_body':
+                  warp = parseInt($('.c_top').css('height'))
+                  areaB = parseInt($('.c_body').css('height'))
+                  break
+                case 'c_foot':
+                  warp = parseInt($('.c_top').css('height')) + parseInt($('.c_body').css('height'))
+                  areaB = parseInt($('.c_foot').css('height'))
+                  break
+              }
               let part
               switch ($this.attr('class')) {
                 case 'resize e':
                   part = function () {
-                    $this.parent().css('width', ws + event.pageX - x)
+                    let xx = self.inp_x + 100 + ws + event.pageX - x
+                    self.inp_w = ws + event.pageX - x
+                    if (xx > areaR + 100) {
+                      xx = areaR + 100
+                      self.inp_w = areaR - self.inp_x
+                    }
+                    if (xx < self.inp_x + 100) {
+                      xx = self.inp_x + 100
+                      self.inp_w = 0
+                    }
+                    $this.parent().css('width', self.inp_w)
+                    colR.css('left', xx)
                   }
                   break
                 case 'resize s':
                   part = function () {
-                    $this.parent().css('height', hs + event.pageY - y)
+                    let yy = ys + 100 + warp + hs + event.pageY - y
+                    self.inp_h = hs + event.pageY - y
+                    if (yy < ys + 100 + warp) {
+                      yy = ys + 100 + warp
+                      self.inp_h = 0
+                    }
+                    if ((self.inp_h + self.inp_y) > areaB) {
+                      yy = areaB + warp + 100
+                      self.inp_h = areaB - self.inp_y
+                    }
+                    $this.parent().css('height', self.inp_h)
+                    rowB.css('top', yy)
                   }
                   break
                 case 'resize w':
                   part = function () {
-                    $this.parent().css({'width': ws + x - event.pageX, 'left': xs - x + event.pageX})
+                    let xx = xs - x + event.pageX + 100
+                    self.inp_x = xs - x + event.pageX
+                    self.inp_w = ws + x - event.pageX
+                    if (xx < 100) {
+                      xx = 100
+                      self.inp_w = ws + xs
+                      self.inp_x = 0
+                    }
+                    if (xx > (xs + ws + 100)) {
+                      xx = xs + ws + 100
+                      self.inp_w = 0
+                      self.inp_x = xs + ws
+                    }
+                    $this.parent().css({'width': self.inp_w, 'left': self.inp_x})
+                    colL.css('left', xx)
                   }
                   break
                 case 'resize n':
                   part = function () {
-                    $this.parent().css({'height': hs + y - event.pageY, 'top': ys - y + event.pageY})
+                    let yy = ys - y + event.pageY + warp + 100
+                    self.inp_y = ys - y + event.pageY
+                    self.inp_h = hs + y - event.pageY
+                    if (yy < 100 + warp) {
+                      yy = 100 + warp
+                      self.inp_y = 0
+                      self.inp_h = hs + ys
+                    }
+                    if (yy > ys + hs + 100 + warp) {
+                      yy = ys + hs + 100 + warp
+                      self.inp_y = ys + hs
+                      self.inp_h = 0
+                    }
+                    $this.parent().css({'height': self.inp_h, 'top': self.inp_y})
+                    rowT.css('top', yy)
                   }
                   break
-                case 'resize ne':
+                case 'resize ne': // todo:
                   part = function () {
-                    $this.parent().css({'height': hs + y - event.pageY, 'width': ws + event.pageX - x, 'top': ys - y + event.pageY})
+                    self.inp_y = ys - y + event.pageY
+                    self.inp_w = ws + event.pageX - x
+                    $this.parent().css({'height': hs + y - event.pageY, 'width': self.inp_w, 'top': self.inp_y})
+                    rowT.css('top', self.inp_y + warp + 100)
+                    colR.css('left', self.inp_x + 100 + self.inp_w)
                   }
                   break
                 case 'resize nw':
                   part = function () {
-                    $this.parent().css({'height': hs + y - event.pageY, 'top': ys - y + event.pageY, 'width': ws + x - event.pageX, 'left': xs - x + event.pageX})
+                    self.inp_y = ys - y + event.pageY
+                    self.inp_x = xs - x + event.pageX
+                    $this.parent().css({'height': hs + y - event.pageY, 'top': self.inp_y, 'width': ws + x - event.pageX, 'left': self.inp_x})
+                    rowT.css('top', self.inp_y + warp + 100)
+                    colL.css('left', self.inp_x + 100)
                   }
                   break
                 case 'resize se':
                   part = function () {
-                    $this.parent().css({'width': ws + event.pageX - x, 'height': hs + event.pageY - y})
+                    self.inp_w = ws + event.pageX - x
+                    self.inp_h = hs + event.pageY - y
+                    $this.parent().css({'width': self.inp_w, 'height': self.inp_h})
+                    rowB.css('top', self.inp_y + 100 + warp + self.inp_h)
+                    colR.css('left', self.inp_x + 100 + self.inp_w)
                   }
                   break
                 case 'resize sw':
                   part = function () {
-                    $this.parent().css({'width': ws + x - event.pageX, 'height': hs + event.pageY - y, 'left': xs - x + event.pageX})
+                    self.inp_x = xs - x + event.pageX
+                    self.inp_h = hs + event.pageY - y
+                    $this.parent().css({'width': ws + x - event.pageX, 'height': self.inp_h, 'left': self.inp_x})
+                    rowB.css('top', self.inp_y + 100 + self.inp_h)
+                    colL.css('left', self.inp_x + 100)
                   }
                   break
               }
-              ele.parent().parent().mousemove(function (e) {
+              editBox.mousemove(function (e) {
                 part()
+                return false
+              })
+              editBox.mouseup(function (e) {
+                editBox.unbind('mousemove mouseup')
+                line.hide()
               })
               return false
             })
