@@ -97,35 +97,35 @@
       <div class="toolBox">
         <div class="property" >
           <label for="">x:</label>
-          <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' ></el-input>
+          <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
         </div>
         <div class="property">
           <label for="">y:</label>
-          <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' ></el-input>
+          <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
         </div>
         <div class="property">
           <label for="">宽:</label>
-          <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' ></el-input>
+          <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' @change='changeInpW'></el-input>
         </div>
         <div class="property">
           <label for="">高:</label>
-          <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' ></el-input>
+          <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
         </div>
         <div class="property">
           <label for="">文字:</label>
-          <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' ></el-input>
+          <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
         <div class="property">
           <label for="">行高:</label>
-          <el-input v-model="inp_line" type='number' :disabled='disabled' min='12' ></el-input>
+          <el-input v-model="inp_line" type='number' :disabled='disabled' min='12' @change='changeInpLine'></el-input>
         </div>
         <div class="property">
           <label for="">字色:</label>
-          <el-color-picker v-model="color_font" :disabled='disabled'></el-color-picker>
+          <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
         </div>
         <div class="property">
           <label for="">背景:</label>
-          <el-color-picker v-model="color_bg" :disabled='disabled'></el-color-picker>
+          <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
         </div>
       </div>
     </div>
@@ -197,6 +197,8 @@
         inp_line: '',
         color_font: '#333',
         color_bg: '#fff',
+        moduleElement: '',
+        moduleParentElementHeight: '',
         config: {
           stretchLimit: true, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
@@ -349,6 +351,8 @@
             editBox.on('click', '.module', function (e) { // 选中模块
               let ele = $(this)
               let sTop = parseInt($('.space').scrollTop())
+              self.moduleElement = ele
+              self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
               $('.module').removeClass('on_module')
               $('.resize').remove()
               ele.addClass('on_module')
@@ -424,7 +428,7 @@
               }
               if (len > 0) {
                 let key = keyObj[e.key]
-                if (key[0]) {
+                if (key) {
                   let moveXY = parseInt(module.css(key[1])) + key[2]
                   if (self.config.moveLimit && moveXY < 0) {
                     moveXY = 0
@@ -469,6 +473,7 @@
               self.inp_w = ''
               self.inp_h = ''
               self.inp_size = ''
+              self.inp_line = ''
               self.color_font = '#333'
               self.color_bg = '#fff'
               self.disabled = true
@@ -808,6 +813,74 @@
           $gridli.addClass('tl_li_on')
           canvas.addClass('grid')
         }
+      },
+      changeInpX: function (val) {
+        var self = this
+        if (val < 0 && self.config.moveLimit) {
+          val = 0
+          self.inp_x = 0
+        }
+        let x = self.inp_width - self.inp_w
+        if (val > x && self.config.moveLimit) {
+          val = x
+          self.inp_x = x
+        }
+        self.moduleElement.css('left', val + 'px')
+      },
+      changeInpY: function (val) {
+        var self = this
+        if (val < 0 && self.config.moveLimit) {
+          val = 0
+          self.inp_y = 0
+        }
+        let y = self.moduleParentElementHeight - self.inp_h
+        if (val > y && self.config.moveLimit) {
+          val = y
+          self.inp_y = y
+        }
+        self.moduleElement.css('top', val + 'px')
+      },
+      changeInpW: function (val) {
+        var self = this
+        if (val < 0 && self.config.stretchLimit) {
+          val = 0
+          self.inp_w = 0
+        }
+        let w = self.inp_width - self.inp_x
+        if (val > w && self.config.stretchLimit) {
+          val = w
+          self.inp_w = w
+        }
+        self.moduleElement.css('width', val + 'px')
+      },
+      changeInpH: function (val) {
+        var self = this
+        if (val < 0 && self.config.stretchLimit) {
+          val = 0
+          self.inp_h = 0
+        }
+        let h = self.moduleParentElementHeight - self.inp_y
+        if (val > h && self.config.stretchLimit) {
+          val = h
+          self.inp_h = h
+        }
+        self.moduleElement.css('height', val + 'px')
+      },
+      changeInpSize: function (val) {
+        var self = this
+        self.moduleElement.css('fontSize', val + 'px')
+      },
+      changeInpLine: function (val) {
+        var self = this
+        self.moduleElement.css('lineHeight', val + 'px')
+      },
+      changeColorFont: function (val) {
+        var self = this
+        self.moduleElement.css('color', val)
+      },
+      changeColorBg: function (val) {
+        var self = this
+        self.moduleElement.css('backgroundColor', val)
       }
     }
   }
