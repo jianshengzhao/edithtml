@@ -12,36 +12,36 @@
           <i class="iconfont icon-xuxianxuankuang"></i>
           <span>格线</span>
         </div>
-        <div class="tl_li">
+        <div class="tl_li tl_mod tl_li_Disable">
           <i class="iconfont icon-textalignjustify"></i>
           <span>对齐</span>
-          <ul class="toolbar">          
-            <li><i class="iconfont icon-dingduiqi"></i>上对齐</li>
-            <li><i class="iconfont icon-diduiqi"></i>下对齐</li>
-            <li><i class="iconfont icon-zuoduiqi"></i>左对齐</li>
-            <li><i class="iconfont icon-youduiqi"></i>右对齐</li>
-            <li><i class="iconfont icon-juzhongduiqi"></i>水平居中</li>
-            <li><i class="iconfont icon-v-top-copy"></i>垂直居中</li>
+          <ul class="toolbar">
+            <li @click="topAlignEvent"><i class="iconfont icon-dingduiqi"></i>上对齐</li>
+            <li @click="bottomAlignEvent"><i class="iconfont icon-diduiqi"></i>下对齐</li>
+            <li @click="leftAlignEvent"><i class="iconfont icon-zuoduiqi"></i>左对齐</li>
+            <li @click="rightAlignEvent"><i class="iconfont icon-youduiqi"></i>右对齐</li>
+            <li @click="centerAlignEvent"><i class="iconfont icon-juzhongduiqi"></i>水平居中</li>
+            <li @click="middleAlignEvent"><i class="iconfont icon-v-top-copy"></i>垂直居中</li>
           </ul>
         </div>
-        <div class="tl_li">
+        <div class="tl_li tl_mod tl_li_Disable">
           <i class="iconfont icon-tuceng"></i>
           <span>图层</span>
-          <ul class="toolbar">          
-            <li><i class="iconfont icon-dingceng"></i>置于顶层</li>
-            <li><i class="iconfont icon-diceng"></i>置于底层</li>
-            <li><i class="iconfont icon-shangyiyiceng"></i>上移一层</li>
-            <li><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
+          <ul class="toolbar">
+            <li @click="topFloorEvent"><i class="iconfont icon-dingceng"></i>置于顶层</li>
+            <li @click="bottomFloorEvent"><i class="iconfont icon-diceng"></i>置于底层</li>
+            <li @click="upFloorEvent"><i class="iconfont icon-shangyiyiceng"></i>上移一层</li>
+            <li @click="downFloorEvent"><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
           </ul>
         </div>
         <div class="tl_li">
           <i class="iconfont icon-handle"></i>
           <span>操作</span>
-          <ul class="toolbar">          
-            <li><i class="iconfont icon-jianqie"></i>剪切</li>
-            <li><i class="iconfont icon-fuzhi"></i>复制</li>
-            <li><i class="iconfont icon-zhantie"></i>粘贴</li>
-            <li><i class="iconfont icon-shanchu"></i>删除</li>
+          <ul class="toolbar">
+            <li @click="shearEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-jianqie"></i>剪切</li>
+            <li @click="copyEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-fuzhi"></i>复制</li>
+            <li @click="pasteEvent"><i class="iconfont icon-zhantie"></i>粘贴</li>
+            <li @click="deleteEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-shanchu"></i>删除</li>
           </ul>
         </div>     
       </div>
@@ -95,6 +95,10 @@
     <!-- attribute tool -->
     <div class="tool">
       <div class="toolBox">
+        <div class="property" >
+          <label for="">z:</label>
+          <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' @change='changeInpZ' ></el-input>
+        </div>
         <div class="property" >
           <label for="">x:</label>
           <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
@@ -163,11 +167,19 @@
         <div class="col-l line"></div>
         <div class="col-r line"></div>
       </div>
+      <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
           <div class='text module'>asdadadsadad</div>
         </div>
       </div>
+      <!-- 自定义右键菜单 -->
+      <ul class="contextmenu">
+        <li>右键工具栏</li>
+        <li>123</li>
+        <div class="divider"></div>
+        <li>123</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -189,6 +201,7 @@
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
+        inp_z: '',
         inp_x: '',
         inp_y: '',
         inp_w: '',
@@ -199,6 +212,8 @@
         color_bg: '#fff',
         moduleElement: '',
         moduleParentElementHeight: '',
+        clipboard: '',
+        original: '',
         config: {
           stretchLimit: true, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
@@ -417,6 +432,7 @@
               changeMoveMouseup(ele, ele.parent())
               return false
             })
+            $(document).unbind('keydown')
             $(document).keydown(function (e) { // 键盘方向键微调移动模块事件
               let module = $('.on_module')
               let len = module.length
@@ -448,6 +464,7 @@
               missSeletedEvents()
             })
             function selectedEvents (ele, sTop) { // 工具栏属性值赋值
+              self.inp_z = parseInt(ele.css('zIndex')) || 0
               self.inp_x = parseInt(ele.css('left'))
               self.inp_y = parseInt(ele.css('top'))
               self.inp_w = parseInt(ele.css('width'))
@@ -461,6 +478,7 @@
               colL.css('left', self.inp_x + 100)
               colR.css('left', self.inp_x + 100 + self.inp_w)
               self.disabled = false
+              $('.tl_mod').removeClass('tl_li_Disable')
             }
             function missSeletedEvents () { // 初始化
               line.hide()
@@ -468,6 +486,7 @@
               $('.module').removeClass('on_module')
               $('.module').parent().unbind('mousemove')
               $('.module').unbind('mouseup')
+              self.inp_z = ''
               self.inp_x = ''
               self.inp_y = ''
               self.inp_w = ''
@@ -477,6 +496,7 @@
               self.color_font = '#333'
               self.color_bg = '#fff'
               self.disabled = true
+              $('.tl_mod').addClass('tl_li_Disable')
             }
             function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
               rowT.css('top', self.inp_y + warp + 100)
@@ -747,7 +767,17 @@
             })
           },
           bindToolEvent: function (self) { // 工具栏操作事件
-            console.log(11)
+            console.log('todo:预览123')
+          },
+          bindRightClickEvent: function (self) { // 右键唤出菜单功能
+            let canvas = $('.canvas')
+            canvas.bind('contextmenu', function () {
+              return false
+            })
+            canvas.mousedown(function (e) {
+              console.log(e.which)
+              return false
+            })
           }
         }
       }
@@ -761,10 +791,11 @@
         self.tool.bindMouseEvent(self)
         self.tool.bindClickEvent(self)
         self.tool.bindToolEvent(self)
+        self.tool.bindRightClickEvent(self)
       })
     },
     methods: {
-      bgColorShow: function () {
+      bgColorShow: function () { // 背景颜色调色板显示
         var self = this
         if (!self.bgcoloer) {
           self.bgcoloer = true
@@ -772,13 +803,13 @@
           self.bgcoloer = false
         }
       },
-      changeBgColor: function () {
+      changeBgColor: function () { // 背景颜色变化
         var self = this
         self.bgcoloer = false
         let canvas = $('.canvas')
         canvas.css('backgroundColor', self.bgColorVal)
       },
-      widthRangeConstraint: function () {
+      widthRangeConstraint: function () { // 页面宽度限制
         var self = this
         if (self.inp_width < 980) {
           // self.inp_width = 980
@@ -790,7 +821,7 @@
           $('.canvas').css('width', self.inp_width)
         }
       },
-      heightRangeConstraint: function () {
+      heightRangeConstraint: function () { // 页面高度限制
         var self = this
         if (self.inp_width < 980) {
           self.inp_width = 980
@@ -802,7 +833,7 @@
           $('.canvas').css('height', self.inp_height)
         }
       },
-      gridHangle: function (e) {
+      gridHangle: function (e) { // 格线开关
         let $gridli = $('.gridli')
         let bloo = $gridli.hasClass('tl_li_on')
         let canvas = $('.canvas')
@@ -814,7 +845,19 @@
           canvas.addClass('grid')
         }
       },
-      changeInpX: function (val) {
+      changeInpZ: function (val) { // z-index 定位
+        var self = this
+        if (val < 0) {
+          val = 0
+          self.inp_z = 0
+        }
+        if (val > 99) {
+          val = 99
+          self.inp_z = 99
+        }
+        self.moduleElement.css('zIndex', val)
+      },
+      changeInpX: function (val) { // left 定位
         var self = this
         if (val < 0 && self.config.moveLimit) {
           val = 0
@@ -827,7 +870,7 @@
         }
         self.moduleElement.css('left', val + 'px')
       },
-      changeInpY: function (val) {
+      changeInpY: function (val) { // right 定位
         var self = this
         if (val < 0 && self.config.moveLimit) {
           val = 0
@@ -840,7 +883,7 @@
         }
         self.moduleElement.css('top', val + 'px')
       },
-      changeInpW: function (val) {
+      changeInpW: function (val) { // width 宽度
         var self = this
         if (val < 0 && self.config.stretchLimit) {
           val = 0
@@ -853,7 +896,7 @@
         }
         self.moduleElement.css('width', val + 'px')
       },
-      changeInpH: function (val) {
+      changeInpH: function (val) { // height 高度
         var self = this
         if (val < 0 && self.config.stretchLimit) {
           val = 0
@@ -866,21 +909,112 @@
         }
         self.moduleElement.css('height', val + 'px')
       },
-      changeInpSize: function (val) {
+      changeInpSize: function (val) { // font-size 字体大小
         var self = this
         self.moduleElement.css('fontSize', val + 'px')
       },
-      changeInpLine: function (val) {
+      changeInpLine: function (val) { // line-height 行高
         var self = this
         self.moduleElement.css('lineHeight', val + 'px')
       },
-      changeColorFont: function (val) {
+      changeColorFont: function (val) { // font-color 字体颜色
         var self = this
         self.moduleElement.css('color', val)
       },
-      changeColorBg: function (val) {
+      changeColorBg: function (val) { // background-color 背景颜色
         var self = this
         self.moduleElement.css('backgroundColor', val)
+      },
+      topAlignEvent: function () { // top 上对齐
+        let self = this
+        self.moduleElement.css('top', '0px')
+        self.inp_y = 0
+      },
+      bottomAlignEvent: function () { // top 下对齐
+        let self = this
+        let x = self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))
+        self.moduleElement.css('top', x)
+        self.inp_y = x
+      },
+      leftAlignEvent: function () { // left 左对齐
+        let self = this
+        self.moduleElement.css('left', '0px')
+        self.inp_x = 0
+      },
+      rightAlignEvent: function () { // left 右对齐
+        let self = this
+        let x = self.inp_width - parseInt(self.moduleElement.css('width'))
+        self.moduleElement.css('left', x)
+        self.inp_x = x
+      },
+      centerAlignEvent: function () { // left 水平居中
+        let self = this
+        let x = (self.inp_width - parseInt(self.moduleElement.css('width'))) / 2
+        self.moduleElement.css('left', x)
+        self.inp_x = x
+      },
+      middleAlignEvent: function () { // top 垂直居中
+        let self = this
+        let x = (self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))) / 2
+        self.inp_y = x
+        self.moduleElement.css('top', x)
+      },
+      topFloorEvent: function () { // 图层置顶
+        let self = this
+        let z = 99
+        self.moduleElement.css('zIndex', z)
+        self.inp_z = z
+      },
+      bottomFloorEvent: function () { // 图层置底
+        let self = this
+        let z = 0
+        self.moduleElement.css('zIndex', z)
+        self.inp_z = z
+      },
+      upFloorEvent: function () { // 图层上移一层
+        let self = this
+        let z = self.inp_z + 1
+        if (z > 99) {
+          z = 99
+        }
+        self.moduleElement.css('zIndex', z)
+        self.inp_z = z
+      },
+      downFloorEvent: function () { // 图层下移一层
+        let self = this
+        let z = self.inp_z - 1
+        if (z < 0) {
+          z = 0
+        }
+        self.moduleElement.css('zIndex', z)
+        self.inp_z = z
+      },
+      shearEvent: function () {
+        if ($('.on_module').length > 0) {
+          let self = this
+          self.clipboard = self.moduleElement[0].outerHTML
+          self.original = self.moduleElement.parent()
+          self.moduleElement.remove()
+        }
+      },
+      copyEvent: function () {
+        if ($('.on_module').length > 0) {
+          let self = this
+          self.clipboard = self.moduleElement[0].outerHTML
+          self.original = self.moduleElement.parent()
+        }
+      },
+      pasteEvent: function () {
+        let self = this
+        if (self.clipboard) {
+          self.original.append(self.clipboard)
+        }
+      },
+      deleteEvent: function () {
+        if ($('.on_module').length > 0) {
+          let self = this
+          self.moduleElement.remove()
+        }
       }
     }
   }
@@ -982,6 +1116,10 @@
     background: rgba(0, 0, 0, 0.04);
     border-color:rgba(0,0,0,.1);
   }
+  .tl_li_Disable{
+    opacity: 0.6;
+    cursor:not-allowed;
+  }
   .tl_li i{
     font-size: 18px;
     line-height: 18px;
@@ -997,7 +1135,10 @@
   }
   .tl_li:hover .toolbar{
     display: block;
-  }  
+  } 
+  .tl_li_Disable:hover .toolbar{
+    display: none;
+  }
   .toolbar{
     display: none;
     position: absolute;
@@ -1048,7 +1189,7 @@
   }
   .toolBox{
     margin: 0 auto;
-    width: 720px;
+    width: 820px;
     height: 34px;
   }  
   .property{
@@ -1239,8 +1380,8 @@
   }
 /*module*/
   .on_module{
-    border: 0;
-    outline:1px solid #46a8fb;
+    border-color: #46a8fb;
+   /* outline:1px solid #46a8fb;*/
     cursor: move;
   }
   .resize{
@@ -1313,4 +1454,24 @@
     -o-transform:translateX(-50%);
     cursor: s-resize;
   }
+/*contextmenu*/
+  .contextmenu{
+    position: absolute;
+    top:81px;
+    left:181px;
+    width: 180px;
+    background-color: #fefefe;
+    padding: 3px 0;
+  }
+  .contextmenu li{
+    padding:2px;
+    height: 26px;
+    line-height: 26px;
+    color: #525e71;
+  }
+  .contextmenu .divider{
+    margin: 3px 0;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
 </style>
