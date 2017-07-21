@@ -775,8 +775,10 @@
               return false
             })
             canvas.mousedown(function (e) {
-              console.log(e.which)
-              return false
+              if (e.which === 3) {
+                console.log(e.target)
+                return false
+              }
             })
           }
         }
