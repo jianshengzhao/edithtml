@@ -1286,7 +1286,7 @@
     background-color: #fff;
     background-size:10px 10px;
     border:1px solid #d9d9d9;
-    /*box-sizing: border-box;*/
+    box-sizing: border-box;
     /*overflow: hidden;*/
     cursor: default;
   } 
