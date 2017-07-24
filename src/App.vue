@@ -46,14 +46,14 @@
         </div>     
       </div>
       <div class="t_right">
-        <div class="tl_li">
+        <!-- <div class="tl_li">
           <i class="iconfont icon-fangda-copy"></i>
           <span>100%</span> 
           <ul class="toolbar">          
             <li><i class="iconfont icon-fangda-copy"></i>放大</li>
             <li><i class="iconfont icon-suoxiao"></i>缩小</li>
           </ul>
-        </div>
+        </div> -->
         <div class="tl_li bgColor">
           <i class="iconfont icon-beijingyanse" @click="bgColorShow"></i>
           <span>背景</span>
@@ -82,7 +82,7 @@
           <i class="iconfont icon-baocun2"></i>
           <span>保存</span>
         </div>
-        <div class="tl_li">
+        <div class="tl_li" @click="previewEvent">
           <i class="iconfont icon-yulan2"></i>
           <span>预览</span>
         </div>
@@ -97,7 +97,7 @@
       <div class="toolBox">
         <div class="property" >
           <label for="">z:</label>
-          <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' @change='changeInpZ' ></el-input>
+          <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
         </div>
         <div class="property" >
           <label for="">x:</label>
@@ -170,15 +170,25 @@
       <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
-          <div class='text module'>asdadadsadad</div>
+          <div class='text module'><div @click='alertfun'>asdasdadad</div>asdadadsadad</div>
         </div>
       </div>
       <!-- 自定义右键菜单 -->
       <ul class="contextmenu">
-        <li>右键工具栏</li>
-        <li>123</li>
-        <div class="divider"></div>
-        <li>123</li>
+        <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-shangyiyiceng"></i>上移一层</li>
+        <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
+        <div class="divider" v-if="rightButton"></div>
+        <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-dingduiqi"></i>上对齐</li>
+        <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-diduiqi"></i>下对齐</li>
+        <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-zuoduiqi"></i>左对齐</li>
+        <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-youduiqi"></i>右对齐</li>
+        <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-juzhongduiqi"></i>水平居中</li>
+        <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-v-top-copy"></i>垂直居中</li>
+        <div class="divider" v-if="rightButton"></div>
+        <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-jianqie"></i>剪切</li>
+        <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-fuzhi"></i>复制</li>
+        <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-zhantie"></i>粘贴</li>
+        <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-shanchu"></i>删除</li>
       </ul>
     </div>
   </div>
@@ -201,6 +211,7 @@
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
+        rightButton: false,
         inp_z: '',
         inp_x: '',
         inp_y: '',
@@ -210,7 +221,7 @@
         inp_line: '',
         color_font: '#333',
         color_bg: '#fff',
-        moduleElement: '',
+        moduleElement: '', // 选中的模块全局引用
         moduleParentElementHeight: '',
         clipboard: '',
         original: '',
@@ -239,6 +250,59 @@
               colL.css('left', e.pageX - 181)
               colR.css('left', e.pageX - 181 + w)
             })
+          },
+          initialize: function (self, ele) { // 选中模块的执行的操作
+            let rowT = $('.row-t')
+            let rowB = $('.row-b')
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            let resize = '<div class="resize nw"></div>' +
+                         '<div class="resize sw"></div>' +
+                         '<div class="resize ne"></div>' +
+                         '<div class="resize se"></div>' +
+                         '<div class="resize e"></div>' +
+                         '<div class="resize n"></div>' +
+                         '<div class="resize w"></div>' +
+                         '<div class="resize s"></div>'
+            self.moduleElement = ele
+            self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
+            $('.module').removeClass('on_module')
+            $('.resize').remove()
+            ele.addClass('on_module')
+            ele.append(resize)
+            self.inp_z = parseInt(ele.css('zIndex')) || 0
+            self.inp_x = parseInt(ele.css('left'))
+            self.inp_y = parseInt(ele.css('top'))
+            self.inp_w = parseInt(ele.css('width'))
+            self.inp_h = parseInt(ele.css('height'))
+            self.inp_size = parseInt(ele.css('fontSize'))
+            self.inp_line = parseInt(ele.css('lineHeight'))
+            self.color_font = ele.css('color')
+            self.color_bg = ele.css('backgroundColor')
+            rowT.css('top', self.inp_y + 100)
+            rowB.css('top', self.inp_y + 100 + self.inp_h)
+            colL.css('left', self.inp_x + 100)
+            colR.css('left', self.inp_x + 100 + self.inp_w)
+            self.disabled = false
+            $('.tl_mod').removeClass('tl_li_Disable')
+          },
+          missSeletedEvents (self) { // 初始化
+            $('.line').hide()
+            $('.resize').remove()
+            $('.module').removeClass('on_module')
+            $('.module').parent().unbind('mousemove')
+            $('.module').unbind('mouseup')
+            self.inp_z = ''
+            self.inp_x = ''
+            self.inp_y = ''
+            self.inp_w = ''
+            self.inp_h = ''
+            self.inp_size = ''
+            self.inp_line = ''
+            self.color_font = '#333'
+            self.color_bg = '#fff'
+            self.disabled = true
+            $('.tl_mod').addClass('tl_li_Disable')
           },
           bindMouseEvent: function (self) { // top,foot大小调整事件，添加模块到画布的鼠标事件
             var toolself = this
@@ -348,15 +412,8 @@
             }
           },
           bindClickEvent: function (self) { // 画布内选中模块一系列操作事件
+            let toolself = this
             let editBox = $('.editBox')
-            let resize = '<div class="resize nw"></div>' +
-                         '<div class="resize sw"></div>' +
-                         '<div class="resize ne"></div>' +
-                         '<div class="resize se"></div>' +
-                         '<div class="resize e"></div>' +
-                         '<div class="resize n"></div>' +
-                         '<div class="resize w"></div>' +
-                         '<div class="resize s"></div>'
             let rowT = $('.row-t')
             let rowB = $('.row-b')
             let colL = $('.col-l')
@@ -365,14 +422,7 @@
 
             editBox.on('click', '.module', function (e) { // 选中模块
               let ele = $(this)
-              let sTop = parseInt($('.space').scrollTop())
-              self.moduleElement = ele
-              self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
-              $('.module').removeClass('on_module')
-              $('.resize').remove()
-              ele.addClass('on_module')
-              ele.append(resize)
-              selectedEvents(ele, sTop)
+              toolself.initialize(self, ele)
               return false
             })
             editBox.on('mousedown', '.on_module', function (e) { // 选中模块移动位置
@@ -461,43 +511,8 @@
             })
             editBox.click(function (e) { // 失去焦点取消选中
               // 失去焦点取消选中
-              missSeletedEvents()
+              toolself.missSeletedEvents(self)
             })
-            function selectedEvents (ele, sTop) { // 工具栏属性值赋值
-              self.inp_z = parseInt(ele.css('zIndex')) || 0
-              self.inp_x = parseInt(ele.css('left'))
-              self.inp_y = parseInt(ele.css('top'))
-              self.inp_w = parseInt(ele.css('width'))
-              self.inp_h = parseInt(ele.css('height'))
-              self.inp_size = parseInt(ele.css('fontSize'))
-              self.inp_line = parseInt(ele.css('lineHeight'))
-              self.color_font = ele.css('color')
-              self.color_bg = ele.css('backgroundColor')
-              rowT.css('top', self.inp_y + 100)
-              rowB.css('top', self.inp_y + 100 + self.inp_h)
-              colL.css('left', self.inp_x + 100)
-              colR.css('left', self.inp_x + 100 + self.inp_w)
-              self.disabled = false
-              $('.tl_mod').removeClass('tl_li_Disable')
-            }
-            function missSeletedEvents () { // 初始化
-              line.hide()
-              $('.resize').remove()
-              $('.module').removeClass('on_module')
-              $('.module').parent().unbind('mousemove')
-              $('.module').unbind('mouseup')
-              self.inp_z = ''
-              self.inp_x = ''
-              self.inp_y = ''
-              self.inp_w = ''
-              self.inp_h = ''
-              self.inp_size = ''
-              self.inp_line = ''
-              self.color_font = '#333'
-              self.color_bg = '#fff'
-              self.disabled = true
-              $('.tl_mod').addClass('tl_li_Disable')
-            }
             function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
               rowT.css('top', self.inp_y + warp + 100)
               rowB.css('top', self.inp_y + warp + 100 + self.inp_h)
@@ -770,13 +785,36 @@
             console.log('todo:预览123')
           },
           bindRightClickEvent: function (self) { // 右键唤出菜单功能
+            let toolself = this
             let canvas = $('.canvas')
+            let contextmenu = $('.contextmenu')
+            contextmenu.hide()
             canvas.bind('contextmenu', function () {
               return false
             })
+            contextmenu.bind('contextmenu click', function () {
+              return false
+            })
             canvas.mousedown(function (e) {
+              contextmenu.hide()
               if (e.which === 3) {
-                console.log(e.target)
+                let module
+                if ($(e.target).hasClass('module')) {
+                  module = $(e.target)
+                } else {
+                  module = $(e.target).parents('.module')
+                }
+                if (module.length > 0) {
+                  if (!module.hasClass('on_module')) {
+                    toolself.initialize(self, module)
+                    module.addClass('on_module')
+                  }
+                  self.rightButton = true
+                } else {
+                  self.rightButton = false
+                }
+                contextmenu.css({'top': e.pageY, left: e.pageX})
+                contextmenu.show()
                 return false
               }
             })
@@ -991,32 +1029,73 @@
         self.moduleElement.css('zIndex', z)
         self.inp_z = z
       },
-      shearEvent: function () {
+      shearEvent: function () { // 剪切
         if ($('.on_module').length > 0) {
           let self = this
           self.clipboard = self.moduleElement[0].outerHTML
           self.original = self.moduleElement.parent()
           self.moduleElement.remove()
+          $('.contextmenu').hide()
         }
       },
-      copyEvent: function () {
+      copyEvent: function () { // 复制
         if ($('.on_module').length > 0) {
           let self = this
           self.clipboard = self.moduleElement[0].outerHTML
           self.original = self.moduleElement.parent()
         }
+        $('.contextmenu').hide()
       },
-      pasteEvent: function () {
+      pasteEvent: function () { // 粘贴
         let self = this
         if (self.clipboard) {
+          let sTop = parseInt($('.space').scrollTop())
+          let contextmenu = $('.contextmenu')
+          let y = parseInt(contextmenu.css('top'))
+          let x = parseInt(contextmenu.css('left'))
+          switch (self.original.attr('class')) {
+            case 'c_top':
+              y = y - 181 + sTop
+              x = x - 281
+              break
+            case 'c_body':
+              y = y - 181 + sTop - parseInt($('.c_top').css('height'))
+              x = x - 281
+              break
+            case 'c_foot':
+              y = y - 181 + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
+              x = x - 281
+              break
+          }
           self.original.append(self.clipboard)
+          self.tool.missSeletedEvents(self)
+          let bChild = self.original.children()
+          if (self.config.moveLimit) {
+            if (y < 0) {
+              y = 0
+            }
+            let boxTop = parseInt(self.original.css('height')) - parseInt(bChild.eq(bChild.length - 1).css('height'))
+            if (y > boxTop) {
+              y = boxTop
+            }
+          }
+          bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
         }
+        $('.contextmenu').hide()
       },
-      deleteEvent: function () {
+      deleteEvent: function () { // 删除
         if ($('.on_module').length > 0) {
           let self = this
           self.moduleElement.remove()
+          $('.contextmenu').hide()
         }
+      },
+      previewEvent: function () { // 预览
+        let self = this
+        self.$router.push('preview')
+      },
+      alertfun: function () {
+        console.log(1212)
       }
     }
   }
@@ -1397,13 +1476,13 @@
     z-index: 2;
   }
   .nw{
-    top: -6px;
-    left: -6px;
+    top: -10px;
+    left: -10px;
     cursor: nw-resize;
   }
   .w{
     top:50%;
-    left: -6px;
+    left: -12px;
     transform:translateY(-50%);
     -ms-transform:translateY(-50%);   /* IE 9 */
     -moz-transform:translateY(-50%);  /* Firefox */
@@ -1412,12 +1491,12 @@
     cursor: w-resize;
   }
   .sw{
-    bottom: -6px;
-    left:-6px;
+    bottom: -10px;
+    left:-10px;
     cursor: sw-resize;
   }
   .n{
-    top: -6px;
+    top: -12px;
     left: 50%;
     transform:translateX(-50%);
     -ms-transform:translateX(-50%);   /* IE 9 */
@@ -1427,13 +1506,13 @@
     cursor: n-resize;
   }
   .ne{
-    top: -6px;
-    right: -6px;
+    top: -10px;
+    right: -10px;
     cursor: ne-resize;
   }
   .e{
     top:50%;
-    right:-6px;
+    right:-12px;
     transform:translateY(-50%);
     -ms-transform:translateY(-50%);   /* IE 9 */
     -moz-transform:translateY(-50%);  /* Firefox */
@@ -1442,12 +1521,12 @@
     cursor: e-resize; 
   }
   .se{
-    bottom: -6px;
-    right:-6px;
+    bottom: -10px;
+    right:-10px;
     cursor: se-resize;
   }
   .s{
-    bottom: -6px;
+    bottom: -12px;
     left:50%;
     transform:translateX(-50%);
     -ms-transform:translateX(-50%);   /* IE 9 */
@@ -1461,19 +1540,30 @@
     position: absolute;
     top:81px;
     left:181px;
-    width: 180px;
+    width: 130px;
     background-color: #fefefe;
     padding: 3px 0;
+    text-align: left;
+    text-indent: 16px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+    z-index: 100;
   }
   .contextmenu li{
     padding:2px;
     height: 26px;
     line-height: 26px;
     color: #525e71;
+    cursor: pointer;
+  }
+  .contextmenu li:hover{
+    background-color: #E2E2E3;
+  }
+  .contextmenu li i {
+    margin-right: 8px;
+    color: #f55d54;
   }
   .contextmenu .divider{
     margin: 3px 0;
     border-bottom: 1px solid #e5e5e5;
   }
-
 </style>
