@@ -34,26 +34,25 @@
             <li @click="downFloorEvent"><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
           </ul>
         </div>
-        <div class="tl_li">
+        <div class="tl_li tl_mod tl_li_Disable">
           <i class="iconfont icon-handle"></i>
           <span>操作</span>
           <ul class="toolbar">
-            <li @click="shearEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-jianqie"></i>剪切</li>
-            <li @click="copyEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-fuzhi"></i>复制</li>
-            <li @click="pasteEvent"><i class="iconfont icon-zhantie"></i>粘贴</li>
-            <li @click="deleteEvent" class="tl_mod tl_li_Disable"><i class="iconfont icon-shanchu"></i>删除</li>
+            <li @click="shearEvent" ><i class="iconfont icon-jianqie"></i>剪切</li>
+            <li @click="copyEvent" ><i class="iconfont icon-fuzhi"></i>复制</li>
+            <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-zhantie"></i>粘贴</li>
+            <li @click="deleteEvent" ><i class="iconfont icon-shanchu"></i>删除</li>
           </ul>
         </div>     
       </div>
       <div class="t_right">
-        <!-- <div class="tl_li">
-          <i class="iconfont icon-fangda-copy"></i>
-          <span>100%</span> 
-          <ul class="toolbar">          
-            <li><i class="iconfont icon-fangda-copy"></i>放大</li>
-            <li><i class="iconfont icon-suoxiao"></i>缩小</li>
+        <div class="tl_li">
+          <i class="iconfont icon-beijingyanse" @click="prospectColorShow"></i>
+          <span>前景</span>
+          <ul class="toolbar" style="min-width: 76px;display: block;" v-if="prospectColoer">          
+            <li ><el-color-picker v-model="prospectColorVal" @change="changeProspectColor" ></el-color-picker></li>
           </ul>
-        </div> -->
+        </div>
         <div class="tl_li bgColor">
           <i class="iconfont icon-beijingyanse" @click="bgColorShow"></i>
           <span>背景</span>
@@ -136,7 +135,7 @@
     <!-- assembly library -->
     <div class="library">
       <div class="lib_box">
-        <div class="lib_li" >模块</div>
+        <div class="lib_li" >矩形 <div class="dataHtml"></div> </div>
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>        
         <div class="lib_li" >模块</div>
@@ -152,8 +151,8 @@
     </div>
     <!-- editBox -->
     <div class="editBox">
-      <div class="space">
-        <div class="canvas grid" >
+      <div class="space" :style="'background-color:'+bgColorVal">
+        <div class="canvas grid" :style="'background-color:'+prospectColorVal+';width:'+inp_width+'px;height:'+inp_height+'px;'">
           <div class="c_top">
             <div class="hoverbar" ondragstart="return false"></div>
           </div>
@@ -170,7 +169,7 @@
       <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
-          <div class='text module'><div @click='alertfun'>asdasdadad</div>asdadadsadad</div>
+          <div class='rectangle module'></div>
         </div>
       </div>
       <!-- 自定义右键菜单 -->
@@ -206,8 +205,10 @@
     name: 'app',
     data: function () {
       return {
+        prospectColoer: false,
+        prospectColorVal: '#fff',
         bgcoloer: false,
-        bgColorVal: '#fff',
+        bgColorVal: '#f5f5f5',
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
@@ -832,10 +833,53 @@
         self.tool.bindClickEvent(self)
         self.tool.bindToolEvent(self)
         self.tool.bindRightClickEvent(self)
+        if (!window.saveParams) return false
+        let params = window.saveParams
+        let pp = params.page
+        self.prospectColorVal = pp.pg
+        self.bgColorVal = pp.bg
+        self.inp_width = pp.width
+        self.inp_height = pp.height
+        let head = $('.c_top')
+        let middle = $('.c_body')
+        let foot = $('.c_foot')
+        let module = params.module
+        // let html = ''
+        // for (let i = 0, len = module.top.length; i < len; i++) {
+        //   let item = module.top[i]
+        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
+        // }
+        head.append(module.top)
+        // html = ''
+        // for (let i = 0, len = module.body.length; i < len; i++) {
+        //   let item = module.body[i]
+        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
+        // }
+        middle.append(module.body)
+        // html = ''
+        // for (let i = 0, len = module.foot.length; i < len; i++) {
+        //   let item = module.foot[i]
+        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
+        // }
+        foot.append(module.foot)
       })
     },
     methods: {
-      bgColorShow: function () { // 背景颜色调色板显示
+      prospectColorShow: function () { // 背景颜色调色板显示
+        var self = this
+        if (!self.prospectColoer) {
+          self.prospectColoer = true
+        } else {
+          self.prospectColoer = false
+        }
+      },
+      changeProspectColor: function () { // 背景颜色变化
+        var self = this
+        self.prospectColoer = false
+        let canvas = $('.canvas')
+        canvas.css('backgroundColor', self.prospectColorVal)
+      },
+      bgColorShow: function () {
         var self = this
         if (!self.bgcoloer) {
           self.bgcoloer = true
@@ -843,11 +887,11 @@
           self.bgcoloer = false
         }
       },
-      changeBgColor: function () { // 背景颜色变化
+      changeBgColor: function () {
         var self = this
         self.bgcoloer = false
-        let canvas = $('.canvas')
-        canvas.css('backgroundColor', self.bgColorVal)
+        let space = $('.space')
+        space.css('backgroundColor', self.bgColorVal)
       },
       widthRangeConstraint: function () { // 页面宽度限制
         var self = this
@@ -1093,9 +1137,54 @@
       previewEvent: function () { // 预览
         let self = this
         self.$router.push('preview')
-      },
-      alertfun: function () {
-        console.log(1212)
+        let params = {}
+        // let topModule = $('.c_top').find('.module')
+        // let bodyModule = $('.c_body').find('.module')
+        // let footModule = $('.c_foot').find('.module')
+        let topArray = $('.c_top').html()
+        let bodyArray = $('.c_body').html()
+        let footArray = $('.c_foot').html()
+        // for (let i = 0, len = topModule.length; i < len; i++) {
+        //   let item = topModule.eq(i)
+        //   let itemobj = {
+        //     class: $.trim(item.attr('class').replace('module', '')),
+        //     style: item.attr('style')
+        //   }
+        //   topArray.push(itemobj)
+        // }
+        // for (let i = 0, len = bodyModule.length; i < len; i++) {
+        //   let item = bodyModule.eq(i)
+        //   let itemobj = {
+        //     class: $.trim(item.attr('class').replace('module', '')),
+        //     style: item.attr('style')
+        //   }
+        //   bodyArray.push(itemobj)
+        // }
+        // for (let i = 0, len = footModule.length; i < len; i++) {
+        //   let item = footModule.eq(i)
+        //   let itemobj = {
+        //     class: $.trim(item.attr('class').replace('module', '')),
+        //     style: item.attr('style')
+        //   }
+        //   footArray.push(itemobj)
+        // }
+        params = {
+          page: {
+            pg: self.prospectColorVal,
+            bg: self.bgColorVal,
+            width: self.inp_width,
+            height: self.inp_height,
+            top: $('.c_top').css('height'),
+            body: $('.c_body').css('height'),
+            foot: $('.c_foot').css('height')
+          },
+          module: {
+            top: topArray,
+            body: bodyArray,
+            foot: footArray
+          }
+        }
+        window.saveParams = params
       }
     }
   }
@@ -1244,7 +1333,7 @@
   .toolbar input::-webkit-inner-spin-button{
     display: none;
   }
-  .t_right{
+  #app .t_right{
     position: relative;
     float: right;
     width: 500px;
@@ -1336,6 +1425,9 @@
     background-color: #f5f5f5;
     cursor:pointer;
   }
+  .dataHtml{
+    display: none;
+  }
 /*editBox*/
   .editBox{
     position: absolute;
@@ -1423,15 +1515,6 @@
   .copyCon{
     display: none;
   }
-  .text{
-    position: absolute;
-    width: 200px;
-    height: 50px;
-    border: 1px solid #333;
-    box-sizing: border-box;
-    background-color: #F487FE;
-    color: #fff;
-  }
   .line{
     position: absolute;
     top: 0;
@@ -1462,7 +1545,8 @@
 /*module*/
   .on_module{
     border-color: #46a8fb;
-   /* outline:1px solid #46a8fb;*/
+    border:1px solid #46a8fb;
+    box-sizing: border-box;
     cursor: move;
   }
   .resize{
@@ -1473,7 +1557,7 @@
     background-color:#fff;
     border:1px solid #46a8fb;
     pointer-events: auto;
-    z-index: 2;
+    z-index: 100;
   }
   .nw{
     top: -10px;
@@ -1546,7 +1630,7 @@
     text-align: left;
     text-indent: 16px;
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
-    z-index: 100;
+    z-index: 101;
   }
   .contextmenu li{
     padding:2px;
