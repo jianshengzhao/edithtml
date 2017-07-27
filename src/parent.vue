@@ -13,13 +13,34 @@
     width: 100%;
     height: 100%;
   } 
-  .rectangle{
-    position: absolute;
+  .module{
+     position: absolute;
+  }
+  .rectangle{    
     width: 200px;
     height: 50px;
-    text-align:center;
     box-sizing: border-box;
     background-color: #4998ff;
-    color: #fff;
+  }
+  .radius {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: #4998ff;
+  }
+  .text{
+    width: 200px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    word-break:break-all; /*支持IE，chrome，FF不支持*/
+　　word-wrap:break-word;/*支持IE，chrome，FF*/
+  }
+  .editor{
+    width: 400px;
+    height: 400px;
+    background-color: #4998ff;
   }
 </style>

@@ -135,10 +135,26 @@
     <!-- assembly library -->
     <div class="library">
       <div class="lib_box">
-        <div class="lib_li" >矩形 <div class="dataHtml"></div> </div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
-        <div class="lib_li" >模块</div>
+        <div class="lib_li" >矩形 
+          <div class="dataHtml" style="width: 200px;height: 50px;">
+            <div class='rectangle module'></div>
+          </div>
+        </div>
+        <div class="lib_li" >圆形 
+          <div class="dataHtml" style="width: 100px;height: 100px;border-radius: 50%">
+            <div class='radius module'></div>
+          </div>
+        </div>
+        <div class="lib_li" >文字 
+          <div class="dataHtml" style="width: 200px;height: 30px;">
+            <div class="text module">啦啦啦我是文字模块</div>  
+          </div>
+        </div>        
+        <div class="lib_li" >富文本
+          <div class="dataHtml" style="width: 400px;height: 400px;">
+            <div class="editor module"></div>  
+          </div>
+        </div>
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
@@ -169,7 +185,6 @@
       <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
-          <div class='rectangle module'></div>
         </div>
       </div>
       <!-- 自定义右键菜单 -->
@@ -190,10 +205,43 @@
         <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-shanchu"></i>删除</li>
       </ul>
     </div>
+    <!-- dialog弹框 -->
+    <el-dialog
+      title="编辑文本"
+      :visible.sync="dialogText"
+      size="tiny">
+      <el-input
+        type="textarea"
+        autosize
+        placeholder="请输入内容"
+        v-model="textarea">
+      </el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogText = false">取 消</el-button>
+        <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="富文本"
+      :visible.sync="dialogEditor"
+      size="small" class="ueditor">
+      <div ref="ueditor" class='editorC'></div>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogEditor = false">取 消</el-button>
+        <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- dialog弹框 -->
   </div>
 </template>
 
 <script>
+  function guidGenerator () {
+    let S4 = function () {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+    }
+    return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
+  }
   import $ from 'jquery'
   import '@/assets/iconfont/demo.css'
   import '@/assets/iconfont/iconfont.css'
@@ -205,6 +253,9 @@
     name: 'app',
     data: function () {
       return {
+        dialogText: false,
+        dialogEditor: false,
+        textarea: '',
         prospectColoer: false,
         prospectColorVal: '#fff',
         bgcoloer: false,
@@ -229,6 +280,11 @@
         config: {
           stretchLimit: true, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
+        },
+        editorConfig: {
+          toolbars: [[
+            'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
+          ]]
         },
         tool: { /* 工具箱事件 */
           linePosition: function (editBox, copyBox) {
@@ -323,13 +379,12 @@
             let colR = $('.col-r')
             let line = $('.line')
             let scrollHeight = $('.space')[0].scrollHeight
-            let editMouseupBloo = false
             colL.css('height', scrollHeight)
             colR.css('height', scrollHeight)
-            $('.c_top .hoverbar').mousedown(function () { // top容器调整
+            $('.c_top').on('mousedown', '.hoverbar', function () { // top容器调整
               y = event.pageY
               h = parseInt(cTop.css('height'))
-              $(this).addClass('on_hoverbar')
+              $('.c_top .hoverbar').addClass('on_hoverbar')
               canvas.mousemove(function () {
                 hs = h + (event.pageY - y)
                 cTop.css('height', hs)
@@ -339,10 +394,10 @@
               })
               canvasMouseup()
             })
-            $('.c_foot .hoverbar').mousedown(function () { // foot容器调整
+            $('.c_foot').on('mousedown', '.hoverbar', function () { // foot容器调整
               y = event.pageY
               h = parseInt(cFoot.css('height'))
-              $(this).addClass('on_hoverbar')
+              $('.c_foot .hoverbar').addClass('on_hoverbar')
               canvas.mousemove(function () {
                 hs = h + (y - event.pageY)
                 cFoot.css('height', hs)
@@ -351,12 +406,12 @@
               })
               canvasMouseup()
             })
-            $('.lib_li').mousedown(function () { // 左边模块库鼠标拖动事件
+            $('.lib_li').mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
+              let dataHtml = $(e.target).find('.dataHtml')
+              copyBox.attr('style', dataHtml.attr('style'))
+              copyCon.html(dataHtml.html())
               copyBox.show().css({'top': event.pageY, 'left': 181})
-              if (editMouseupBloo) {
-                return
-              }
-              editMouseupBloo = true
+              editBox.unbind('mouseup')
               editBox.mousemove(function (e) {
                 copyBox.css({'top': e.pageY, 'left': e.pageX})
               })
@@ -372,7 +427,6 @@
             }
             function editMouseup () { // editBox解除模块拖动事件,并添加模块到canvas上
               editBox.mouseup(function (e) {
-                editMouseupBloo = false
                 editBox.unbind('mousemove mouseup')
                 let box
                 let x = event.pageX - 281
@@ -407,7 +461,7 @@
                 copyBox.hide()
                 line.hide()
                 box.append(copyCon.html())
-                let bChild = box.children()
+                let bChild = box.children('.module')
                 bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
               })
             }
@@ -782,8 +836,35 @@
               return false
             })
           },
-          bindToolEvent: function (self) { // 工具栏操作事件
-            console.log('todo:预览123')
+          bindDblclickEvent: function (self) { // 模块双击操作事件
+            let editBox = $('.editBox')
+            editBox.on('dblclick', '.on_module', function (e) {
+              let onthis = self.moduleElement
+              let type = onthis.attr('class').split(' ')[0]
+              switch (type) {
+                case 'text':
+                  self.dialogText = true
+                  self.textarea = onthis.text()
+                  break
+                case 'editor':
+                  self.dialogEditor = true
+                  let w = parseInt(onthis.css('width'))
+                  let html = onthis.html()
+                  self.$nextTick(function () {
+                    self.$refs.ueditor.id = self.ueditorid
+                    $('.ueditor .el-dialog').css('width', w + 40)
+                    $('.ueditor #edui1,.ueditor .edui-editor-iframeholder').css('width', w)
+                    self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
+                    self.editor.ready(function () {
+                      self.editor.setContent(html)
+                    })
+                  })
+                  break
+                default:
+                  console.log('module')
+                  break
+              }
+            })
           },
           bindRightClickEvent: function (self) { // 右键唤出菜单功能
             let toolself = this
@@ -825,13 +906,14 @@
     },
     created: function () {
       var self = this
+      self.ueditorid = guidGenerator()
       self.$nextTick(function () {
         let canvas = $('.canvas')
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
         self.tool.bindMouseEvent(self)
         self.tool.bindClickEvent(self)
-        self.tool.bindToolEvent(self)
+        self.tool.bindDblclickEvent(self)
         self.tool.bindRightClickEvent(self)
         if (!window.saveParams) return false
         let params = window.saveParams
@@ -843,25 +925,29 @@
         let head = $('.c_top')
         let middle = $('.c_body')
         let foot = $('.c_foot')
+        head.css('height', pp.top)
+        middle.css('height', pp.body)
+        foot.css('height', pp.foot)
+        canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
         let module = params.module
         // let html = ''
         // for (let i = 0, len = module.top.length; i < len; i++) {
         //   let item = module.top[i]
         //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
         // }
-        head.append(module.top)
+        head.html(module.top)
         // html = ''
         // for (let i = 0, len = module.body.length; i < len; i++) {
         //   let item = module.body[i]
         //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
         // }
-        middle.append(module.body)
+        middle.html(module.body)
         // html = ''
         // for (let i = 0, len = module.foot.length; i < len; i++) {
         //   let item = module.foot[i]
         //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
         // }
-        foot.append(module.foot)
+        foot.html(module.foot)
       })
     },
     methods: {
@@ -1002,12 +1088,19 @@
         self.moduleElement.css('lineHeight', val + 'px')
       },
       changeColorFont: function (val) { // font-color 字体颜色
-        var self = this
-        self.moduleElement.css('color', val)
+        if ($('.on_module').length > 0) {
+          var self = this
+          self.moduleElement.css('color', val)
+        }
       },
       changeColorBg: function (val) { // background-color 背景颜色
-        var self = this
-        self.moduleElement.css('backgroundColor', val)
+        if ($('.on_module').length > 0) {
+          var self = this
+          if (val === null) {
+            val = 'transparent'
+          }
+          self.moduleElement.css('backgroundColor', val)
+        }
       },
       topAlignEvent: function () { // top 上对齐
         let self = this
@@ -1136,6 +1229,7 @@
       },
       previewEvent: function () { // 预览
         let self = this
+        self.tool.missSeletedEvents(self)
         self.$router.push('preview')
         let params = {}
         // let topModule = $('.c_top').find('.module')
@@ -1185,6 +1279,17 @@
           }
         }
         window.saveParams = params
+      },
+      dialogTextEvent: function () { // 编辑文本窗口
+        let self = this
+        self.moduleElement.text(self.textarea)
+        self.dialogText = false
+      },
+      dialogEditorEvent: function () {
+        let self = this
+        let content = self.editor.getContent()
+        self.dialogEditor = false
+        self.moduleElement.html(content)
       }
     }
   }
@@ -1197,7 +1302,6 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     height: 100%;
     cursor: default;
   }
@@ -1543,6 +1647,9 @@
     border-left-width: 1px;
   }
 /*module*/
+  .module:hover{
+    border:1px solid #46a8fb;
+  }
   .on_module{
     border-color: #46a8fb;
     border:1px solid #46a8fb;
@@ -1649,5 +1756,10 @@
   .contextmenu .divider{
     margin: 3px 0;
     border-bottom: 1px solid #e5e5e5;
+  }
+/*editor*/
+  .editorC{
+    margin: 0 auto;
+    min-height: 400px 
   }
 </style>
