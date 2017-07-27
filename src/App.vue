@@ -157,14 +157,21 @@
           </div>
         </div>
         <div class="header">Online School 网校</div>
-        <div class="lib_li" >页头</div>
+        <div class="lib_li" >页头
+          <div class="dataHtml" style="width: 1200px;height: 100px;">
+            <div class="pageHeader module">
+              <img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/module_header_logo.jpg">
+            </div>  
+          </div>
+        </div>
         <div class="lib_li" >首页导航</div>
         <div class="lib_li" >轮播大图</div>
         <div class="lib_li" >网校介绍</div>
         <div class="lib_li" >热门标签</div>        
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
+        <div class="lib_li" >热门课程</div>
+        <div class="lib_li" >学员评价</div>
+        <div class="lib_li" >名师团队</div>
+        <div class="lib_li" >网校应用</div>
       </div>
     </div>
     <!-- editBox -->
@@ -280,8 +287,8 @@
         clipboard: '',
         original: '',
         config: {
-          stretchLimit: true, // 是否开启module拉伸限制
-          moveLimit: true // 是否开启module移动限制
+          stretchLimit: false, // 是否开启module拉伸限制
+          moveLimit: false // 是否开启module移动限制
         },
         editorConfig: {
           zIndex: 3000,
@@ -859,7 +866,7 @@
                   self.$nextTick(function () {
                     self.$refs.ueditor.id = self.ueditorid
                     $('.ueditor .el-dialog').css('width', w + 40)
-                    $('.ueditor #edui1,.ueditor .edui-editor-iframeholder').css('width', w)
+                    $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
                     self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
                     self.editor.ready(function () {
                       self.editor.setContent(html)
@@ -1294,7 +1301,7 @@
       dialogEditorEvent: function () {
         let self = this
         let content = self.editor.getContent()
-        let h = $('.ueditor #edui1,.ueditor .edui-editor-iframeholder').css('height')
+        let h = $('.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
         self.moduleElement.css('height', h)
         self.moduleElement.html(content)
@@ -1575,7 +1582,7 @@
     height: 1800px;
     background-color: #fff;
     background-size:10px 10px;
-    border:1px solid #d9d9d9;
+    /*border:1px solid #d9d9d9;*/
     box-sizing: border-box;
     /*overflow: hidden;*/
     cursor: default;
@@ -1588,14 +1595,16 @@
     top:0;
     left: 0;
     width: 100%;
-    height: 200px;
+    height: 100%;
     border-bottom: 1px dashed #d9d9d9;
   }  
   .c_body{
+    display: none; /*关闭分区*/
     position: relative;
     height: 100%;
   }
   .c_foot{
+    display: none; /*关闭分区*/
     position: absolute;
     left: 0;
     bottom: 0;
@@ -1604,6 +1613,7 @@
     border-top: 1px dashed #d9d9d9;
   }
   .hoverbar{
+    display: none; /*关闭分区*/
     position: absolute;
     left: 0;
     bottom: -4px;
@@ -1662,12 +1672,9 @@
     border-left-width: 1px;
   }
 /*module*/
-  .module:hover{
-    border:1px solid #46a8fb;
-  }
   .on_module{
     border-color: #46a8fb;
-    border:1px solid #46a8fb;
+    outline:1px solid #46a8fb;
     box-sizing: border-box;
     cursor: move;
   }
@@ -1776,5 +1783,8 @@
   .editorC{
     margin: 0 auto;
     min-height: 400px 
+  }
+  .el-dialog__footer {
+    padding: 10px 10px 15px;
   }
 </style>

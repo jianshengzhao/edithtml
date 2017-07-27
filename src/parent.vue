@@ -15,19 +15,18 @@
   } 
   .module{
      position: absolute;
+     background-color: #F9F8F8;
   }
   .rectangle{    
     width: 200px;
     height: 50px;
     box-sizing: border-box;
-    background-color: #4998ff;
   }
   .radius {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     box-sizing: border-box;
-    background-color: #4998ff;
   }
   .text{
     width: 200px;
@@ -43,9 +42,22 @@
     padding: 8px;
     width: 400px;
     height: 400px;
-    background-color: #4998ff;
+    word-break:break-all; /*支持IE，chrome，FF不支持*/
+　　word-wrap:break-word;
   }
   .editor p {
     margin:5px 0;
+  }
+  .pageHeader{
+    width: 100%;
+    min-height:100px; 
+  }
+  .pageHeader img{
+    margin-left: 50%;
+    transform:translateX(-50%); 
+    -ms-transform:translateX(-50%);  
+    -moz-transform:translateX(-50%); 
+    -webkit-transform:translateX(-50%);
+    -o-transform:translateX(-50%); 
   }
 </style>
