@@ -135,6 +135,7 @@
     <!-- assembly library -->
     <div class="library">
       <div class="lib_box">
+        <div class="header">Basic 基本组件</div>
         <div class="lib_li" >矩形 
           <div class="dataHtml" style="width: 200px;height: 50px;">
             <div class='rectangle module'></div>
@@ -155,11 +156,12 @@
             <div class="editor module"></div>  
           </div>
         </div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>
-        <div class="lib_li" >模块</div>        
+        <div class="header">Online School 网校</div>
+        <div class="lib_li" >页头</div>
+        <div class="lib_li" >首页导航</div>
+        <div class="lib_li" >轮播大图</div>
+        <div class="lib_li" >网校介绍</div>
+        <div class="lib_li" >热门标签</div>        
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
         <div class="lib_li" >模块</div>
@@ -282,6 +284,7 @@
           moveLimit: true // 是否开启module移动限制
         },
         editorConfig: {
+          zIndex: 3000,
           toolbars: [[
             'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
           ]]
@@ -562,6 +565,9 @@
                   module.css(key[1], moveXY)
                   return false
                 }
+                if (e.key === 'Delete') {
+                  module.remove()
+                }
               }
             })
             editBox.click(function (e) { // 失去焦点取消选中
@@ -836,7 +842,7 @@
               return false
             })
           },
-          bindDblclickEvent: function (self) { // 模块双击操作事件
+          bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
               let onthis = self.moduleElement
@@ -1288,7 +1294,9 @@
       dialogEditorEvent: function () {
         let self = this
         let content = self.editor.getContent()
+        let h = $('.ueditor #edui1,.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
+        self.moduleElement.css('height', h)
         self.moduleElement.html(content)
       }
     }
@@ -1517,6 +1525,13 @@
     height: 100%;
     overflow: hidden;
     overflow-y:auto;
+  }
+  .header{
+    float: left;
+    width: 100%;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
   }
   .lib_li{
     float: left;

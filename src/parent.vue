@@ -39,8 +39,13 @@
 　　word-wrap:break-word;/*支持IE，chrome，FF*/
   }
   .editor{
+    box-sizing: border-box;
+    padding: 8px;
     width: 400px;
     height: 400px;
     background-color: #4998ff;
+  }
+  .editor p {
+    margin:5px 0;
   }
 </style>
