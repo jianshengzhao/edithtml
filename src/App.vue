@@ -136,37 +136,37 @@
     <div class="library">
       <div class="lib_box">
         <div class="header">Basic 基本组件</div>
-        <div class="lib_li" >矩形 
+        <div class="lib_li" dataHtml="rectangle">矩形 
           <div class="dataHtml" style="width: 200px;height: 50px;">
             <div class='rectangle module'></div>
           </div>
         </div>
-        <div class="lib_li" >圆形 
+        <div class="lib_li" dataHtml="radius">圆形 
           <div class="dataHtml" style="width: 100px;height: 100px;border-radius: 50%">
             <div class='radius module'></div>
           </div>
         </div>
-        <div class="lib_li" >文字 
+        <div class="lib_li" dataHtml="text">文字 
           <div class="dataHtml" style="width: 200px;height: 30px;">
             <div class="text module">啦啦啦我是文字模块</div>  
           </div>
         </div>        
-        <div class="lib_li" >富文本
+        <div class="lib_li" dataHtml="editor">富文本
           <div class="dataHtml" style="width: 400px;height: 400px;">
-            <div class="editor module"></div>  
+            <div class="editor module"></div>
           </div>
         </div>
         <div class="header">Online School 网校</div>
-        <div class="lib_li" >页头
+        <div class="lib_li" dataHtml="pageHeader">页头
           <div class="dataHtml" style="width: 1200px;height: 140px;">
             <div class="pageHeader module">
-            <div class="imgbox">
-              <img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/module_header_logo.jpg">
-            </div>
+              <div class="imgbox">
+                <img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/module_header_logo.jpg">
+              </div>
             </div>  
           </div>
         </div>
-        <div class="lib_li" >首页导航
+        <div class="lib_li" dataHtml="navigation">首页导航
           <div class="dataHtml" style="width: 1200px;height: 50px;">
             <div class="navigation module">
               <a href="">主页</a>
@@ -185,7 +185,7 @@
           </div>
         </div>
          <div class="header">todo: </div>
-        <div class="lib_li" >微信公众号
+        <div class="lib_li" dataHtml="WeChat">微信公众号
           <div class="dataHtml" style="width: 305px;height: 330px;">
             <div class="WeChat module">
               <div class="mod-title">微信公众号</div>
@@ -195,7 +195,7 @@
             </div>  
           </div>
         </div>
-        <div class="lib_li" >网校介绍
+        <div class="lib_li" dataHtml="schoolProfile">网校介绍
           <div class="dataHtml" style="width: 900px;height: 330px;">
             <div class="schoolProfile module">
               <div class="mod-title">网校介绍</div>
@@ -205,7 +205,7 @@
             </div>  
           </div>
         </div>
-        <div class="lib_li" >热门标签
+        <div class="lib_li" dataHtml="hotLabel">热门标签
           <div class="dataHtml" style="width: 305px;height: 330px;">
             <div class="hotLabel module">
               <div class="mod-title">热门标签</div>
@@ -223,7 +223,7 @@
             </div>  
           </div>
         </div>       
-        <div class="lib_li" >新闻资讯
+        <div class="lib_li" dataHtml="news">新闻资讯
           <div class="dataHtml" style="width: 305px;height: 330px;">
             <div class="news module">
               <div class="mod-title">新闻资讯</div>
@@ -235,7 +235,7 @@
             </div>  
           </div>
         </div> 
-        <div class="lib_li" >最新报名
+        <div class="lib_li" dataHtml="enlist">最新报名
           <div class="dataHtml" style="width: 305px;height: 330px;">
             <div class="enlist module">
               <div class="mod-title">最新报名</div>
@@ -259,7 +259,7 @@
             </div>  
           </div>
         </div> 
-        <div class="lib_li" >学员动态
+        <div class="lib_li" datahtml='dynamics'>学员动态
           <div class="dataHtml" style="width: 305px;height: 330px;">
             <div class="dynamics module">
               <div class="mod-title">学员动态</div>
@@ -407,10 +407,12 @@
   import $ from 'jquery'
   import '@/assets/iconfont/demo.css'
   import '@/assets/iconfont/iconfont.css'
+  import datahtml from '@/data/datahtml.js'
   import Vue from 'vue'
   import Element from 'element-ui'
   import 'element-ui/lib/theme-default/index.css'
   Vue.use(Element)
+  console.log(datahtml)
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -575,7 +577,7 @@
               canvasMouseup()
             })
             $('.lib_li').mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
-              let dataHtml = $(e.target).find('.dataHtml')
+              let dataHtml = $(e.target).attr('.dataHtml')
               copyBox.attr('style', dataHtml.attr('style'))
               copyCon.html(dataHtml.html())
               copyBox.show().css({'top': event.pageY, 'left': 181})
@@ -644,7 +646,6 @@
             let colL = $('.col-l')
             let colR = $('.col-r')
             let line = $('.line')
-
             editBox.on('click', '.module', function (e) { // 选中模块
               let ele = $(this)
               toolself.initialize(self, ele)
