@@ -158,32 +158,147 @@
         </div>
         <div class="header">Online School 网校</div>
         <div class="lib_li" >页头
-          <div class="dataHtml" style="width: 1200px;height: 100px;">
+          <div class="dataHtml" style="width: 1200px;height: 140px;">
             <div class="pageHeader module">
+            <div class="imgbox">
               <img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/module_header_logo.jpg">
+            </div>
             </div>  
           </div>
         </div>
-        <div class="lib_li" >首页导航</div>
-        <div class="lib_li" >轮播大图</div>
-        <div class="lib_li" >网校介绍</div>
-        <div class="lib_li" >热门标签</div>        
-        <div class="lib_li" >热门课程</div>
+        <div class="lib_li" >首页导航
+          <div class="dataHtml" style="width: 1200px;height: 50px;">
+            <div class="navigation module">
+              <a href="">主页</a>
+              <a href="">网校简介</a>
+              <a href="">新闻资讯</a>
+              <a href="">联系我们</a>
+              <a href="">全校新闻</a>
+              <a href="">网校发布</a>
+              <a href="">在线商城</a>
+              <div class="login_box"><a href="">注册</a><a href="">登录</a></div>
+              <div class="search_box">
+                <input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text">
+                <input class="btn-search" value="" type="button">
+              </div>
+            </div>  
+          </div>
+        </div>
+         <div class="header">todo: </div>
+        <div class="lib_li" >微信公众号
+          <div class="dataHtml" style="width: 305px;height: 330px;">
+            <div class="WeChat module">
+              <div class="mod-title">微信公众号</div>
+              <div class="QRcode">
+                <img id="qrcode" src="http://img.ebanhui.com/aroomv3/2017/04/05/14913725413033.jpg" >
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="lib_li" >网校介绍
+          <div class="dataHtml" style="width: 900px;height: 330px;">
+            <div class="schoolProfile module">
+              <div class="mod-title">网校介绍</div>
+              <div class="profile">
+                <img id="badge" src="http://img.ebanhui.com/aroomv3/2017/07/04/14991557204386_220_220.jpg" >~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复...
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="lib_li" >热门标签
+          <div class="dataHtml" style="width: 305px;height: 330px;">
+            <div class="hotLabel module">
+              <div class="mod-title">热门标签</div>
+              <div class="hotLabelList">
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+                <div class="hl_li">123123</div>
+              </div>
+            </div>  
+          </div>
+        </div>       
+        <div class="lib_li" >新闻资讯
+          <div class="dataHtml" style="width: 305px;height: 330px;">
+            <div class="news module">
+              <div class="mod-title">新闻资讯</div>
+              <div class="newsList">
+                <div class="news_li">asdasda</div>
+                <div class="news_li">asdasda</div>
+                <div class="news_li">asdasda</div>
+              </div>
+            </div>  
+          </div>
+        </div> 
+        <div class="lib_li" >最新报名
+          <div class="dataHtml" style="width: 305px;height: 330px;">
+            <div class="enlist module">
+              <div class="mod-title">最新报名</div>
+              <div class="enlistList">
+                <div class="enlist_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+                <div class="enlist_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+                <div class="enlist_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div> 
+        <div class="lib_li" >学员动态
+          <div class="dataHtml" style="width: 305px;height: 330px;">
+            <div class="dynamics module">
+              <div class="mod-title">学员动态</div>
+              <div class="dynamicsList">
+                <div class="dynamics_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+                <div class="enlist_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+                <div class="enlist_li">
+                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
+                  <p>asdadadsa</p>
+                  <div class="openservice">asada<a>开通</a></div>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="lib_li" >免费试听</div>
         <div class="lib_li" >学员评价</div>
         <div class="lib_li" >名师团队</div>
         <div class="lib_li" >网校应用</div>
       </div>
     </div>
     <!-- editBox -->
-    <div class="editBox">
+    <div class="editBox"  unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
       <div class="space" :style="'background-color:'+bgColorVal">
         <div class="canvas grid" :style="'background-color:'+prospectColorVal+';width:'+inp_width+'px;height:'+inp_height+'px;'">
           <div class="c_top">
-            <div class="hoverbar" ondragstart="return false"></div>
+            <div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>
           </div>
           <div class="c_body"></div>
           <div class="c_foot">
-            <div class="hoverbar" ondragstart="return false"></div>
+            <div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>
           </div>
         </div>
         <div class="row-t line"></div>
@@ -240,6 +355,44 @@
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="修改页头 (图片尺寸：1200*140 )"
+      :visible.sync="dialogPageHeader"
+      size="small" class="diaheader">
+      <el-upload
+        class="pageHeader-uploader"
+        name="upfile"
+        action="/uploadv2/image.html"
+        :show-file-list="false"
+        :on-success="handlePageHeaderSuccess"
+        :before-upload="beforePageHeaderUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
+        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogPageHeader = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+   <!--  <el-dialog
+      title="修改页头 (图片尺寸：1200*140 )"
+      :visible.sync="dialogPageHeader"
+      size="small" class="diaheader">
+      <el-upload
+        class="pageHeader-uploader"
+        name="upfile"
+        action="/uploadv2/image.html"
+        :show-file-list="false"
+        :on-success="handlePageHeaderSuccess"
+        :before-upload="beforePageHeaderUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
+        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogPageHeader = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+      </span>
+    </el-dialog> -->
     <!-- dialog弹框 -->
   </div>
 </template>
@@ -264,11 +417,14 @@
       return {
         dialogText: false,
         dialogEditor: false,
+        dialogPageHeader: false,
+        imageUrl: '',
         textarea: '',
+      // -----------工具栏-----------------
         prospectColoer: false,
-        prospectColorVal: '#fff',
+        prospectColorVal: '#f5f5f5',
         bgcoloer: false,
-        bgColorVal: '#f5f5f5',
+        bgColorVal: '#8493af',
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
@@ -288,8 +444,9 @@
         original: '',
         config: {
           stretchLimit: false, // 是否开启module拉伸限制
-          moveLimit: false // 是否开启module移动限制
+          moveLimit: true // 是否开启module移动限制
         },
+      // ---------------------------------------
         editorConfig: {
           zIndex: 3000,
           toolbars: [[
@@ -297,6 +454,7 @@
           ]]
         },
         tool: { /* 工具箱事件 */
+        // --------------- complete ----------------
           linePosition: function (editBox, copyBox) {
             let rowT = $('.row-t')
             let rowB = $('.row-b')
@@ -442,6 +600,8 @@
                 let x = event.pageX - 281
                 let y
                 let sTop = parseInt($('.space').scrollTop())
+                topRangeY = parseInt(cTop.css('height')) + 181
+                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
                 if (event.pageY + sTop < topRangeY) {
                   box = cTop
                   y = event.pageY + sTop - 181
@@ -838,6 +998,7 @@
                   }
                   break
               }
+              // todo: 拉伸某容器固定显示内容
               editBox.mousemove(function (e) {
                 part()
                 return false
@@ -847,36 +1008,6 @@
                 line.hide()
               })
               return false
-            })
-          },
-          bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
-            let editBox = $('.editBox')
-            editBox.on('dblclick', '.on_module', function (e) {
-              let onthis = self.moduleElement
-              let type = onthis.attr('class').split(' ')[0]
-              switch (type) {
-                case 'text':
-                  self.dialogText = true
-                  self.textarea = onthis.text()
-                  break
-                case 'editor':
-                  self.dialogEditor = true
-                  let w = parseInt(onthis.css('width'))
-                  let html = onthis.html()
-                  self.$nextTick(function () {
-                    self.$refs.ueditor.id = self.ueditorid
-                    $('.ueditor .el-dialog').css('width', w + 40)
-                    $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
-                    self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
-                    self.editor.ready(function () {
-                      self.editor.setContent(html)
-                    })
-                  })
-                  break
-                default:
-                  console.log('module')
-                  break
-              }
             })
           },
           bindRightClickEvent: function (self) { // 右键唤出菜单功能
@@ -911,6 +1042,49 @@
                 contextmenu.css({'top': e.pageY, left: e.pageX})
                 contextmenu.show()
                 return false
+              }
+            })
+          },
+        // ------------------- todo: ------------------
+          bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
+            let editBox = $('.editBox')
+            let w
+            editBox.on('dblclick', '.on_module', function (e) {
+              let onthis = self.moduleElement
+              let type = onthis.attr('class').split(' ')[0]
+              switch (type) {
+                case 'text':
+                  self.dialogText = true
+                  self.textarea = onthis.text()
+                  break
+                case 'editor':
+                  self.dialogEditor = true
+                  w = parseInt(onthis.css('width'))
+                  let html = onthis.html()
+                  self.$nextTick(function () {
+                    self.$refs.ueditor.id = self.ueditorid
+                    $('.ueditor .el-dialog').css('width', w + 40)
+                    $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
+                    self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
+                    self.editor.ready(function () {
+                      self.editor.setContent(html)
+                    })
+                  })
+                  break
+                case 'pageHeader':
+                  self.dialogPageHeader = true
+                  w = parseInt(onthis.css('width'))
+                  let imgsrc = self.moduleElement.find('img').attr('src')
+                  self.$nextTick(function () {
+                    $('.diaheader .el-dialog').css('width', w + 40)
+                    self.imageUrl = imgsrc
+                  })
+                  break
+                case 'WeChat':
+                  break
+                default:
+                  console.log('module')
+                  break
               }
             })
           }
@@ -964,6 +1138,7 @@
       })
     },
     methods: {
+    //   ---------------- complete --------------------
       prospectColorShow: function () { // 背景颜色调色板显示
         var self = this
         if (!self.prospectColoer) {
@@ -1298,14 +1473,37 @@
         self.moduleElement.text(self.textarea)
         self.dialogText = false
       },
-      dialogEditorEvent: function () {
+      dialogEditorEvent: function () { // 富文本窗口
         let self = this
         let content = self.editor.getContent()
         let h = $('.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
         self.moduleElement.css('height', h)
         self.moduleElement.html(content)
+      },
+      beforePageHeaderUpload: function (file) {
+        let self = this
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+          self.$notify({
+            title: '警告',
+            message: '上传的页头只能是jpg、png或gif格式。',
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+          return false
+        }
+      },
+      handlePageHeaderSuccess: function (res, file) {
+        let self = this
+        self.imageUrl = res.data.showurl
+      },
+      dialogPageHeaderEvent: function () {
+        let self = this
+        self.dialogPageHeader = false
+        self.moduleElement.find('img').attr('src', self.imageUrl)
       }
+    //   ---------------- todo: -----------------------
     }
   }
 </script>
@@ -1324,6 +1522,7 @@
     margin:0;
     padding:0;
     font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    /*font-family: "Microsoft YaHe";*/
   }
   html,body{
     width: 100%;
@@ -1384,6 +1583,7 @@
     line-height: 45px;
     font-size: 20px;
     color: #ccc;
+    text-align: center;
   }
   .t_left{
     float: left;
@@ -1412,7 +1612,7 @@
   .tl_li i{
     font-size: 18px;
     line-height: 18px;
-    color:#f55d54;
+    color:#157aff;
   }
   .tl_li>span{
     display: inline-block;
@@ -1542,7 +1742,7 @@
   }
   .lib_li{
     float: left;
-    width: 58px;
+    width: 80px;
     height: 60px;
     text-align: center;
     line-height: 60px;    
@@ -1563,7 +1763,7 @@
     height: 100%;
     padding: 80px 0 0 181px;
     box-sizing:border-box;    
-    background-color: #f5f5f5;    
+    background-color: #8493af;
     z-index: 1;
   }
   .space{
@@ -1576,11 +1776,11 @@
     position:absolute;
     top: 100px;
     left: 100px;
-    padding: 200px 0 100px 0;
+    padding: 400px 0 200px 0;
     margin-bottom: 100px;
     width: 1200px;
     height: 1800px;
-    background-color: #fff;
+    background-color: #f5f5f5;
     background-size:10px 10px;
     /*border:1px solid #d9d9d9;*/
     box-sizing: border-box;
@@ -1595,42 +1795,52 @@
     top:0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 400px;
     border-bottom: 1px dashed #d9d9d9;
+    box-sizing: border-box;
   }  
   .c_body{
-    display: none; /*关闭分区*/
+   /* display: none;*/ /*关闭分区*/
     position: relative;
     height: 100%;
   }
   .c_foot{
-    display: none; /*关闭分区*/
+    /*display: none;*/ /*关闭分区*/
     position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 100px;
+    height: 200px;
     border-top: 1px dashed #d9d9d9;
-  }
+    box-sizing: border-box;
+  }  
   .hoverbar{
-    display: none; /*关闭分区*/
+    display: none;
     position: absolute;
     left: 0;
-    bottom: -4px;
+    bottom: -30px;
     width: 100%;
-    height:5px; 
-    cursor: ns-resize;    
+    height:30px; 
+    background-color: #81c7f3;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    cursor: ns-resize;  
+    z-index: 99; 
   }
-  .hoverbar:hover{
-    border-top: 1px solid #75EFF4;
-    border-bottom: 1px solid #75EFF4;
+  .c_top:hover .hoverbar{
+   display: block;
+  }
+  .c_foot:hover .hoverbar{
+   display: block;
   }
   .on_hoverbar{
     border-top: 1px solid #75EFF4;
     border-bottom: 1px solid #75EFF4;
   }
   .c_foot .hoverbar{
-    top:-4px;
+    top:-30px;
   }
 /*copyBox*/
   .copyBox{
@@ -1786,5 +1996,30 @@
   }
   .el-dialog__footer {
     padding: 10px 10px 15px;
+  }
+/*pageHeader-uploader*/
+ .pageHeader-uploader .el-upload {
+    width: 100%;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .pageHeader-uploader .el-upload:hover {
+    border-color: #20a0ff;
+  }
+  .pageHeader-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .pageHeaderImg {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 </style>

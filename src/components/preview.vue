@@ -28,7 +28,7 @@
       return {
       }
     },
-    created: function () {
+    created: function () { // 增加白名单，各模块所加载的js
       let self = this
       $('#previewStyle').remove()
       if (!window.saveParams) return false
