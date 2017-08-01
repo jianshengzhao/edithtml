@@ -141,26 +141,58 @@
     </div>
     <!-- assembly library -->
     <div class="library">
+      <nav class="lib_nav">
+        <ol>
+          <li class="on"><i class="iconfont icon-cube"></i><span>组件</span></li>
+        </ol>
+      </nav>
       <div class="lib_box">
-        <div class="header">Basic 基本组件</div>
-        <div class="lib_li" dataHtml="rectangle">矩形</div>
-        <div class="lib_li" dataHtml="radius">圆形</div>
-        <div class="lib_li" dataHtml="text">文字</div>        
-        <div class="lib_li" dataHtml="editor">富文本</div>
-        <div class="header">Online School 网校</div>
-        <div class="lib_li" dataHtml="pageHeader">页头</div>
-        <div class="lib_li" dataHtml="navigation">首页导航</div>
-         <div class="header">todo: </div>
-        <div class="lib_li" dataHtml="WeChat">微信公众号</div>
-        <div class="lib_li" dataHtml="schoolProfile">网校介绍</div>
-        <div class="lib_li" dataHtml="hotLabel">热门标签</div>       
-        <div class="lib_li" dataHtml="news">新闻资讯</div> 
-        <div class="lib_li" dataHtml="enlist">最新报名</div> 
-        <div class="lib_li" datahtml='dynamics'>学员动态</div>
-        <div class="lib_li" >免费试听</div>
-        <div class="lib_li" >学员评价</div>
-        <div class="lib_li" >名师团队</div>
-        <div class="lib_li" >网校应用</div>
+        <div class="header">基本组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol">
+          <div class="lib_li" dataHtml="rectangle">
+            <i class="icon-widget-rectangle"></i>
+            <span>矩形</span>
+          </div>
+          <div class="lib_li" dataHtml="radius">
+            <i class="icon-widget-circle"></i>
+            <span>圆形</span>
+          </div>
+          <div class="lib_li" dataHtml="text">
+            <i class="icon-widget-text"></i>
+            <span>文字</span>icon-widget-textarea
+          </div>        
+          <div class="lib_li" dataHtml="editor">
+            <i class="icon-widget-textarea"></i>
+            <span>富文本</span>
+          </div>
+        </div>
+        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol">
+          <div class="lib_li" dataHtml="pageHeader">
+            <i class="icon-widget-input"></i>
+            <span>页头</span>
+          </div>
+          <div class="lib_li" dataHtml="navigation">
+            <div class="lib_li" dataHtml="pageHeader">
+              <i class="icon-widget-search-input"></i>
+              <span>导航搜索</span>
+            </div>
+          </div>
+        </div>
+        <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol">
+          <div class="lib_li" dataHtml="WeChat">微信公众号</div>
+          <div class="lib_li" dataHtml="schoolProfile">网校介绍</div>
+          <div class="lib_li" dataHtml="hotLabel">热门标签</div>       
+          <div class="lib_li" dataHtml="news">新闻资讯</div> 
+          <div class="lib_li" dataHtml="enlist">最新报名</div> 
+          <div class="lib_li" datahtml='dynamics'>学员动态</div>
+          <div class="lib_li" >免费试听</div>
+          <div class="lib_li" >学员评价</div>
+          <div class="lib_li" >名师团队</div>
+          <div class="lib_li" >网校应用</div>
+        </div>
+        <div class="header">尽请期待。。。 </div>
       </div>
     </div>
     <!-- editBox -->
@@ -404,6 +436,22 @@
             self.color_bg = '#fff'
             self.disabled = true
             $('.tl_mod').addClass('tl_li_Disable')
+          },
+          bindLibraryMenu: function (self) {
+            $('.header').on('click', function () {
+              let e = $(this).next()
+              let len = e.children().length
+              let num = len / 2 + len % 2
+              let h = 66 * num
+              if (e.css('height') === '0px') {
+                e.css('height', h + 'px')
+              } else {
+                e.css('height', h + 'px')
+                setTimeout(function () {
+                  e.css('height', '0px')
+                }, 0)
+              }
+            })
           },
           bindMouseEvent: function (self) { // top,foot大小调整事件，添加模块到画布的鼠标事件
             var toolself = this
@@ -974,6 +1022,7 @@
         let canvas = $('.canvas')
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
+        self.tool.bindLibraryMenu(self)
         self.tool.bindMouseEvent(self)
         self.tool.bindClickEvent(self)
         self.tool.bindDblclickEvent(self)
@@ -1576,10 +1625,10 @@
     border-bottom: 1px solid #d9d9d9;
     background-color: #fff;
     z-index: 3;
+    text-align: center;
   }
   .toolBox{
-    margin: 0 auto;
-    width: 900px;
+    display: inline-block;
     height: 22px;
   }  
   .property{
@@ -1622,8 +1671,8 @@
   .library{
     position: absolute;
     left: 0;
-    top: 0px;
-    padding-top:112px;
+    top: 0;
+    padding-top:62px;
     width: 181px;
     height:100%;   
     border-right: 1px solid #d9d9d9;
@@ -1631,25 +1680,88 @@
     box-sizing: border-box;
     z-index: 2;
   }
+  .lib_nav{
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    background-color: #f8f8f8;
+    border-right:1px solid #d9d9d9;
+  }  
+  .lib_nav ol{
+    float: right;
+    padding-top: 7px;
+    width: 37px;
+  }
+  .lib_nav li{
+    width: 37px;
+    height: 64px;
+    border-top-left-radius:2px; 
+    border-bottom-left-radius:2px; 
+    text-align: center;
+    cursor: pointer;
+  }
+  .lib_nav li.on{
+     background-color: #fff;
+     border: 1px solid #d9d9d9;
+     border-right: 0;
+  }
+  .lib_nav i{
+    margin-top: 12px;
+    font-size: 18px;
+    color: #f55d54;
+  }
+  .lib_nav span{
+    display: inline-block;
+  }
   .lib_box{
     width: 100%;
     height: 100%;
+    color: #7d8695;
+    padding-left: 48px;
     overflow: hidden;
     overflow-y:auto;
+    box-sizing: border-box;
+    border-right:1px solid #d9d9d9;
   }
   .header{
     float: left;
     width: 100%;
-    font-size: 20px;
-    height: 50px;
-    line-height: 50px;
+    font-size: 12px;
+    color: #7d8695;
+    height: 30px;
+    line-height: 30px;    
+    cursor: pointer;
+  }
+  .header i{
+    float: right;
+    margin-right:10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #7d8695;
+  }
+  .lib_ol{
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #d9d9d9;
+    transition: height 400ms ease-in-out;
+   
   }
   .lib_li{
     float: left;
-    width: 80px;
-    height: 60px;
+    width: 62px;
+    height: 66px;
     text-align: center;
-    line-height: 60px;    
+    font-size: 28px;
+    color: #525e71;  
+  }
+  .lib_li i{
+    display: inline-block;
+    line-height: 26px;
+  }
+  .lib_li span{
+    display: block;
+    width:100%;
+    font-size: 12px;
   }
   .lib_li:hover{
     background-color: #f5f5f5;
