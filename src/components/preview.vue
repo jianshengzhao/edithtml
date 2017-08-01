@@ -90,7 +90,7 @@
   }
   .t_logo{
     float: left;
-    width: 180px;    
+    width: 40px;    
     line-height: 45px;
     font-size: 20px;
     color: #ccc;
@@ -98,16 +98,17 @@
   }
   .t_left{
     float: left;
-    width: 300px;  
+    width: 400px;  
   }
   .tl_li{
-    padding: 2px;
+    position: relative;
+    padding-top: 2px;
     border-radius: 2px;
     position: relative;
     display: inline-block;
-    width: 36px;
-    height: 34px;
-    margin: 2px;
+    width: 40px;
+    height: 37px;
+    margin: 2px ;
     cursor: pointer; 
     text-align: center; 
     border:1px solid #fff;  

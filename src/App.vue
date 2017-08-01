@@ -2,66 +2,81 @@
   <div id="app">
     <!-- top main tool -->
     <div class="top">
-      <div class="t_logo">logo</div>
+      <div class="t_logo"></div>
       <div class="t_left">
         <div class="tl_li">
-          <i class="iconfont icon-weibiaoti1"></i>
+          <i class="iconfont icon-state " title="设置"></i>
+          <span>设置</span>
+        </div>
+        <div class="tl_li">
+          <i class="iconfont icon-save" title="保存"></i>
+          <span>保存</span>
+        </div>
+        <div class="tl_li" @click="previewEvent" title="预览">
+          <i class="iconfont icon-preview"></i>
+          <span>预览</span>
+        </div>
+        <div class="tl_li" title="量尺">
+          <i class="iconfont icon-scale"></i>
           <span>量尺</span>
         </div>
-        <div class="tl_li tl_li_on gridli" @click="gridHangle">
-          <i class="iconfont icon-xuxianxuankuang"></i>
+        <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
+          <i class="iconfont icon-gridlines"></i>
           <span>格线</span>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable">
-          <i class="iconfont icon-textalignjustify"></i>
-          <span>对齐</span>
+        <div class="tl_li tl_mod tl_li_Disable" title="对齐">
+          <i class="iconfont icon-align-left"></i>
+          <div class="doll"></div>
+          <!-- <span>对齐</span> -->
           <ul class="toolbar">
-            <li @click="topAlignEvent"><i class="iconfont icon-dingduiqi"></i>上对齐</li>
-            <li @click="bottomAlignEvent"><i class="iconfont icon-diduiqi"></i>下对齐</li>
-            <li @click="leftAlignEvent"><i class="iconfont icon-zuoduiqi"></i>左对齐</li>
-            <li @click="rightAlignEvent"><i class="iconfont icon-youduiqi"></i>右对齐</li>
-            <li @click="centerAlignEvent"><i class="iconfont icon-juzhongduiqi"></i>水平居中</li>
-            <li @click="middleAlignEvent"><i class="iconfont icon-v-top-copy"></i>垂直居中</li>
+            <li @click="topAlignEvent"><i class="iconfont icon-align-up"></i>上对齐</li>
+            <li @click="bottomAlignEvent"><i class="iconfont icon-align-down"></i>下对齐</li>
+            <li @click="leftAlignEvent"><i class="iconfont icon-align-left"></i>左对齐</li>
+            <li @click="rightAlignEvent"><i class="iconfont icon-align-right"></i>右对齐</li>
+            <li @click="centerAlignEvent"><i class="iconfont icon-align-center"></i>水平居中</li>
+            <li @click="middleAlignEvent"><i class="iconfont icon-align-middle"></i>垂直居中</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable">
-          <i class="iconfont icon-tuceng"></i>
-          <span>图层</span>
+        <div class="tl_li tl_mod tl_li_Disable" title="图层">
+          <i class="iconfont icon-layer"></i>
+          <div class="doll"></div>
+          <!-- <span>图层</span> -->
           <ul class="toolbar">
-            <li @click="topFloorEvent"><i class="iconfont icon-dingceng"></i>置于顶层</li>
-            <li @click="bottomFloorEvent"><i class="iconfont icon-diceng"></i>置于底层</li>
-            <li @click="upFloorEvent"><i class="iconfont icon-shangyiyiceng"></i>上移一层</li>
-            <li @click="downFloorEvent"><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
+            <li @click="topFloorEvent"><i class="iconfont icon-layer-top"></i>置于顶层</li>
+            <li @click="bottomFloorEvent"><i class="iconfont icon-layer-bottom"></i>置于底层</li>
+            <li @click="upFloorEvent"><i class="iconfont icon-layer-up"></i>上移一层</li>
+            <li @click="downFloorEvent"><i class="iconfont icon-layer-down"></i>下移一层</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable">
-          <i class="iconfont icon-handle"></i>
-          <span>操作</span>
-          <ul class="toolbar">
-            <li @click="shearEvent" ><i class="iconfont icon-jianqie"></i>剪切</li>
-            <li @click="copyEvent" ><i class="iconfont icon-fuzhi"></i>复制</li>
-            <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-zhantie"></i>粘贴</li>
-            <li @click="deleteEvent" ><i class="iconfont icon-shanchu"></i>删除</li>
+        <div class="tl_li tl_mod tl_li_Disable" title="操作">
+          <i class="iconfont icon-copy"></i>
+          <div class="doll"></div>
+          <!-- <span>操作</span> -->
+          <ul class="toolbar" >
+            <li @click="shearEvent" ><i class="iconfont icon-shear"></i>剪切</li>
+            <li @click="copyEvent" ><i class="iconfont icon-copy"></i>复制</li>
+            <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
+            <li @click="deleteEvent" ><i class="iconfont icon-delete"></i>删除</li>
           </ul>
-        </div>     
+        </div>
       </div>
       <div class="t_right">
-        <div class="tl_li">
-          <i class="iconfont icon-beijingyanse" @click="prospectColorShow"></i>
+     <!--    <div class="tl_li">
+          <i class="iconfont icon-prospect" @click="prospectColorShow"></i>
           <span>前景</span>
           <ul class="toolbar" style="min-width: 76px;display: block;" v-if="prospectColoer">          
             <li ><el-color-picker v-model="prospectColorVal" @change="changeProspectColor" ></el-color-picker></li>
           </ul>
         </div>
         <div class="tl_li bgColor">
-          <i class="iconfont icon-beijingyanse" @click="bgColorShow"></i>
+          <i class="iconfont icon-background" @click="bgColorShow"></i>
           <span>背景</span>
           <ul class="toolbar" style="min-width: 76px;display: block;" v-if="bgcoloer">          
             <li ><el-color-picker v-model="bgColorVal" @change="changeBgColor" ></el-color-picker></li>
           </ul>
-        </div>
-        <div class="tl_li">
-          <i class="iconfont icon-fenbianshuai"></i>
+        </div> -->
+        <!-- <div class="tl_li">
+          <i class="iconfont icon-resolution"></i>
           <span>分辨率</span>
           <ul class="toolbar" >          
             <li style="width: 250px">
@@ -76,17 +91,9 @@
               </el-row>
             </li>
           </ul>
-        </div>        
-        <div class="tl_li" style="margin-left:50px;">
-          <i class="iconfont icon-baocun2"></i>
-          <span>保存</span>
-        </div>
-        <div class="tl_li" @click="previewEvent">
-          <i class="iconfont icon-yulan2"></i>
-          <span>预览</span>
-        </div>
+        </div>  -->
         <div class="tl_li">
-          <i class="iconfont icon-tuichu"></i>
+          <i class="iconfont icon-exits"></i>
           <span>退出</span>
         </div>
       </div> 
@@ -95,39 +102,39 @@
     <div class="tool">
       <div class="toolBox">
         <div class="property" >
-          <label for="">z:</label>
+          <label for="">Z :</label>
           <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
         </div>
         <div class="property" >
-          <label for="">x:</label>
+          <label for="">X :</label>
           <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
         </div>
         <div class="property">
-          <label for="">y:</label>
+          <label for="">Y :</label>
           <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
         </div>
         <div class="property">
-          <label for="">宽:</label>
+          <label for="">宽 :</label>
           <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' @change='changeInpW'></el-input>
         </div>
         <div class="property">
-          <label for="">高:</label>
+          <label for="">高 :</label>
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
         </div>
         <div class="property">
-          <label for="">文字:</label>
+          <label for="">文字 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
         <div class="property">
-          <label for="">行高:</label>
+          <label for="">行高 :</label>
           <el-input v-model="inp_line" type='number' :disabled='disabled' min='12' @change='changeInpLine'></el-input>
         </div>
         <div class="property">
-          <label for="">字色:</label>
+          <label for="">字色 :</label>
           <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
         </div>
         <div class="property">
-          <label for="">背景:</label>
+          <label for="">背景 :</label>
           <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
         </div>
       </div>
@@ -136,153 +143,20 @@
     <div class="library">
       <div class="lib_box">
         <div class="header">Basic 基本组件</div>
-        <div class="lib_li" dataHtml="rectangle">矩形 
-          <div class="dataHtml" style="width: 200px;height: 50px;">
-            <div class='rectangle module'></div>
-          </div>
-        </div>
-        <div class="lib_li" dataHtml="radius">圆形 
-          <div class="dataHtml" style="width: 100px;height: 100px;border-radius: 50%">
-            <div class='radius module'></div>
-          </div>
-        </div>
-        <div class="lib_li" dataHtml="text">文字 
-          <div class="dataHtml" style="width: 200px;height: 30px;">
-            <div class="text module">啦啦啦我是文字模块</div>  
-          </div>
-        </div>        
-        <div class="lib_li" dataHtml="editor">富文本
-          <div class="dataHtml" style="width: 400px;height: 400px;">
-            <div class="editor module"></div>
-          </div>
-        </div>
+        <div class="lib_li" dataHtml="rectangle">矩形</div>
+        <div class="lib_li" dataHtml="radius">圆形</div>
+        <div class="lib_li" dataHtml="text">文字</div>        
+        <div class="lib_li" dataHtml="editor">富文本</div>
         <div class="header">Online School 网校</div>
-        <div class="lib_li" dataHtml="pageHeader">页头
-          <div class="dataHtml" style="width: 1200px;height: 140px;">
-            <div class="pageHeader module">
-              <div class="imgbox">
-                <img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/module_header_logo.jpg">
-              </div>
-            </div>  
-          </div>
-        </div>
-        <div class="lib_li" dataHtml="navigation">首页导航
-          <div class="dataHtml" style="width: 1200px;height: 50px;">
-            <div class="navigation module">
-              <a href="">主页</a>
-              <a href="">网校简介</a>
-              <a href="">新闻资讯</a>
-              <a href="">联系我们</a>
-              <a href="">全校新闻</a>
-              <a href="">网校发布</a>
-              <a href="">在线商城</a>
-              <div class="login_box"><a href="">注册</a><a href="">登录</a></div>
-              <div class="search_box">
-                <input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text">
-                <input class="btn-search" value="" type="button">
-              </div>
-            </div>  
-          </div>
-        </div>
+        <div class="lib_li" dataHtml="pageHeader">页头</div>
+        <div class="lib_li" dataHtml="navigation">首页导航</div>
          <div class="header">todo: </div>
-        <div class="lib_li" dataHtml="WeChat">微信公众号
-          <div class="dataHtml" style="width: 305px;height: 330px;">
-            <div class="WeChat module">
-              <div class="mod-title">微信公众号</div>
-              <div class="QRcode">
-                <img id="qrcode" src="http://img.ebanhui.com/aroomv3/2017/04/05/14913725413033.jpg" >
-              </div>
-            </div>  
-          </div>
-        </div>
-        <div class="lib_li" dataHtml="schoolProfile">网校介绍
-          <div class="dataHtml" style="width: 900px;height: 330px;">
-            <div class="schoolProfile module">
-              <div class="mod-title">网校介绍</div>
-              <div class="profile">
-                <img id="badge" src="http://img.ebanhui.com/aroomv3/2017/07/04/14991557204386_220_220.jpg" >~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复...
-              </div>
-            </div>  
-          </div>
-        </div>
-        <div class="lib_li" dataHtml="hotLabel">热门标签
-          <div class="dataHtml" style="width: 305px;height: 330px;">
-            <div class="hotLabel module">
-              <div class="mod-title">热门标签</div>
-              <div class="hotLabelList">
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-                <div class="hl_li">123123</div>
-              </div>
-            </div>  
-          </div>
-        </div>       
-        <div class="lib_li" dataHtml="news">新闻资讯
-          <div class="dataHtml" style="width: 305px;height: 330px;">
-            <div class="news module">
-              <div class="mod-title">新闻资讯</div>
-              <div class="newsList">
-                <div class="news_li">asdasda</div>
-                <div class="news_li">asdasda</div>
-                <div class="news_li">asdasda</div>
-              </div>
-            </div>  
-          </div>
-        </div> 
-        <div class="lib_li" dataHtml="enlist">最新报名
-          <div class="dataHtml" style="width: 305px;height: 330px;">
-            <div class="enlist module">
-              <div class="mod-title">最新报名</div>
-              <div class="enlistList">
-                <div class="enlist_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-                <div class="enlist_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-                <div class="enlist_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-              </div>
-            </div>  
-          </div>
-        </div> 
-        <div class="lib_li" datahtml='dynamics'>学员动态
-          <div class="dataHtml" style="width: 305px;height: 330px;">
-            <div class="dynamics module">
-              <div class="mod-title">学员动态</div>
-              <div class="dynamicsList">
-                <div class="dynamics_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-                <div class="enlist_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-                <div class="enlist_li">
-                  <img src="http://static.ebanhui.com/ebh/tpl/default/images/m_man_50_50.jpg">
-                  <p>asdadadsa</p>
-                  <div class="openservice">asada<a>开通</a></div>
-                </div>
-              </div>
-            </div>  
-          </div>
-        </div>
+        <div class="lib_li" dataHtml="WeChat">微信公众号</div>
+        <div class="lib_li" dataHtml="schoolProfile">网校介绍</div>
+        <div class="lib_li" dataHtml="hotLabel">热门标签</div>       
+        <div class="lib_li" dataHtml="news">新闻资讯</div> 
+        <div class="lib_li" dataHtml="enlist">最新报名</div> 
+        <div class="lib_li" datahtml='dynamics'>学员动态</div>
         <div class="lib_li" >免费试听</div>
         <div class="lib_li" >学员评价</div>
         <div class="lib_li" >名师团队</div>
@@ -313,20 +187,20 @@
       </div>
       <!-- 自定义右键菜单 -->
       <ul class="contextmenu">
-        <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-shangyiyiceng"></i>上移一层</li>
-        <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-xiayiyiceng"></i>下移一层</li>
+        <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
+        <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
         <div class="divider" v-if="rightButton"></div>
-        <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-dingduiqi"></i>上对齐</li>
-        <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-diduiqi"></i>下对齐</li>
-        <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-zuoduiqi"></i>左对齐</li>
-        <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-youduiqi"></i>右对齐</li>
-        <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-juzhongduiqi"></i>水平居中</li>
-        <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-v-top-copy"></i>垂直居中</li>
+        <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
+        <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
+        <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
+        <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
+        <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
+        <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
         <div class="divider" v-if="rightButton"></div>
-        <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-jianqie"></i>剪切</li>
-        <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-fuzhi"></i>复制</li>
-        <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-zhantie"></i>粘贴</li>
-        <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-shanchu"></i>删除</li>
+        <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
+        <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
+        <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
+        <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
       </ul>
     </div>
     <!-- dialog弹框 -->
@@ -406,13 +280,13 @@
   }
   import $ from 'jquery'
   import '@/assets/iconfont/demo.css'
-  import '@/assets/iconfont/iconfont.css'
+  // import '@/assets/iconfont/iconfont.css'
+  import '@/assets/iconfont/maodaofont.css'
   import datahtml from '@/data/datahtml.js'
   import Vue from 'vue'
   import Element from 'element-ui'
   import 'element-ui/lib/theme-default/index.css'
   Vue.use(Element)
-  console.log(datahtml)
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -577,9 +451,10 @@
               canvasMouseup()
             })
             $('.lib_li').mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
-              let dataHtml = $(e.target).attr('.dataHtml')
-              copyBox.attr('style', dataHtml.attr('style'))
-              copyCon.html(dataHtml.html())
+              let modType = $(e.target).attr('dataHtml')
+              let dataCon = datahtml.datahtml[modType]
+              copyBox.attr('style', dataCon.style)
+              copyCon.html(dataCon.html)
               copyBox.show().css({'top': event.pageY, 'left': 181})
               editBox.unbind('mouseup')
               editBox.mousemove(function (e) {
@@ -1568,60 +1443,80 @@
   }
 /*top*/
   .top{
+    padding-top: 4px;
     position: relative;
-    height: 45px;
+    height: 30px;
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
     background-color: #fff;
   }
   .top>div{
-    height: 45px;
+    height: 28px;
   }
   .t_logo{
     float: left;
-    width: 180px;    
-    line-height: 45px;
-    font-size: 20px;
-    color: #ccc;
-    text-align: center;
+    width: 20px; 
   }
   .t_left{
     float: left;
-    width: 300px;  
+    width: 600px;  
+    height: 28px;
   }
   .tl_li{
-    padding: 2px;
+    position: relative;
+    padding: 2px 4px 0 2px;
     border-radius: 2px;
     position: relative;
     display: inline-block;
-    width: 36px;
-    height: 34px;
-    margin: 2px;
+    height: 24px;
+    margin: 2px ;
     cursor: pointer; 
     text-align: center; 
     border:1px solid #fff;  
+    box-sizing: border-box;
+  }
+  .doll{
+    position: absolute;
+    top: 50%;
+    right:-4px;
+    margin-top: -2px;
+    border: 3px solid transparent;
+    border-bottom-color: #cacaca;
+    border-left-color: #cacaca;
+    transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
   }
   .tl_li_on{
     background: rgba(0, 0, 0, 0.04);
     border-color:rgba(0,0,0,.1);
   }
   .tl_li_Disable{
-    opacity: 0.6;
     cursor:not-allowed;
   }
+  .top .tl_li_Disable span{
+    color: #cacaca;
+  }
+  .top .tl_li_Disable i{
+    color: #cacaca;
+  }
   .tl_li i{
+    float: left;
     font-size: 18px;
     line-height: 18px;
-    color:#157aff;
+    color:#f55d54;
   }
   .tl_li>span{
-    display: inline-block;
-    width: 100%;
+    float: left;
+    text-indent: 2px;    
     font-size: 12px;
-    height: 12px;
-    line-height: 12px;
+    height: 18px;
+    line-height: 18px;
     color: #525e71;
+    padding-left: 2px;
   }
   .tl_li:hover .toolbar{
     display: block;
@@ -1634,7 +1529,7 @@
     position: absolute;
     left: 0;
     top: 100%;
-    min-width: 124px;
+    min-width: 112px;
     background: #fff;
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
   }
@@ -1643,12 +1538,16 @@
     text-align:left;
     list-style-type: none;
     color: #525e71;
+    text-indent:4px;
+    letter-spacing: 2px;
   }
   .toolbar li:hover{
     background-color: #f5f5f7;
   }
   .toolbar li i{
+    margin-top: -3px;
     margin-right:5px;
+    float: left;
   }  
   .toolbar input::-webkit-inner-spin-button{
     display: none;
@@ -1656,7 +1555,7 @@
   #app .t_right{
     position: relative;
     float: right;
-    width: 500px;
+    width: 60px;
     text-align: left;
   } 
   .toolbar .el-col{
@@ -1670,23 +1569,24 @@
   }
 /*tool*/
   .tool{
+    padding-top: 2px;
     position: relative;
     min-width: 1024px;
-    height: 34px;
+    height: 24px;
     border-bottom: 1px solid #d9d9d9;
     background-color: #fff;
     z-index: 3;
   }
   .toolBox{
     margin: 0 auto;
-    width: 820px;
-    height: 34px;
+    width: 900px;
+    height: 22px;
   }  
   .property{
     float: left;
-    width: 90px;
-    height: 34px;
-    line-height: 34px;
+    width: auto;
+    height: 20px;
+    line-height: 20px;
     text-align: left;
   }
   .property .el-input{
@@ -1695,19 +1595,22 @@
   }
   .property input{
     padding: 0;
-    height: 26px;
+    height: 20px;
     text-align: center;
     text-indent: 5px;
     border-radius: 0;
     border:0;
     border-bottom: 1px solid #d9d9d9;
+    font-size: 12px;
   }
   .property .el-color-picker{
     float: right;
-    margin-right:20px;
+    margin-right:5px;
   }
   .property .el-color-picker__trigger{
     border:0;
+    padding: 0 4px;
+    height: 20px;
   }
   .property .el-color-picker__icon{
     display: none;
@@ -1720,7 +1623,7 @@
     position: absolute;
     left: 0;
     top: 0px;
-    padding-top:80px;
+    padding-top:112px;
     width: 181px;
     height:100%;   
     border-right: 1px solid #d9d9d9;
@@ -1822,11 +1725,11 @@
     bottom: -30px;
     width: 100%;
     height:30px; 
-    background-color: #81c7f3;
+    background-color: rgba(129, 199, 243, 0.4);
     font-size: 14px;
     line-height: 30px;
     text-align: center;
-    color: #fff;
+    color: #333;
     cursor: ns-resize;  
     z-index: 99; 
   }
@@ -1865,6 +1768,7 @@
     border-style:dashed;
     border-color: red;
     display: none;
+    z-index: 100;
   }
   .row-t{
     height: 1px;
@@ -1982,9 +1886,20 @@
   .contextmenu li:hover{
     background-color: #E2E2E3;
   }
+  .contextmenu li.tl_li_Disable{
+    color: #cacaca;
+    cursor: not-allowed;
+  }
   .contextmenu li i {
-    margin-right: 8px;
+    float: left;
+    margin-top: 3px;
+    margin-left: 8px;
     color: #f55d54;
+    font-size: 18px;
+    text-indent: 4px;
+  }  
+  .contextmenu li.tl_li_Disable i {
+    color: #cacaca;
   }
   .contextmenu .divider{
     margin: 3px 0;
