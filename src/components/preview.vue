@@ -1,14 +1,13 @@
 <template>
   <div id="preview">
     <div class="top">
-      <div class="t_logo">logo</div>
       <div class="t_right">
         <div class="tl_li" style="margin-left:50px;">
-          <i class="iconfont icon-baocun2"></i>
+          <i class="iconfont icon-save"></i>
           <span>保存</span>
         </div>
         <div class="tl_li" @click='returnEvent'>
-          <i class="iconfont icon-tuichu"></i>
+          <i class="iconfont icon-undo"></i>
           <span>返回</span>
         </div>
       </div> 
@@ -78,40 +77,38 @@
 <style>
 /*top*/
   .top{
+    padding-top: 4px;
     position: relative;
-    height: 45px;
+    height: 30px;
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
     background-color: #fff;
   }
   .top>div{
-    height: 45px;
+    height: 28px;
   }
   .t_logo{
     float: left;
-    width: 40px;    
-    line-height: 45px;
-    font-size: 20px;
-    color: #ccc;
-    text-align: center;
+    width: 20px; 
   }
   .t_left{
     float: left;
-    width: 400px;  
+    width: 600px;  
+    height: 28px;
   }
   .tl_li{
     position: relative;
-    padding-top: 2px;
+    padding: 2px 4px 0 2px;
     border-radius: 2px;
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 37px;
+    height: 24px;
     margin: 2px ;
     cursor: pointer; 
     text-align: center; 
     border:1px solid #fff;  
+    box-sizing: border-box;
   }
   .tl_li_on{
     background: rgba(0, 0, 0, 0.04);
@@ -122,17 +119,19 @@
     cursor:not-allowed;
   }
   .tl_li i{
+    float: left;
     font-size: 18px;
     line-height: 18px;
     color:#f55d54;
   }
   .tl_li>span{
-    display: inline-block;
-    width: 100%;
+    float: left;
+    text-indent: 2px;    
     font-size: 12px;
-    height: 12px;
-    line-height: 12px;
+    height: 18px;
+    line-height: 18px;
     color: #525e71;
+    padding-left: 2px;
   }
   .tl_li:hover .toolbar{
     display: block;

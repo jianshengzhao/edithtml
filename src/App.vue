@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <!-- top main tool -->
-    <div class="top">
+    <div class="top" unselectable="on" onselectstart="return false;">
       <div class="t_logo"></div>
       <div class="t_left">
-        <div class="tl_li">
+        <div class="tl_li" @click="settingEvent">
           <i class="iconfont icon-state " title="设置"></i>
-          <span>设置</span>
+          <span>页面设置</span>
         </div>
         <div class="tl_li">
           <i class="iconfont icon-save" title="保存"></i>
@@ -61,37 +61,6 @@
         </div>
       </div>
       <div class="t_right">
-     <!--    <div class="tl_li">
-          <i class="iconfont icon-prospect" @click="prospectColorShow"></i>
-          <span>前景</span>
-          <ul class="toolbar" style="min-width: 76px;display: block;" v-if="prospectColoer">          
-            <li ><el-color-picker v-model="prospectColorVal" @change="changeProspectColor" ></el-color-picker></li>
-          </ul>
-        </div>
-        <div class="tl_li bgColor">
-          <i class="iconfont icon-background" @click="bgColorShow"></i>
-          <span>背景</span>
-          <ul class="toolbar" style="min-width: 76px;display: block;" v-if="bgcoloer">          
-            <li ><el-color-picker v-model="bgColorVal" @change="changeBgColor" ></el-color-picker></li>
-          </ul>
-        </div> -->
-        <!-- <div class="tl_li">
-          <i class="iconfont icon-resolution"></i>
-          <span>分辨率</span>
-          <ul class="toolbar" >          
-            <li style="width: 250px">
-              <el-row>
-                <el-col :span="6">分辨率:</el-col>
-                <el-col :span="9">
-                  <el-input v-model="inp_width" placeholder="宽" type="number" @change="widthRangeConstraint"></el-input>
-                </el-col>
-                <el-col :span="9">
-                  <el-input v-model="inp_height" placeholder="高" type="number" @change="heightRangeConstraint"></el-input>
-                </el-col>
-              </el-row>
-            </li>
-          </ul>
-        </div>  -->
         <div class="tl_li">
           <i class="iconfont icon-exits"></i>
           <span>退出</span>
@@ -159,7 +128,7 @@
           </div>
           <div class="lib_li" dataHtml="text">
             <i class="icon-widget-text"></i>
-            <span>文字</span>icon-widget-textarea
+            <span>文字</span>
           </div>        
           <div class="lib_li" dataHtml="editor">
             <i class="icon-widget-textarea"></i>
@@ -173,32 +142,68 @@
             <span>页头</span>
           </div>
           <div class="lib_li" dataHtml="navigation">
-            <div class="lib_li" dataHtml="pageHeader">
-              <i class="icon-widget-search-input"></i>
-              <span>导航搜索</span>
-            </div>
+            <i class="icon-widget-search-input"></i>
+            <span>导航搜索</span>
           </div>
         </div>
         <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol">
-          <div class="lib_li" dataHtml="WeChat">微信公众号</div>
-          <div class="lib_li" dataHtml="schoolProfile">网校介绍</div>
-          <div class="lib_li" dataHtml="hotLabel">热门标签</div>       
-          <div class="lib_li" dataHtml="news">新闻资讯</div> 
-          <div class="lib_li" dataHtml="enlist">最新报名</div> 
-          <div class="lib_li" datahtml='dynamics'>学员动态</div>
-          <div class="lib_li" >免费试听</div>
-          <div class="lib_li" >学员评价</div>
-          <div class="lib_li" >名师团队</div>
-          <div class="lib_li" >网校应用</div>
+          <div class="lib_li" dataHtml="carousel">
+            <i class="icon-widget-sticker"></i>
+            <span>轮播图</span>
+          </div>
+          <div class="lib_li" dataHtml="WeChat">
+            <i class="icon-widget-sticker"></i>
+            <span>微信公众号</span>
+          </div>
+          <div class="lib_li" dataHtml="schoolProfile">
+           <i class="icon-widget-sticker"></i>
+            <span>网校介绍</span>
+          </div>
+          <div class="lib_li" dataHtml="hotLabel">
+            <i class="icon-widget-sticker"></i>
+            <span>热门标签</span>
+          </div>       
+          <div class="lib_li" dataHtml="news">
+            <i class="icon-widget-sticker"></i>
+            <span>新闻资讯</span>
+          </div> 
+          <div class="lib_li" dataHtml="enlist">
+            <i class="icon-widget-sticker"></i>
+            <span>最新报名</span>
+          </div> 
+          <div class="lib_li" datahtml='dynamics'>
+            <i class="icon-widget-sticker"></i>
+            <span>学员动态</span>
+          </div>
+          <div class="lib_li" >
+            <i class="icon-widget-sticker"></i>
+            <span>免费试听</span>
+          </div>
+          <div class="lib_li" >
+            <i class="icon-widget-sticker"></i>
+            <span>学员评价</span>
+          </div>
+          <div class="lib_li" >
+            <i class="icon-widget-sticker"></i>
+            <span>名师团队</span>
+          </div>
+          <div class="lib_li" >
+            <i class="icon-widget-sticker"></i>
+            <span>网校应用</span>
+          </div>
         </div>
-        <div class="header">尽请期待。。。 </div>
+        <div class="header">尽请期待。。。</div>
+      </div>
+      <div class="shrink">
+        <i class="el-icon-arrow-left"></i>
       </div>
     </div>
     <!-- editBox -->
-    <div class="editBox"  unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
-      <div class="space" :style="'background-color:'+bgColorVal">
-        <div class="canvas grid" :style="'background-color:'+prospectColorVal+';width:'+inp_width+'px;height:'+inp_height+'px;'">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+      <div class="space" >
+        <div class="scrollcanvas"></div>
+        <div class="canvas grid" >
           <div class="c_top">
             <div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>
           </div>
@@ -221,13 +226,18 @@
       <ul class="contextmenu">
         <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
         <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
-        <div class="divider" v-if="rightButton"></div>
-        <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
-        <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
-        <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
-        <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
-        <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
-        <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
+        <div class="divider" v-if="rightButton"></div>       
+        <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
+          <i class="el-icon-caret-bottom"></i>
+          <ol>
+            <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
+            <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
+            <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
+            <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
+            <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
+            <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
+          </ol>
+        </li>
         <div class="divider" v-if="rightButton"></div>
         <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
         <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
@@ -236,6 +246,36 @@
       </ul>
     </div>
     <!-- dialog弹框 -->
+    <el-dialog
+      title="页面设置"
+      :visible.sync="dialogPageSetting"
+      size="tiny" class="dialogSetting">
+      <el-row>
+        <el-col :span="4" class="tit">前景</el-col>
+        <el-col :span="4">
+          <el-color-picker v-model="prospectColorVal" ></el-color-picker>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">背景</el-col>
+        <el-col :span="4">
+          <el-color-picker v-model="bgColorVal"></el-color-picker>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">分辨率</el-col>
+        <el-col :span="8">
+          <el-input v-model="inp_width" placeholder="宽" type="number"></el-input>
+        </el-col>        
+        <el-col :span="8">
+          <el-input v-model="inp_height" placeholder="高" type="number"></el-input>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogPageSetting = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       title="编辑文本"
       :visible.sync="dialogText"
@@ -326,12 +366,11 @@
         dialogText: false,
         dialogEditor: false,
         dialogPageHeader: false,
+        dialogPageSetting: false,
         imageUrl: '',
         textarea: '',
       // -----------工具栏-----------------
-        prospectColoer: false,
         prospectColorVal: '#f5f5f5',
-        bgcoloer: false,
         bgColorVal: '#8493af',
         inp_width: 1200,
         inp_height: 1600,
@@ -354,6 +393,10 @@
           stretchLimit: false, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
         },
+        paddingtop: 62, // top栏高度
+        paddingleft: 181, // left栏高度
+        postop: 50, // editbox  top值
+        posleft: 50, // editbox  left值
       // ---------------------------------------
         editorConfig: {
           zIndex: 3000,
@@ -363,25 +406,28 @@
         },
         tool: { /* 工具箱事件 */
         // --------------- complete ----------------
-          linePosition: function (editBox, copyBox) {
+          linePosition: function (editBox, copyBox, self) {
             let rowT = $('.row-t')
             let rowB = $('.row-b')
             let colL = $('.col-l')
             let colR = $('.col-r')
             let line = $('.line')
-            let sTop = parseInt($('.space').scrollTop()) // 当前滚动条高度
+            let space = $('.space')
+            let sTop = parseInt(space.scrollTop()) // 当前滚动条高度
+            let sLeft = parseInt(space.scrollLeft())
             let w = parseInt(copyBox.css('width'))
             let h = parseInt(copyBox.css('height'))
-            rowT.css('top', event.pageY + sTop - 81)
-            rowB.css('top', event.pageY + sTop - 81 + h)
-            colL.css('left', 0)
-            colR.css('left', w)
+            rowT.css('top', event.pageY + sTop - self.paddingtop)
+            rowB.css('top', event.pageY + sTop - self.paddingtop + h)
+            colL.css('left', 0 + sLeft)
+            colR.css('left', w + sLeft)
             line.show()
             editBox.mousemove(function (e) {
-              rowT.css('top', e.pageY + sTop - 81)
-              rowB.css('top', e.pageY + sTop - 81 + h)
-              colL.css('left', e.pageX - 181)
-              colR.css('left', e.pageX - 181 + w)
+              sTop = parseInt(space.scrollTop())
+              rowT.css('top', e.pageY + sTop - self.paddingtop)
+              rowB.css('top', e.pageY + sTop - self.paddingtop + h)
+              colL.css('left', e.pageX + sLeft - self.paddingleft)
+              colR.css('left', e.pageX + sLeft - self.paddingleft + w)
             })
           },
           initialize: function (self, ele) { // 选中模块的执行的操作
@@ -412,10 +458,10 @@
             self.inp_line = parseInt(ele.css('lineHeight'))
             self.color_font = ele.css('color')
             self.color_bg = ele.css('backgroundColor')
-            rowT.css('top', self.inp_y + 100)
-            rowB.css('top', self.inp_y + 100 + self.inp_h)
-            colL.css('left', self.inp_x + 100)
-            colR.css('left', self.inp_x + 100 + self.inp_w)
+            rowT.css('top', self.inp_y + self.postop)
+            rowB.css('top', self.inp_y + self.postop + self.inp_h)
+            colL.css('left', self.inp_x + self.posleft)
+            colR.css('left', self.inp_x + self.posleft + self.inp_w)
             self.disabled = false
             $('.tl_mod').removeClass('tl_li_Disable')
           },
@@ -452,6 +498,22 @@
                 }, 0)
               }
             })
+            let shrink = $('.shrink')
+            let library = $('.library')
+            let editBox = $('.editBox')
+            shrink.on('click', function () {
+              if (shrink.hasClass('shrinkout')) {
+                shrink.removeClass('shrinkout')
+                library.removeClass('basic')
+                editBox.css('paddingLeft', '')
+                self.paddingleft = 181
+              } else {
+                shrink.addClass('shrinkout')
+                library.addClass('basic')
+                editBox.css('paddingLeft', '62px')
+                self.paddingleft = 62
+              }
+            })
           },
           bindMouseEvent: function (self) { // top,foot大小调整事件，添加模块到画布的鼠标事件
             var toolself = this
@@ -465,7 +527,7 @@
             let h // 容器高度
             let hs // 计算得到的高度
             let y // 鼠标Y轴
-            let topRangeY = parseInt(cTop.css('height')) + 181 // top选区范围
+            let topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop // top选区范围
             let bodyRangeY = parseInt(cBody.css('height')) + topRangeY // body选区范围
             let colL = $('.col-l')
             let colR = $('.col-r')
@@ -481,7 +543,7 @@
                 hs = h + (event.pageY - y)
                 cTop.css('height', hs)
                 canvas.css('paddingTop', hs)
-                topRangeY = hs + 181
+                topRangeY = hs + self.paddingtop + self.postop
                 bodyRangeY = parseInt(cBody.css('height')) + topRangeY
               })
               canvasMouseup()
@@ -499,16 +561,16 @@
               canvasMouseup()
             })
             $('.lib_li').mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
-              let modType = $(e.target).attr('dataHtml')
+              let modType = $(this).attr('dataHtml')
               let dataCon = datahtml.datahtml[modType]
               copyBox.attr('style', dataCon.style)
               copyCon.html(dataCon.html)
-              copyBox.show().css({'top': event.pageY, 'left': 181})
+              copyBox.show().css({'top': event.pageY, 'left': self.paddingleft})
               editBox.unbind('mouseup')
               editBox.mousemove(function (e) {
                 copyBox.css({'top': e.pageY, 'left': e.pageX})
               })
-              toolself.linePosition(editBox, copyBox)
+              toolself.linePosition(editBox, copyBox, self)
               editMouseup()
               return false
             })
@@ -522,14 +584,16 @@
               editBox.mouseup(function (e) {
                 editBox.unbind('mousemove mouseup')
                 let box
-                let x = event.pageX - 281
+                let x
                 let y
                 let sTop = parseInt($('.space').scrollTop())
-                topRangeY = parseInt(cTop.css('height')) + 181
+                let sLeft = parseInt($('.space').scrollLeft())
+                x = event.pageX - self.paddingleft - self.posleft + sLeft
+                topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop
                 bodyRangeY = parseInt(cBody.css('height')) + topRangeY
                 if (event.pageY + sTop < topRangeY) {
                   box = cTop
-                  y = event.pageY + sTop - 181
+                  y = event.pageY + sTop - self.paddingtop - self.postop
                 } else if (event.pageY + sTop < bodyRangeY) {
                   box = cBody
                   y = event.pageY + sTop - topRangeY
@@ -666,10 +730,10 @@
               toolself.missSeletedEvents(self)
             })
             function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
-              rowT.css('top', self.inp_y + warp + 100)
-              rowB.css('top', self.inp_y + warp + 100 + self.inp_h)
-              colL.css('left', self.inp_x + 100)
-              colR.css('left', self.inp_x + 100 + self.inp_w)
+              rowT.css('top', self.inp_y + warp + self.postop)
+              rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
+              colL.css('left', self.inp_x + self.posleft)
+              colR.css('left', self.inp_x + self.posleft + self.inp_w)
             }
             function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
               editBox.mouseup(function () {
@@ -709,24 +773,24 @@
                   break
               }
               line.show()
-              rowT.css('top', self.inp_y + 100 + warp)
-              rowB.css('top', self.inp_y + 100 + self.inp_h + warp)
-              colL.css('left', self.inp_x + 100)
-              colR.css('left', self.inp_x + 100 + self.inp_w)
+              rowT.css('top', self.inp_y + self.postop + warp)
+              rowB.css('top', self.inp_y + self.postop + self.inp_h + warp)
+              colL.css('left', self.inp_x + self.posleft)
+              colR.css('left', self.inp_x + self.posleft + self.inp_w)
               let part
               switch ($this.attr('class')) {
                 case 'resize e':
                   part = function () {
-                    let xx = self.inp_x + 100 + ws + event.pageX - x
+                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
                     self.inp_w = ws + event.pageX - x
                     if (self.config.stretchLimit) {
-                      if (xx > areaR + 100) {
-                        xx = areaR + 100
+                      if (xx > areaR + self.posleft) {
+                        xx = areaR + self.posleft
                         self.inp_w = areaR - xs
                       }
                     }
-                    if (xx < xs + 100) {
-                      xx = xs + 100
+                    if (xx < xs + self.posleft) {
+                      xx = xs + self.posleft
                       self.inp_w = 0
                     }
                     $this.parent().css('width', self.inp_w)
@@ -735,16 +799,16 @@
                   break
                 case 'resize s':
                   part = function () {
-                    let yy = ys + 100 + warp + hs + event.pageY - y
+                    let yy = ys + self.postop + warp + hs + event.pageY - y
                     self.inp_h = hs + event.pageY - y
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + 100
+                        yy = areaB + warp + self.postop
                         self.inp_h = areaB - self.inp_y
                       }
                     }
-                    if (yy < ys + 100 + warp) {
-                      yy = ys + 100 + warp
+                    if (yy < ys + self.postop + warp) {
+                      yy = ys + self.postop + warp
                       self.inp_h = 0
                     }
                     $this.parent().css('height', self.inp_h)
@@ -753,18 +817,18 @@
                   break
                 case 'resize w':
                   part = function () {
-                    let xx = xs - x + event.pageX + 100
+                    let xx = xs - x + event.pageX + 50
                     self.inp_x = xs - x + event.pageX
                     self.inp_w = ws + x - event.pageX
                     if (self.config.stretchLimit) {
-                      if (xx < 100) {
-                        xx = 100
+                      if (xx < 50) {
+                        xx = 50
                         self.inp_w = ws + xs
                         self.inp_x = 0
                       }
                     }
-                    if (xx > (xs + ws + 100)) {
-                      xx = xs + ws + 100
+                    if (xx > (xs + ws + 50)) {
+                      xx = xs + ws + 50
                       self.inp_w = 0
                       self.inp_x = xs + ws
                     }
@@ -1027,6 +1091,8 @@
         self.tool.bindClickEvent(self)
         self.tool.bindDblclickEvent(self)
         self.tool.bindRightClickEvent(self)
+        let scrollcanvas = $('.scrollcanvas')
+        scrollcanvas.css('minWidth', parseInt(self.inp_width) + 100 + 'px')
         if (!window.saveParams) return false
         let params = window.saveParams
         let pp = params.page
@@ -1034,6 +1100,12 @@
         self.bgColorVal = pp.bg
         self.inp_width = pp.width
         self.inp_height = pp.height
+        scrollcanvas.css('minWidth', parseInt(self.inp_width) + 100 + 'px')
+        let space = $('.space')
+        space.css('backgroundColor', self.bgColorVal)
+        canvas.css('backgroundColor', self.prospectColorVal)
+        canvas.css('width', self.inp_width)
+        canvas.css('height', self.inp_height)
         let head = $('.c_top')
         let middle = $('.c_body')
         let foot = $('.c_foot')
@@ -1064,58 +1136,6 @@
     },
     methods: {
     //   ---------------- complete --------------------
-      prospectColorShow: function () { // 背景颜色调色板显示
-        var self = this
-        if (!self.prospectColoer) {
-          self.prospectColoer = true
-        } else {
-          self.prospectColoer = false
-        }
-      },
-      changeProspectColor: function () { // 背景颜色变化
-        var self = this
-        self.prospectColoer = false
-        let canvas = $('.canvas')
-        canvas.css('backgroundColor', self.prospectColorVal)
-      },
-      bgColorShow: function () {
-        var self = this
-        if (!self.bgcoloer) {
-          self.bgcoloer = true
-        } else {
-          self.bgcoloer = false
-        }
-      },
-      changeBgColor: function () {
-        var self = this
-        self.bgcoloer = false
-        let space = $('.space')
-        space.css('backgroundColor', self.bgColorVal)
-      },
-      widthRangeConstraint: function () { // 页面宽度限制
-        var self = this
-        if (self.inp_width < 980) {
-          // self.inp_width = 980
-          this.$message({
-            message: 'pc页面宽度不要低于980',
-            type: 'warning'
-          })
-        } else {
-          $('.canvas').css('width', self.inp_width)
-        }
-      },
-      heightRangeConstraint: function () { // 页面高度限制
-        var self = this
-        if (self.inp_width < 980) {
-          self.inp_width = 980
-          this.$message({
-            message: 'pc页面宽度最好不要低于980',
-            type: 'warning'
-          })
-        } else {
-          $('.canvas').css('height', self.inp_height)
-        }
-      },
       gridHangle: function (e) { // 格线开关
         let $gridli = $('.gridli')
         let bloo = $gridli.hasClass('tl_li_on')
@@ -1427,8 +1447,22 @@
         let self = this
         self.dialogPageHeader = false
         self.moduleElement.find('img').attr('src', self.imageUrl)
-      }
+      },
     //   ---------------- todo: -----------------------
+      settingEvent: function () {
+        let self = this
+        self.dialogPageSetting = true
+      },
+      dialogPageSettingEvent: function () {
+        var self = this
+        let space = $('.space')
+        let canvas = $('.canvas')
+        space.css('backgroundColor', self.bgColorVal)
+        canvas.css('backgroundColor', self.prospectColorVal)
+        canvas.css('width', self.inp_width)
+        canvas.css('height', self.inp_height)
+        self.dialogPageSetting = false
+      }
     }
   }
 </script>
@@ -1456,16 +1490,16 @@
   }
   ::-webkit-scrollbar {
       width: 4px;
-      height: 5px;
+      height: 12px;
   }
   ::-webkit-scrollbar-track-piece
     {
         background-color: #fff;
-        -webkit-border-radius: 6px;
+      /*  -webkit-border-radius: 6px;*/
     }
     ::-webkit-scrollbar-thumb:vertical
     {
-        height: 4px;
+        height: 8px;
         width: 3px;
         background-color: #c9c9c9;
         -webkit-border-radius: 3px;
@@ -1616,6 +1650,16 @@
     width: 80px;
     color: #555;
   }
+  .dialogSetting .el-row{
+    margin:15px 0;
+  }
+  .dialogSetting .el-col{
+    margin-right: 15px;
+    line-height: 36px;    
+  }
+  .dialogSetting .tit{
+    text-align: right;
+  }
 /*tool*/
   .tool{
     padding-top: 2px;
@@ -1679,6 +1723,10 @@
     background-color: #fff;
     box-sizing: border-box;
     z-index: 2;
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
   }
   .lib_nav{
     position: absolute;
@@ -1686,6 +1734,11 @@
     height: 100%;
     background-color: #f8f8f8;
     border-right:1px solid #d9d9d9;
+    opacity: 1;
+     transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
   }  
   .lib_nav ol{
     float: right;
@@ -1721,11 +1774,10 @@
     overflow: hidden;
     overflow-y:auto;
     box-sizing: border-box;
-    border-right:1px solid #d9d9d9;
   }
   .header{
     float: left;
-    width: 100%;
+    width: 132px;
     font-size: 12px;
     color: #7d8695;
     height: 30px;
@@ -1740,11 +1792,10 @@
     color: #7d8695;
   }
   .lib_ol{
-    width: 100%;
+    width: 132px;
     overflow: hidden;
     border-bottom: 1px solid #d9d9d9;
     transition: height 400ms ease-in-out;
-   
   }
   .lib_li{
     float: left;
@@ -1770,6 +1821,60 @@
   .dataHtml{
     display: none;
   }
+  .shrink{
+    position: absolute;
+    top:50%;
+    right: -22px;
+    width: 22px;
+    height: 24px;
+    background-color: #fff;
+    border:1px solid #d9d9d9;
+    border-left: 0;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    color: #f55d54;
+    text-indent: 1px;
+    line-height: 24px;
+    cursor: pointer;   
+  }
+  .shrink i {
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
+  }
+  .shrinkout {
+    text-indent: 4px;
+  }
+  .shrinkout i{
+    transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg); 
+    -o-transform: rotate(180deg); 
+  }  
+  .basic {
+    width: 62px;
+  }
+  .basic .lib_nav {
+    display: none;
+    opacity: 0;
+  }
+  .basic .lib_box {
+    padding: 0;
+    width: 62px;
+  }
+  .basic .header, .basic .lib_ol {
+    display: none;
+    opacity: 0;
+  }
+  .basic .lib_ol:nth-child(2){
+    display: block;
+    width: 62px;
+    height: auto!important;
+    border: 0;
+    opacity: 1;
+  }
 /*editBox*/
   .editBox{
     position: absolute;
@@ -1777,10 +1882,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 80px 0 0 181px;
+    padding: 62px 0 0 181px;
     box-sizing:border-box;    
     background-color: #8493af;
     z-index: 1;
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
   }
   .space{
     position: relative;
@@ -1788,10 +1897,14 @@
     height: 100%;
     overflow:auto;
   }
+  .scrollcanvas {
+    width: 100%;
+    height: 1px;
+  }
   .canvas{
     position:absolute;
-    top: 100px;
-    left: 100px;
+    top: 50px;
+    left: 50px;
     padding: 400px 0 200px 0;
     margin-bottom: 100px;
     width: 1200px;
@@ -1883,19 +1996,19 @@
     z-index: 100;
   }
   .row-t{
-    height: 1px;
+    height: 0px;
     border-bottom-width: 1px;
   }
   .row-b{
-    height: 1px;
+    height: 0px;
     border-top-width: 1px;
   }
   .col-l{
-    width: 1px;
+    width: 0px;
     border-right-width: 1px;
   }
   .col-r{
-    width: 1px;
+    width: 0px;
     border-left-width: 1px;
   }
 /*module*/
@@ -1989,6 +2102,7 @@
     z-index: 101;
   }
   .contextmenu li{
+    position: relative;
     padding:2px;
     height: 26px;
     line-height: 26px;
@@ -2010,6 +2124,32 @@
     font-size: 18px;
     text-indent: 4px;
   }  
+  .contextmenu li i.el-icon-caret-bottom{
+    float: right;
+    margin: 7px;
+    font-size: 12px;
+    color: #cacaca;
+  } 
+  .contextmenu li:hover i.el-icon-caret-bottom{
+     transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg); 
+    -o-transform: rotate(-90deg); 
+    margin-right: 3px;
+  }
+   .contextmenu li ol{
+    position:absolute;
+    top:0;
+    left:100%;
+    display: none;
+    width: 130px;
+    background: #fff;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+  }
+  .contextmenu li:hover ol{
+    display: block;
+  }
   .contextmenu li.tl_li_Disable i {
     color: #cacaca;
   }
