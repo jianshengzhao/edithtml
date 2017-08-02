@@ -134,6 +134,22 @@
             <i class="icon-widget-textarea"></i>
             <span>富文本</span>
           </div>
+          <div class="lib_li" dataHtml="editor">
+            <i class="icon-widget-img"></i>
+            <span>图片</span>
+          </div>
+          <div class="lib_li" dataHtml="editor">
+            <i class="icon-widget-btn"></i>
+            <span>按钮</span>
+          </div>
+          <div class="lib_li" dataHtml="editor">
+            <i class="icon-widget-horizontal-line"></i>
+            <span>线条</span>
+          </div>
+          <div class="lib_li" dataHtml="editor">
+            <i class="icon-widget-vertical-line"></i>
+            <span>线条</span>
+          </div>
         </div>
         <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol">
@@ -161,7 +177,7 @@
             <span>网校介绍</span>
           </div>
           <div class="lib_li" dataHtml="hotLabel">
-            <i class="icon-widget-sticker"></i>
+            <i class="icon-widget-icon-label"></i>
             <span>热门标签</span>
           </div>       
           <div class="lib_li" dataHtml="news">
