@@ -336,11 +336,46 @@
         <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
       </span>
     </el-dialog>
-   <!--  <el-dialog
-      title="修改页头 (图片尺寸：1200*140 )"
-      :visible.sync="dialogPageHeader"
-      size="small" class="diaheader">
-      <el-upload
+    <el-dialog
+      title="轮播图 (默认 1200*330)"
+      :visible.sync="dialogCarousel"
+      size="carousel" >
+      <el-tabs v-model="activeName" >
+        <el-tab-pane label="图片选择" name="first">
+          <div class="scrollBox">
+            <div class="selectBox">
+              <div class="diaimg_li">
+                <img :src="imgurl">
+                上移 
+                下移
+                删除
+                url
+              </div>
+              <div class="diaimg_li">
+                <img :src="imgurl">
+              </div>
+              <div class="diaimg_li">
+                <img :src="imgurl">
+              </div>
+              <div class="diaimg_li">
+                <img :src="imgurl">
+              </div>
+              <div class="diaimg_li">
+                <img :src="imgurl">
+              </div>
+              <div class="diaimg_li">
+                <img :src="imgurl">
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="动效设置" name="second">
+          <div class="scrollBox">
+            动效设置
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+     <!--  <el-upload
         class="pageHeader-uploader"
         name="upfile"
         action="/uploadv2/image.html"
@@ -349,12 +384,12 @@
         :before-upload="beforePageHeaderUpload">
         <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
         <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
-      </el-upload>
+      </el-upload> -->
       <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogPageHeader = false">取 消</el-button>
-        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+        <el-button @click="dialogCarousel = false">取 消</el-button>
+        <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
     <!-- dialog弹框 -->
   </div>
 </template>
@@ -379,12 +414,16 @@
     name: 'app',
     data: function () {
       return {
+        imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
+      // -------------test---------
         dialogText: false,
         dialogEditor: false,
         dialogPageHeader: false,
         dialogPageSetting: false,
+        dialogCarousel: false,
         imageUrl: '',
         textarea: '',
+        activeName: 'first',
       // -----------工具栏-----------------
         prospectColorVal: '#f5f5f5',
         bgColorVal: '#8493af',
@@ -406,7 +445,7 @@
         clipboard: '',
         original: '',
         config: {
-          stretchLimit: false, // 是否开启module拉伸限制
+          stretchLimit: true, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
         },
         paddingtop: 62, // top栏高度
@@ -481,7 +520,7 @@
             self.disabled = false
             $('.tl_mod').removeClass('tl_li_Disable')
           },
-          missSeletedEvents (self) { // 初始化
+          missSeletedEvents: function (self) { // 初始化
             $('.line').hide()
             $('.resize').remove()
             $('.module').removeClass('on_module')
@@ -833,18 +872,18 @@
                   break
                 case 'resize w':
                   part = function () {
-                    let xx = xs - x + event.pageX + 50
+                    let xx = xs - x + event.pageX + self.posleft
                     self.inp_x = xs - x + event.pageX
                     self.inp_w = ws + x - event.pageX
                     if (self.config.stretchLimit) {
-                      if (xx < 50) {
-                        xx = 50
+                      if (xx < self.posleft) {
+                        xx = self.posleft
                         self.inp_w = ws + xs
                         self.inp_x = 0
                       }
                     }
-                    if (xx > (xs + ws + 50)) {
-                      xx = xs + ws + 50
+                    if (xx > (xs + ws + self.posleft)) {
+                      xx = xs + ws + self.posleft
                       self.inp_w = 0
                       self.inp_x = xs + ws
                     }
@@ -854,18 +893,18 @@
                   break
                 case 'resize n':
                   part = function () {
-                    let yy = ys - y + event.pageY + warp + 100
+                    let yy = ys - y + event.pageY + warp + self.postop
                     self.inp_y = ys - y + event.pageY
                     self.inp_h = hs + y - event.pageY
                     if (self.config.stretchLimit) {
-                      if (yy < 100 + warp) {
-                        yy = 100 + warp
+                      if (yy < self.postop + warp) {
+                        yy = self.postop + warp
                         self.inp_y = 0
                         self.inp_h = hs + ys
                       }
                     }
-                    if (yy > ys + hs + 100 + warp) {
-                      yy = ys + hs + 100 + warp
+                    if (yy > ys + hs + self.postop + warp) {
+                      yy = ys + hs + self.postop + warp
                       self.inp_y = ys + hs
                       self.inp_h = 0
                     }
@@ -875,28 +914,28 @@
                   break
                 case 'resize ne':
                   part = function () {
-                    let yy = ys - y + event.pageY + warp + 100
-                    let xx = self.inp_x + 100 + ws + event.pageX - x
+                    let yy = ys - y + event.pageY + warp + self.postop
+                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
                     self.inp_y = ys - y + event.pageY
                     self.inp_w = ws + event.pageX - x
                     self.inp_h = hs + y - event.pageY
                     if (self.config.stretchLimit) {
-                      if (yy < 100 + warp) {
-                        yy = 100 + warp
+                      if (yy < self.postop + warp) {
+                        yy = self.postop + warp
                         self.inp_y = 0
                         self.inp_h = hs + ys
                       }
-                      if (xx > areaR + 100) {
-                        xx = areaR + 100
+                      if (xx > areaR + self.posleft) {
+                        xx = areaR + self.posleft
                         self.inp_w = areaR - self.inp_x
                       }
                     }
-                    if (xx < xs + 100) {
-                      xx = xs + 100
+                    if (xx < xs + self.posleft) {
+                      xx = xs + self.posleft
                       self.inp_w = 0
                     }
-                    if (yy > ys + hs + 100 + warp) {
-                      yy = ys + hs + 100 + warp
+                    if (yy > ys + hs + self.postop + warp) {
+                      yy = ys + hs + self.postop + warp
                       self.inp_y = ys + hs
                       self.inp_h = 0
                     }
@@ -907,31 +946,31 @@
                   break
                 case 'resize nw':
                   part = function () {
-                    let yy = ys - y + event.pageY + warp + 100
-                    let xx = xs - x + event.pageX + 100
+                    let yy = ys - y + event.pageY + warp + self.postop
+                    let xx = xs - x + event.pageX + self.posleft
                     self.inp_y = ys - y + event.pageY
                     self.inp_x = xs - x + event.pageX
                     self.inp_h = hs + y - event.pageY
                     self.inp_w = ws + x - event.pageX
                     if (self.config.stretchLimit) {
-                      if (yy < 100 + warp) {
-                        yy = 100 + warp
+                      if (yy < self.postop + warp) {
+                        yy = self.postop + warp
                         self.inp_y = 0
                         self.inp_h = hs + ys
                       }
-                      if (xx < 100) {
-                        xx = 100
+                      if (xx < self.posleft) {
+                        xx = self.posleft
                         self.inp_w = ws + xs
                         self.inp_x = 0
                       }
                     }
-                    if (yy > ys + hs + 100 + warp) {
-                      yy = ys + hs + 100 + warp
+                    if (yy > ys + hs + self.postop + warp) {
+                      yy = ys + hs + self.postop + warp
                       self.inp_y = ys + hs
                       self.inp_h = 0
                     }
-                    if (xx > (xs + ws + 100)) {
-                      xx = xs + ws + 100
+                    if (xx > (xs + ws + self.posleft)) {
+                      xx = xs + ws + self.posleft
                       self.inp_w = 0
                       self.inp_x = xs + ws
                     }
@@ -942,26 +981,26 @@
                   break
                 case 'resize se':
                   part = function () {
-                    let yy = self.inp_y + 100 + warp + hs + event.pageY - y
-                    let xx = self.inp_x + 100 + ws + event.pageX - x
+                    let yy = self.inp_y + self.postop + warp + hs + event.pageY - y
+                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
                     self.inp_w = ws + event.pageX - x
                     self.inp_h = hs + event.pageY - y
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + 100
+                        yy = areaB + warp + self.postop
                         self.inp_h = areaB - self.inp_y
                       }
-                      if (xx > areaR + 100) {
-                        xx = areaR + 100
+                      if (xx > areaR + self.posleft) {
+                        xx = areaR + self.posleft
                         self.inp_w = areaR - self.inp_x
                       }
                     }
-                    if (yy < ys + 100 + warp) {
-                      yy = ys + 100 + warp
+                    if (yy < ys + self.postop + warp) {
+                      yy = ys + self.postop + warp
                       self.inp_h = 0
                     }
-                    if (xx < self.inp_x + 100) {
-                      xx = self.inp_x + 100
+                    if (xx < self.inp_x + self.posleft) {
+                      xx = self.inp_x + self.posleft
                       self.inp_w = 0
                     }
                     $this.parent().css({'width': self.inp_w, 'height': self.inp_h})
@@ -971,28 +1010,28 @@
                   break
                 case 'resize sw':
                   part = function () {
-                    let yy = self.inp_y + 100 + hs + event.pageY - y + warp
-                    let xx = xs - x + event.pageX + 100
+                    let yy = self.inp_y + self.postop + hs + event.pageY - y + warp
+                    let xx = xs - x + event.pageX + self.posleft
                     self.inp_x = xs - x + event.pageX
                     self.inp_h = hs + event.pageY - y
                     self.inp_w = ws + x - event.pageX
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + 100
+                        yy = areaB + warp + self.postop
                         self.inp_h = areaB - ys
                       }
-                      if (xx < 100) {
-                        xx = 100
+                      if (xx < self.posleft) {
+                        xx = self.posleft
                         self.inp_w = ws + xs
                         self.inp_x = 0
                       }
                     }
-                    if (yy < ys + 100 + warp) {
-                      yy = ys + 100 + warp
+                    if (yy < ys + self.postop + warp) {
+                      yy = ys + self.postop + warp
                       self.inp_h = 0
                     }
-                    if (xx > (xs + ws + 100)) {
-                      xx = xs + ws + 100
+                    if (xx > (xs + ws + self.posleft)) {
+                      xx = xs + ws + self.posleft
                       self.inp_w = 0
                       self.inp_x = xs + ws
                     }
@@ -1085,6 +1124,9 @@
                   })
                   break
                 case 'WeChat':
+                  break
+                case 'carousel':
+                  self.dialogCarousel = true
                   break
                 default:
                   console.log('module')
@@ -1478,6 +1520,8 @@
         canvas.css('width', self.inp_width)
         canvas.css('height', self.inp_height)
         self.dialogPageSetting = false
+      },
+      dialogCarouselEvent: function () {
       }
     }
   }
@@ -1492,53 +1536,6 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     cursor: default;
-  }
-  *{
-    margin:0;
-    padding:0;
-    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
-    /*font-family: "Microsoft YaHe";*/
-  }
-  html,body{
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  ::-webkit-scrollbar {
-      width: 4px;
-      height: 12px;
-  }
-  ::-webkit-scrollbar-track-piece
-    {
-        background-color: #fff;
-      /*  -webkit-border-radius: 6px;*/
-    }
-    ::-webkit-scrollbar-thumb:vertical
-    {
-        height: 8px;
-        width: 3px;
-        background-color: #c9c9c9;
-        -webkit-border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:horizontal
-    {
-        width: 4px;
-        background-color: #c9c9c9;
-       /* -webkit-border-radius: 6px;*/
-    }
-
-  Pseudo ::scrollbar-corner element
-  ::-webkit-scrollbar-corner {
-      background-color: #c9c9c9;
-  }
-  Pseudo ::scrollbar-thumb element
-  ::-webkit-scrollbar-thumb {
-      background-color: #c9c9c9;
-      border-radius: 4px;
-  }
-  Pseudo ::scrollbar-track element
-  ::-webkit-scrollbar-track {
-      background-color: #c9c9c9;
   }
 /*top*/
   .top{
@@ -2027,7 +2024,7 @@
     width: 0px;
     border-left-width: 1px;
   }
-/*module*/
+/*module*/ 
   .on_module{
     border-color: #46a8fb;
     outline:1px solid #46a8fb;
@@ -2205,5 +2202,25 @@
     width: 100%;
     height: auto;
     display: block;
+  }
+/*carousel*/
+  .el-dialog--carousel{
+    width: 980px;
+  }
+  .scrollBox{
+    height: 400px;
+    overflow-y:auto;
+    border-bottom: 1px solid #d1dbe5;
+  }
+  .selectBox{
+  }
+  .diaimg_li {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 76px;
+    border-bottom: 1px solid #e3e3e3;
+  }
+  .diaimg_li img{
+    width: 240px;height: 66px;
   }
 </style>

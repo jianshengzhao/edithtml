@@ -9,6 +9,49 @@
   }
 </script>
 <style>
+  *{
+    margin:0;
+    padding:0;
+    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    /*font-family: "Microsoft YaHe";*/
+  }
+  html,body{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  ::-webkit-scrollbar {
+      width: 4px;
+      height: 12px;
+  }
+  ::-webkit-scrollbar-track-piece{
+      background-color: #fff;
+    /*  -webkit-border-radius: 6px;*/
+  }
+  ::-webkit-scrollbar-thumb:vertical{
+      height: 8px;
+      width: 3px;
+      background-color: #c9c9c9;
+      -webkit-border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:horizontal{
+      width: 4px;
+      background-color: #c9c9c9;
+     /* -webkit-border-radius: 6px;*/
+  }
+  Pseudo ::scrollbar-corner element
+  ::-webkit-scrollbar-corner {
+      background-color: #c9c9c9;
+  }
+  Pseudo ::scrollbar-thumb element
+  ::-webkit-scrollbar-thumb {
+      background-color: #c9c9c9;
+      border-radius: 4px;
+  }
+  Pseudo ::scrollbar-track element
+  ::-webkit-scrollbar-track {
+      background-color: #c9c9c9;
+  }
   input{
     outline: 0;
   }
@@ -20,6 +63,9 @@
     position: absolute;
     background-color: #fff;
     z-index: 49;
+  }
+  .module:hover{
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
   }
   .rectangle{    
     width: 200px;
@@ -213,7 +259,7 @@
     border-bottom: 1px dashed #ebebeb;
   }
 /*-------------todo-----------------*/
-  .enlist,.dynamics{
+  .enlist, .dynamics{
     width: 305px;
     height: 330px;
     font-size: 14px;
@@ -227,12 +273,12 @@
     height: 100%;
     box-sizing: border-box;
   } 
-  .enlist_li,.dynamics_li{
+  .enlist_li, .dynamics_li{
     position: relative;
     height: 80px;
     border-bottom: 1px solid #eee;
   }
-  .enlist_li img,.dynamics_li img{
+  .enlist_li img, .dynamics_li img{
     position: absolute;
     top: 15px;
     left: 10px;
@@ -242,7 +288,7 @@
   .enlist_li:last-child, .dynamics_li:last-child{
     border:0;
   } 
-  .enlist_li p,.dynamics_li p{
+  .enlist_li p, .dynamics_li p{
     position: absolute;
     top: 15px;
     left: 72px;
@@ -257,4 +303,57 @@
     padding: 0 10px;
     color: #338bff;
   }
+  .carousel{
+    position: relative;
+    width: 1200px;
+    height: 330px;
+    background: #fff;
+  }
+  .screenBox{
+    position: absolute;
+    top:0;
+    left:50%;
+    transform: translateX(-50%);
+    -ms-transform:translateX(-50%);  
+    -moz-transform:translateX(-50%); 
+    -webkit-transform:translateX(-50%);
+    -o-transform:translateX(-50%);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .screenBox img{
+    position: absolute;
+    top:0;
+    left:50%;
+    transform: translateX(-50%);
+    -ms-transform:translateX(-50%);   /* IE 9 */
+    -moz-transform:translateX(-50%);  /* Firefox */
+    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%);
+    height: 100%;
+  }
+  .barbox{
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    -ms-transform:translateX(-50%);   
+    -moz-transform:translateX(-50%); 
+    -webkit-transform:translateX(-50%); 
+    -o-transform:translateX(-50%);
+    height: 12px;
+  }
+  .barbox li {
+    float: left;
+    margin: 0 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color:#6297c5; 
+    cursor: pointer;
+  }
+  .barbox li.on {
+    background-color:#010f17;
+  }  
 </style>

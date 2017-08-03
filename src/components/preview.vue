@@ -166,7 +166,7 @@
   .t_right{
     position: relative;
     float: right;
-    width: 300px;
+  
     text-align: left;
   } 
   .toolbar .el-col{
