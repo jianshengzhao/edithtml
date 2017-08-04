@@ -64,9 +64,6 @@
     background-color: #fff;
     z-index: 49;
   }
-  .module:hover{
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
-  }
   .rectangle{    
     width: 200px;
     height: 50px;
@@ -258,7 +255,7 @@
     text-indent: 5px;
     border-bottom: 1px dashed #ebebeb;
   }
-/*-------------todo-----------------*/
+/*-------------enlist-----------------*/
   .enlist, .dynamics{
     width: 305px;
     height: 330px;
@@ -355,5 +352,7 @@
   }
   .barbox li.on {
     background-color:#010f17;
-  }  
+  }
+/*-------------enlisttodo-----------------*/
+
 </style>

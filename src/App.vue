@@ -327,7 +327,7 @@
         action="/uploadv2/image.html"
         :show-file-list="false"
         :on-success="handlePageHeaderSuccess"
-        :before-upload="beforePageHeaderUpload">
+        :before-upload="beforePictureUpload">
         <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
         <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
       </el-upload>
@@ -344,47 +344,52 @@
         <el-tab-pane label="图片选择" name="first">
           <div class="scrollBox">
             <div class="selectBox">
-              <div class="diaimg_li">
-                <img :src="imgurl">
-                上移 
-                下移
-                删除
-                url
+              <div class="diaimg_li" v-for="(item, index) in carouselData">
+                <img :src="item.imgurl">
+                <div class="handleList">
+                  <el-row>
+                    <el-col :span="3">
+                      <span @click="carouselShiftUpEvent(index)" class="spanTit" v-if="index!=0">上移</span>
+                      <span v-else class="spanTit ban">上移</span>
+                    </el-col>                    
+                    <el-col :span="3">
+                      <span @click="carouselShiftDownEvent(index)" class="spanTit" v-if="index!=carouselData.length-1">下移</span>
+                      <span v-else class="spanTit ban">下移</span>
+                    </el-col>
+                    <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit">删除</span></el-col>
+                    <el-col :span="15">
+                      <span class="spanTit spanUrl">跳转链接
+                        <input type="text" placeholder="请输入链接 ( 默认为空,点击图片不跳转 )" :value="item.clickurl" @change="carouselChangeEvent(index)">
+                      </span>
+                    </el-col>
+                  </el-row>
+                </div>
               </div>
-              <div class="diaimg_li">
-                <img :src="imgurl">
-              </div>
-              <div class="diaimg_li">
-                <img :src="imgurl">
-              </div>
-              <div class="diaimg_li">
-                <img :src="imgurl">
-              </div>
-              <div class="diaimg_li">
-                <img :src="imgurl">
-              </div>
-              <div class="diaimg_li">
-                <img :src="imgurl">
+              <div class="diaimg_li" v-if="carouselData.length < 9">
+                <el-upload
+                  class="carousel-uploader"
+                  name="upfile"
+                  action="/uploadv2/image.html"
+                  :show-file-list="false"
+                  :on-success="handleCarouselSuccess"
+                  :before-upload="beforePictureUpload">                  
+                  <i class="el-icon-plus"></i>
+                </el-upload>
               </div>
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="动效设置" name="second">
+        <el-tab-pane label="轮播设置" name="second">
           <div class="scrollBox">
-            动效设置
-          </div>
+            <el-row>
+              <el-col :span="4">展示时长</el-col>
+              <el-col :span="8"><el-input-number v-model="showTime" @change="handleChange" :min="1" :max="20"></el-input-number></el-col>
+              <el-col :span="4">过渡时长</el-col>
+              <el-col :span="8"><el-input-number v-model="transitionTime" @change="handleChange" :min="0" :max="5" step="0.2"></el-input-number></el-col>
+            </el-row>
+          </div><!-- todo:长宽 -->
         </el-tab-pane>
-      </el-tabs>
-     <!--  <el-upload
-        class="pageHeader-uploader"
-        name="upfile"
-        action="/uploadv2/image.html"
-        :show-file-list="false"
-        :on-success="handlePageHeaderSuccess"
-        :before-upload="beforePageHeaderUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
-        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
-      </el-upload> -->
+      </el-tabs>    
       <span slot="footer" class="dialog-footer">        
         <el-button @click="dialogCarousel = false">取 消</el-button>
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
@@ -414,7 +419,6 @@
     name: 'app',
     data: function () {
       return {
-        imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
       // -------------test---------
         dialogText: false,
         dialogEditor: false,
@@ -424,6 +428,21 @@
         imageUrl: '',
         textarea: '',
         activeName: 'first',
+        carouselData: [{
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
+          clickurl: 'https://www.baidu.com1'
+        }, {
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
+          clickurl: 'https://www.baidu.com2'
+        }, {
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
+          clickurl: 'https://www.baidu.com3'
+        }, {
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
+          clickurl: 'https://www.baidu.com4'
+        }],
+        showTime: 5,
+        transitionTime: 0.6,
       // -----------工具栏-----------------
         prospectColorVal: '#f5f5f5',
         bgColorVal: '#8493af',
@@ -1484,7 +1503,7 @@
         self.moduleElement.css('height', h)
         self.moduleElement.html(content)
       },
-      beforePageHeaderUpload: function (file) {
+      beforePictureUpload: function (file) {
         let self = this
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
           self.$notify({
@@ -1499,7 +1518,18 @@
       },
       handlePageHeaderSuccess: function (res, file) {
         let self = this
-        self.imageUrl = res.data.showurl
+        let code = res.code
+        if (code === 0) {
+          self.imageUrl = res.data.showurl
+        } else {
+          self.$notify({
+            title: '警告',
+            message: '上传图片失败',
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+        }
       },
       dialogPageHeaderEvent: function () {
         let self = this
@@ -1507,11 +1537,11 @@
         self.moduleElement.find('img').attr('src', self.imageUrl)
       },
     //   ---------------- todo: -----------------------
-      settingEvent: function () {
+      settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
       },
-      dialogPageSettingEvent: function () {
+      dialogPageSettingEvent: function () { // 页面设置弹框保存
         var self = this
         let space = $('.space')
         let canvas = $('.canvas')
@@ -1520,6 +1550,41 @@
         canvas.css('width', self.inp_width)
         canvas.css('height', self.inp_height)
         self.dialogPageSetting = false
+      },
+      carouselShiftUpEvent: function (index) { // 上移
+        let self = this
+        let item = self.carouselData.splice(index, 1)
+        self.carouselData.splice(index - 1, 0, item[0])
+      },
+      carouselShiftDownEvent: function (index) { // 下移
+        let self = this
+        let item = self.carouselData.splice(index, 1)
+        self.carouselData.splice(index + 1, 0, item[0])
+      },
+      carouselDeleteEvent: function (index) { // 删除
+        let self = this
+        self.carouselData.splice(index, 1)
+      },
+      carouselChangeEvent: function (index) { // 设置跳转链接
+        let self = this
+        let val = $('.spanUrl input').eq(index).val()
+        self.carouselData[index].clickurl = val
+      },
+      handleCarouselSuccess: function (res) { // 添加图片成功
+        let self = this
+        let code = res.code
+        let data = res.data
+        if (code === 0) {
+          self.carouselData.push({imgurl: data.showurl, clickurl: ''})
+        } else {
+          self.$notify({
+            title: '警告',
+            message: '上传图片失败',
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+        }
       },
       dialogCarouselEvent: function () {
       }
@@ -2024,7 +2089,10 @@
     width: 0px;
     border-left-width: 1px;
   }
-/*module*/ 
+/*module*/
+  .module:hover{
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
+  }
   .on_module{
     border-color: #46a8fb;
     outline:1px solid #46a8fb;
@@ -2215,6 +2283,7 @@
   .selectBox{
   }
   .diaimg_li {
+    position:relative;
     margin-bottom: 10px;
     width: 100%;
     height: 76px;
@@ -2222,5 +2291,52 @@
   }
   .diaimg_li img{
     width: 240px;height: 66px;
+  }
+  .handleList{
+    margin-top: 24px;
+    width: 690px;
+    float: right;
+  }
+  .handleList .el-col{
+    text-align: center;
+    cursor: pointer;
+  }
+  .handleList .el-col .spanTit{
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #20a0ff;
+  }
+  .handleList .el-col .ban{
+    color: #ccc;
+    cursor: not-allowed;
+  }
+  .spanUrl{
+    text-align: left;
+    text-indent: 10px;
+  }
+  .spanUrl input{
+    text-indent: 10px;
+    margin-left: 10px;
+    width: 300px;
+    border-radius: 4px;
+    border: 1px solid #9a9a9a;
+    color: #999;
+  }
+  .carousel-uploader{
+    height: 100%;
+  }
+  .carousel-uploader .el-upload--text{    
+    display: block;
+    margin:0 auto;
+    transform:translateY(20px);
+    -ms-transform:translateY(20px);   /* IE 9 */
+    -moz-transform:translateY(20px);  /* Firefox */
+    -webkit-transform:translateY(20px); /* Safari 和 Chrome */
+    -o-transform:translateY(20px); 
+  }
+  .carousel-uploader .el-icon-plus{
+    font-size: 24px;
+    color: #e3e3e3;
   }
 </style>
