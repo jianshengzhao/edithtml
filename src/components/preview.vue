@@ -25,6 +25,84 @@
     name: 'preview',
     data: function () {
       return {
+        carInter: '',
+        carouselEvent: function (self) { // 轮播图
+        // ------------渲染轮播结构------------
+          let carousel = $('.carousel')
+          if (carousel.length < 1) return false
+          let imgul = carousel.find('.img_ul')
+          let barbox = carousel.find('.barbox')
+          let data
+          if (carousel.attr('carouseldata')) {
+            data = $.parseJSON(carousel.attr('carouseldata'))
+          } else {
+            let dataStatic = '{"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
+            data = $.parseJSON(dataStatic)
+          }
+          let obj = data.carouselData
+          let imgliWidth = parseInt($('.screenBox').css('width'))
+          let imgulWidth = imgliWidth * (obj.length + 2)
+          let htm = '<div class="img_li"><img src="' + obj[obj.length - 1].imgurl + '"></div>'
+          let htmBar = ''
+          for (let i = 0, len = obj.length; i < len; i++) {
+            let item = obj[i]
+            htm += '<div class="img_li"><img src="' + item.imgurl + '"></div>'
+            htmBar += '<li></li>'
+          }
+          htm += '<div class="img_li"><img src="' + obj[0].imgurl + '"></div>'
+          imgul.css('width', imgulWidth) // 计算出img_ul的宽度
+          imgul.html(htm)
+          barbox.html(htmBar)
+          $('.img_li').css('width', data.showWidth + 'px')
+        // ------------动        画------------
+          imgul.addClass('transition')
+          clearInterval(self.carInter)
+          let timer = data.showTime * 1000
+          let space = data.transitionTime
+          let left = imgliWidth
+          let index = 0
+          let barLi = barbox.find('li')
+          imgul.css({'transition-duration': space + 's', '-moz-transition-duration': space + 's', '-webkit-transition-duration': space + 's', '-o-transition-duration': space + 's'})
+          imgul.css('left', '-' + left + 'px')
+          barLi.eq(index).addClass('on')
+          carouselInterval()
+          function carouselInterval () {
+            self.carInter = setInterval(function () {
+              left += imgliWidth
+              index++
+              if (left === imgulWidth - imgliWidth) {
+                index = 0
+                clearInterval(carIime)
+                var carIime = setTimeout(function () {
+                  left = imgliWidth
+                  imgul.css('transition-duration', '')
+                  imgul.removeClass('transition')
+                  imgul.css('left', '-' + left + 'px')
+                }, space * 1000) // todo 过渡时间替换
+              } else {
+                imgul.addClass('transition')
+                imgul.css({'transition-duration': space + 's', '-moz-transition-duration': space + 's', '-webkit-transition-duration': space + 's', '-o-transition-duration': space + 's'})
+              }
+              barLi.removeClass('on')
+              barLi.eq(index).addClass('on')
+              imgul.css('left', '-' + left + 'px')
+            }, timer) // todo 展示时间替换
+          }
+        // ------------hover   暂停------------
+          carousel.hover(function () {
+            clearInterval(self.carInter)
+          }, function () {
+            carouselInterval()
+          })
+        // ----------点击底部图标切换----------
+          barLi.on('click', function () {
+            index = $(this).index()
+            barLi.removeClass('on')
+            barLi.eq(index).addClass('on')
+            left = imgliWidth * (index + 1)
+            imgul.css('left', '-' + left + 'px')
+          })
+        }
       }
     },
     created: function () { // 增加白名单，各模块所加载的js
@@ -64,11 +142,13 @@
         //   html += '<div class="' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
         // }
         foot.append(module.foot)
+        self.carouselEvent(self)
       })
     },
     methods: {
       returnEvent: function () {
         let self = this
+        clearInterval(self.carInter)
         self.$router.push('/')
       }
     }

@@ -337,7 +337,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="轮播图 (默认 1200*330)"
+      :title="carouselTit"
       :visible.sync="dialogCarousel"
       size="carousel" >
       <el-tabs v-model="activeName" >
@@ -383,9 +383,13 @@
           <div class="scrollBox">
             <el-row>
               <el-col :span="4">展示时长</el-col>
-              <el-col :span="8"><el-input-number v-model="showTime" @change="handleChange" :min="1" :max="20"></el-input-number></el-col>
+              <el-col :span="8"><el-input-number v-model="showTime" :min="1" :max="20"></el-input-number></el-col>
               <el-col :span="4">过渡时长</el-col>
-              <el-col :span="8"><el-input-number v-model="transitionTime" @change="handleChange" :min="0" :max="5" step="0.2"></el-input-number></el-col>
+              <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="5" :step="0.2"></el-input-number></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="4">显示宽度</el-col>
+              <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600"></el-input-number></el-col>
             </el-row>
           </div><!-- todo:长宽 -->
         </el-tab-pane>
@@ -443,6 +447,8 @@
         }],
         showTime: 5,
         transitionTime: 0.6,
+        showWidth: 1200,
+        carouselTit: '轮播图 ( 图片尺寸 1200 * 320 )',
       // -----------工具栏-----------------
         prospectColorVal: '#f5f5f5',
         bgColorVal: '#8493af',
@@ -1146,6 +1152,18 @@
                   break
                 case 'carousel':
                   self.dialogCarousel = true
+                  let carouselData = $('.on_module').attr('carouselData')
+                  let hs = parseInt($('.screenBox').css('height'))
+                  let ws = parseInt($('.screenBox').css('width'))
+                  self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
+                  self.showWidth = ws
+                  if (carouselData) {
+                    let data = $.parseJSON(carouselData)
+                    self.showWidth = data.showWidth
+                    self.carouselData = data.carouselData
+                    self.showTime = data.showTime
+                    self.transitionTime = data.transitionTime
+                  }
                   break
                 default:
                   console.log('module')
@@ -1586,7 +1604,19 @@
           })
         }
       },
-      dialogCarouselEvent: function () {
+      dialogCarouselEvent: function () { // 轮播图配置数据
+        let self = this
+        let obj = {
+          showWidth: self.showWidth,
+          showTime: self.showTime,
+          transitionTime: self.transitionTime,
+          carouselData: self.carouselData
+        }
+        let str = JSON.stringify(obj)
+        $('.img_li').css('width', self.showWidth + 'px')
+        $('.screenBox').css('width', self.showWidth + 'px')
+        self.dialogCarousel = false
+        $('.on_module').attr('carouselData', str)
       }
     }
   }
@@ -2338,5 +2368,21 @@
   .carousel-uploader .el-icon-plus{
     font-size: 24px;
     color: #e3e3e3;
+  }
+  .scrollBox .el-row{
+    margin-bottom: 15px;
+  }
+  .scrollBox .el-col{
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+  }
+  .editBox .screenBox .img_ul{
+    left: 50%;
+    transform: translateX(-50%);
+    -ms-transform:translateX(-50%);  
+    -moz-transform:translateX(-50%); 
+    -webkit-transform:translateX(-50%);
+    -o-transform:translateX(-50%);
   }
 </style>

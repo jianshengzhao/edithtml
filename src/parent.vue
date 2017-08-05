@@ -291,6 +291,7 @@
     left: 72px;
     color: #333;
   }
+/*-------------enlisttodo-----------------*/
   .openservice{
     position: absolute;
     top:40px;
@@ -300,10 +301,11 @@
     padding: 0 10px;
     color: #338bff;
   }
+/*-------------carousel-----------------*/
   .carousel{
     position: relative;
     width: 1200px;
-    height: 330px;
+    height: 320px;
     background: #fff;
   }
   .screenBox{
@@ -319,6 +321,18 @@
     height: 100%;
     overflow: hidden;
   }
+  .screenBox .img_ul{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .screenBox .img_li {
+    position: relative;
+    float: left;
+    width: 1200px;
+    height: 100%;
+  }
   .screenBox img{
     position: absolute;
     top:0;
@@ -329,6 +343,7 @@
     -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
     -o-transform:translateX(-50%);
     height: 100%;
+    width: 100%;
   }
   .barbox{
     position: absolute;
@@ -353,6 +368,11 @@
   .barbox li.on {
     background-color:#010f17;
   }
-/*-------------enlisttodo-----------------*/
+  .transition {
+     transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
+  }
 
 </style>
