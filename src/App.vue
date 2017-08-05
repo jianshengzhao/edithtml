@@ -384,12 +384,23 @@
             <el-row>
               <el-col :span="4">展示时长</el-col>
               <el-col :span="8"><el-input-number v-model="showTime" :min="5" :max="20"></el-input-number></el-col>
-              <el-col :span="4">过渡时长</el-col>
+              <el-col :span="4">切换时长</el-col>
               <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="2" :step="0.2"></el-input-number></el-col>
             </el-row>
             <el-row>
               <el-col :span="4">显示宽度</el-col>
               <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600"></el-input-number></el-col>
+              <el-col :span="4">切换方式</el-col>
+              <el-col :span="8">
+              <el-select v-model="changeStyle" placeholder="请选择">
+                <el-option
+                  v-for="item in animStyle"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
             </el-row>
           </div><!-- todo:长宽 -->
         </el-tab-pane>
@@ -449,6 +460,14 @@
         transitionTime: 0.6,
         showWidth: 1200,
         carouselTit: '轮播图 ( 图片尺寸 1200 * 320 )',
+        animStyle: [{
+          value: false,
+          label: '滚动'
+        }, {
+          value: true,
+          label: '渐显'
+        }],
+        changeStyle: false,
       // -----------工具栏-----------------
         prospectColorVal: '#f5f5f5',
         bgColorVal: '#8493af',
@@ -1163,6 +1182,7 @@
                     self.carouselData = data.carouselData
                     self.showTime = data.showTime
                     self.transitionTime = data.transitionTime
+                    self.changeStyle = data.changeStyle
                   }
                   break
                 default:
@@ -1607,6 +1627,7 @@
       dialogCarouselEvent: function () { // 轮播图配置数据
         let self = this
         let obj = {
+          changeStyle: self.changeStyle,
           showWidth: self.showWidth,
           showTime: self.showTime,
           transitionTime: self.transitionTime,
@@ -2384,5 +2405,8 @@
     -moz-transform:translateX(-50%); 
     -webkit-transform:translateX(-50%);
     -o-transform:translateX(-50%);
+  }
+  .scrollBox .el-select{
+    width: 180px;
   }
 </style>

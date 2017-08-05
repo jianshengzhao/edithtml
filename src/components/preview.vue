@@ -36,31 +36,32 @@
           if (C.attr('carouseldata')) {
             D = $.parseJSON(C.attr('carouseldata'))
           } else {
-            let ds = '{"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
+            let ds = '{"changeStyle":false,"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
             D = $.parseJSON(ds)
           }
-          let bloo = true
+          let bloo = D.changeStyle
           let d = D.carouselData
           let Lw = parseInt($('.screenBox').css('width'))
           let Uw
-          let H = bloo ? '' : '<div class="img_li"><img src="' + d[d.length - 1].imgurl + '"></div>'
+          let H = bloo ? '' : '<div class="img_li"><a href="' + d[d.length - 1].clickurl + '" target="_blank"><img src="' + d[d.length - 1].imgurl + '"></a></div>'
           let Hb = ''
           for (let i = 0, len = d.length; i < len; i++) {
             let m = d[i]
-            H += '<div class="img_li"><img src="' + m.imgurl + '"></div>'
+            H += '<div class="img_li"><a href="' + m.clickurl + '" target="_blank"><img src="' + m.imgurl + '"></a></div>'
             Hb += '<li></li>'
           }
-          H += bloo ? '' : '<div class="img_li"><img src="' + d[0].imgurl + '"></div>'
+          H += bloo ? '' : '<div class="img_li"><a href="' + d[0].clickurl + '" target="_blank"><img src="' + d[0].imgurl + '"></a></div>'
           if (bloo) {
             let x = $('.screenBox')
-            x.addClass('.screenBox2')
+            x.addClass('screenBox2')
           } else {
-            let Uw = Lw * (d.length + 2)
+            Uw = Lw * (d.length + 2)
             U.css('width', Uw) // 计算出img_ul的宽度
           }
           U.html(H)
           B.html(Hb)
-          $('.img_li').css('width', D.showWidth + 'px')
+          let imgLi = $('.img_li')
+          imgLi.css('width', D.showWidth + 'px')
         // ------------动        画------------
           U.addClass('transition')
           clearInterval(self.carInter)
@@ -69,34 +70,44 @@
           let L = Lw
           let I = 0
           let Bl = B.find('li')
-          U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
           if (bloo) {
-
+            imgLi.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
+            imgLi.eq(I).css('opacity', '1')
           } else {
+            U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
             U.css('left', '-' + L + 'px')
           }
           Bl.eq(I).addClass('on')
           carouselInterval()
           function carouselInterval () {
             self.carInter = setInterval(function () {
-              L += Lw
-              I++
-              if (L === Uw - Lw) {
-                I = 0
-                clearInterval(carIime)
-                var carIime = setTimeout(function () {
-                  L = Lw
-                  U.css('transition-duration', '')
-                  U.removeClass('transition')
-                  U.css('left', '-' + L + 'px')
-                }, S * 1000) // todo 过渡时间替换
+              if (bloo) {
+                I++
+                if (I >= imgLi.length) {
+                  I = 0
+                }
+                imgLi.css('opacity', '0')
+                imgLi.eq(I).css('opacity', '1')
               } else {
-                U.addClass('transition')
-                U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
+                L += Lw
+                I++
+                if (L === Uw - Lw) {
+                  I = 0
+                  clearInterval(carIime)
+                  var carIime = setTimeout(function () {
+                    L = Lw
+                    U.css('transition-duration', '')
+                    U.removeClass('transition')
+                    U.css('left', '-' + L + 'px')
+                  }, S * 1000) // todo 过渡时间替换
+                } else {
+                  U.addClass('transition')
+                  U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
+                }
+                U.css('left', '-' + L + 'px')
               }
               Bl.removeClass('on')
               Bl.eq(I).addClass('on')
-              U.css('left', '-' + L + 'px')
             }, T) // todo 展示时间替换
           }
         // ------------hover   暂停------------
@@ -104,15 +115,20 @@
             clearInterval(self.carInter)
           }, function () {
             carouselInterval()
-            clearInterval(self.carInter)
+            // clearInterval(self.carInter)
           })
         // ----------点击底部图标切换----------
           Bl.on('click', function () {
             I = $(this).index()
             Bl.removeClass('on')
             Bl.eq(I).addClass('on')
-            L = Lw * (I + 1)
-            U.css('left', '-' + L + 'px')
+            if (bloo) {
+              imgLi.css('opacity', '0')
+              imgLi.eq(I).css('opacity', '1')
+            } else {
+              L = Lw * (I + 1)
+              U.css('left', '-' + L + 'px')
+            }
           })
         }
       }
