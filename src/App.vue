@@ -5,7 +5,7 @@
       <div class="t_logo"></div>
       <div class="t_left">
         <div class="tl_li" @click="settingEvent">
-          <i class="iconfont icon-state " title="设置"></i>
+          <i class="iconfont mb icon-cog " title="设置"></i>
           <span>页面设置</span>
         </div>
         <div class="tl_li">
@@ -161,19 +161,19 @@
             <i class="icon-widget-search-input"></i>
             <span>导航搜索</span>
           </div>
+          <div class="lib_li" dataHtml="carousel">
+            <i class="imgicon icon-carousel"></i>
+            <span>轮播图</span>
+          </div>
         </div>
         <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol">
-          <div class="lib_li" dataHtml="carousel">
-            <i class="icon-widget-sticker"></i>
-            <span>轮播图</span>
-          </div>
           <div class="lib_li" dataHtml="WeChat">
-            <i class="icon-widget-sticker"></i>
+            <i class="mb icon-wechat"></i>
             <span>微信公众号</span>
           </div>
           <div class="lib_li" dataHtml="schoolProfile">
-           <i class="icon-widget-sticker"></i>
+           <i class="imgicon icon-introduce"></i>
             <span>网校介绍</span>
           </div>
           <div class="lib_li" dataHtml="hotLabel">

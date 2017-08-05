@@ -812,9 +812,30 @@ svg.icon {
 .icon-zoom-out:before {
 	content: "\E9C5"
 }
+.imgicon{
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 24px;
+}
+.icon-carousel { background-image: url(../icon/carousel.png); }
 
+.icon-label { background-image: url(../icon/label.png); }
+
+.icon-information { background-image: url(../icon/introduce.png); }
+
+.icon-introduce { background-image: url(../icon/introduce.png); }
+
+.icon-introduce { background-image: url(../icon/introduce.png); }
+
+.icon-introduce { background-image: url(../icon/introduce.png); }
+
+
+/*
 @font-face {
-	font-family:Material Icons;font-style:normal;font-weight:400;src:local("Material Icons"),local("MaterialIcons-Regular"),url(/webpack/material.570eb83859dc23dd0eec423a49e147fe.woff2) format("woff2"),url(/webpack/material.012cf6a10129e2275d79d6adac7f3b02.woff) format("woff"),url(/webpack/material.a37b0c01c0baf1888ca812cc0508f6e2.ttf) format("truetype")
+	font-family:Material Icons;font-style:normal;font-weight:400;src:local("Material Icons"),local("MaterialIcons-Regular"),url(material.570eb83859dc23dd0eec423a49e147fe.woff2) format("woff2"),url(material.012cf6a10129e2275d79d6adac7f3b02.woff) format("woff"),url(material.a37b0c01c0baf1888ca812cc0508f6e2.ttf) format("truetype")
 }
 
 .md {
@@ -829,7 +850,7 @@ svg.icon {
 }
 
 @font-face {
-	font-family:FontAwesome;font-weight:400;font-style:normal;src:url(/webpack/font-awesome.af7ae505a9eed503f8b8e6982036873e.woff2) format("woff2"),url(/webpack/font-awesome.fee66e712a8a08eef5805a46892932ad.woff) format("woff"),url(/webpack/font-awesome.b06871f281fee6b241d60582ae9369b9.ttf) format("truetype"),url(/webpack/font-awesome.912ec66d7572ff821749319396470bde.svg#fontawesomeregular) format("svg")
+	font-family:FontAwesome;font-weight:400;font-style:normal;src:url(font-awesome.af7ae505a9eed503f8b8e6982036873e.woff2) format("woff2"),url(font-awesome.fee66e712a8a08eef5805a46892932ad.woff) format("woff"),url(font-awesome.b06871f281fee6b241d60582ae9369b9.ttf) format("truetype"),url(font-awesome.912ec66d7572ff821749319396470bde.svg#fontawesomeregular) format("svg")
 }
 
 .fa,.md {
@@ -3644,7 +3665,7 @@ svg.icon {
 .ci-yql-unlock:before {
 	content: "\E914"
 }
-
+*/
 .fa-spin,.is-spinning {
 	-webkit-animation: spinning 2s infinite linear;
 	-moz-animation: spinning 2s infinite linear;
