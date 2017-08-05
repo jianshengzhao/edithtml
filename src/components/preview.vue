@@ -28,79 +28,91 @@
         carInter: '',
         carouselEvent: function (self) { // 轮播图
         // ------------渲染轮播结构------------
-          let carousel = $('.carousel')
-          if (carousel.length < 1) return false
-          let imgul = carousel.find('.img_ul')
-          let barbox = carousel.find('.barbox')
-          let data
-          if (carousel.attr('carouseldata')) {
-            data = $.parseJSON(carousel.attr('carouseldata'))
+          let C = $('.carousel')
+          if (C.length < 1) return false
+          let U = C.find('.img_ul')
+          let B = C.find('.barbox')
+          let D
+          if (C.attr('carouseldata')) {
+            D = $.parseJSON(C.attr('carouseldata'))
           } else {
-            let dataStatic = '{"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
-            data = $.parseJSON(dataStatic)
+            let ds = '{"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
+            D = $.parseJSON(ds)
           }
-          let obj = data.carouselData
-          let imgliWidth = parseInt($('.screenBox').css('width'))
-          let imgulWidth = imgliWidth * (obj.length + 2)
-          let htm = '<div class="img_li"><img src="' + obj[obj.length - 1].imgurl + '"></div>'
-          let htmBar = ''
-          for (let i = 0, len = obj.length; i < len; i++) {
-            let item = obj[i]
-            htm += '<div class="img_li"><img src="' + item.imgurl + '"></div>'
-            htmBar += '<li></li>'
+          let bloo = true
+          let d = D.carouselData
+          let Lw = parseInt($('.screenBox').css('width'))
+          let Uw
+          let H = bloo ? '' : '<div class="img_li"><img src="' + d[d.length - 1].imgurl + '"></div>'
+          let Hb = ''
+          for (let i = 0, len = d.length; i < len; i++) {
+            let m = d[i]
+            H += '<div class="img_li"><img src="' + m.imgurl + '"></div>'
+            Hb += '<li></li>'
           }
-          htm += '<div class="img_li"><img src="' + obj[0].imgurl + '"></div>'
-          imgul.css('width', imgulWidth) // 计算出img_ul的宽度
-          imgul.html(htm)
-          barbox.html(htmBar)
-          $('.img_li').css('width', data.showWidth + 'px')
+          H += bloo ? '' : '<div class="img_li"><img src="' + d[0].imgurl + '"></div>'
+          if (bloo) {
+            let x = $('.screenBox')
+            x.addClass('.screenBox2')
+          } else {
+            let Uw = Lw * (d.length + 2)
+            U.css('width', Uw) // 计算出img_ul的宽度
+          }
+          U.html(H)
+          B.html(Hb)
+          $('.img_li').css('width', D.showWidth + 'px')
         // ------------动        画------------
-          imgul.addClass('transition')
+          U.addClass('transition')
           clearInterval(self.carInter)
-          let timer = data.showTime * 1000
-          let space = data.transitionTime
-          let left = imgliWidth
-          let index = 0
-          let barLi = barbox.find('li')
-          imgul.css({'transition-duration': space + 's', '-moz-transition-duration': space + 's', '-webkit-transition-duration': space + 's', '-o-transition-duration': space + 's'})
-          imgul.css('left', '-' + left + 'px')
-          barLi.eq(index).addClass('on')
+          let T = D.showTime * 1000
+          let S = D.transitionTime
+          let L = Lw
+          let I = 0
+          let Bl = B.find('li')
+          U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
+          if (bloo) {
+
+          } else {
+            U.css('left', '-' + L + 'px')
+          }
+          Bl.eq(I).addClass('on')
           carouselInterval()
           function carouselInterval () {
             self.carInter = setInterval(function () {
-              left += imgliWidth
-              index++
-              if (left === imgulWidth - imgliWidth) {
-                index = 0
+              L += Lw
+              I++
+              if (L === Uw - Lw) {
+                I = 0
                 clearInterval(carIime)
                 var carIime = setTimeout(function () {
-                  left = imgliWidth
-                  imgul.css('transition-duration', '')
-                  imgul.removeClass('transition')
-                  imgul.css('left', '-' + left + 'px')
-                }, space * 1000) // todo 过渡时间替换
+                  L = Lw
+                  U.css('transition-duration', '')
+                  U.removeClass('transition')
+                  U.css('left', '-' + L + 'px')
+                }, S * 1000) // todo 过渡时间替换
               } else {
-                imgul.addClass('transition')
-                imgul.css({'transition-duration': space + 's', '-moz-transition-duration': space + 's', '-webkit-transition-duration': space + 's', '-o-transition-duration': space + 's'})
+                U.addClass('transition')
+                U.css({'transition-duration': S + 's', '-moz-transition-duration': S + 's', '-webkit-transition-duration': S + 's', '-o-transition-duration': S + 's'})
               }
-              barLi.removeClass('on')
-              barLi.eq(index).addClass('on')
-              imgul.css('left', '-' + left + 'px')
-            }, timer) // todo 展示时间替换
+              Bl.removeClass('on')
+              Bl.eq(I).addClass('on')
+              U.css('left', '-' + L + 'px')
+            }, T) // todo 展示时间替换
           }
         // ------------hover   暂停------------
-          carousel.hover(function () {
+          C.hover(function () {
             clearInterval(self.carInter)
           }, function () {
             carouselInterval()
+            clearInterval(self.carInter)
           })
         // ----------点击底部图标切换----------
-          barLi.on('click', function () {
-            index = $(this).index()
-            barLi.removeClass('on')
-            barLi.eq(index).addClass('on')
-            left = imgliWidth * (index + 1)
-            imgul.css('left', '-' + left + 'px')
+          Bl.on('click', function () {
+            I = $(this).index()
+            Bl.removeClass('on')
+            Bl.eq(I).addClass('on')
+            L = Lw * (I + 1)
+            U.css('left', '-' + L + 'px')
           })
         }
       }

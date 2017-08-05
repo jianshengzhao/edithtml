@@ -383,9 +383,9 @@
           <div class="scrollBox">
             <el-row>
               <el-col :span="4">展示时长</el-col>
-              <el-col :span="8"><el-input-number v-model="showTime" :min="1" :max="20"></el-input-number></el-col>
+              <el-col :span="8"><el-input-number v-model="showTime" :min="5" :max="20"></el-input-number></el-col>
               <el-col :span="4">过渡时长</el-col>
-              <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="5" :step="0.2"></el-input-number></el-col>
+              <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="2" :step="0.2"></el-input-number></el-col>
             </el-row>
             <el-row>
               <el-col :span="4">显示宽度</el-col>

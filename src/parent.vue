@@ -333,6 +333,12 @@
     width: 1200px;
     height: 100%;
   }
+  .screenBox2 .img_li{
+    position: absolute;
+    top:0;
+    left: 0;
+    opacity: 0;
+  }
   .screenBox img{
     position: absolute;
     top:0;
