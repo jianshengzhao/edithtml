@@ -68,7 +68,7 @@
       </div> 
     </div>
     <!-- attribute tool -->
-    <div class="tool">
+    <div class="tool" unselectable="on" onselectstart="return false;">
       <div class="toolBox">
         <div class="property" >
           <label for="">Z :</label>
@@ -109,7 +109,7 @@
       </div>
     </div>
     <!-- assembly library -->
-    <div class="library">
+    <div class="library" unselectable="on" onselectstart="return false;">
       <nav class="lib_nav">
         <ol>
           <li class="on"><i class="iconfont icon-cube"></i><span>组件</span></li>
@@ -134,19 +134,19 @@
             <i class="icon-widget-textarea"></i>
             <span>富文本</span>
           </div>
-          <div class="lib_li" dataHtml="editor">
+          <div class="lib_li" dataHtml="picture">
             <i class="icon-widget-img"></i>
             <span>图片</span>
           </div>
-          <div class="lib_li" dataHtml="editor">
+          <div class="lib_li" dataHtml="button">
             <i class="icon-widget-btn"></i>
             <span>按钮</span>
           </div>
-          <div class="lib_li" dataHtml="editor">
+          <div class="lib_li" dataHtml="hline">
             <i class="icon-widget-horizontal-line"></i>
             <span>线条</span>
           </div>
-          <div class="lib_li" dataHtml="editor">
+          <div class="lib_li" dataHtml="sline">
             <i class="icon-widget-vertical-line"></i>
             <span>线条</span>
           </div>
@@ -261,30 +261,35 @@
         <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
       </ul>
     </div>
-    <!-- dialog弹框 -->
+  <!-- dialog弹框 -->
     <el-dialog
       title="页面设置"
       :visible.sync="dialogPageSetting"
       size="tiny" class="dialogSetting">
       <el-row>
-        <el-col :span="4" class="tit">前景</el-col>
+        <el-col :span="5" class="tit">网校 * 前景色</el-col>
         <el-col :span="4">
           <el-color-picker v-model="prospectColorVal" ></el-color-picker>
         </el-col>
+        <el-col :span="10">todo:背景图片</el-col>
       </el-row>
       <el-row>
-        <el-col :span="4" class="tit">背景</el-col>
+        <el-col :span="5" class="tit">网校 * 背景色</el-col>
         <el-col :span="4">
           <el-color-picker v-model="bgColorVal"></el-color-picker>
         </el-col>
+        <el-col :span="10">todo:背景图片</el-col>
       </el-row>
       <el-row>
-        <el-col :span="4" class="tit">分辨率</el-col>
+        <el-col :span="5" class="tit">分辨率 * 页宽</el-col>
         <el-col :span="8">
-          <el-input v-model="inp_width" placeholder="宽" type="number"></el-input>
-        </el-col>        
-        <el-col :span="8">
-          <el-input v-model="inp_height" placeholder="高" type="number"></el-input>
+          <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="5" class="tit">分辨率 * 页高</el-col>          
+        <el-col :span="8">          
+          <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">        
@@ -317,6 +322,44 @@
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="添加图片 ( 点击添加 )"
+      :visible.sync="dialogPicture"
+      size="tiny" class="diaheader">
+      <el-upload
+        class="picture-uploader"
+        name="upfile"
+        action="/uploadv2/image.html"
+        :show-file-list="false"
+        :on-success="handlePictureSuccess"
+        :before-upload="beforePictureUpload">
+        <img v-if="pictureUrl" :src="pictureUrl" class="pictureMod">
+        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogPicture = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="按钮"
+      :visible.sync="dialogButton"
+      size="tiny" 
+      class="dialogbutton">
+      <el-row>
+        <el-col :span="3">文字</el-col>
+        <el-col :span="18"><el-input v-model="inputBtnText"></el-input></el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="3">链接</el-col>
+        <el-col :span="18"><el-input v-model="inputBtnHref"></el-input></el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogButton = false">取 消</el-button>
+        <el-button type="primary" @click="dialogButtonEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+  <!-- 网校模块 -->
     <el-dialog
       title="修改页头 (图片尺寸：1200*140 )"
       :visible.sync="dialogPageHeader"
@@ -410,10 +453,9 @@
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- dialog弹框 -->
+  <!-- dialog弹框 -->
   </div>
 </template>
-
 <script>
   function guidGenerator () {
     let S4 = function () {
@@ -437,10 +479,15 @@
       // -------------test---------
         dialogText: false,
         dialogEditor: false,
+        dialogPicture: false,
+        dialogButton: false,
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+        inputBtnText: '',
+        inputBtnHref: '',
         imageUrl: '',
+        pictureUrl: '',
         textarea: '',
         activeName: 'first',
         carouselData: [{
@@ -505,7 +552,7 @@
         },
         tool: { /* 工具箱事件 */
         // --------------- complete ----------------
-          linePosition: function (editBox, copyBox, self) {
+          linePosition: function (editBox, copyBox, self, e) {
             let rowT = $('.row-t')
             let rowB = $('.row-b')
             let colL = $('.col-l')
@@ -516,8 +563,8 @@
             let sLeft = parseInt(space.scrollLeft())
             let w = parseInt(copyBox.css('width'))
             let h = parseInt(copyBox.css('height'))
-            rowT.css('top', event.pageY + sTop - self.paddingtop)
-            rowB.css('top', event.pageY + sTop - self.paddingtop + h)
+            rowT.css('top', e.pageY + sTop - self.paddingtop)
+            rowB.css('top', e.pageY + sTop - self.paddingtop + h)
             colL.css('left', 0 + sLeft)
             colR.css('left', w + sLeft)
             line.show()
@@ -582,11 +629,11 @@
             self.disabled = true
             $('.tl_mod').addClass('tl_li_Disable')
           },
-          bindLibraryMenu: function (self) {
+          bindLibraryMenu: function (self) { // 左侧菜单栏
             $('.header').on('click', function () {
               let e = $(this).next()
               let len = e.children().length
-              let num = len / 2 + len % 2
+              let num = parseInt(len / 2) + len % 2
               let h = 66 * num
               if (e.css('height') === '0px') {
                 e.css('height', h + 'px')
@@ -634,12 +681,12 @@
             let scrollHeight = $('.space')[0].scrollHeight
             colL.css('height', scrollHeight)
             colR.css('height', scrollHeight)
-            $('.c_top').on('mousedown', '.hoverbar', function () { // top容器调整
-              y = event.pageY
+            $('.c_top').on('mousedown', '.hoverbar', function (e) { // top容器调整
+              y = e.pageY
               h = parseInt(cTop.css('height'))
               $('.c_top .hoverbar').addClass('on_hoverbar')
-              canvas.mousemove(function () {
-                hs = h + (event.pageY - y)
+              canvas.mousemove(function (e) {
+                hs = h + (e.pageY - y)
                 cTop.css('height', hs)
                 canvas.css('paddingTop', hs)
                 topRangeY = hs + self.paddingtop + self.postop
@@ -647,12 +694,12 @@
               })
               canvasMouseup()
             })
-            $('.c_foot').on('mousedown', '.hoverbar', function () { // foot容器调整
-              y = event.pageY
+            $('.c_foot').on('mousedown', '.hoverbar', function (e) { // foot容器调整
+              y = e.pageY
               h = parseInt(cFoot.css('height'))
               $('.c_foot .hoverbar').addClass('on_hoverbar')
-              canvas.mousemove(function () {
-                hs = h + (y - event.pageY)
+              canvas.mousemove(function (e) {
+                hs = h + (y - e.pageY)
                 cFoot.css('height', hs)
                 canvas.css('paddingBottom', hs)
                 bodyRangeY = parseInt(cBody.css('height')) + topRangeY
@@ -664,12 +711,12 @@
               let dataCon = datahtml.datahtml[modType]
               copyBox.attr('style', dataCon.style)
               copyCon.html(dataCon.html)
-              copyBox.show().css({'top': event.pageY, 'left': self.paddingleft})
+              copyBox.show().css({'top': e.pageY, 'left': self.paddingleft})
               editBox.unbind('mouseup')
               editBox.mousemove(function (e) {
                 copyBox.css({'top': e.pageY, 'left': e.pageX})
               })
-              toolself.linePosition(editBox, copyBox, self)
+              toolself.linePosition(editBox, copyBox, self, e)
               editMouseup()
               return false
             })
@@ -687,18 +734,18 @@
                 let y
                 let sTop = parseInt($('.space').scrollTop())
                 let sLeft = parseInt($('.space').scrollLeft())
-                x = event.pageX - self.paddingleft - self.posleft + sLeft
+                x = e.pageX - self.paddingleft - self.posleft + sLeft
                 topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop
                 bodyRangeY = parseInt(cBody.css('height')) + topRangeY
-                if (event.pageY + sTop < topRangeY) {
+                if (e.pageY + sTop < topRangeY) {
                   box = cTop
-                  y = event.pageY + sTop - self.paddingtop - self.postop
-                } else if (event.pageY + sTop < bodyRangeY) {
+                  y = e.pageY + sTop - self.paddingtop - self.postop
+                } else if (e.pageY + sTop < bodyRangeY) {
                   box = cBody
-                  y = event.pageY + sTop - topRangeY
+                  y = e.pageY + sTop - topRangeY
                 } else {
                   box = cFoot
-                  y = event.pageY + sTop - bodyRangeY
+                  y = e.pageY + sTop - bodyRangeY
                 }
                 if (self.config.moveLimit) {
                   if (x < 0) {
@@ -841,10 +888,10 @@
                 return false
               })
             }
-            editBox.on('mousedown', '.resize', function () { // 选中小圆点按钮拉伸容器
+            editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器
               let $this = $(this)
-              let x = event.pageX
-              let y = event.pageY
+              let x = e.pageX
+              let y = e.pageY
               let xs = self.inp_x
               let ys = self.inp_y
               let ws = self.inp_w
@@ -879,9 +926,9 @@
               let part
               switch ($this.attr('class')) {
                 case 'resize e':
-                  part = function () {
-                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
-                    self.inp_w = ws + event.pageX - x
+                  part = function (e) {
+                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
+                    self.inp_w = ws + e.pageX - x
                     if (self.config.stretchLimit) {
                       if (xx > areaR + self.posleft) {
                         xx = areaR + self.posleft
@@ -897,9 +944,9 @@
                   }
                   break
                 case 'resize s':
-                  part = function () {
-                    let yy = ys + self.postop + warp + hs + event.pageY - y
-                    self.inp_h = hs + event.pageY - y
+                  part = function (e) {
+                    let yy = ys + self.postop + warp + hs + e.pageY - y
+                    self.inp_h = hs + e.pageY - y
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
                         yy = areaB + warp + self.postop
@@ -915,10 +962,10 @@
                   }
                   break
                 case 'resize w':
-                  part = function () {
-                    let xx = xs - x + event.pageX + self.posleft
-                    self.inp_x = xs - x + event.pageX
-                    self.inp_w = ws + x - event.pageX
+                  part = function (e) {
+                    let xx = xs - x + e.pageX + self.posleft
+                    self.inp_x = xs - x + e.pageX
+                    self.inp_w = ws + x - e.pageX
                     if (self.config.stretchLimit) {
                       if (xx < self.posleft) {
                         xx = self.posleft
@@ -936,10 +983,10 @@
                   }
                   break
                 case 'resize n':
-                  part = function () {
-                    let yy = ys - y + event.pageY + warp + self.postop
-                    self.inp_y = ys - y + event.pageY
-                    self.inp_h = hs + y - event.pageY
+                  part = function (e) {
+                    let yy = ys - y + e.pageY + warp + self.postop
+                    self.inp_y = ys - y + e.pageY
+                    self.inp_h = hs + y - e.pageY
                     if (self.config.stretchLimit) {
                       if (yy < self.postop + warp) {
                         yy = self.postop + warp
@@ -957,12 +1004,12 @@
                   }
                   break
                 case 'resize ne':
-                  part = function () {
-                    let yy = ys - y + event.pageY + warp + self.postop
-                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
-                    self.inp_y = ys - y + event.pageY
-                    self.inp_w = ws + event.pageX - x
-                    self.inp_h = hs + y - event.pageY
+                  part = function (e) {
+                    let yy = ys - y + e.pageY + warp + self.postop
+                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
+                    self.inp_y = ys - y + e.pageY
+                    self.inp_w = ws + e.pageX - x
+                    self.inp_h = hs + y - e.pageY
                     if (self.config.stretchLimit) {
                       if (yy < self.postop + warp) {
                         yy = self.postop + warp
@@ -989,13 +1036,13 @@
                   }
                   break
                 case 'resize nw':
-                  part = function () {
-                    let yy = ys - y + event.pageY + warp + self.postop
-                    let xx = xs - x + event.pageX + self.posleft
-                    self.inp_y = ys - y + event.pageY
-                    self.inp_x = xs - x + event.pageX
-                    self.inp_h = hs + y - event.pageY
-                    self.inp_w = ws + x - event.pageX
+                  part = function (e) {
+                    let yy = ys - y + e.pageY + warp + self.postop
+                    let xx = xs - x + e.pageX + self.posleft
+                    self.inp_y = ys - y + e.pageY
+                    self.inp_x = xs - x + e.pageX
+                    self.inp_h = hs + y - e.pageY
+                    self.inp_w = ws + x - e.pageX
                     if (self.config.stretchLimit) {
                       if (yy < self.postop + warp) {
                         yy = self.postop + warp
@@ -1024,11 +1071,11 @@
                   }
                   break
                 case 'resize se':
-                  part = function () {
-                    let yy = self.inp_y + self.postop + warp + hs + event.pageY - y
-                    let xx = self.inp_x + self.posleft + ws + event.pageX - x
-                    self.inp_w = ws + event.pageX - x
-                    self.inp_h = hs + event.pageY - y
+                  part = function (e) {
+                    let yy = self.inp_y + self.postop + warp + hs + e.pageY - y
+                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
+                    self.inp_w = ws + e.pageX - x
+                    self.inp_h = hs + e.pageY - y
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
                         yy = areaB + warp + self.postop
@@ -1053,12 +1100,12 @@
                   }
                   break
                 case 'resize sw':
-                  part = function () {
-                    let yy = self.inp_y + self.postop + hs + event.pageY - y + warp
-                    let xx = xs - x + event.pageX + self.posleft
-                    self.inp_x = xs - x + event.pageX
-                    self.inp_h = hs + event.pageY - y
-                    self.inp_w = ws + x - event.pageX
+                  part = function (e) {
+                    let yy = self.inp_y + self.postop + hs + e.pageY - y + warp
+                    let xx = xs - x + e.pageX + self.posleft
+                    self.inp_x = xs - x + e.pageX
+                    self.inp_h = hs + e.pageY - y
+                    self.inp_w = ws + x - e.pageX
                     if (self.config.stretchLimit) {
                       if ((self.inp_h + self.inp_y) > areaB) {
                         yy = areaB + warp + self.postop
@@ -1087,7 +1134,7 @@
               }
               // todo: 拉伸某容器固定显示内容
               editBox.mousemove(function (e) {
-                part()
+                part(e)
                 return false
               })
               editBox.mouseup(function (e) {
@@ -1157,6 +1204,14 @@
                       self.editor.setContent(html)
                     })
                   })
+                  break
+                case 'picture':
+                  self.dialogPicture = true
+                  break
+                case 'button':
+                  self.dialogButton = true
+                  self.inputBtnText = self.moduleElement.find('a').text()
+                  self.inputBtnHref = self.moduleElement.find('a').attr('href')
                   break
                 case 'pageHeader':
                   self.dialogPageHeader = true
@@ -1574,7 +1629,6 @@
         self.dialogPageHeader = false
         self.moduleElement.find('img').attr('src', self.imageUrl)
       },
-    //   ---------------- todo: -----------------------
       settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
@@ -1638,6 +1692,33 @@
         $('.screenBox').css('width', self.showWidth + 'px')
         self.dialogCarousel = false
         $('.on_module').attr('carouselData', str)
+      },
+      handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
+        let self = this
+        let code = res.code
+        if (code === 0) {
+          self.pictureUrl = res.data.showurl
+        } else {
+          self.$notify({
+            title: '警告',
+            message: '上传图片失败',
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+        }
+      },
+      dialogPictureEvent: function () { // 保存图片
+        let self = this
+        self.dialogPicture = false
+        self.moduleElement.find('img').attr('src', self.pictureUrl)
+      },
+    //   ---------------- todo: -----------------------
+      dialogButtonEvent: function () {
+        let self = this
+        self.dialogButton = false
+        self.moduleElement.find('a').text(self.inputBtnText)
+        self.moduleElement.find('a').attr('href', self.inputBtnHref)
       }
     }
   }
@@ -2106,7 +2187,8 @@
     display: block;    
     width: 200px;
     height: 50px;
-    background-color: rgba(245,245,245,0.8);
+    background-color: rgba(21,204,236,0.6);
+    z-index: 100;
    /* border: 1px dotted #333;*/
   }
   .copyCon{
@@ -2389,7 +2471,7 @@
   .carousel-uploader .el-icon-plus{
     font-size: 24px;
     color: #e3e3e3;
-  }
+  }  
   .scrollBox .el-row{
     margin-bottom: 15px;
   }
@@ -2408,5 +2490,24 @@
   }
   .scrollBox .el-select{
     width: 180px;
+  }
+/*picture*/  
+  .picture-uploader .el-upload{
+    display: block;
+    margin:0 auto; 
+    border: 1px dashed #d9d9d9;
+  }
+  .pictureMod {    
+    max-width: 100%;
+  }
+/*button*/
+  .dialogbutton .el-row{
+    margin-top: 10px;
+  }
+  .dialogbutton .el-col-3{
+    margin-right: 20px;
+    height: 36px;
+    text-align: right;
+    line-height: 36px;
   }
 </style>

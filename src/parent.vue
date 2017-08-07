@@ -9,6 +9,7 @@
   }
 </script>
 <style>
+/* common */
   *{
     margin:0;
     padding:0;
@@ -59,6 +60,7 @@
     width: 100%;
     height: 100%;
   } 
+/* module */
   .module{
     position: absolute;
     background-color: #fff;
@@ -77,9 +79,11 @@
   }
   .text{
     width: 200px;
+    padding: 0 10px;
     line-height: 30px;
     font-size: 14px;
     color: #333;
+    box-sizing: border-box;
     text-align: left;
     word-break:break-all;
     word-wrap:break-word;
@@ -380,5 +384,44 @@
     -webkit-transition: all 400ms; 
     -o-transition: all 400ms;
   }
-
+/*-------------picture-----------------*/
+  .picture {
+    width: 200px;
+    height: 120px;  
+  }
+  .picBox{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .picture img{
+    width: 100%;
+  }
+/*-------------button-----------------*/
+  .button{
+    width: 80px;
+    height: 30px;
+    border: 1px solid #bbbbbb;
+    border-radius: 4px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .button a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+/*-------------line-----------------*/
+  .hline{
+    width: 200px;
+    height: 1px;
+    background: #333;
+  }
+  .sline{
+    width: 1px;
+    height: 200px;
+    background: #333;
+  }
 </style>
