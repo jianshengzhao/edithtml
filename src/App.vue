@@ -516,7 +516,7 @@
         }],
         changeStyle: false,
       // -----------工具栏-----------------
-        prospectColorVal: '#f5f5f5',
+        prospectColorVal: '#fff',
         bgColorVal: '#8493af',
         inp_width: 1200,
         inp_height: 1600,
@@ -2086,7 +2086,7 @@
     opacity: 1;
   }
 /*editBox*/
-  .editBox{
+  .editBox {
     position: absolute;
     top: 0;
     left: 0;
@@ -2100,6 +2100,9 @@
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 
     -o-transition: all 400ms;
+  }
+  .editBox .module{
+    outline: 1px solid #e3e3e3;
   }
   .space{
     position: relative;
@@ -2119,7 +2122,7 @@
     margin-bottom: 100px;
     width: 1200px;
     height: 1800px;
-    background-color: #f5f5f5;
+    background-color: #fff;
     background-size:10px 10px;
     /*border:1px solid #d9d9d9;*/
     box-sizing: border-box;
