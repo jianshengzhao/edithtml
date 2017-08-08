@@ -128,8 +128,23 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
+    <!-- layer -->
+    <div class="layer" unselectable="on" onselectstart="return false;">
+      <div class="lib_box">
+        <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol basicBox"></div>
+        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol onlineBox"></div>
+        <div class="header">页尾 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol todoBox"></div>
+        <div class="header">尽请期待。。。</div>
+      </div>
+      <div class="shrink shrinkout">
+        <i class="el-icon-arrow-left"></i>
+      </div>
+    </div>
     <!-- editBox -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 181px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -589,9 +604,9 @@
                 }, 0)
               }
             })
-            let shrink = $('.shrink')
-            let library = $('.library')
             let editBox = $('.editBox')
+            let library = $('.library')
+            let shrink = library.find('.shrink')
             shrink.on('click', function () {
               if (shrink.hasClass('shrinkout')) {
                 shrink.removeClass('shrinkout')
@@ -603,6 +618,22 @@
                 library.addClass('basic')
                 editBox.css('paddingLeft', '62px')
                 self.paddingleft = 62
+              }
+            })
+          },
+          bindLayerElement: function (self) { // 右侧图层列表
+            let editBox = $('.editBox')
+            let layer = $('.layer')
+            let shrink = layer.find('.shrink')
+            shrink.on('click', function () {
+              if (shrink.hasClass('shrinkout')) {
+                shrink.removeClass('shrinkout')
+                layer.addClass('layerHide')
+                editBox.css('paddingRight', '')
+              } else {
+                shrink.addClass('shrinkout')
+                layer.removeClass('layerHide')
+                editBox.css('paddingRight', '181px')
               }
             })
           },
@@ -624,7 +655,6 @@
             $('.c_top').on('mousedown', '.hoverbar', function (e) { // top容器调整
               y = e.pageY
               h = parseInt(cTop.css('height'))
-              $('.c_top .hoverbar').addClass('on_hoverbar')
               canvas.mousemove(function (e) {
                 hs = h + (e.pageY - y)
                 cTop.css('height', hs)
@@ -637,7 +667,6 @@
             $('.c_foot').on('mousedown', '.hoverbar', function (e) { // foot容器调整
               y = e.pageY
               h = parseInt(cFoot.css('height'))
-              $('.c_foot .hoverbar').addClass('on_hoverbar')
               canvas.mousemove(function (e) {
                 hs = h + (y - e.pageY)
                 cFoot.css('height', hs)
@@ -663,7 +692,6 @@
             function canvasMouseup () { // canvas解绑鼠标移动事件
               canvas.mouseup(function () {
                 canvas.unbind('mousemove mouseup')
-                $('.hoverbar').removeClass('on_hoverbar')
               })
             }
             function editMouseup () { // editBox解除模块拖动事件,并添加模块到canvas上
@@ -1199,6 +1227,7 @@
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
         self.tool.bindLibraryMenu(self)
+        self.tool.bindLayerElement(self)
         self.tool.bindMouseEvent(self)
         self.tool.bindClickEvent(self)
         self.tool.bindDblclickEvent(self)
@@ -1930,7 +1959,7 @@
   .dataHtml{
     display: none;
   }
-  .shrink{
+  .library .shrink{
     position: absolute;
     top:50%;
     right: -22px;
@@ -1946,16 +1975,16 @@
     line-height: 24px;
     cursor: pointer;   
   }
-  .shrink i {
+  .library .shrink i {
     transition: all 400ms;
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 
     -o-transition: all 400ms;
   }
-  .shrinkout {
+  .library .shrinkout {
     text-indent: 4px;
   }
-  .shrinkout i{
+  .library .shrinkout i{
     transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -1984,6 +2013,57 @@
     border: 0;
     opacity: 1;
   }
+/*layer*/
+  .layer{
+    position:absolute;
+    top:0;
+    right:0;
+    width: 181px;
+    height:100%;
+    border-right: 1px solid #d9d9d9;
+    background-color: #fff;
+    box-sizing: border-box;
+    z-index: 2;
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
+  }
+  .layerHide{
+    width: 0;
+  }
+  .layer .shrink{
+    position: absolute;
+    top:50%;
+    left: -22px;
+    width: 22px;
+    height: 24px;
+    background-color: #fff;
+    border:1px solid #d9d9d9;
+    border-right: 0;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    color: #f55d54;
+    text-indent: 1px;
+    line-height: 24px;
+    cursor: pointer;   
+  }
+  .layer .shrink i {
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
+  }
+  .layer .shrinkout {
+    text-indent: 6px;
+  }
+  .layer .shrinkout i{
+    transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg); 
+    -o-transform: rotate(180deg); 
+  }  
 /*editBox*/
   .editBox {
     position: absolute;
@@ -1991,7 +2071,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 62px 0 0 181px;
+    padding: 62px 0px 0 181px;
     box-sizing:border-box;    
     background-color: #8493af;
     z-index: 1;

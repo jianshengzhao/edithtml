@@ -26,9 +26,9 @@
     data: function () {
       return {
         carInter: '',
-        carouselEvent: function (self) { // 轮播图
+        carouselEvent: function (self, element, id) { // 轮播图
         // ------------渲染轮播结构------------
-          let C = $('.carousel')
+          let C = element
           if (C.length < 1) return false
           let U = C.find('.img_ul')
           let B = C.find('.barbox')
@@ -64,7 +64,7 @@
           imgLi.css('width', D.showWidth + 'px')
         // ------------动        画------------
           U.addClass('transition')
-          clearInterval(self.carInter)
+          clearInterval(self['carInter' + id])
           let T = D.showTime * 1000
           let S = D.transitionTime
           let L = Lw
@@ -80,7 +80,7 @@
           Bl.eq(I).addClass('on')
           carouselInterval()
           function carouselInterval () {
-            self.carInter = setInterval(function () {
+            self['carInter' + id] = setInterval(function () {
               if (bloo) {
                 I++
                 if (I >= imgLi.length) {
@@ -112,7 +112,7 @@
           }
         // ------------hover   暂停------------
           C.hover(function () {
-            clearInterval(self.carInter)
+            clearInterval(self['carInter' + id])
           }, function () {
             carouselInterval()
             // clearInterval(self.carInter)
@@ -155,13 +155,19 @@
         head.append(module.top)
         middle.append(module.body)
         foot.append(module.foot)
-        self.carouselEvent(self)
+        let carousel = $('.carousel')
+        for (let i = 0, len = carousel.length; i < len; i++) {
+          self.carouselEvent(self, carousel.eq(i), i)
+        }
       })
     },
     methods: {
       returnEvent: function () {
         let self = this
-        clearInterval(self.carInter)
+        let carousel = $('.carousel')
+        for (let i = 0, len = carousel.length; i < len; i++) {
+          clearInterval(self['carInter' + i])
+        }
         self.$router.push('/')
       }
     }
