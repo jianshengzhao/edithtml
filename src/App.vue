@@ -1495,16 +1495,16 @@
           let x = parseInt(contextmenu.css('left'))
           switch (self.original.attr('class')) {
             case 'c_top':
-              y = y - 181 + sTop
-              x = x - 281
+              y = y - (self.paddingtop + self.postop) + sTop
+              x = x - (self.paddingleft + self.posleft)
               break
             case 'c_body':
-              y = y - 181 + sTop - parseInt($('.c_top').css('height'))
-              x = x - 281
+              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height'))
+              x = x - (self.paddingleft + self.posleft)
               break
             case 'c_foot':
-              y = y - 181 + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
-              x = x - 281
+              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
+              x = x - (self.paddingleft + self.posleft)
               break
           }
           self.original.append(self.clipboard)
