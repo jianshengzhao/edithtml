@@ -152,23 +152,8 @@
         let middle = $('.middle')
         let foot = $('.foot')
         let module = params.module
-        // let html = ''
-        // for (let i = 0, len = module.top.length; i < len; i++) {
-        //   let item = module.top[i]
-        //   html += '<div class="' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         head.append(module.top)
-        // html = ''
-        // for (let i = 0, len = module.body.length; i < len; i++) {
-        //   let item = module.body[i]
-        //   html += '<div class="' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         middle.append(module.body)
-        // html = ''
-        // for (let i = 0, len = module.foot.length; i < len; i++) {
-        //   let item = module.foot[i]
-        //   html += '<div class="' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         foot.append(module.foot)
         self.carouselEvent(self)
       })

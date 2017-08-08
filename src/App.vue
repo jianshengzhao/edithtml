@@ -117,98 +117,11 @@
       </nav>
       <div class="lib_box">
         <div class="header">基本组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol">
-          <div class="lib_li" dataHtml="rectangle">
-            <i class="icon-widget-rectangle"></i>
-            <span>矩形</span>
-          </div>
-          <div class="lib_li" dataHtml="radius">
-            <i class="icon-widget-circle"></i>
-            <span>圆形</span>
-          </div>
-          <div class="lib_li" dataHtml="text">
-            <i class="icon-widget-text"></i>
-            <span>文字</span>
-          </div>        
-          <div class="lib_li" dataHtml="editor">
-            <i class="icon-widget-textarea"></i>
-            <span>富文本</span>
-          </div>
-          <div class="lib_li" dataHtml="picture">
-            <i class="icon-widget-img"></i>
-            <span>图片</span>
-          </div>
-          <div class="lib_li" dataHtml="button">
-            <i class="icon-widget-btn"></i>
-            <span>按钮</span>
-          </div>
-          <div class="lib_li" dataHtml="hline">
-            <i class="icon-widget-horizontal-line"></i>
-            <span>线条</span>
-          </div>
-          <div class="lib_li" dataHtml="sline">
-            <i class="icon-widget-vertical-line"></i>
-            <span>线条</span>
-          </div>
-        </div>
+        <div class="lib_ol basicBox"></div>
         <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol">
-          <div class="lib_li" dataHtml="pageHeader">
-            <i class="icon-widget-input"></i>
-            <span>页头</span>
-          </div>
-          <div class="lib_li" dataHtml="navigation">
-            <i class="icon-widget-search-input"></i>
-            <span>导航搜索</span>
-          </div>
-          <div class="lib_li" dataHtml="carousel">
-            <i class="imgicon icon-carousel"></i>
-            <span>轮播图</span>
-          </div>
-        </div>
+        <div class="lib_ol onlineBox"></div>
         <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol">
-          <div class="lib_li" dataHtml="WeChat">
-            <i class="mb icon-wechat"></i>
-            <span>微信公众号</span>
-          </div>
-          <div class="lib_li" dataHtml="schoolProfile">
-           <i class="imgicon icon-introduce"></i>
-            <span>网校介绍</span>
-          </div>
-          <div class="lib_li" dataHtml="hotLabel">
-            <i class="icon-widget-icon-label"></i>
-            <span>热门标签</span>
-          </div>       
-          <div class="lib_li" dataHtml="news">
-            <i class="icon-widget-sticker"></i>
-            <span>新闻资讯</span>
-          </div> 
-          <div class="lib_li" dataHtml="enlist">
-            <i class="icon-widget-sticker"></i>
-            <span>最新报名</span>
-          </div> 
-          <div class="lib_li" datahtml='dynamics'>
-            <i class="icon-widget-sticker"></i>
-            <span>学员动态</span>
-          </div>
-          <div class="lib_li" >
-            <i class="icon-widget-sticker"></i>
-            <span>免费试听</span>
-          </div>
-          <div class="lib_li" >
-            <i class="icon-widget-sticker"></i>
-            <span>学员评价</span>
-          </div>
-          <div class="lib_li" >
-            <i class="icon-widget-sticker"></i>
-            <span>名师团队</span>
-          </div>
-          <div class="lib_li" >
-            <i class="icon-widget-sticker"></i>
-            <span>网校应用</span>
-          </div>
-        </div>
+        <div class="lib_ol todoBox"></div>
         <div class="header">尽请期待。。。</div>
       </div>
       <div class="shrink">
@@ -542,7 +455,7 @@
         paddingtop: 62, // top栏高度
         paddingleft: 181, // left栏高度
         postop: 50, // editbox  top值
-        posleft: 50, // editbox  left值
+        posleft: 1000, // editbox  left值
       // ---------------------------------------
         editorConfig: {
           zIndex: 3000,
@@ -629,7 +542,39 @@
             self.disabled = true
             $('.tl_mod').addClass('tl_li_Disable')
           },
+          scrollHeight: function () { // 获得内容高度
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            let scrollHeight = $('.space')[0].scrollHeight
+            colL.css('height', scrollHeight)
+            colR.css('height', scrollHeight)
+          },
           bindLibraryMenu: function (self) { // 左侧菜单栏
+            let toallGroup = datahtml.datahtml.toallGroup
+            let basic = toallGroup.basic
+            let bhtm = ''
+            let basicBox = $('.basicBox')
+            let online = toallGroup.online
+            let ohtm = ''
+            let onlineBox = $('.onlineBox')
+            let todo = toallGroup.todo
+            let thtm = ''
+            let todoBox = $('.todoBox')
+            for (let i = 0, len = basic.length; i < len; i++) {
+              let item = basic[i]
+              bhtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+            }
+            for (let i = 0, len = online.length; i < len; i++) {
+              let item = online[i]
+              ohtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+            }
+            for (let i = 0, len = todo.length; i < len; i++) {
+              let item = todo[i]
+              thtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+            }
+            basicBox.html(bhtm)
+            onlineBox.html(ohtm)
+            todoBox.html(thtm)
             $('.header').on('click', function () {
               let e = $(this).next()
               let len = e.children().length
@@ -675,12 +620,7 @@
             let y // 鼠标Y轴
             let topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop // top选区范围
             let bodyRangeY = parseInt(cBody.css('height')) + topRangeY // body选区范围
-            let colL = $('.col-l')
-            let colR = $('.col-r')
             let line = $('.line')
-            let scrollHeight = $('.space')[0].scrollHeight
-            colL.css('height', scrollHeight)
-            colR.css('height', scrollHeight)
             $('.c_top').on('mousedown', '.hoverbar', function (e) { // top容器调整
               y = e.pageY
               h = parseInt(cTop.css('height'))
@@ -1254,6 +1194,8 @@
       self.ueditorid = guidGenerator()
       self.$nextTick(function () {
         let canvas = $('.canvas')
+        let space = $('.space')
+        canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))
         self.tool.bindLibraryMenu(self)
@@ -1261,8 +1203,8 @@
         self.tool.bindClickEvent(self)
         self.tool.bindDblclickEvent(self)
         self.tool.bindRightClickEvent(self)
-        let scrollcanvas = $('.scrollcanvas')
-        scrollcanvas.css('minWidth', parseInt(self.inp_width) + 100 + 'px')
+        self.tool.scrollHeight()
+        space.scrollLeft(900)
         if (!window.saveParams) return false
         let params = window.saveParams
         let pp = params.page
@@ -1270,8 +1212,6 @@
         self.bgColorVal = pp.bg
         self.inp_width = pp.width
         self.inp_height = pp.height
-        scrollcanvas.css('minWidth', parseInt(self.inp_width) + 100 + 'px')
-        let space = $('.space')
         space.css('backgroundColor', self.bgColorVal)
         canvas.css('backgroundColor', self.prospectColorVal)
         canvas.css('width', self.inp_width)
@@ -1280,28 +1220,13 @@
         let middle = $('.c_body')
         let foot = $('.c_foot')
         head.css('height', pp.top)
-        middle.css('height', pp.body)
         foot.css('height', pp.foot)
         canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
         let module = params.module
-        // let html = ''
-        // for (let i = 0, len = module.top.length; i < len; i++) {
-        //   let item = module.top[i]
-        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         head.html(module.top)
-        // html = ''
-        // for (let i = 0, len = module.body.length; i < len; i++) {
-        //   let item = module.body[i]
-        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         middle.html(module.body)
-        // html = ''
-        // for (let i = 0, len = module.foot.length; i < len; i++) {
-        //   let item = module.foot[i]
-        //   html += '<div class="module ' + item.class + '" style="' + item.style + '"><div>asdasdadad</div>asdadadsadad</div></div>'
-        // }
         foot.html(module.foot)
+        self.tool.scrollHeight()
       })
     },
     methods: {
@@ -1535,36 +1460,9 @@
         self.tool.missSeletedEvents(self)
         self.$router.push('preview')
         let params = {}
-        // let topModule = $('.c_top').find('.module')
-        // let bodyModule = $('.c_body').find('.module')
-        // let footModule = $('.c_foot').find('.module')
         let topArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
         let footArray = $('.c_foot').html()
-        // for (let i = 0, len = topModule.length; i < len; i++) {
-        //   let item = topModule.eq(i)
-        //   let itemobj = {
-        //     class: $.trim(item.attr('class').replace('module', '')),
-        //     style: item.attr('style')
-        //   }
-        //   topArray.push(itemobj)
-        // }
-        // for (let i = 0, len = bodyModule.length; i < len; i++) {
-        //   let item = bodyModule.eq(i)
-        //   let itemobj = {
-        //     class: $.trim(item.attr('class').replace('module', '')),
-        //     style: item.attr('style')
-        //   }
-        //   bodyArray.push(itemobj)
-        // }
-        // for (let i = 0, len = footModule.length; i < len; i++) {
-        //   let item = footModule.eq(i)
-        //   let itemobj = {
-        //     class: $.trim(item.attr('class').replace('module', '')),
-        //     style: item.attr('style')
-        //   }
-        //   footArray.push(itemobj)
-        // }
         params = {
           page: {
             pg: self.prospectColorVal,
@@ -1641,6 +1539,7 @@
         canvas.css('backgroundColor', self.prospectColorVal)
         canvas.css('width', self.inp_width)
         canvas.css('height', self.inp_height)
+        self.tool.scrollHeight()
         self.dialogPageSetting = false
       },
       carouselShiftUpEvent: function (index) { // 上移
@@ -2111,7 +2010,7 @@
     overflow:auto;
   }
   .scrollcanvas {
-    width: 100%;
+    width: 3600px;
     height: 1px;
   }
   .canvas{
@@ -2201,8 +2100,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 200%;
+    width: 3600px;
+    height: 100%;
     border:0;
     border-style:dashed;
     border-color: red;
