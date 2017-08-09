@@ -1210,7 +1210,7 @@
                 return false
               }
             })
-          },        
+          },
           bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
