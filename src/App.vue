@@ -1210,8 +1210,7 @@
                 return false
               }
             })
-          },
-        // ------------------- todo: ------------------
+          },        
           bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
@@ -1225,6 +1224,7 @@
               self.tool.switchModuleEvent(type, onthis, self)
             })
           },
+        // ------------------- todo: ------------------
           switchModuleEvent: function (type, onthis, self) {
             console.log(type, onthis)
             let w
