@@ -387,6 +387,25 @@
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="修改页头 (图片尺寸：1200*140 )"
+      :visible.sync="dialogPageHeader"
+      size="small" class="diaheader">
+      <el-upload
+        class="pageHeader-uploader"
+        name="upfile"
+        action="/uploadv2/image.html"
+        :show-file-list="false"
+        :on-success="handlePageHeaderSuccess"
+        :before-upload="beforePictureUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
+        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogPageHeader = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+      </span>
+    </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>

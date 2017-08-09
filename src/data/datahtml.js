@@ -103,7 +103,7 @@ var datahtml = {
       {
         name: 'dynamics',
         icon: 'icon-widget-sticker',
-        text: '名师团队121'
+        text: '名师团队'
       },
       {
         name: 'dynamics',
