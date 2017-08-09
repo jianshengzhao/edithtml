@@ -520,7 +520,6 @@
             self.moduleElement = ele
             self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
             $('.module').removeClass('on_module')
-            $('.resize').remove()
             ele.addClass('on_module')
             ele.append(resize)
             self.inp_z = parseInt(ele.css('zIndex')) || 0
@@ -1212,6 +1211,9 @@
                   console.log('module')
                   break
               }
+            })
+            editBox.on('click', '.promptBox', function (e) {
+              console.log($(this).parent())
             })
           }
         }
@@ -2063,7 +2065,20 @@
     -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg); 
     -o-transform: rotate(180deg); 
-  }  
+  }
+  .layer .lib_box {
+    padding: 0;
+  }
+  .layer .header{
+    width: 100%;
+    padding-left: 20px;
+    box-sizing: border-box;
+  }
+  .layer .lib_ol {
+    width: 100%;
+    padding-left: 20px;
+    box-sizing: border-box;
+  }
 /*editBox*/
   .editBox {
     position: absolute;
@@ -2207,16 +2222,6 @@
 /*module*/
   .module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
-  }
-  .navigation:hover:before{
-    position: absolute;
-    top: -20px;
-    left: 0;
-    height: 20px;
-    padding:0 10px;
-    background-color: #199ED8;
-    color: #fff;
-    content:"导航栏设置";
   }
   .on_module{
     border-color: #46a8fb;
@@ -2501,5 +2506,21 @@
     height: 36px;
     text-align: right;
     line-height: 36px;
+  }
+/*设置*/
+  .promptBox{
+    display: none;
+    position: absolute;
+    top: -19px;
+    left: 0;
+    height: 20px;
+    line-height: 20px;
+    padding:0 10px;
+    background-color: #199ED8;
+    color: #fff;
+    cursor: pointer;   
+  }
+  .on_module .promptBox{
+    display: block;
   }
 </style>

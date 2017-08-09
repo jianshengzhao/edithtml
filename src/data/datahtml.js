@@ -152,7 +152,7 @@ var datahtml = {
   },
   navigation: {
     style: 'width:1200px; height:50px',
-    html: '<div class="navigation module"><a href="">主页</a><a href="">网校简介</a><a href="">新闻资讯</a><a href="">联系我们</a><a href="">全校新闻</a><a href="">网校发布</a><a href="">在线商城</a><div class="login_box"><a href="">注册</a><a href="">登录</a></div><div class="search_box"><input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text"><input class="btn-search" value="" type="button"></div></div>'
+    html: '<div class="navigation module"><div class="promptBox">导航栏设置</div><a href="">主页</a><a href="">网校简介</a><a href="">新闻资讯</a><a href="">联系我们</a><a href="">全校新闻</a><a href="">网校发布</a><a href="">在线商城</a><div class="login_box"><a href="">注册</a><a href="">登录</a></div><div class="search_box"><input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text"><input class="btn-search" value="" type="button"></div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',
