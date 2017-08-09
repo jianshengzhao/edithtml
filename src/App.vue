@@ -132,12 +132,17 @@
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol basicBox"></div>
-        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol onlineBox"></div>
+        <div class="lib_ol elementHead">
+          <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span></div>
+        </div>
+        <div class="header">主体 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol elementMain">
+          <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span></div>
+        </div>
         <div class="header">页尾 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol todoBox"></div>
-        <div class="header">尽请期待。。。</div>
+        <div class="lib_ol elementTail">
+          <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span></div>
+        </div>       
       </div>
       <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
@@ -151,7 +156,8 @@
           <div class="c_top">
             <div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>
           </div>
-          <div class="c_body"></div>
+          <div class="c_body">
+          </div>
           <div class="c_foot">
             <div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>
           </div>
@@ -251,7 +257,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="添加图片 ( 点击添加 )"
+      title="修改图片 ( 点击添加 )"
       :visible.sync="dialogPicture"
       size="tiny" class="diaheader">
       <el-upload
@@ -443,7 +449,7 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // -----------工具栏-----------------
+      // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
         inp_width: 1200,
@@ -471,6 +477,9 @@
         paddingleft: 181, // left栏高度
         postop: 50, // editbox  top值
         posleft: 1000, // editbox  left值
+        elementHead: [],
+        elementMain: [],
+        elementTail: [],
       // ---------------------------------------
         editorConfig: {
           zIndex: 3000,
@@ -520,6 +529,7 @@
             self.moduleElement = ele
             self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
             $('.module').removeClass('on_module')
+            $('.resize').remove()
             ele.addClass('on_module')
             ele.append(resize)
             self.inp_z = parseInt(ele.css('zIndex')) || 0
@@ -563,6 +573,30 @@
             colL.css('height', scrollHeight)
             colR.css('height', scrollHeight)
           },
+          getLayerElement: function (self, parent) { // 更新图层元素
+            let ele = parent.find('.module')
+            let arr = []
+            for (let i = 0, len = ele.length; i < len; i++) {
+              let item = ele.eq(i)
+              let text = item.attr('datatext')
+              let obj = {
+                ele: item,
+                text: text
+              }
+              arr.push(obj)
+            }
+            switch (parent.attr('class')) {
+              case 'c_top':
+                self.elementHead = arr
+                break
+              case 'c_body':
+                self.elementMain = arr
+                break
+              case 'c_foot':
+                self.elementTail = arr
+                break
+            }
+          },
           bindLibraryMenu: function (self) { // 左侧菜单栏
             let toallGroup = datahtml.datahtml.toallGroup
             let basic = toallGroup.basic
@@ -589,7 +623,7 @@
             basicBox.html(bhtm)
             onlineBox.html(ohtm)
             todoBox.html(thtm)
-            $('.header').on('click', function () {
+            $('.library .header').on('click', function () {
               let e = $(this).next()
               let len = e.children().length
               let num = parseInt(len / 2) + len % 2
@@ -624,6 +658,19 @@
             let editBox = $('.editBox')
             let layer = $('.layer')
             let shrink = layer.find('.shrink')
+            $('.layer .header').on('click', function () {
+              let e = $(this).next()
+              let len = e.children().length
+              let h = 25 * len
+              if (e.css('height') === '1px') {
+                e.css('height', h + 'px')
+              } else {
+                e.css('height', h + 'px')
+                setTimeout(function () {
+                  e.css('height', '0px')
+                }, 0)
+              }
+            })
             shrink.on('click', function () {
               if (shrink.hasClass('shrinkout')) {
                 shrink.removeClass('shrinkout')
@@ -634,6 +681,21 @@
                 layer.removeClass('layerHide')
                 editBox.css('paddingRight', '181px')
               }
+            })
+            $('.elementHead').on('click', '.ele_li', function (e) {
+              let index = $(this).attr('dataIndex')
+              let ele = self.elementHead[index].ele
+              self.tool.initialize(self, ele)
+            })
+            $('.elementMain').on('click', '.ele_li', function (e) {
+              let index = $(this).attr('dataIndex')
+              let ele = self.elementMain[index].ele
+              self.tool.initialize(self, ele)
+            })
+            $('.elementTail').on('click', '.ele_li', function (e) {
+              let index = $(this).attr('dataIndex')
+              let ele = self.elementTail[index].ele
+              self.tool.initialize(self, ele)
             })
           },
           bindMouseEvent: function (self) { // top,foot大小调整事件，添加模块到画布的鼠标事件
@@ -735,6 +797,7 @@
                 box.append(copyCon.html())
                 let bChild = box.children('.module')
                 bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
+                self.tool.getLayerElement(self, box)
               })
             }
           },
@@ -834,7 +897,9 @@
                   return false
                 }
                 if (e.key === 'Delete') {
+                  let original = module.parent()
                   module.remove()
+                  self.tool.getLayerElement(self, original)
                 }
               }
             })
@@ -1149,72 +1214,78 @@
         // ------------------- todo: ------------------
           bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
             let editBox = $('.editBox')
-            let w
             editBox.on('dblclick', '.on_module', function (e) {
               let onthis = self.moduleElement
               let type = onthis.attr('class').split(' ')[0]
-              switch (type) {
-                case 'text':
-                  self.dialogText = true
-                  self.textarea = onthis.text()
-                  break
-                case 'editor':
-                  self.dialogEditor = true
-                  w = parseInt(onthis.css('width'))
-                  let html = onthis.html()
-                  self.$nextTick(function () {
-                    self.$refs.ueditor.id = self.ueditorid
-                    $('.ueditor .el-dialog').css('width', w + 40)
-                    $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
-                    self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
-                    self.editor.ready(function () {
-                      self.editor.setContent(html)
-                    })
-                  })
-                  break
-                case 'picture':
-                  self.dialogPicture = true
-                  break
-                case 'button':
-                  self.dialogButton = true
-                  self.inputBtnText = self.moduleElement.find('a').text()
-                  self.inputBtnHref = self.moduleElement.find('a').attr('href')
-                  break
-                case 'pageHeader':
-                  self.dialogPageHeader = true
-                  w = parseInt(onthis.css('width'))
-                  let imgsrc = self.moduleElement.find('img').attr('src')
-                  self.$nextTick(function () {
-                    $('.diaheader .el-dialog').css('width', w + 40)
-                    self.imageUrl = imgsrc
-                  })
-                  break
-                case 'WeChat':
-                  break
-                case 'carousel':
-                  self.dialogCarousel = true
-                  let carouselData = $('.on_module').attr('carouselData')
-                  let hs = parseInt($('.screenBox').css('height'))
-                  let ws = parseInt($('.screenBox').css('width'))
-                  self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
-                  self.showWidth = ws
-                  if (carouselData) {
-                    let data = $.parseJSON(carouselData)
-                    self.showWidth = data.showWidth
-                    self.carouselData = data.carouselData
-                    self.showTime = data.showTime
-                    self.transitionTime = data.transitionTime
-                    self.changeStyle = data.changeStyle
-                  }
-                  break
-                default:
-                  console.log('module')
-                  break
-              }
+              self.tool.switchModuleEvent(type, onthis, self)
             })
             editBox.on('click', '.promptBox', function (e) {
-              console.log($(this).parent())
+              let onthis = self.moduleElement
+              let type = onthis.attr('class').split(' ')[0]
+              self.tool.switchModuleEvent(type, onthis, self)
             })
+          },
+          switchModuleEvent: function (type, onthis, self) {
+            console.log(type, onthis)
+            let w
+            switch (type) {
+              case 'text':
+                self.dialogText = true
+                self.textarea = onthis.text()
+                break
+              case 'editor':
+                self.dialogEditor = true
+                w = parseInt(onthis.css('width'))
+                let html = onthis.html()
+                self.$nextTick(function () {
+                  self.$refs.ueditor.id = self.ueditorid
+                  $('.ueditor .el-dialog').css('width', w + 40)
+                  $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
+                  self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
+                  self.editor.ready(function () {
+                    self.editor.setContent(html)
+                  })
+                })
+                break
+              case 'picture':
+                self.dialogPicture = true
+                break
+              case 'button':
+                self.dialogButton = true
+                self.inputBtnText = self.moduleElement.find('a').text()
+                self.inputBtnHref = self.moduleElement.find('a').attr('href')
+                break
+              case 'pageHeader':
+                self.dialogPageHeader = true
+                w = parseInt(onthis.css('width'))
+                let imgsrc = self.moduleElement.find('img').attr('src')
+                self.$nextTick(function () {
+                  $('.diaheader .el-dialog').css('width', w + 40)
+                  self.imageUrl = imgsrc
+                })
+                break
+              case 'WeChat':
+                break
+              case 'carousel':
+                self.dialogCarousel = true
+                let carouselData = $('.on_module').attr('carouselData')
+                let hs = parseInt($('.screenBox').css('height'))
+                let ws = parseInt($('.screenBox').css('width'))
+                self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
+                self.showWidth = ws
+                if (carouselData) {
+                  let data = $.parseJSON(carouselData)
+                  self.showWidth = data.showWidth
+                  self.carouselData = data.carouselData
+                  self.showTime = data.showTime
+                  self.transitionTime = data.transitionTime
+                  self.changeStyle = data.changeStyle
+                }
+                break
+              default:
+                console.log('module')
+                break
+            }
           }
         }
       }
@@ -1257,6 +1328,9 @@
         head.html(module.top)
         middle.html(module.body)
         foot.html(module.foot)
+        self.tool.getLayerElement(self, head)
+        self.tool.getLayerElement(self, middle)
+        self.tool.getLayerElement(self, foot)
         self.tool.scrollHeight()
       })
     },
@@ -1432,6 +1506,7 @@
           self.original = self.moduleElement.parent()
           self.moduleElement.remove()
           $('.contextmenu').hide()
+          self.tool.getLayerElement(self, self.original)
         }
       },
       copyEvent: function () { // 复制
@@ -1446,21 +1521,22 @@
         let self = this
         if (self.clipboard) {
           let sTop = parseInt($('.space').scrollTop())
+          let sLeft = parseInt($('.space').scrollLeft())
           let contextmenu = $('.contextmenu')
           let y = parseInt(contextmenu.css('top'))
           let x = parseInt(contextmenu.css('left'))
           switch (self.original.attr('class')) {
             case 'c_top':
               y = y - (self.paddingtop + self.postop) + sTop
-              x = x - (self.paddingleft + self.posleft)
+              x = x - (self.paddingleft + self.posleft) + sLeft
               break
             case 'c_body':
               y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height'))
-              x = x - (self.paddingleft + self.posleft)
+              x = x - (self.paddingleft + self.posleft) + sLeft
               break
             case 'c_foot':
               y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
-              x = x - (self.paddingleft + self.posleft)
+              x = x - (self.paddingleft + self.posleft) + sLeft
               break
           }
           self.original.append(self.clipboard)
@@ -1476,14 +1552,17 @@
             }
           }
           bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
+          self.tool.getLayerElement(self, self.original)
         }
         $('.contextmenu').hide()
       },
       deleteEvent: function () { // 删除
         if ($('.on_module').length > 0) {
           let self = this
+          self.original = self.moduleElement.parent()
           self.moduleElement.remove()
           $('.contextmenu').hide()
+          self.tool.getLayerElement(self, self.original)
         }
       },
       previewEvent: function () { // 预览
@@ -2020,6 +2099,7 @@
     position:absolute;
     top:0;
     right:0;
+    padding-top:62px;
     width: 181px;
     height:100%;
     border-left: 1px solid #d9d9d9;
@@ -2073,11 +2153,22 @@
     width: 100%;
     padding-left: 20px;
     box-sizing: border-box;
+    background-color: #f8f8f8;
   }
   .layer .lib_ol {
     width: 100%;
-    padding-left: 20px;
+    padding-left: 0px;
+    text-indent: 20px;
     box-sizing: border-box;
+  }
+  .layer .lib_ol .ele_li{
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    border-top: 1px solid #eee;
+  }
+  .layer .lib_ol .ele_li:hover{
+    background-color: #eee;
   }
 /*editBox*/
   .editBox {
@@ -2094,9 +2185,6 @@
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 
     -o-transition: all 400ms;
-  }
-  .editBox .module{
-    outline: 1px solid #e3e3e3;
   }
   .space{
     position: relative;
@@ -2223,7 +2311,7 @@
   .module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
   }
-  .on_module{
+  .editBox .on_module{
     border-color: #46a8fb;
     outline:1px solid #46a8fb;
     box-sizing: border-box;
@@ -2511,7 +2599,7 @@
   .promptBox{
     display: none;
     position: absolute;
-    top: -19px;
+    top: -20px;
     left: 0;
     height: 20px;
     line-height: 20px;

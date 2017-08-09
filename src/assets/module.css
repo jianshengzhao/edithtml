@@ -1,7 +1,7 @@
 /* module */
   .module{
     position: absolute;
-    background-color: #fff;
+    /*background-color: #fff;*/
     z-index: 49;
   }
   .rectangle{    
@@ -341,9 +341,10 @@
     height: 30px;
     border: 1px solid #bbbbbb;
     border-radius: 4px;
-    line-height: 30px;
+    line-height: 28px;
     text-align: center;
     cursor: pointer;
+    box-sizing: border-box;
   }
   .button a{
     display: block;
