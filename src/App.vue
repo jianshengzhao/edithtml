@@ -2020,7 +2020,7 @@
     right:0;
     width: 181px;
     height:100%;
-    border-right: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
     background-color: #fff;
     box-sizing: border-box;
     z-index: 2;
@@ -2207,6 +2207,16 @@
 /*module*/
   .module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
+  }
+  .navigation:hover:before{
+    position: absolute;
+    top: -20px;
+    left: 0;
+    height: 20px;
+    padding:0 10px;
+    background-color: #199ED8;
+    color: #fff;
+    content:"导航栏设置";
   }
   .on_module{
     border-color: #46a8fb;
