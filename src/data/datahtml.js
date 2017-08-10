@@ -157,7 +157,7 @@ var datahtml = {
   },
   navigation: {
     style: 'width:1200px; height:50px',
-    html: '<div class="navigation module" datatext="导航栏"><div class="promptBox">导航栏设置</div><a href="">主页</a><a href="">网校简介</a><a href="">新闻资讯</a><a href="">联系我们</a><a href="">全校新闻</a><a href="">网校发布</a><a href="">在线商城</a><div class="login_box"><a href="">注册</a><a href="">登录</a></div><div class="search_box"><input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text"><input class="btn-search" value="" type="button"></div></div>'
+    html: '<div class="navigation module" datatext="导航栏"><div class="promptBox">导航栏设置</div><a href="">主页</a><a href="">网校简介</a><a href="">新闻资讯</a><a href="">联系我们</a><a href="">全校新闻</a><a href="">网校发布</a><a href="">在线商城</a><div class="login_box"><a class="reg" href="">注册</a><a class="log" href="">登录</a></div><div class="search_box"><input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text"><input class="btn-search" value="" type="button"></div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',
@@ -188,7 +188,7 @@ var datahtml = {
     html: '<div class="carousel module" datatext="轮播图"><div class="promptBox">轮播图设置</div><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
   },
   addcoursetype: {
-  	style: 'width: 200px; height: 217px',
+    style: 'width: 200px; height: 217px',
     html: '<div class="addcoursetype module" datatext="课程分类"><div class="promptBox">分类设置</div><div class="courseclassification"><div class="nav"><ul id="coursenav_ul" class="theme_4"><li class="first_li"><p class="allcourse">全部课程</p><ul class="second_mune_ul"><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服</a></h3><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><div class="first_li_three_mune"><h2 class="nav-second"><a class="second-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服务包</a></h2><a class="nav-third_line" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a></div></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li class="morey"><div class="fosnte"><a href="/platform.html">更多</a></div></li></ul></li></ul></div></div></div>'
   }
 }
