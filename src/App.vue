@@ -613,19 +613,18 @@
           label: '渐显'
         }],
         changeStyle: false,
-        
-      //------------分类设置----------------
-      	courseactiveName: 'first',
-      	dialogAddcoursetype:false,
-      	courseHeightL : {
-      		heightone : '默认',
-      		heighttwo : '默认',
-      		length : '默认',
-      		heightonenum : 50,
-      		heighttwonum : 65,
-      		lengthnum : 2,
-      		classs : 'theme_4'
-      	},
+      // ------------分类设置----------------
+        courseactiveName: 'first',
+        dialogAddcoursetype: false,
+        courseHeightL: {
+          heightone: '默认',
+          heighttwo: '默认',
+          length: '默认',
+          heightonenum: 50,
+          heighttwonum: 65,
+          lengthnum: 2,
+          classs: 'theme_4'
+        },
       // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
@@ -1973,34 +1972,34 @@
         console.log(index, value, 1)
       },
       // ------------- 分类设置 ---------------------
-      handlecourseClick : function () {
+      handlecourseClick: function () {
         let self = this
         let courseactiveName = self.courseactiveName
-        if(courseactiveName == 'second'){
-        	let Paletters = $('.togglePaletteOnly .Paletter')
-        	Paletters.on('click',function(){
-        		$('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
-        		$(this).find('.Paletter-icon').addClass('active-icon')
-        		self.courseHeightL.classs = $('.togglePaletteOnly .Paletter .active-icon').attr('color')
-        	})
-        	$('.Palettebuttonlist .csslist').on('click',function(){
-        		$('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
-        		$('.togglePaletteOnly .Paletter4').find('.Paletter-icon').addClass('active-icon')
-        		self.courseHeightL.classs = 'theme_4'
-        	})
+        if (courseactiveName === 'second') {
+          let Paletters = $('.togglePaletteOnly .Paletter')
+          Paletters.on('click', function () {
+            $('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
+            $(this).find('.Paletter-icon').addClass('active-icon')
+            self.courseHeightL.classs = $('.togglePaletteOnly .Paletter .active-icon').attr('color')
+          })
+          $('.Palettebuttonlist .csslist').on('click', function () {
+            $('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
+            $('.togglePaletteOnly .Paletter4').find('.Paletter-icon').addClass('active-icon')
+            self.courseHeightL.classs = 'theme_4'
+          })
         }
       },
       dialogAddcoursetypeEvent: function () { // 分类设置配置数据
         let self = this
         let obj = {
           classs: self.courseHeightL.classs,
-          lengthnum: self.courseHeightL.lengthnum,
+          lengthnum: self.courseHeightL.lengthnum
         }
         $('.courseclassification .first_li').css('height', self.courseHeightL.heightonenum + 'px')
         $('.courseclassification .first_li').css('line-height', self.courseHeightL.heightonenum + 'px')
         $('.courseclassification .second_mune_ul').css('top', self.courseHeightL.heightonenum + 'px')
         $('.courseclassification .second_mune_ul li').css('height', self.courseHeightL.heighttwonum + 'px')
-        $('.addcoursetype #coursenav_ul').attr('class',self.courseHeightL.classs)
+        $('.addcoursetype #coursenav_ul').attr('class', self.courseHeightL.classs)
         let str = JSON.stringify(obj)
         self.dialogAddcoursetype = false
         $('.on_module').attr('carouselData', str)
