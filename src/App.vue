@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- top main tool -->
+  <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">
       <div class="t_logo"></div>
       <div class="t_left">
@@ -67,7 +67,7 @@
         </div>
       </div> 
     </div>
-    <!-- attribute tool -->
+  <!-- attribute tool -->
     <div class="tool" unselectable="on" onselectstart="return false;">
       <div class="toolBox">
         <div class="property" >
@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-    <!-- assembly library -->
+  <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
       <nav class="lib_nav">
         <ol>
@@ -128,7 +128,7 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-    <!-- layer -->
+  <!-- layer -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
@@ -148,7 +148,7 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-    <!-- editBox -->
+  <!-- editBox -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 181px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
@@ -167,12 +167,12 @@
         <div class="col-l line"></div>
         <div class="col-r line"></div>
       </div>
-      <!-- copyBox  选中的组件容器盒子-->
+    <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
         </div>
       </div>
-      <!-- 自定义右键菜单 -->
+    <!-- 自定义右键菜单 -->
       <ul class="contextmenu">
         <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
         <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
@@ -499,7 +499,7 @@
             </el-row>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="导航设置" name="second">
+        <el-tab-pane label="导航设置" name="second">         
           <div class="navBox">
             <template>
               <el-table
@@ -510,7 +510,7 @@
                   label="状态"
                   width="120">
                   <template scope="scope">
-                    <el-checkbox :checked="scope.row.available=='1'" @change="handleEnableNavEvent(scope.$index, scope.row)">启用</el-checkbox>
+                    <el-checkbox v-model="scope.row.available" @change="handleEnableNavEvent(scope.$index, scope.row)">启用</el-checkbox>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -530,19 +530,42 @@
                   <template scope="scope">
                     <el-button size="small" type="text" @click="handleEidtNavnameEvent(scope.$index, scope.row)">编辑</el-button>
                     <el-button size="small" type="text" @click="handleShiftUpNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc">上移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
                     <el-button size="small" type="text" @click="handleShiftDownNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (navData.length - 1)">下移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc">下移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
+                    <el-button size="small" type="text" @click="handleDeleteNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
                   </template>
                 </el-table-column>
               </el-table>
             </template>
-          </div>
+          </div>        
         </el-tab-pane>       
       </el-tabs>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" style="float: left;margin-left: 10px;" v-if="activeNav=='second'" @click="addNavName = true">添加导航</el-button>
         <el-button @click="dialogNavigation = false">取 消</el-button>
         <el-button type="primary" @click="dialogNavigationEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="修改导航"
+      :visible.sync="editNavName "
+      size="edit" >
+      <el-input v-model="inp_editNav" placeholder="请输入导航名称"></el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="editNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleEidtNavnameConfirmEvent">确 定</el-button>
+      </span>      
+    </el-dialog>
+    <el-dialog
+      title="添加导航"
+      :visible.sync="addNavName"
+      size="edit" >
+      <el-input v-model="inp_addNav" placeholder="请输入导航名称"></el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="addNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleEidtNavnameConfirmEvent">确 定</el-button>
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
@@ -577,9 +600,14 @@
         dialogPageSetting: false,
         dialogCarousel: false,
         dialogNavigation: false,
+        editNavName: false,
+        addNavName: false,
         searchBtn: true,
         loginBtn: true,
         registerBtn: true,
+        inp_editNav: '',
+        inp_addNav: '',
+        navIndex: 0,
         navData: [],
         inputBtnText: '',
         inputBtnHref: '',
@@ -1468,6 +1496,14 @@
                     let data = response.body.data
                     let navigatorlist = data.navigatorlist
                     self.navData = navigatorlist
+                    for (let i = 0, len = self.navData.length; i < len; i++) {
+                      let item = self.navData[i]
+                      if (item.available === '1') {
+                        item.available = true
+                      } else {
+                        item.available = false
+                      }
+                    }
                   }
                 }
                 self.httpget(getParam)
@@ -1962,16 +1998,35 @@
         }
         self.dialogNavigation = false
       },
-      handleEidtNavnameEvent: function () { // 编辑导航名称
+      handleEidtNavnameEvent: function (index, value) { // 编辑导航名称
+        let self = this
+        self.editNavName = true
+        self.navIndex = index
+        self.inp_editNav = value.nickname
       },
-      handleShiftUpNavEvent: function () { // 上移
+      handleEidtNavnameConfirmEvent: function () {
+        let self = this
+        self.editNavName = false
+        self.navData[self.navIndex].nickname = self.inp_editNav
       },
-      handleShiftDownNavEvent: function () { // 下移
+      handleShiftUpNavEvent: function (index, value) { // 上移
+        let self = this
+        let item = self.navData.splice(index, 1)
+        self.navData.splice(index - 1, 0, item[0])
+      },
+      handleShiftDownNavEvent: function (index, value) { // 下移
+        let self = this
+        let item = self.navData.splice(index, 1)
+        self.navData.splice(index + 1, 0, item[0])
+      },
+      handleDeleteNavEvent: function (index, value) {
+        let self = this
+        self.navData.splice(index, 1)
       },
       handleEnableNavEvent: function (index, value) { // 启用
         console.log(index, value, 1)
       },
-      // ------------- 分类设置 ---------------------
+    // ------------- 分类设置 ---------------------
       handlecourseClick: function () {
         let self = this
         let courseactiveName = self.courseactiveName
@@ -2880,7 +2935,10 @@
   .el-dialog--nav{
     width: 600px;
   }
-  .navBox{
+  .el-dialog--edit{
+    width: 400px;
+  }
+  .navBox{   
     width:100%;
     height: 300px;
   }
@@ -2892,6 +2950,7 @@
     height: 30px;
     line-height: 30px;
   }
+
 /*设置*/
   .promptBox{
     display: none;

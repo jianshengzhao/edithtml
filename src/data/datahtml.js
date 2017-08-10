@@ -57,6 +57,11 @@ var datahtml = {
         name: 'carousel',
         icon: 'imgicon icon-carousel',
         text: '轮播图'
+      },
+      {
+        name: 'addcoursetype',
+        icon: 'icon-widget-sticker',
+        text: '课程分类'
       }
     ],
     todo: [
@@ -109,11 +114,6 @@ var datahtml = {
         name: 'dynamics',
         icon: 'icon-widget-sticker',
         text: '网校应用'
-      },
-      {
-        name: 'addcoursetype',
-        icon: 'mb icon-wechat',
-        text: '课程分类'
       }
     ],
     expect: []
