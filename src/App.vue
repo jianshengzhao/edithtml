@@ -366,7 +366,7 @@
             </el-row>
             <el-row>
               <el-col :span="4">显示宽度</el-col>
-              <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600"></el-input-number></el-col>
+              <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600" :step="100"></el-input-number></el-col>
               <el-col :span="4">切换方式</el-col>
               <el-col :span="8">
               <el-select v-model="changeStyle" placeholder="请选择">
@@ -388,22 +388,88 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="修改页头 (图片尺寸：1200*140 )"
-      :visible.sync="dialogPageHeader"
-      size="small" class="diaheader">
-      <el-upload
-        class="pageHeader-uploader"
-        name="upfile"
-        action="/uploadv2/image.html"
-        :show-file-list="false"
-        :on-success="handlePageHeaderSuccess"
-        :before-upload="beforePictureUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
-        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
-      </el-upload>
+      title="导航设置"
+      :visible.sync="dialogNavigation "
+      size="nav" class="diaheader">
+      <el-tabs v-model="activeNav" >
+        <el-tab-pane label="基础设置" name="first">
+          <div class="navBox">
+            <el-row>
+              <el-col :span='4'>搜索框</el-col>
+              <el-col :span='4'>
+                <el-switch
+                  v-model="searchBtn"
+                  on-text="开启"
+                  off-text="关闭">
+                </el-switch>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span='4'>登录</el-col>
+              <el-col :span='4'>
+                <el-switch
+                  v-model="loginBtn"
+                  on-text="开启"
+                  off-text="关闭">
+                </el-switch>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span='4'>注册</el-col>
+              <el-col :span='4'>
+                <el-switch
+                  v-model="registerBtn"
+                  on-text="开启"
+                  off-text="关闭">
+                </el-switch>
+              </el-col>
+            </el-row>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="导航设置" name="second">
+          <div class="navBox">
+            <template>
+              <el-table
+                :data="navData"
+                style="width: 100%"
+                max-height="300">
+                <el-table-column
+                  label="状态"
+                  width="120">
+                  <template scope="scope">
+                    <el-checkbox :checked="scope.row.available=='1'" @change="handleEnableNavEvent(scope.$index, scope.row)">启用</el-checkbox>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="nickname"
+                  label="导航名称"
+                  width="160">
+                </el-table-column>
+                <el-table-column                
+                  label="分类"
+                  width="100">
+                  <template scope="scope">
+                    {{ scope.row.navtype == '0' ? '系统' : scope.row.navtype == '1' ? '资讯' : '自定义' }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="操作">
+                  <template scope="scope">
+                    <el-button size="small" type="text" @click="handleEidtNavnameEvent(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small" type="text" @click="handleShiftUpNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc">上移</el-button>
+                    <el-button size="small" type="text" @click="handleShiftDownNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (navData.length - 1)">下移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc">下移</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </div>
+        </el-tab-pane>       
+      </el-tabs>
       <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogPageHeader = false">取 消</el-button>
-        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+        <el-button @click="dialogNavigation = false">取 消</el-button>
+        <el-button type="primary" @click="dialogNavigationEvent">确 定</el-button>
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
@@ -437,12 +503,18 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+        dialogNavigation: false,
+        searchBtn: true,
+        loginBtn: true,
+        registerBtn: true,
+        navData: [],
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
         pictureUrl: '',
         textarea: '',
         activeName: 'first',
+        activeNav: 'first',
         carouselData: [{
           imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
           clickurl: 'https://www.baidu.com1'
@@ -506,6 +578,25 @@
             'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
           ]]
         },
+        httpget: function (getParam, type) { // 封装的异步请求数据
+          let self = this
+          self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
+            if (getParam.fun !== undefined) {
+              getParam.fun(response)
+            }
+          }).catch(function (response) {
+          })
+        },
+        httppost: function (getParam) { // 封装的异步请求数据
+          let self = this
+          self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
+            if (getParam.fun !== undefined) {
+              getParam.fun(response)
+            }
+          }).catch(function (response) {
+          })
+        },
+      // ---------------------
         tool: { /* 工具箱事件 */
         // --------------- complete ----------------
           linePosition: function (editBox, copyBox, self, e) {
@@ -1238,14 +1329,14 @@
               self.tool.switchModuleEvent(type, onthis, self)
             })
             editBox.on('click', '.promptBox', function (e) {
-              let onthis = self.moduleElement
+              let onthis = $(this).parent()
+              self.moduleElement = $(this).parent()
               let type = onthis.attr('class').split(' ')[0]
               self.tool.switchModuleEvent(type, onthis, self)
             })
           },
         // ------------------- todo: ------------------
           switchModuleEvent: function (type, onthis, self) {
-            console.log(type, onthis)
             let w
             switch (type) {
               case 'text':
@@ -1283,7 +1374,18 @@
                   self.imageUrl = imgsrc
                 })
                 break
-              case 'WeChat':
+              case 'navigation':
+                self.dialogNavigation = true
+                let getParam = {
+                  url: '/aroomv3/roominfo/navigator.html',
+                  params: {},
+                  fun: function (response) {
+                    let data = response.body.data
+                    let navigatorlist = data.navigatorlist
+                    self.navData = navigatorlist
+                  }
+                }
+                self.httpget(getParam)
                 break
               case 'carousel':
                 self.dialogCarousel = true
@@ -1300,6 +1402,8 @@
                   self.transitionTime = data.transitionTime
                   self.changeStyle = data.changeStyle
                 }
+                break
+              case 'WeChat':
                 break
               default:
                 console.log('module')
@@ -1742,11 +1846,42 @@
         self.moduleElement.find('img').attr('src', self.pictureUrl)
       },
     //   ---------------- todo: -----------------------
-      dialogButtonEvent: function () {
+      dialogButtonEvent: function () { // 按钮设置
         let self = this
         self.dialogButton = false
         self.moduleElement.find('a').text(self.inputBtnText)
         self.moduleElement.find('a').attr('href', self.inputBtnHref)
+      },
+      dialogNavigationEvent: function () { // 导航条设置
+        let self = this
+        let search = self.moduleElement.find('.search_box')
+        let login = self.moduleElement.find('.log')
+        let register = self.moduleElement.find('.reg')
+        if (self.searchBtn) {
+          search.show()
+        } else {
+          search.hide()
+        }
+        if (self.loginBtn) {
+          login.show()
+        } else {
+          login.hide()
+        }
+        if (self.registerBtn) {
+          register.show()
+        } else {
+          register.hide()
+        }
+        self.dialogNavigation = false
+      },
+      handleEidtNavnameEvent: function () { // 编辑导航名称
+      },
+      handleShiftUpNavEvent: function () { // 上移
+      },
+      handleShiftDownNavEvent: function () { // 下移
+      },
+      handleEnableNavEvent: function (index, value) { // 启用
+        console.log(index, value, 1)
       }
     }
   }
@@ -2190,6 +2325,9 @@
     background-color: #eee;
   }
 /*editBox*/
+  #app .module:hover .promptBox{
+    display: block;
+  }
   .editBox {
     position: absolute;
     top: 0;
@@ -2327,7 +2465,7 @@
     border-left-width: 1px;
   }
 /*module*/
-  .module:hover{
+  #app .module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
   }
   .editBox .on_module{
@@ -2613,6 +2751,25 @@
     height: 36px;
     text-align: right;
     line-height: 36px;
+  }
+/*Navigation*/
+  .el-dialog__body{
+    padding-bottom: 10px;
+  }
+  .el-dialog--nav{
+    width: 600px;
+  }
+  .navBox{
+    width:100%;
+    height: 300px;
+  }
+  .navBox .el-row{
+    margin-bottom: 15px;
+  }
+  .navBox .el-col{
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
   }
 /*设置*/
   .promptBox{
