@@ -387,6 +387,79 @@
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="分类设置"
+      :visible.sync="dialogAddcoursetype"
+      size="dialogAddcoursetype" >
+      <el-tabs v-model="courseactiveName"  @tab-click="handlecourseClick">
+        <el-tab-pane label="基础设置" name="first">
+          <el-form ref="courseHeightL" :model="courseHeightL" label-width="100px">
+          	<el-form-item label="主选框高度：">
+					    <el-radio-group v-model="courseHeightL.heightone">
+					      <el-radio label="默认"></el-radio>
+					      <el-radio label="自定义"></el-radio>
+					    </el-radio-group>
+					    
+					    <el-input-number v-model="courseHeightL.heightonenum" size="small" :disabled=" courseHeightL.heightone != '自定义' " :controls=false></el-input-number>
+					  </el-form-item>
+					  <el-form-item label="主类框高度：">
+					    <el-radio-group v-model="courseHeightL.heighttwo">
+					      <el-radio label="默认"></el-radio>
+					      <el-radio label="自定义"></el-radio>
+					    </el-radio-group>
+					    
+					    <el-input-number v-model="courseHeightL.heighttwonum" size="small" :disabled=" courseHeightL.heighttwo != '自定义' " :controls=false></el-input-number>
+					  </el-form-item>
+					  <el-form-item label="主类个数：">
+					    <el-radio-group v-model="courseHeightL.length">
+					      <el-radio label="默认"></el-radio>
+					      <el-radio label="自定义"></el-radio>
+					    </el-radio-group>
+					    
+					    <el-input-number v-model="courseHeightL.lengthnum" size="small" :disabled=" courseHeightL.length != '自定义' " :controls=false></el-input-number>
+					  </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="样式" name="second">
+         <el-form ref="courseHeightL" :model="courseHeightL" label-width="60px">
+          	<el-form-item label="颜色：">
+					    <div class="togglePaletteOnly">
+					    	<div class="Paletter Paletter1"><div color="theme_1" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter2"><div color="theme_2" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter3"><div color="theme_3" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter4"><div color="theme_4" class="Paletter-icon active-icon"></div></div>
+					    	<div class="Paletter Paletter5"><div color="theme_5" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter6"><div color="theme_6" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter7"><div color="theme_7" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter8"><div color="theme_8" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter9"><div color="theme_9" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter10"><div color="theme_10" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter11"><div color="theme_11" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter12"><div color="theme_12" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter13"><div color="theme_13" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter14"><div color="theme_14" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter15"><div color="theme_15" class="Paletter-icon"></div></div>
+					    	<div class="Paletter Paletter16"><div color="theme_16" class="Paletter-icon"></div></div>
+					    </div>
+					  </el-form-item>
+					  <div class="Palettebuttonlist">
+				    		<div color="default" class="csslist">
+				    				<div class="csslist-div">
+				    						<div class="csslist-div-top">
+				    						</div>
+				    							默认	
+				    				</div>
+				    				<p class="hovershow">默认</p>
+				    		</div>
+				    </div>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogAddcoursetype = false">取 消</el-button>
+        <el-button type="primary" @click="dialogAddcoursetypeEvent">确 定</el-button>
+      </span>
+    </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -449,6 +522,19 @@
           label: '渐显'
         }],
         changeStyle: false,
+        
+      //------------分类设置----------------
+      	courseactiveName: 'first',
+      	dialogAddcoursetype:false,
+      	courseHeightL : {
+      		heightone : '默认',
+      		heighttwo : '默认',
+      		length : '默认',
+      		heightonenum : 50,
+      		heighttwonum : 65,
+      		lengthnum : 2,
+      		classs : 'theme_4'
+      	},
       // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
@@ -1211,6 +1297,7 @@
               }
             })
           },
+        // ------------------- todo: ------------------
           bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
@@ -1224,7 +1311,6 @@
               self.tool.switchModuleEvent(type, onthis, self)
             })
           },
-        // ------------------- todo: ------------------
           switchModuleEvent: function (type, onthis, self) {
             console.log(type, onthis)
             let w
@@ -1281,6 +1367,9 @@
                   self.transitionTime = data.transitionTime
                   self.changeStyle = data.changeStyle
                 }
+                break
+              case 'addcoursetype':
+                self.dialogAddcoursetype = true
                 break
               default:
                 console.log('module')
@@ -1728,7 +1817,40 @@
         self.dialogButton = false
         self.moduleElement.find('a').text(self.inputBtnText)
         self.moduleElement.find('a').attr('href', self.inputBtnHref)
-      }
+      },
+      // ------------- 分类设置 ---------------------
+      handlecourseClick : function () {
+        let self = this
+        let courseactiveName = self.courseactiveName
+        if(courseactiveName == 'second'){
+        	let Paletters = $('.togglePaletteOnly .Paletter')
+        	Paletters.on('click',function(){
+        		$('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
+        		$(this).find('.Paletter-icon').addClass('active-icon')
+        		self.courseHeightL.classs = $('.togglePaletteOnly .Paletter .active-icon').attr('color')
+        	})
+        	$('.Palettebuttonlist .csslist').on('click',function(){
+        		$('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
+        		$('.togglePaletteOnly .Paletter4').find('.Paletter-icon').addClass('active-icon')
+        		self.courseHeightL.classs = 'theme_4'
+        	})
+        }
+      },
+      dialogAddcoursetypeEvent: function () { // 分类设置配置数据
+        let self = this
+        let obj = {
+          classs: self.courseHeightL.classs,
+          lengthnum: self.courseHeightL.lengthnum,
+        }
+        $('.courseclassification .first_li').css('height', self.courseHeightL.heightonenum + 'px')
+        $('.courseclassification .first_li').css('line-height', self.courseHeightL.heightonenum + 'px')
+        $('.courseclassification .second_mune_ul').css('top', self.courseHeightL.heightonenum + 'px')
+        $('.courseclassification .second_mune_ul li').css('height', self.courseHeightL.heighttwonum + 'px')
+        $('.addcoursetype #coursenav_ul').attr('class',self.courseHeightL.classs)
+        let str = JSON.stringify(obj)
+        self.dialogAddcoursetype = false
+        $('.on_module').attr('carouselData', str)
+      },
     }
   }
 </script>
@@ -2610,5 +2732,112 @@
   }
   .on_module .promptBox{
     display: block;
+  }
+/*分类设置*/
+	.el-dialog--dialogAddcoursetype{
+    width: 680px;
+  }
+  .togglePaletteOnly .Paletter{
+  	width: 16px;
+  	height: 16px;
+  	float: left;
+  	background: #000;
+  	margin-right: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .togglePaletteOnly .Paletter1{
+  	background: #9b28ae;
+  }
+  .togglePaletteOnly .Paletter2{
+  	background: #663db5;
+  }
+  .togglePaletteOnly .Paletter3{
+  	background: #4052b4;
+  }
+  .togglePaletteOnly .Paletter4{
+  	background: #1f96f2;
+  }
+  .togglePaletteOnly .Paletter5{
+  	background: #ff753f;
+  }
+  .togglePaletteOnly .Paletter6{
+  	background: #00bcd2;
+  }
+  .togglePaletteOnly .Paletter7{
+  	background: #fea000;
+  }
+  .togglePaletteOnly .Paletter8{
+  	background: #f2c300;
+  }
+  .togglePaletteOnly .Paletter9{
+  	background: #b7c500;
+  }
+  .togglePaletteOnly .Paletter10{
+  	background: #89c34a;
+  }
+  .togglePaletteOnly .Paletter11{
+  	background: #4daf51;
+  }
+  .togglePaletteOnly .Paletter12{
+  	background: #009687;
+  }
+  .togglePaletteOnly .Paletter13{
+  	background: #f47d00;
+  }
+  .togglePaletteOnly .Paletter14{
+  	background: #f34637;
+  }
+  .togglePaletteOnly .Paletter15{
+  	background: #e71e62;
+  }
+  .togglePaletteOnly .Paletter16{
+  	background: #c11759;
+  }
+  .togglePaletteOnly .Paletter .Paletter-icon{
+  	width: 16px;
+  	height: 16px;
+  }
+  .togglePaletteOnly .Paletter .active-icon{
+  	background: url(assets/icon/xuanzhong.png) no-repeat;
+  	background-size: 16px;
+  }
+  .Palettebuttonlist .csslist{
+  	width: 178px;
+  	height: 134px;
+  	border: 1px solid #cccccc;
+  	position: relative;
+  	cursor: pointer;
+  }
+  .Palettebuttonlist .csslist .hovershow{
+   	height: 28px;
+   	display: none;
+   	position: absolute;
+   	bottom: 0;
+   	width: 100%;
+   	background: #666666;
+   	color: #fff;
+   	text-align: center;
+   	line-height: 28px;
+  }
+  .Palettebuttonlist .csslist:hover  .hovershow{
+  	display: block;
+  }
+  .Palettebuttonlist .csslist .csslist-div{
+  	width: 134px;
+    height: 80px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #cccccc;
+    position: absolute;
+    top: 27px;
+    left: 22px;
+    line-height: 80px;
+    
+  }
+  .Palettebuttonlist .csslist .csslist-div .csslist-div-top{
+  	width: 100%;
+  	height: 20px;
+  	background: #338bff;
   }
 </style>
