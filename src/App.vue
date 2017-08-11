@@ -205,14 +205,14 @@
         <el-col :span="4">
           <el-color-picker v-model="prospectColorVal" ></el-color-picker>
         </el-col>
-        <el-col :span="10">todo:背景图片</el-col>
+       <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
         <el-col :span="5" class="tit">网校 * 背景色</el-col>
         <el-col :span="4">
           <el-color-picker v-model="bgColorVal"></el-color-picker>
         </el-col>
-        <el-col :span="10">todo:背景图片</el-col>
+       <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
         <el-col :span="5" class="tit">分辨率 * 页宽</el-col>
@@ -461,7 +461,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="导航设置"
+      title="导航栏设置"
       :visible.sync="dialogNavigation "
       size="nav" class="diaheader">
       <el-tabs v-model="activeNav" >
@@ -499,7 +499,7 @@
             </el-row>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="导航设置" name="second">         
+        <el-tab-pane label="导航设置" name="second">
           <div class="navBox">
             <template>
               <el-table
@@ -510,7 +510,7 @@
                   label="状态"
                   width="120">
                   <template scope="scope">
-                    <el-checkbox v-model="scope.row.available" @change="handleEnableNavEvent(scope.$index, scope.row)">启用</el-checkbox>
+                    <el-checkbox v-model="scope.row.available" >启用</el-checkbox>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -561,11 +561,106 @@
     <el-dialog
       title="添加导航"
       :visible.sync="addNavName"
-      size="edit" >
-      <el-input v-model="inp_addNav" placeholder="请输入导航名称"></el-input>
+      size="nav" class="addNavName">
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航名称</el-col>
+        <el-col :span='16'>
+          <el-input v-model="inp_addNav" placeholder="请输入导航名称"></el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航类型</el-col>
+        <el-col :span='16'>
+          <el-radio class="radio" v-model="navType" label="1">资讯</el-radio>
+          <el-radio class="radio" v-model="navType" label="2">自定义链接</el-radio>
+        </el-col>
+      </el-row>
+      <div v-if='navType=="2"'>
+        <el-row>
+          <el-col :span='4' style="text-align: center;">链接地址</el-col>
+          <el-col :span='16'>
+            <el-input v-model="inp_addNavUrl" placeholder="请输入导航跳转链接"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span='4' style="text-align: center;">打开方式</el-col>
+          <el-col :span='16' >
+            <el-radio class="radio" v-model="openType" label="1">新窗口</el-radio>
+            <el-radio class="radio" v-model="openType" label="2">当前窗口</el-radio>
+          </el-col>
+        </el-row>
+      </div>
       <span slot="footer" class="dialog-footer">        
         <el-button @click="addNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleEidtNavnameConfirmEvent">确 定</el-button>
+        <el-button type="primary" @click="handleAddNavConfirmEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="二级资讯导航设置"
+      :visible.sync="dialogSecNavigation "
+      size="nav" class="diaheader">
+        <div class="navBox">
+            <template>
+              <el-table
+                :data="secNavData"
+                style="width: 100%"
+                max-height="300">
+                <el-table-column
+                  label="状态"
+                  width="120">
+                  <template scope="scope">
+                    <el-checkbox v-model="scope.row.subavailable" >启用</el-checkbox>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="subnickname"
+                  label="导航名称"
+                  width="200">
+                </el-table-column>
+                <el-table-column
+                  label="操作">
+                  <template scope="scope">
+                    <el-button size="small" type="text" @click="handleEidtSecNavnameEvent(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small" type="text" @click="handleShiftUpSecNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
+                    <el-button size="small" type="text" @click="handleShiftDownSecNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (secNavData.length - 1)">下移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
+                    <el-button size="small" type="text" @click="handleDeleteSecNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+        </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" style="float: left;margin-left: 10px;" @click="addSecNavName = true">添加导航</el-button>
+        <el-button @click="dialogSecNavigation = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSecNavigationEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="修改导航"
+      :visible.sync="editSecNavName "
+      size="edit" >
+      <el-input v-model="inp_editSecNav" placeholder="请输入二级导航名称"></el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="editSecNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleEidtSecNavnameConfirmEvent">确 定</el-button>
+      </span>      
+    </el-dialog>
+    <el-dialog
+      title="添加导航"
+      :visible.sync="addSecNavName"
+      size="nav" class="addNavName">
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航名称</el-col>
+        <el-col :span='16'>
+          <el-input v-model="inp_addSecNav" placeholder="请输入导航名称"></el-input>
+        </el-col>
+      </el-row>     
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="addSecNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddSecNavConfirmEvent">确 定</el-button>
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
@@ -599,16 +694,28 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+      // ------------导航设置--------
         dialogNavigation: false,
         editNavName: false,
         addNavName: false,
+        navType: '1',
+        openType: '1',
         searchBtn: true,
         loginBtn: true,
         registerBtn: true,
         inp_editNav: '',
         inp_addNav: '',
+        inp_addNavUrl: '',
         navIndex: 0,
         navData: [],
+        dialogSecNavigation: false,
+        editSecNavName: false,
+        addSecNavName: false,
+        secNavData: [],
+        secNavIndex: 0,
+        inp_editSecNav: '',
+        inp_addSecNav: '',
+      // ------------导航设置--------
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
@@ -707,6 +814,33 @@
               getParam.fun(response)
             }
           }).catch(function (response) {
+          })
+        },
+        moduleEvent: function () {
+          let self = this
+          let editBox = $('.editBox')
+          editBox.on('click', '.setInfo', function (e) {
+            self.dialogSecNavigation = true
+            self.navIndex = $(this).attr('dataIndex')
+            let getParam = {
+              url: '/aroomv3/roominfo/navigator.html',
+              params: {},
+              fun: function (response) {
+                let data = response.body.data
+                let navigatorlist = data.navigatorlist
+                self.navData = navigatorlist
+                self.secNavData = self.navData[self.navIndex].subnav
+                for (let i = 0, len = self.secNavData.length; i < len; i++) {
+                  let item = self.secNavData[i]
+                  if (item.subavailable === '1') {
+                    item.subavailable = true
+                  } else {
+                    item.subavailable = false
+                  }
+                }
+              }
+            }
+            self.httpget(getParam)
           })
         },
       // ---------------------
@@ -1553,6 +1687,7 @@
         self.tool.bindDblclickEvent(self)
         self.tool.bindRightClickEvent(self)
         self.tool.scrollHeight()
+        self.moduleEvent()
         space.scrollLeft(900)
         if (!window.saveParams) return false
         let params = window.saveParams
@@ -1997,6 +2132,53 @@
           register.hide()
         }
         self.dialogNavigation = false
+        for (let i = 0, len = self.navData.length; i < len; i++) {
+          let item = self.navData[i]
+          if (item.available) {
+            item.available = '1'
+          } else {
+            item.available = '0'
+          }
+        }
+        let getParam = {
+          url: '/aroomv3/roominfo/savenavigator.html',
+          params: {navigatorlist: self.navData},
+          fun: function (response) {
+            let code = response.body.code
+            let msg = response.body.msg
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success'
+              })
+              let navHtml = ''
+              for (let i = 0, len = self.navData.length; i < len; i++) {
+                let item = self.navData[i]
+                if (item.available === '1') {
+                  switch (item.navtype) {
+                    case '0':
+                      navHtml += '<a >' + item.nickname + '</a>'
+                      break
+                    case '1':
+                      navHtml += '<a ><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
+                      break
+                    case '2':
+                      navHtml += '<a target="' + item.target + '" href="' + item.url + '">' + item.nickname + '</a>'
+                      break
+                  }
+                }
+              }
+              self.moduleElement.find('.navaBox').html(navHtml)
+            } else {
+              self.$notify.info({
+                title: '消息',
+                message: msg
+              })
+            }
+          }
+        }
+        self.httppost(getParam)
       },
       handleEidtNavnameEvent: function (index, value) { // 编辑导航名称
         let self = this
@@ -2004,7 +2186,7 @@
         self.navIndex = index
         self.inp_editNav = value.nickname
       },
-      handleEidtNavnameConfirmEvent: function () {
+      handleEidtNavnameConfirmEvent: function () { // 确定修改导航名称
         let self = this
         self.editNavName = false
         self.navData[self.navIndex].nickname = self.inp_editNav
@@ -2019,12 +2201,134 @@
         let item = self.navData.splice(index, 1)
         self.navData.splice(index + 1, 0, item[0])
       },
-      handleDeleteNavEvent: function (index, value) {
+      handleDeleteNavEvent: function (index, value) { // 删除
         let self = this
         self.navData.splice(index, 1)
       },
-      handleEnableNavEvent: function (index, value) { // 启用
-        console.log(index, value, 1)
+      handleAddNavConfirmEvent: function (index, value) { // 添加导航确定按钮
+        let self = this
+        let obj = {
+          available: false,
+          code: '',
+          name: self.inp_addNav,
+          navtype: self.navType,
+          nickname: self.inp_addNav,
+          subnav: [],
+          target: '',
+          url: ''
+        }
+        let len = self.navData.length
+        let code = ''
+        for (let i = 0; i < len; i++) {
+          code = 'n' + (i + 1)
+          let bloo = true
+          for (let i = 0; i < len; i++) {
+            let codes = self.navData[i].code
+            if (code === codes) {
+              bloo = false
+            }
+          }
+          if (bloo) {
+            break
+          }
+        }
+        if (self.navType === '2') {
+          obj.target = self.openType === '1' ? '_blank' : '_self'
+          obj.url = self.inp_addNavUrl
+        }
+        obj.code = code
+        self.navData.push(obj)
+        self.addNavName = false
+        self.inp_addNav = ''
+        self.navType = '1'
+      },
+      dialogSecNavigationEvent: function (index, value) { // 二级导航条设置 todo:
+        let self = this
+        self.dialogSecNavigation = false
+        for (let i = 0, len = self.secNavData.length; i < len; i++) {
+          let item = self.secNavData[i]
+          if (item.subavailable) {
+            item.subavailable = '1'
+          } else {
+            item.subavailable = '0'
+          }
+        }
+        self.navData[self.navIndex].subnav = self.secNavData
+        let getParam = {
+          url: '/aroomv3/roominfo/savenavigator.html',
+          params: {navigatorlist: self.navData},
+          fun: function (response) {
+            let code = response.body.code
+            let msg = response.body.msg
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '资讯导航设置成功',
+                type: 'success'
+              })
+            } else {
+              self.$notify.info({
+                title: '消息',
+                message: msg
+              })
+            }
+          }
+        }
+        self.httppost(getParam)
+      },
+      handleEidtSecNavnameEvent: function (index, value) { // 编辑二级导航名称
+        let self = this
+        self.editSecNavName = true
+        self.secNavIndex = index
+        self.inp_editSecNav = value.subnickname
+      },
+      handleEidtSecNavnameConfirmEvent: function (index, value) { // 确定修改二级导航名称
+        let self = this
+        self.editSecNavName = false
+        self.secNavData[self.secNavIndex].subnickname = self.inp_editSecNav
+      },
+      handleShiftUpSecNavEvent: function (index, value) { // 二级导航上移
+        let self = this
+        let item = self.secNavData.splice(index, 1)
+        self.secNavData.splice(index - 1, 0, item[0])
+      },
+      handleShiftDownSecNavEvent: function (index, value) { // 二级导航下移
+        let self = this
+        let item = self.secNavData.splice(index, 1)
+        self.secNavData.splice(index + 1, 0, item[0])
+      },
+      handleDeleteSecNavEvent: function (index, value) { // 二级导航删除
+        let self = this
+        self.secNavData.splice(index, 1)
+      },
+      handleAddSecNavConfirmEvent: function (index, value) {  // 二级导航添加
+        let self = this
+        let obj = {
+          subavailable: false,
+          subcode: '',
+          subnickname: self.inp_addSecNav
+        }
+        let len = self.secNavData.length
+        let code = ''
+        for (let i = 0; i < len; i++) {
+          code = self.navData[self.navIndex].code + 's' + (i + 1)
+          let bloo = true
+          for (let i = 0; i < len; i++) {
+            let codes = self.secNavData[i].subcode
+            if (code === codes) {
+              bloo = false
+              if (i === len - 1) {
+                code = self.navData[self.navIndex].code + 's' + (i + 2)
+              }
+            }
+          }
+          if (bloo) {
+            break
+          }
+        }
+        obj.subcode = code
+        self.secNavData.push(obj)
+        self.addSecNavName = false
       },
     // ------------- 分类设置 ---------------------
       handlecourseClick: function () {
@@ -2950,7 +3254,31 @@
     height: 30px;
     line-height: 30px;
   }
-
+  .addNavName .el-row{
+    margin-bottom: 15px;
+  }
+  .addNavName .el-col{
+    font-size: 14px;
+    line-height: 36px;
+  }
+  .navaBox a{
+    position:relative;
+  }
+  .navaBox .setInfo{
+    display: none;
+    position:absolute;
+    top:0;
+    right:0;
+    font-size: 12px;
+    background-color: #199ED8;
+    height: 20px;
+    line-height: 20px;
+    padding:0 5px;
+    color: #fff;    
+  }
+  .navaBox a:hover .setInfo{
+    display: block;
+  }
 /*设置*/
   .promptBox{
     display: none;
