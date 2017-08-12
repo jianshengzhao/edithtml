@@ -639,7 +639,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="修改导航"
+      title="修改二级导航"
       :visible.sync="editSecNavName "
       size="edit" >
       <el-input v-model="inp_editSecNav" placeholder="请输入二级导航名称"></el-input>
@@ -649,7 +649,7 @@
       </span>      
     </el-dialog>
     <el-dialog
-      title="添加导航"
+      title="添加二级导航"
       :visible.sync="addSecNavName"
       size="nav" class="addNavName">
       <el-row>
@@ -663,6 +663,93 @@
         <el-button type="primary" @click="handleAddSecNavConfirmEvent">确 定</el-button>
       </span>
     </el-dialog>
+  <!-- todo -->
+  <el-dialog
+    title="设置免费试听课件"
+    :visible.sync="dialogAudition"
+    size="audition" class="auditiondia">
+    <el-row>
+      <el-col class='courseSource'>
+        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+          <el-radio-button label="self">本校课程</el-radio-button>
+          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>  
+    <el-row>
+      <el-col>
+        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+      <el-col>
+        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row class="conCourse">
+      <el-col :span="12">
+        <el-pagination
+          layout="prev, pager, next"
+          :total="courseListTotal"
+          :current-page="courseListPage"
+          :page-size="30"
+          v-if="courseListTotal > 30"
+          @current-change="courseListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课程名"
+          icon="search"
+          v-model="inp_courseName"
+          @change="searchCourseEvent"
+          :on-icon-click="searchCourseEvent">
+        </el-input>
+        <div class="courseList"  v-loading="loading">
+          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid)">
+            <div class="imgbox">
+              <img :src="item.img" >
+            </div>
+            <span>{{item.iname}} ({{item.coursewarenum||item.cwnum}})</span>
+          </div>
+          <div class="nodata" v-if="courseListData.length == 0"></div>
+        </div>        
+      </el-col>
+      <el-col :span="12" class="courseware"> 
+        <el-pagination
+          layout="prev, pager, next"
+          :total="cwListTotal"
+          :current-page="cwListPage"
+          :page-size="30"
+          v-if="cwListTotal > 30"
+          @current-change="CoursewareListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课件名"
+          icon="search"
+          v-model="inp_CoursewareName"
+          @change="searchCoursewareEvent">
+        </el-input>
+        <div class="cwlist" v-loading="loading">
+          <el-radio-group v-model="radioCourseware" @change="radioCoursewareChangeEvent">
+            <div class="cwLi" v-for="(item, index) in cwlistData" :key="item.sid">
+              <div class="chapter">{{item.sname}}</div>
+              <el-radio-button v-for="(itemcw, index) in item.cwlist" :key="itemcw.cwid" :label="itemcw.cwid">{{itemcw.title}}</el-radio-button>
+            </div>
+          </el-radio-group>
+          <div class="nodata" v-if="cwlistData.length == 0"></div>
+        </div>
+      </el-col>
+    </el-row>
+    <span slot="footer" class="dialog-footer">        
+      <el-button @click="dialogAudition = false">取 消</el-button>
+      <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
+    </span>
+  </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -686,7 +773,7 @@
     name: 'app',
     data: function () {
       return {
-      // -------------test---------
+      // -------------基础组件弹框---------
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -694,6 +781,26 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+      // ------------免费试听设置----
+        dialogAudition: false,
+        sourceData: [],
+        radioSource: 'self',
+        pClassData: [],
+        radioMainClass: '',
+        sClassData: [],
+        radioNextClass: '',
+        courseListData: [],
+        courseListTotal: 0,
+        courseListPage: 1,
+        inp_courseName: '',
+        cwlistData: [],
+        cwListTotal: 0,
+        cwListPage: 1,
+        folderid: '',
+        inp_CoursewareName: '',
+        radioCourseware: '',
+        loading: true,
+        loadingcw: true,
       // ------------导航设置--------
         dialogNavigation: false,
         editNavName: false,
@@ -715,7 +822,7 @@
         secNavIndex: 0,
         inp_editSecNav: '',
         inp_addSecNav: '',
-      // ------------导航设置--------
+      // ------------轮播设置--------
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
@@ -748,7 +855,7 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // ------------分类设置----------------
+      // ------------分类设置--------
         courseactiveName: 'first',
         dialogAddcoursetype: false,
         courseHeightL: {
@@ -791,14 +898,14 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-      // ---------------------------------------
+      // -----------common---------------------------
         editorConfig: {
           zIndex: 3000,
           toolbars: [[
             'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
           ]]
         },
-        httpget: function (getParam, type) { // 封装的异步请求数据
+        httpget: function (getParam) { // 封装的异步请求数据
           let self = this
           self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -816,7 +923,7 @@
           }).catch(function (response) {
           })
         },
-        moduleEvent: function () {
+        moduleEvent: function () { // 特殊二级导航设置绑定事件
           let self = this
           let editBox = $('.editBox')
           editBox.on('click', '.setInfo', function (e) {
@@ -842,6 +949,36 @@
             }
             self.httpget(getParam)
           })
+        },
+        courselist: function (param) { // 课程列表
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/courselist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              self.courseListData = data.courselist
+              self.courseListTotal = parseInt(data.coursecount)
+              self.loading = false
+            }
+          }
+          self.loading = true
+          self.httpget(getParam)
+        },
+        cwlist: function (param) {
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/cwlist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              self.cwlistData = data.cwlist
+              self.cwListTotal = parseInt(data.cwcount)
+              self.loadingcw = false
+            }
+          }
+          self.loadingcw = true
+          self.httpget(getParam)
         },
       // ---------------------
         tool: { /* 工具箱事件 */
@@ -1569,7 +1706,7 @@
             })
           },
         // ------------------- todo: ------------------
-          bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
+          bindDblclickEvent: function (self) { // 模块双击操作，单机设置按钮事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
               let onthis = self.moduleElement
@@ -1585,6 +1722,7 @@
           },
           switchModuleEvent: function (type, onthis, self) {
             let w
+            let getParam
             switch (type) {
               case 'text':
                 self.dialogText = true
@@ -1623,7 +1761,7 @@
                 break
               case 'navigation':
                 self.dialogNavigation = true
-                let getParam = {
+                getParam = {
                   url: '/aroomv3/roominfo/navigator.html',
                   params: {},
                   fun: function (response) {
@@ -1657,6 +1795,30 @@
                   self.transitionTime = data.transitionTime
                   self.changeStyle = data.changeStyle
                 }
+                break
+              case 'audition':
+                self.dialogAudition = true
+                getParam = {
+                  url: '/aroomv3/schsource.html',
+                  params: {},
+                  fun: function (response) {
+                    let data = response.body.data
+                    self.sourceData = data
+                    let param = {
+                      url: '/aroomv3/course/coursesort.html',
+                      params: {
+                        showbysort: 0
+                      },
+                      fun: function (response) {
+                        let classData = response.body.data
+                        self.pClassData = classData
+                        self.courselist({pagesize: 30, page: 1, issimple: 1})
+                      }
+                    }
+                    self.httpget(param)
+                  }
+                }
+                self.httpget(getParam)
                 break
               case 'WeChat':
                 break
@@ -2330,6 +2492,171 @@
         self.secNavData.push(obj)
         self.addSecNavName = false
       },
+    // ------------- 免费试听 ---------------------
+      radioCourseSourceChangeEvent: function (value) { // 课程来源
+        let self = this
+        if (value !== 'self') {
+          let param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: value,
+              pid: '',
+              sid: ''
+            },
+            fun: function (response) {
+              let data = response.body.data
+              self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
+        } else {
+          let getParam = {
+            url: '/aroomv3/schsource.html',
+            params: {},
+            fun: function (response) {
+              let data = response.body.data
+              self.sourceData = data
+              let param = {
+                url: '/aroomv3/course/coursesort.html',
+                params: {
+                  showbysort: 0
+                },
+                fun: function (response) {
+                  let classData = response.body.data
+                  self.pClassData = classData
+                  self.courselist({pagesize: 30, page: 1, issimple: 1})
+                }
+              }
+              self.httpget(param)
+            }
+          }
+          self.httpget(getParam)
+        }
+      },
+      radioMainClassChangeEvent: function (value) { // 选择主类按钮
+        let self = this
+        for (let i = 0, len = self.pClassData.length; i < len; i++) {
+          let item = self.pClassData[i]
+          if (item.pid === value) {
+            if (item.sorts) {
+              self.sClassData = item.sorts
+            } else {
+              self.sClassData = []
+            }
+            break
+          }
+        }
+        let param = {
+          pagesize: 30,
+          page: 1,
+          issimple: 1,
+          pid: value
+        }
+        self.inp_courseName = ''
+        self.courselist(param)
+      },
+      radioNextClassChangeEvent: function (value) { // 选择次类按钮
+        let self = this
+        let param = {
+          pagesize: 30,
+          page: 1,
+          issimple: 1,
+          pid: self.radioMainClass,
+          sid: value
+        }
+        self.inp_courseName = ''
+        self.courselist(param)
+      },
+      courseListCurrPageEvent: function (value) { // 课程列表分页
+        let self = this
+        let param = {
+          q: self.inp_courseName,
+          pagesize: 30,
+          page: value,
+          issimple: 1,
+          pid: self.radioMainClass,
+          sid: self.radioNextClass
+        }
+        self.courselist(param)
+      },
+      searchCourseEvent: function (value) { // 搜索课程
+        let self = this
+        let param = {
+          q: value,
+          pagesize: 30,
+          page: 1,
+          issimple: 1,
+          pid: self.radioMainClass,
+          sid: self.radioNextClass
+        }
+        self.courseListPage = 1
+        self.courselist(param)
+      },
+      viewCoursewareEvent: function (value) { // 查看课件
+        let self = this
+        let param = {
+          folderid: value,
+          page: 1,
+          pagesize: 30
+        }
+        self.folderid = value
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      CoursewareListCurrPageEvent: function (value) { // 课件列表分页
+        let self = this
+        let param = {
+          folderid: self.folderid,
+          s: self.inp_CoursewareName,
+          pagesize: 30,
+          page: value
+        }
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      searchCoursewareEvent: function (value) { // 课件列表搜索
+        let self = this
+        let param = {
+          folderid: self.folderid,
+          s: self.inp_CoursewareName,
+          pagesize: 30,
+          page: 1
+        }
+        self.cwListPage = 1
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      radioCoursewareChangeEvent: function () {},
+      handleSettingAuditionEvent: function () {
+        let self = this
+        let cwData
+        if (!self.radioCourseware) {
+          self.$notify({
+            title: '警告',
+            message: '你还未选择要添加的课件',
+            type: 'warning'
+          })
+        } else {
+          for (let i = 0, len = self.cwlistData.length; i < len; i++) {
+            let item = self.cwlistData[i].cwlist
+            for (let j = 0, jen = item.length; j < jen; j++) {
+              let jtem = item[j]
+              if (jtem.cwid === self.radioCourseware) {
+                cwData = jtem
+                break
+              }
+            }
+          }
+          let module = $('.on_module')
+          module.find('img').attr('src', cwData.logo)
+          module.find('.audiTit').text(cwData.title)
+          module.find('a').attr('dataHref', '/course/' + cwData.cwid + '.html')
+          self.dialogAudition = false
+        }
+      },
     // ------------- 分类设置 ---------------------
       handlecourseClick: function () {
         let self = this
@@ -2376,6 +2703,12 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     cursor: default;
+  }
+  .nodata{
+    background:url(assets/img/nodata.png) no-repeat 50%;
+    min-width: 300px;
+    width: 100%;
+    height: 400px;
   }
 /*top*/
   .top{
@@ -3234,7 +3567,7 @@
   }
 /*Navigation*/
   .el-dialog__body{
-    padding-bottom: 10px;
+    padding: 10px 20px;
   }
   .el-dialog--nav{
     width: 600px;
@@ -3277,6 +3610,95 @@
     color: #fff;    
   }
   .navaBox a:hover .setInfo{
+    display: block;
+  }
+/*免费试听*/
+  .el-dialog--audition{
+    width: 1000px;
+  }
+  .auditiondia .el-col{
+    max-height:100px;
+    overflow-y:auto;
+  }
+  .auditiondia .el-radio-button .el-radio-button__inner{
+    border:0;
+    border-radius: 2px;
+  }
+  .auditiondia .el-radio-button:first-child .el-radio-button__inner{
+    border:0;
+  }
+  .auditiondia .el-row{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #d1dbe5;
+  }
+  .auditiondia .conCourse .el-col{
+    height: 480px;
+    max-height:480px;
+    border-right: 1px solid #d1dbe5;
+  }
+  .auditiondia .courseList{
+    float: left;
+    width: 100%;
+    overflow-y:auto;
+    height: 443px;
+    margin-top: 5px; 
+  }
+  .auditiondia .courseLi{
+    float: left;
+    width: 150px;
+    height: 120px;
+    overflow: hidden;
+    padding: 0 4px; 
+    cursor: pointer;
+  }
+  .auditiondia .imgbox {
+    width: 150px;
+    height: 90px;
+  }
+  .imgbox img{
+    width: 100%;
+    height: 100%;
+  }
+  .auditiondia .courseLi span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+  }
+  .conCourse  .el-input {    
+    float: right;
+    width: 180px;
+    margin-right: 5px;
+  } 
+  .conCourse .el-input__inner{
+    margin: 2px 2px 0 0;
+    height: 28px;
+    line-height: 28px;
+  }
+  .conCourse .el-pagination{
+    float: left;
+  }
+  .conCourse .cwlist{
+    float: left;
+    width: 100%;
+    overflow-y:auto;
+    height: 443px;
+    margin-top: 5px; 
+  }
+  .conCourse .cwLi{
+    margin-left: 20px;
+
+  }
+  .courseware .chapter{
+    height: 36px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+  .courseware .el-radio-button{
     display: block;
   }
 /*设置*/

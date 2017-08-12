@@ -60,8 +60,13 @@ var datahtml = {
       },
       {
         name: 'addcoursetype',
-        icon: 'icon-widget-sticker',
+        icon: 'imgicon icon-classification',
         text: '课程分类'
+      },
+      {
+        name: 'audition',
+        icon: 'imgicon icon-audition',
+        text: '免费试听'
       }
     ],
     todo: [
@@ -94,11 +99,6 @@ var datahtml = {
         name: 'dynamics',
         icon: 'icon-widget-sticker',
         text: '学员动态'
-      },
-      {
-        name: 'dynamics',
-        icon: 'icon-widget-sticker',
-        text: '免费试听'
       },
       {
         name: 'dynamics',
@@ -158,6 +158,10 @@ var datahtml = {
   navigation: {
     style: 'width:1200px; height:50px',
     html: '<div class="navigation module" datatext="导航栏"><div class="promptBox">导航栏设置</div><div class="navaBox"><a href="">主页</a><a href="">网校简介</a><a href="">新闻资讯</a><a href="">联系我们</a><a href="">全校新闻</a><a href="">网校发布</a><a href="">在线商城</a></div><div class="login_box"><a class="reg" href="">注册</a><a class="log" href="">登录</a></div><div class="search_box"><input name="txtname" class="inp_search" id="search" placeholder="搜索关键字" type="text"><input class="btn-search" value="" type="button"></div></div>'
+  },
+  audition: {
+    style: 'width:190px; height:120px',
+    html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img><div class="audiTit">免费试听课件</div></a></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',
