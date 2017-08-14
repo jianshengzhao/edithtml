@@ -2538,6 +2538,7 @@
       },
       radioMainClassChangeEvent: function (value) { // 选择主类按钮
         let self = this
+        let param
         for (let i = 0, len = self.pClassData.length; i < len; i++) {
           let item = self.pClassData[i]
           if (item.pid === value) {
@@ -2549,26 +2550,65 @@
             break
           }
         }
-        let param = {
-          pagesize: 30,
-          page: 1,
-          issimple: 1,
-          pid: value
+        if (self.radioSource === 'self') {
+          param = {
+            pagesize: 30,
+            page: 1,
+            issimple: 1,
+            pid: value
+          }
+          self.courselist(param)
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: self.radioSource,
+              pid: value,
+              sid: ''
+            },
+            fun: function (response) {
+              let data = response.body.data
+              // self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
         }
         self.inp_courseName = ''
-        self.courselist(param)
       },
       radioNextClassChangeEvent: function (value) { // 选择次类按钮
         let self = this
-        let param = {
-          pagesize: 30,
-          page: 1,
-          issimple: 1,
-          pid: self.radioMainClass,
-          sid: value
+        let param
+        if (self.radioSource === 'self') {
+          param = {
+            pagesize: 30,
+            page: 1,
+            issimple: 1,
+            pid: self.radioMainClass,
+            sid: value
+          }
+          self.courselist(param)
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: self.radioSource,
+              pid: self.radioMainClass,
+              sid: value
+            },
+            fun: function (response) {
+              let data = response.body.data
+              // self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
         }
         self.inp_courseName = ''
-        self.courselist(param)
       },
       courseListCurrPageEvent: function (value) { // 课程列表分页
         let self = this
