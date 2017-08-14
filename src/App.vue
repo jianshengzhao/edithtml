@@ -545,6 +545,83 @@
         <el-button type="primary" @click="dialogNavigationEvent">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="新闻资讯设置"
+      :visible.sync="dialognews"
+      size="dialognews" >
+      <el-tabs v-model="activenews"  @tab-click="handlenewsClick">
+       	<el-tab-pane label="选择样式" name="first">
+         	<div class="Palettebuttonlist">
+		    		<div color="default" class="csslist" id="newsdefault">
+		    				<div class="csslist-div">
+		    						<div class="csslist-div-top">
+		    						</div>
+		    							默认	
+		    				</div>
+		    				<p class="hovershow">默认</p>
+		    		</div>
+			    </div>
+        </el-tab-pane>
+       	<el-tab-pane label="样式设置" name="second">
+          <el-form ref="newsDetailed" :model="newsDetailed" label-width="100px">
+          	<el-form-item label="资讯来源：">
+					    <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
+					    	<el-option
+						      v-for="item in newsDetailed.newssource"
+						      :key="item.value"
+						      :label="item.label"
+						      :value="item.value">
+						    </el-option>
+						  </el-select>
+					  </el-form-item>
+					  <el-form-item label="模块标题：">
+					    <el-radio-group v-model="newsDetailed.ontitle">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+          	<el-form-item label="图片显示：">
+					    <el-radio-group v-model="newsDetailed.onimg">
+					     <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="内容显示：">
+					    <el-radio-group v-model="newsDetailed.oncont">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="时间显示：">
+					    <el-radio-group v-model="newsDetailed.ontime">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="单行显示：">
+					    <el-radio-group v-model="newsDetailed.onrow">
+					      <el-radio :label="1">1条</el-radio>
+					      <el-radio :label="2">2条</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="行数：">
+					    <el-radio-group v-model="newsDetailed.oncol">
+					      <el-radio :label="1">1</el-radio>
+					      <el-radio :label="2">2</el-radio>
+					      <el-radio :label="3">3</el-radio>
+					      <el-radio :label="0">自定义</el-radio>
+					    </el-radio-group>
+					     <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
+					  </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        
+      </el-tabs>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialognews = false">取 消</el-button>
+        <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
+      </span>
+    </el-dialog>     
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -613,18 +690,46 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // ------------分类设置----------------
+      // ------------课程分类设置----------------
         courseactiveName: 'first',
         dialogAddcoursetype: false,
         courseHeightL: {
           heightone: '默认',
           heighttwo: '默认',
           length: '默认',
+          heightonenumdefault: 50,
+          heighttwonumdefault: 65,
+          lengthnumdefault: 2,
           heightonenum: 50,
           heighttwonum: 65,
           lengthnum: 2,
           classs: 'theme_4'
         },
+      //---------------新闻资讯设置------------------
+      	dialognews : false,
+      	activenews : 'first',
+      	newsDetailed : {
+      		newssource : [
+      		{
+          value: '1',
+          label: '系统资讯'
+        	},
+        	{
+          value: '2',
+          label: '非系统资讯'
+        	}
+      		],
+      		newsvalue : '1',
+      		ontitle : 1,
+      		title : '新闻资讯',
+      		onimg : 1,
+      		oncont : 1,
+      		ontime : 1,
+      		onrow : 2,
+      		oncol : 3,
+      		col : 1
+      	},
+      	
       // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
@@ -1493,6 +1598,9 @@
               case 'addcoursetype':
                 self.dialogAddcoursetype = true
                 break
+              case 'news':
+                self.dialognews = true
+                break
               default:
                 console.log('module')
                 break
@@ -1971,7 +2079,7 @@
       handleEnableNavEvent: function (index, value) { // 启用
         console.log(index, value, 1)
       },
-      // ------------- 分类设置 ---------------------
+      // ------------- 课程分类设置 ---------------------
       handlecourseClick: function () {
         let self = this
         let courseactiveName = self.courseactiveName
@@ -1991,17 +2099,117 @@
       },
       dialogAddcoursetypeEvent: function () { // 分类设置配置数据
         let self = this
+        let heightoneisdefault = self.courseHeightL.heightone
+        let heighttwoisdefault = self.courseHeightL.heighttwo
+        let lengthisdefault = self.courseHeightL.length
+        if(lengthisdefault == '默认'){
+        	var  lengthnum = 2
+        }else{
+        	var  lengthnum = self.courseHeightL.lengthnum
+        }
+        
+        if(heightoneisdefault == '默认'){
+        	var  heightonenum = 50
+        }else{
+        	var  heightonenum = self.courseHeightL.heightonenum
+        }
+        
+        if(heighttwoisdefault == '默认'){
+        	var   heighttwonum = 65
+        }else{
+        	var   heighttwonum = self.courseHeightL.heighttwonum
+        }
         let obj = {
           classs: self.courseHeightL.classs,
           lengthnum: self.courseHeightL.lengthnum
         }
-        $('.courseclassification .first_li').css('height', self.courseHeightL.heightonenum + 'px')
-        $('.courseclassification .first_li').css('line-height', self.courseHeightL.heightonenum + 'px')
-        $('.courseclassification .second_mune_ul').css('top', self.courseHeightL.heightonenum + 'px')
-        $('.courseclassification .second_mune_ul li').css('height', self.courseHeightL.heighttwonum + 'px')
+        $('.courseclassification .first_li').css('height', heightonenum + 'px')
+        $('.courseclassification .first_li').css('line-height', heightonenum + 'px')
+        $('.courseclassification .second_mune_ul').css('top', heightonenum + 'px')
+        $('.courseclassification .second_mune_ul li').css('height', heighttwonum + 'px')
         $('.addcoursetype #coursenav_ul').attr('class', self.courseHeightL.classs)
         let str = JSON.stringify(obj)
         self.dialogAddcoursetype = false
+        $('.on_module').attr('carouselData', str)
+      },
+      
+      
+      //-------------新闻资讯设置------------
+      handlenewsClick : function(){
+      	let self = this
+        let activenews = self.activenews
+        if (activenews === 'first') {
+          $('.Palettebuttonlist #newsdefault').on('click', function () {
+         			self.newsDetailed = {
+         				newssource : [
+			      		{
+			          value: '1',
+			          label: '系统资讯'
+			        	},
+			        	{
+			          value: '2',
+			          label: '非系统资讯'
+			        	}
+			      		],
+			      		newsvalue : '1',
+			      		ontitle : 1,
+			      		title : '新闻资讯',
+			      		onimg : 1,
+			      		oncont : 1,
+			      		ontime : 1,
+			      		onrow : 2,
+			      		oncol : 3,
+			      		col : 1
+         			}
+          })
+        }
+      },
+      dialognewsEvent : function(){
+      	let self = this
+      	let newsDetailed = self.newsDetailed
+      	if(newsDetailed.oncol == '自定义'){
+      		var  col = newsDetailed.col
+      	}else{
+      		var  col = newsDetailed.oncol
+      	}
+      	let obj = {
+          newssource: newsDetailed.newsvalue,
+          ontitle: newsDetailed.ontitle,
+          onimg : newsDetailed.onimg,
+          oncont : newsDetailed.oncont,
+          ontime : newsDetailed.ontime,
+          onrow : newsDetailed.onrow,
+          col : col
+        }
+      	if(!newsDetailed.ontitle){
+      		$('.news .mod-title').hide();
+      		$('.news .newsList').css('padding-top', '0px')
+      	}else{
+      		$('.news .mod-title').show();
+      		$('.news .newsList').css('padding-top', '50px')
+      	}
+      	if(!newsDetailed.onimg){
+      		$('.news .news_li .news_li_left').hide();
+      	}else{
+      		$('.news .news_li .news_li_left').show();
+      	}
+      	if(!newsDetailed.oncont){
+      		$('.news .news_li .news_cont').hide();
+      	}else{
+      		$('.news .news_li .news_cont').show();
+      	}
+      	if(!newsDetailed.ontime){
+      		$('.news .news_li .times').hide();
+      	}else{
+      		$('.news .news_li .times').show();
+      	}
+      	if(newsDetailed.onrow == 2){
+      		$('.news .news_li').css('float', 'left')
+      	}else{
+      		$('.news .news_li').css('float', 'none')
+      	}
+      	let str = JSON.stringify(obj)
+        self.dialognews = false
         $('.on_module').attr('carouselData', str)
       }
     }
@@ -2908,7 +3116,7 @@
   .on_module .promptBox{
     display: block;
   }
-/*分类设置*/
+/*课程分类设置*/
 	.el-dialog--dialogAddcoursetype{
     width: 680px;
   }
@@ -3015,4 +3223,13 @@
   	height: 20px;
   	background: #338bff;
   }
+  
+ 	/*新闻资讯设置*/
+ 	.el-dialog--dialognews{
+ 		width: 680px;
+ 		
+ 	}
+ 	.el-dialog--dialognews .el-dialog__body{
+ 		height: 464px;
+ 	}
 </style>
