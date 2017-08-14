@@ -469,32 +469,23 @@
           <div class="navBox">
             <el-row>
               <el-col :span='4'>搜索框</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="searchBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="searchBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="searchBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span='4'>登录</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="loginBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="loginBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="loginBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span='4'>注册</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="registerBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="registerBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="registerBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
           </div>
@@ -624,9 +615,8 @@
         <el-button @click="dialognews = false">取 消</el-button>
         <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
       </span>
-    </el-dialog>     
-
-  <el-dialog
+    </el-dialog>
+    <el-dialog
       title="修改导航"
       :visible.sync="editNavName "
       size="edit" >
@@ -828,7 +818,68 @@
       <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
     </span>
   </el-dialog>
-
+  <el-dialog
+    title="课程设置"
+    :visible.sync="dialogCoruse"
+    size="coruse" class="auditiondia">
+    <el-row>
+      <el-col class='courseSource'>
+        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+          <el-radio-button label="self">本校课程</el-radio-button>
+          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row>
+      <el-col>
+        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+      <el-col>
+        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row class="conCourse conCourse2" style="border:0">
+      <el-col>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="courseListTotal"
+          :current-page="courseListPage"
+          :page-size="30"
+          v-if="courseListTotal > 30"
+          @current-change="courseListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课程名"
+          icon="search"
+          v-model="inp_courseName"
+          @change="searchCourseEvent"
+          :on-icon-click="searchCourseEvent">
+        </el-input>
+        <div class="courseList"  v-loading="loading">
+          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
+            <i class="el-icon-circle-check"></i>
+            <div class="imgbox">
+              <img :src="item.img" >
+            </div>
+            <span>{{item.iname}}</span>
+          </div>
+          <div class="nodata" v-if="courseListData.length == 0"></div>
+        </div>        
+      </el-col>
+    </el-row>
+    <span slot="footer" class="dialog-footer">        
+      <el-button @click="addSecNavName = false">取 消</el-button>
+      <el-button type="primary" @click="handleSettingCourseConfirmEvent">确 定</el-button>
+    </span>
+  </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -852,7 +903,7 @@
     name: 'app',
     data: function () {
       return {
-      // -------------基础组件弹框---------
+      // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -860,7 +911,7 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
-      // ------------免费试听设置----
+      // ------------ 免费试听设置 -------------------
         dialogAudition: false,
         sourceData: [],
         radioSource: 'self',
@@ -880,15 +931,18 @@
         radioCourseware: '',
         loading: true,
         loadingcw: true,
-      // ------------导航设置--------
+      // ------------ 课程设置 -----------------------
+        dialogCoruse: false,
+        courseitem: {},
+      // ------------ 导航设置 -----------------------
         dialogNavigation: false,
         editNavName: false,
         addNavName: false,
         navType: '1',
         openType: '1',
-        searchBtn: true,
-        loginBtn: true,
-        registerBtn: true,
+        searchBtn: '1',
+        loginBtn: '1',
+        registerBtn: '1',
         inp_editNav: '',
         inp_addNav: '',
         inp_addNavUrl: '',
@@ -901,7 +955,7 @@
         secNavIndex: 0,
         inp_editSecNav: '',
         inp_addSecNav: '',
-      // ------------轮播设置--------
+      // ------------ 轮播设置 -----------------------
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
@@ -934,7 +988,7 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // ------------课程分类设置----------------
+      // ------------ 课程分类设置 -------------------
         courseactiveName: 'first',
         dialogAddcoursetype: false,
         courseHeightL: {
@@ -949,7 +1003,7 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // ---------------新闻资讯设置------------------
+      // ------------ 新闻资讯设置 -------------------
         dialognews: false,
         activenews: 'first',
         newsDetailed: {
@@ -971,7 +1025,7 @@
           oncol: 3,
           col: 1
         },
-      // -----------工具栏+全局设置+右侧元素图层-----------------
+      // ------------ 工具栏+全局设置+右侧元素图层 ---
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
         inp_width: 1200,
@@ -1002,7 +1056,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-      // -----------common---------------------------
+      // ------------ common -------------------------
         editorConfig: {
           zIndex: 3000,
           toolbars: [[
@@ -1084,9 +1138,9 @@
           self.loadingcw = true
           self.httpget(getParam)
         },
-      // ---------------------
+      // ---------------------------------------------
         tool: { /* 工具箱事件 */
-        // --------------- complete ----------------
+        // --------------- complete ------------------
           linePosition: function (editBox, copyBox, self, e) {
             let rowT = $('.row-t')
             let rowB = $('.row-b')
@@ -1809,7 +1863,7 @@
               }
             })
           },
-        // ------------------- todo: ------------------
+        // --------------- todo: ---------------------
           bindDblclickEvent: function (self) { // 模块双击操作，单机设置按钮事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
@@ -1924,6 +1978,30 @@
                 }
                 self.httpget(getParam)
                 break
+              case 'course':
+                self.dialogCoruse = true
+                getParam = {
+                  url: '/aroomv3/schsource.html',
+                  params: {},
+                  fun: function (response) {
+                    let data = response.body.data
+                    self.sourceData = data
+                    let param = {
+                      url: '/aroomv3/course/coursesort.html',
+                      params: {
+                        showbysort: 0
+                      },
+                      fun: function (response) {
+                        let classData = response.body.data
+                        self.pClassData = classData
+                        self.courselist({pagesize: 30, page: 1, issimple: 1})
+                      }
+                    }
+                    self.httpget(param)
+                  }
+                }
+                self.httpget(getParam)
+                break
               case 'WeChat':
                 break
               case 'addcoursetype':
@@ -1986,7 +2064,48 @@
       })
     },
     methods: {
-    //   ---------------- complete --------------------
+    //  ------------ complete ----------------
+      settingEvent: function () { // 页面设置
+        let self = this
+        self.dialogPageSetting = true
+      },
+      dialogPageSettingEvent: function () { // 页面设置弹框保存
+        var self = this
+        let space = $('.space')
+        let canvas = $('.canvas')
+        space.css('backgroundColor', self.bgColorVal)
+        canvas.css('backgroundColor', self.prospectColorVal)
+        canvas.css('width', self.inp_width)
+        canvas.css('height', self.inp_height)
+        self.tool.scrollHeight()
+        self.dialogPageSetting = false
+      },
+      previewEvent: function () { // 预览
+        let self = this
+        self.tool.missSeletedEvents(self)
+        self.$router.push('preview')
+        let params = {}
+        let topArray = $('.c_top').html()
+        let bodyArray = $('.c_body').html()
+        let footArray = $('.c_foot').html()
+        params = {
+          page: {
+            pg: self.prospectColorVal,
+            bg: self.bgColorVal,
+            width: self.inp_width,
+            height: self.inp_height,
+            top: $('.c_top').css('height'),
+            body: $('.c_body').css('height'),
+            foot: $('.c_foot').css('height')
+          },
+          module: {
+            top: topArray,
+            body: bodyArray,
+            foot: footArray
+          }
+        }
+        window.saveParams = params
+      },
       gridHangle: function (e) { // 格线开关
         let $gridli = $('.gridli')
         let bloo = $gridli.hasClass('tl_li_on')
@@ -1999,6 +2118,7 @@
           canvas.addClass('grid')
         }
       },
+    // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
         if (val < 0) {
@@ -2086,6 +2206,7 @@
           self.moduleElement.css('backgroundColor', val)
         }
       },
+    // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
         let self = this
         self.moduleElement.css('top', '0px')
@@ -2216,32 +2337,7 @@
           self.tool.getLayerElement(self, self.original)
         }
       },
-      previewEvent: function () { // 预览
-        let self = this
-        self.tool.missSeletedEvents(self)
-        self.$router.push('preview')
-        let params = {}
-        let topArray = $('.c_top').html()
-        let bodyArray = $('.c_body').html()
-        let footArray = $('.c_foot').html()
-        params = {
-          page: {
-            pg: self.prospectColorVal,
-            bg: self.bgColorVal,
-            width: self.inp_width,
-            height: self.inp_height,
-            top: $('.c_top').css('height'),
-            body: $('.c_body').css('height'),
-            foot: $('.c_foot').css('height')
-          },
-          module: {
-            top: topArray,
-            body: bodyArray,
-            foot: footArray
-          }
-        }
-        window.saveParams = params
-      },
+    // ------------- 基础模块 ----------------
       dialogTextEvent: function () { // 编辑文本窗口
         let self = this
         self.moduleElement.text(self.textarea)
@@ -2287,21 +2383,6 @@
         let self = this
         self.dialogPageHeader = false
         self.moduleElement.find('img').attr('src', self.imageUrl)
-      },
-      settingEvent: function () { // 页面设置
-        let self = this
-        self.dialogPageSetting = true
-      },
-      dialogPageSettingEvent: function () { // 页面设置弹框保存
-        var self = this
-        let space = $('.space')
-        let canvas = $('.canvas')
-        space.css('backgroundColor', self.bgColorVal)
-        canvas.css('backgroundColor', self.prospectColorVal)
-        canvas.css('width', self.inp_width)
-        canvas.css('height', self.inp_height)
-        self.tool.scrollHeight()
-        self.dialogPageSetting = false
       },
       carouselShiftUpEvent: function (index) { // 上移
         let self = this
@@ -2373,7 +2454,7 @@
         self.dialogPicture = false
         self.moduleElement.find('img').attr('src', self.pictureUrl)
       },
-    //   ---------------- todo: -----------------------
+    // ------------- 导航设置 ----------------
       dialogButtonEvent: function () { // 按钮设置
         let self = this
         self.dialogButton = false
@@ -2385,17 +2466,17 @@
         let search = self.moduleElement.find('.search_box')
         let login = self.moduleElement.find('.log')
         let register = self.moduleElement.find('.reg')
-        if (self.searchBtn) {
+        if (self.searchBtn === '1') {
           search.show()
         } else {
           search.hide()
         }
-        if (self.loginBtn) {
+        if (self.loginBtn === '1') {
           login.show()
         } else {
           login.hide()
         }
-        if (self.registerBtn) {
+        if (self.registerBtn === '1') {
           register.show()
         } else {
           register.hide()
@@ -2599,7 +2680,7 @@
         self.secNavData.push(obj)
         self.addSecNavName = false
       },
-    // ------------- 免费试听 ---------------------
+    // ------------- 免费试听 ----------------
       radioCourseSourceChangeEvent: function (value) { // 课程来源
         let self = this
         if (value !== 'self') {
@@ -2642,6 +2723,8 @@
           }
           self.httpget(getParam)
         }
+        self.radioMainClass = ''
+        self.radioNextClass = ''
       },
       radioMainClassChangeEvent: function (value) { // 选择主类按钮
         let self = this
@@ -2804,7 +2887,28 @@
           self.dialogAudition = false
         }
       },
-      // ------------- 课程分类设置 ---------------------
+    // ------------- 课程选择 ----------------
+      chooseCourseEvent: function (item, index) { // 选择课程
+        let self = this
+        let courselists = $('.conCourse2').find('.courseLi')
+        self.courseitem = item
+        $('.courseOn').removeClass('courseOn')
+        courselists.eq(index).addClass('courseOn')
+      },
+      handleSettingCourseConfirmEvent: function () {
+        let self = this
+        if ($('.courseOn').length < 1) {
+          self.$notify({
+            title: '警告',
+            message: '你还未选择课程',
+            type: 'warning'
+          })
+        } else {
+          self.dialogCoruse = false
+          console.log(self.courseitem)
+        }
+      },
+    // ------------- 课程分类设置 ------------
       handlecourseClick: function () {
         let self = this
         let courseactiveName = self.courseactiveName
@@ -2858,7 +2962,7 @@
         self.dialogAddcoursetype = false
         $('.on_module').attr('carouselData', str)
       },
-      // -------------新闻资讯设置------------
+    // ------------- 新闻资讯设置 ------------
       handlenewsClick: function () {
         let self = this
         let activenews = self.activenews
@@ -3791,7 +3895,7 @@
   .scrollBox .el-select{
     width: 180px;
   }
-/*picture*/  
+/*picture*/
   .picture-uploader .el-upload{
     display: block;
     margin:0 auto; 
@@ -3882,6 +3986,9 @@
     max-height:480px;
     border-right: 1px solid #d1dbe5;
   }
+  .auditiondia .conCourse2 .el-col{
+    border:0;
+  }
   .auditiondia .courseList{
     float: left;
     width: 100%;
@@ -3896,6 +4003,18 @@
     overflow: hidden;
     padding: 0 4px; 
     cursor: pointer;
+    position: relative;
+  }
+  .auditiondia .courseLi i {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #13CE66;
+    font-size: 18px;
+    display: none;
+  }
+  .auditiondia .courseOn i {
+    display:block;
   }
   .auditiondia .imgbox {
     width: 150px;
@@ -3945,6 +4064,10 @@
   }
   .courseware .el-radio-button{
     display: block;
+  }
+/*课程*/
+  .el-dialog--coruse{
+    width: 840px;
   }
 /*设置*/
   .promptBox{
