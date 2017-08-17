@@ -2434,7 +2434,7 @@
             head: headArray,
             foot: footArray,
             body: bodyArray,
-            settings: strSetting,
+            settings: "'" + strSetting + "'",
             status: 0,
             auditions: ''
           },
