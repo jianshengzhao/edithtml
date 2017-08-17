@@ -617,6 +617,96 @@
       </span>
     </el-dialog>
     <el-dialog
+      title="登录框设置"
+      :visible.sync="dialoglogin"
+      size="dialoglogin" >
+      <el-tabs v-model="activelogin"  @tab-click="handleloginClick">
+       	<el-tab-pane label="基础设置" name="first">
+          <el-form ref="loginDetailed" :model="loginDetailed" label-width="100px">
+					  <el-form-item label="默认文字：">
+					    <el-radio-group v-model="loginDetailed.ontext">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+          	<el-form-item label="密码显示：">
+					    <el-radio-group v-model="loginDetailed.onpassword">
+					     <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="选择样式" name="second">
+         	<div class="Palettebuttonlist">
+		    		<div type="default" class="csslist logincsslist">
+		    				<div class="csslist-div">
+		    						<div class="csslist-div-top">
+		    						</div>
+		    							默认	
+		    				</div>
+		    				<p class="hovershow">默认</p>
+		    		</div>
+		    		<div type="one" class="csslist logincsslist">
+		    				<div class="csslist-div logintype1">
+		    				</div>
+		    				<p class="hovershow">样式一</p>
+		    		</div>
+			    </div>
+        </el-tab-pane>
+      </el-tabs>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialoglogin = false">取 消</el-button>
+        <el-button type="primary" @click="dialogloginEvent">确 定</el-button>
+      </span>
+    </el-dialog> 
+    <el-dialog
+      title="第三方登录设置"
+      :visible.sync="dialogthirdlogin"
+      size="dialogthirdlogin" >
+      <el-tabs v-model="activethirdlogin"  @tab-click="handlethirdloginClick">
+       	<el-tab-pane label="基础设置" name="first">
+          <el-form ref="thirdloginDetailed" :model="thirdloginDetailed" label-width="100px">
+					  <el-form-item label="第三方工具：">
+					  	 <el-checkbox-group v-model="thirdloginDetailed.third">
+						    <el-checkbox label="1">QQ</el-checkbox>
+						    <el-checkbox label="2">微博</el-checkbox>
+						    <el-checkbox label="3">微信</el-checkbox>
+						  </el-checkbox-group>
+					  </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogthirdlogin = false">取 消</el-button>
+        <el-button type="primary" @click="dialogthirdloginEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+        <el-dialog
+      title="教师列表"
+      :visible.sync="dialogaddtea"
+      size="dialogaddtea" >
+      <el-row style="position: absolute;top: 16px;right: 40px;width: 280px;">
+      	<el-col :span="16">
+      		<el-input size="small" v-model="teainput" type="text" placeholder="请输入老师姓名或账号"></el-input>
+      	</el-col>
+      	<el-col :span="4">
+      		<el-button style="margin-left: 10px;" @click="searchtealist" size="small">搜索</el-button>
+      	</el-col>
+      </el-row>
+      <el-row>
+      	<el-col >
+      		<div class="teater_all">
+      				
+      		</div>
+      	</el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogaddtea = false">取 消</el-button>
+        <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
       title="修改导航"
       :visible.sync="editNavName "
       size="edit" >
@@ -818,6 +908,7 @@
       <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
     </span>
   </el-dialog>
+
   <el-dialog
     title="课程设置"
     :visible.sync="dialogCoruse"
@@ -1003,29 +1094,101 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // ------------ 新闻资讯设置 -------------------
-        dialognews: false,
-        activenews: 'first',
-        newsDetailed: {
-          newssource: [{
-            value: '1',
-            label: '系统资讯'
-          },
-          {
-            value: '2',
-            label: '非系统资讯'
-          }],
-          newsvalue: '1',
-          ontitle: 1,
-          title: '新闻资讯',
-          onimg: 1,
-          oncont: 1,
-          ontime: 1,
-          onrow: 2,
-          oncol: 3,
-          col: 1
-        },
-      // ------------ 工具栏+全局设置+右侧元素图层 ---
+      //---------------新闻资讯设置------------------
+      	dialognews : false,
+      	activenews : 'first',
+      	newsDetailed : {
+      		newssource : [
+      		{
+          value: '1',
+          label: '系统资讯'
+        	},
+        	{
+          value: '2',
+          label: '非系统资讯'
+        	}
+      		],
+      		newsvalue : '1',
+      		ontitle : 1,
+      		title : '新闻资讯',
+      		onimg : 1,
+      		oncont : 1,
+      		ontime : 1,
+      		onrow : 2,
+      		oncol : 3,
+      		col : 1
+      	},
+     	// ----------- 登录框设置 --------------
+     		activelogin : 'first',
+     		dialoglogin : false,
+     		loginDetailed :{
+     			ontext : 1,
+     			onpassword : 1,
+     			logintype :''
+     		},
+     	// ----------- 第三方登录设置 --------------
+     		dialogthirdlogin : false,
+     		activethirdlogin : 'first',
+     		thirdloginDetailed :{
+     			third :['1','2','3']
+     		},
+     	// ----------- 名师团队 ----------------
+     		dialogaddtea :false,
+     		teavalue : '',
+     		teainput : '',
+     		teauid : '',
+     		getealist : function(){
+     			let self = this;
+	    		self.$http.get(window.host +"/aroomv3/teacher/lists.html", {
+	    				params:{
+	    					q : self.teainput,
+	    					pagenum : 1,
+	    					pagesize : 1000
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				let list = response.data.data.list
+	    				let tids = [];
+	    				$('.addtheteateam .team_bk').each(function(){  
+							    tids.push($(this).attr('tid'))   
+							});
+	    				$('.teater_all').empty();
+	    				if(list.length){
+	    						for(var i=0;i<list.length;i++){
+	    							let face = list[i].face
+	    							if(face == ''){
+	    								if(list[i].sex == '0'){
+	    									face =  'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
+	    								}else{
+	    									face =  'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
+	    								}
+	    							}
+	    							let teas =  '<a  href="javascript:;" class="lisnres" tid="'+list[i].teacherid+'" urealname="'+list[i].realname+'" uname="'+list[i].username+'" uface="'+face+'" uprofile="'+list[i].profile+'" uprofessionaltitle="'+list[i].professionaltitle+'">'+list[i].realname+'('+list[i].username+')<span class="selectico"></span></a>'
+	    							$('.teater_all').append(teas)
+	    						}
+	    				}
+	    				self.$nextTick(function () {
+	    					for(var i=0;i<tids.length;i++){
+	    						$(".teater_all a[tid='"+tids[i]+"']").addClass('unonlock')
+	    					}
+	    					let team_bktid = $('.on_module .team_bk').attr('tid') || ''
+	    					if(team_bktid != ''){
+	    						$(".teater_all a[tid='"+team_bktid+"']").removeClass('unonlock').addClass('onlock')
+	    					}
+								$('.teater_all a').on('click',function(){
+									if($(this).hasClass('unonlock')){
+										return false
+									}else{
+										$('.teater_all a').removeClass('onlock')
+                		$(this).addClass('onlock')
+									}
+                	
+                })	
+					    })
+					},function(response){
+						console.log(response)
+					});
+     		},
+      // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#8493af',
         inp_width: 1200,
@@ -1392,6 +1555,7 @@
               let modType = $(this).attr('dataHtml')
               let dataCon = datahtml.datahtml[modType]
               copyBox.attr('style', dataCon.style)
+              
               copyCon.html(dataCon.html)
               copyBox.show().css({'top': e.pageY, 'left': self.paddingleft})
               editBox.unbind('mouseup')
@@ -2010,6 +2174,17 @@
               case 'news':
                 self.dialognews = true
                 break
+              case 'login':
+                self.dialoglogin = true
+                break
+              case 'thirdlogin':
+                self.dialogthirdlogin = true
+                break
+              case 'theteacherteam':
+              	self.teainput = ''
+              	self.getealist()
+                self.dialogaddtea = true 
+                break  
               default:
                 console.log('module')
                 break
@@ -3020,25 +3195,133 @@
         } else {
           $('.news .news_li .news_li_left').show()
         }
-        if (!newsDetailed.oncont) {
-          $('.news .news_li .news_cont').hide()
-        } else {
-          $('.news .news_li .news_cont').show()
-        }
-        if (!newsDetailed.ontime) {
-          $('.news .news_li .times').hide()
-        } else {
-          $('.news .news_li .times').show()
-        }
-        if (newsDetailed.onrow === 2) {
-          $('.news .news_li').css('float', 'left')
-        } else {
-          $('.news .news_li').css('float', 'none')
-        }
-        let str = JSON.stringify(obj)
+      	if(!newsDetailed.ontitle){
+      		$('.news .mod-title').hide();
+      		$('.news .newsList').css('padding-top', '0px')
+      	}else{
+      		$('.news .mod-title').show();
+      		$('.news .newsList').css('padding-top', '50px')
+      	}
+      	if(!newsDetailed.onimg){
+      		$('.news .news_li .news_li_left').hide();
+      	}else{
+      		$('.news .news_li .news_li_left').show();
+      	}
+      	if(!newsDetailed.oncont){
+      		$('.news .news_li .news_cont').hide();
+      	}else{
+      		$('.news .news_li .news_cont').show();
+      	}
+      	if(!newsDetailed.ontime){
+      		$('.news .news_li .times').hide();
+      	}else{
+      		$('.news .news_li .times').show();
+      	}
+      	if(newsDetailed.onrow == 2){
+      		$('.news .news_li').css('float', 'left')
+      		$('.news .news_li').css('width', '50%')
+      	}else{
+      		$('.news .news_li').css('float', 'none')
+      		$('.news .news_li').css('width', '100%')
+      	}
+      	let str = JSON.stringify(obj)
         self.dialognews = false
         $('.on_module').attr('carouselData', str)
+      },
+      //---------------登录框设置-------------
+      
+      handleloginClick : function(){
+      	let self = this
+      	let activelogin = self.activelogin
+      	if(activelogin == 'second'){
+      		let logincsslist = $('.Palettebuttonlist .logincsslist')
+      		logincsslist.on('click',function(){
+      			let type = $(this).attr('type')
+      			if(type == 'one'){
+      				self.loginDetailed.logintype = 'logintype1'
+      			}else if(type == 'default'){
+      				self.loginDetailed.logintype = ''
+      			}
+      		})
+      	}
+      },
+      dialogloginEvent : function(){
+      	let self = this
+      	let loginDetailed = self.loginDetailed
+      	let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="" name="Submit" type="submit">'
+      	let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="立即登录" name="Submit" type="submit">'
+      	if(loginDetailed.logintype == 'logintype1'){
+      		$('.login .denser').empty().append(typeone)
+      		$('.login .denser').attr('id',loginDetailed.logintype)
+      	}else if(loginDetailed.logintype == ''){
+      		$('.login .denser').empty().append(typedefault)
+      		$('.login .denser').attr('id',loginDetailed.logintype)
+      	}
+      	if(loginDetailed.ontext){
+      		$('#username').attr('placeholder','请输入用户名/手机号/邮箱')
+      		$('#password').attr('placeholder','请输入密码')      		
+      	}else{
+      		$('#username,#password').attr('placeholder','')
+      	}
+      	if(loginDetailed.onpassword){
+      		$('#passwordeye').show()
+      	}else{
+      		$('#passwordeye').hide()
+      	}
+      	let obj = {
+        }
+      	let str = JSON.stringify(obj)
+        self.dialoglogin = false
+        $('.on_module').attr('carouselData', str)
+      },
+      //-----------第三方登录设置---------
+      handlethirdloginClick :function(){
+      	
+      },
+      dialogthirdloginEvent :function(){
+      	let self = this
+      	let third = self.thirdloginDetailed.third
+      	if(!third.length){
+      		$('.md-qq,.md-sina,.md-weixin').hide();
+      	}else{
+      		$('.md-qq,.md-sina,.md-weixin').hide();
+      		for(var i=0;i<third.length;i++){
+      			if(third[i] == '1'){
+      				$('.md-qq').show();
+      			}else if(third[i] == '2'){
+      				$('.md-sina').show();
+      			}else if(third[i] == '3'){
+      				$('.md-weixin').show();
+      			}
+      		}
+      	}
+      	let obj = {
+        }
+      	let str = JSON.stringify(obj)
+        self.dialogthirdlogin = false
+        $('.on_module').attr('carouselData', str)
+      }, 
+      //--------------名师团队-----------
+      searchtealist : function(){
+      	let self = this
+      	self.getealist()
+      },
+      dialogaddteaEvent : function(){
+      	let self = this 
+      	let unlocka = $('.teater_all .onlock')
+      	let realname = unlocka.attr('urealname')
+      	let tid = unlocka.attr('tid')
+      	let username = unlocka.attr('uname')
+      	let face = unlocka.attr('uface')
+      	let profile = unlocka.attr('uprofile')
+      	let professionaltitle = unlocka.attr('uprofessionaltitle') || '暂无职称'
+      	let team_bk =  '<div class="team_bk" tid="'+tid+'"><a class="team_mask" href="/master/'+tid+'.html" target="_blank">'+profile+'</a><a href="/master/12166.html" target="_blank"><div class="team_hbj"><img src="'+face+'"><h3 class="team_h3">'+realname+'</h3><p class="team_p1">'+professionaltitle+'</p></div><p class="team_p2">'+profile+'</p></a></div>'
+      	$('.on_module .addtheteateam .team_bk').remove()
+      	$('.on_module .addtheteateam').append(team_bk)
+      	$('.on_module .addtea-icon').hide()
+      	self.dialogaddtea = false
       }
+      
     }
   }
 </script>
@@ -4155,11 +4438,13 @@
     background-size: 16px;
   }
   .Palettebuttonlist .csslist{
-    width: 178px;
-    height: 134px;
-    border: 1px solid #cccccc;
-    position: relative;
-    cursor: pointer;
+  	width: 178px;
+  	height: 134px;
+  	border: 1px solid #cccccc;
+  	position: relative;
+  	cursor: pointer;
+  	float: left;
+  	margin: 10px;
   }
   .Palettebuttonlist .csslist .hovershow{
     height: 28px;
@@ -4187,18 +4472,97 @@
     line-height: 80px;
     
   }
+  .Palettebuttonlist .csslist .logintype1{
+  	border: none;
+  	background: url(assets/icon/logintype1.png)center center no-repeat;
+  }
   .Palettebuttonlist .csslist .csslist-div .csslist-div-top{
     width: 100%;
     height: 20px;
     background: #338bff;
   }
   
-  /*新闻资讯设置*/
-  .el-dialog--dialognews{
-    width: 680px;
-    
-  }
-  .el-dialog--dialognews .el-dialog__body{
+ 	/*新闻资讯设置*/
+ 	.el-dialog--dialognews{
+ 		width: 680px;
+ 		
+ 	}
+ 	.el-dialog--dialognews .el-dialog__body{
+ 		height: 464px;
+ 	}
+ 	/*登录框设置*/
+ 	.el-dialog--dialoglogin{
+ 		width: 680px;
+ 	}
+ 	.el-dialog--dialoglogin  .el-dialog__body{
+ 		height: 464px;
+ 	}
+ 	/*第三方登录设置*/
+ 	.el-dialog--dialogthirdlogin{
+ 		width: 680px;
+ 	}
+ 	.el-dialog--dialogthirdlogin  .el-dialog__body{
+ 		height: 464px;
+ 	}
+ 	/*名师团队 教师列表*/
+ 	.el-dialog--dialogaddtea{
+ 		width: 680px;
+ 	}
+ 	.el-dialog--dialogaddtea  .el-dialog__body{
+ 		height: 464px;
+ 	}
+ 	.el-dialog--dialogaddtea .el-radio-group .el-radio{
+    width: 30%;
+    margin: 0 8px 0 5px;
+    height: 23px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+ 	}
+ 	.el-dialog--dialogaddtea .teater_all {
+    float: left;
     height: 464px;
-  }
+    width: 640px;
+    overflow-y: auto;
+	}
+
+	.el-dialog--dialogaddtea .teater_all a:visited {
+    color: #3D3D3D;
+    text-decoration: none;
+	}
+	.el-dialog--dialogaddtea .teater_all a:hover{
+		text-decoration: none;
+	}
+	.el-dialog--dialogaddtea .teater_all .lisnres {
+    border: solid 1px #eee;
+    height: 28px;
+    line-height: 28px;
+    color: #999;
+    font-size: 14px;
+    display: block;
+    float: left;
+    padding: 0 8px;
+    margin: 10px 0 2px 10px;
+    position: relative;
+    border-radius: 3px;
+	}
+	.el-dialog--dialogaddtea .teater_all .onlock .selectico {
+    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/selectico.png) no-repeat;
+    height: 13px;
+    width: 13px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+	}
+	.el-dialog--dialogaddtea .teater_all .onlock {
+    border: solid 1px #f4c96c;
+    background: #fff7e5;
+    color: #ffae00;
+	}
+	.el-dialog--dialogaddtea .teater_all .unonlock{
+		color: #f3f3f3;
+    cursor: inherit;
+	}
 </style>
