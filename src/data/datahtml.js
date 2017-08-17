@@ -142,7 +142,7 @@ var datahtml = {
   },
   picture: {
     style: 'width:200px; height:120px',
-    html: '<div class="picture module"  datatext="图片"><div class="promptBox">修改图片</div><div class="picBox"><img></div></div>'
+    html: '<div class="picture module"  datatext="图片"><div class="promptBox">修改图片</div><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
   },
   button: {
     style: 'width:80px; height:30px',
@@ -166,11 +166,11 @@ var datahtml = {
   },
   audition: {
     style: 'width:190px; height:120px',
-    html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img><div class="audiTit">免费试听课件</div></a></div>'
+    html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><div class="audiTit">免费试听课件</div></a></div>'
   },
   course: {
     style: 'width:260px; height:220px',
-    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><img></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="number">199</div><div class="popularity">6999</div></div>'
+    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><div class="listBox"><a class="animateBox">课程</a><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><div class="openState openState_djbmbg1"></div></div></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="popularity">6999</div><div class="number">199</div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',

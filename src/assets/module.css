@@ -190,13 +190,73 @@
     width: 260px;
     height: 220px;
   }
-  .course .imgbox {
+  .course .imgbox {   
     padding: 10px;
-    height: 140px;
+    height: 140px;    
+  }
+  .course .listBox{    
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+  }
+  .course .animateBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    color: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    text-decoration:none;
+    text-indent: 10px;
   }
   .course .imgbox img{
     width: 100%;
     height: 100%;
+    transition: transform 0.8s;
+    -moz-transition: transform 0.8s; 
+    -webkit-transition: transform 0.8s; 
+    -o-transition: transform 0.8s; 
+  }
+  .course .imgbox:hover img{
+    transform: scale(1.2);
+    -ms-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    -webkit-transform:scale(1.2); 
+    -o-transform:scale(1.2);
+  }
+  .course .imgbox:hover .animateBox{
+    display: block;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .course .imgbox .openState{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 66px;
+    height: 66px;
+    background-repeat: no-repeat;
+    background-position: center;    
+    cursor: pointer;
+    z-index: 3;
+  }  
+  .course .imgbox .openState_canpay1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
+  }
+  .course .imgbox .openState_djbmbg1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
+  }
+  .course .imgbox .openState_djkt{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
+  }
+  .course .imgbox .openState_free{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
+  }  
+  .course .imgbox .openState_jrxx{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
   }
   .course .courseTit{
     padding: 0 10px;
@@ -220,12 +280,14 @@
     color: #999999;
   }
   .course .number{
+    float: right;
     padding-left: 0;
     width: 60px;
     text-indent: 20px;
     background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
   }
   .course .popularity{
+    float: right;
     padding-left: 0;
     width: 60px;
     text-indent: 20px;
@@ -326,6 +388,10 @@
   }
   .audition a{
     display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .audition img {
     width: 100%;
     height: 100%;
   }
@@ -477,6 +543,7 @@
     height: 120px;  
   }
   .picBox{
+    display: block;
     width: 100%;
     height: 100%;
     overflow: hidden;

@@ -8,7 +8,7 @@
           <i class="iconfont mb icon-cog " title="设置"></i>
           <span>页面设置</span>
         </div>
-        <div class="tl_li">
+        <div class="tl_li" @click="saveEvent">
           <i class="iconfont icon-save" title="保存"></i>
           <span>保存</span>
         </div>
@@ -259,7 +259,7 @@
     <el-dialog
       title="修改图片 ( 点击添加 )"
       :visible.sync="dialogPicture"
-      size="tiny" class="diaheader">
+      size="picture" class="diaheader diapicture">
       <el-upload
         class="picture-uploader"
         name="upfile"
@@ -270,7 +270,50 @@
         <img v-if="pictureUrl" :src="pictureUrl" class="pictureMod">
         <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
       </el-upload>
-      <span slot="footer" class="dialog-footer">        
+      <el-row>
+        <el-col :span="3" style="text-align: right">链接类型：</el-col>
+        <el-col :span="17">
+          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
+            <el-option
+              v-for="item in linkTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>  
+      </el-row>
+      <el-row v-if="linkType == 'online'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-input v-model="inpOnline" placeholder="请输入内容"></el-input>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'news'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择咨讯"
+            :options="selectNewsOptions"
+            v-model="selectNews"
+            @change="selectNewsChange"
+            @active-item-change="handleNewsItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'coruse'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择课程"
+            :options="selectCoruseOptions"
+            v-model="selectCoruse"
+            @change="selectCoruseChange"
+            @active-item-change="handleCoruseItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPicture = false">取 消</el-button>
         <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
@@ -732,154 +775,154 @@
       </span>
     </el-dialog>
   <!-- todo -->
-  <el-dialog
-    title="设置免费试听课件"
-    :visible.sync="dialogAudition"
-    size="audition" class="auditiondia">
-    <el-row>
-      <el-col class='courseSource'>
-        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
-          <el-radio-button label="self">本校课程</el-radio-button>
-          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>  
-    <el-row>
-      <el-col>
-        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
-      <el-col>
-        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row class="conCourse">
-      <el-col :span="12">
-        <el-pagination
-          layout="prev, pager, next"
-          :total="courseListTotal"
-          :current-page="courseListPage"
-          :page-size="30"
-          v-if="courseListTotal > 30"
-          @current-change="courseListCurrPageEvent">
-        </el-pagination>
-        <el-input
-          placeholder="去输入课程名"
-          icon="search"
-          v-model="inp_courseName"
-          @change="searchCourseEvent"
-          :on-icon-click="searchCourseEvent">
-        </el-input>
-        <div class="courseList"  v-loading="loading">
-          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid)">
-            <div class="imgbox">
-              <img :src="item.img" >
-            </div>
-            <span>{{item.iname}} ({{item.coursewarenum||item.cwnum}})</span>
-          </div>
-          <div class="nodata" v-if="courseListData.length == 0"></div>
-        </div>        
-      </el-col>
-      <el-col :span="12" class="courseware"> 
-        <el-pagination
-          layout="prev, pager, next"
-          :total="cwListTotal"
-          :current-page="cwListPage"
-          :page-size="30"
-          v-if="cwListTotal > 30"
-          @current-change="CoursewareListCurrPageEvent">
-        </el-pagination>
-        <el-input
-          placeholder="去输入课件名"
-          icon="search"
-          v-model="inp_CoursewareName"
-          @change="searchCoursewareEvent">
-        </el-input>
-        <div class="cwlist" v-loading="loading">
-          <el-radio-group v-model="radioCourseware" @change="radioCoursewareChangeEvent">
-            <div class="cwLi" v-for="(item, index) in cwlistData" :key="item.sid">
-              <div class="chapter">{{item.sname}}</div>
-              <el-radio-button v-for="(itemcw, index) in item.cwlist" :key="itemcw.cwid" :label="itemcw.cwid">{{itemcw.title}}</el-radio-button>
-            </div>
+    <el-dialog
+      title="设置免费试听课件"
+      :visible.sync="dialogAudition"
+      size="audition" class="auditiondia">
+      <el-row>
+        <el-col class='courseSource'>
+          <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+            <el-radio-button label="self">本校课程</el-radio-button>
+            <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
           </el-radio-group>
-          <div class="nodata" v-if="cwlistData.length == 0"></div>
-        </div>
-      </el-col>
-    </el-row>
-    <span slot="footer" class="dialog-footer">        
-      <el-button @click="dialogAudition = false">取 消</el-button>
-      <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
-    </span>
-  </el-dialog>
-  <el-dialog
-    title="课程设置"
-    :visible.sync="dialogCoruse"
-    size="coruse" class="auditiondia">
-    <el-row>
-      <el-col class='courseSource'>
-        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
-          <el-radio-button label="self">本校课程</el-radio-button>
-          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row>
-      <el-col>
-        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
-      <el-col>
-        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row class="conCourse conCourse2" style="border:0">
-      <el-col>
-        <el-pagination
-          layout="prev, pager, next"
-          :total="courseListTotal"
-          :current-page="courseListPage"
-          :page-size="30"
-          v-if="courseListTotal > 30"
-          @current-change="courseListCurrPageEvent">
-        </el-pagination>
-        <el-input
-          placeholder="去输入课程名"
-          icon="search"
-          v-model="inp_courseName"
-          @change="searchCourseEvent"
-          :on-icon-click="searchCourseEvent">
-        </el-input>
-        <div class="courseList"  v-loading="loading">
-          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
-            <i class="el-icon-circle-check"></i>
-            <div class="imgbox">
-              <img :src="item.img" >
+        </el-col>  
+      </el-row>  
+      <el-row>
+        <el-col>
+          <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+            <el-radio-button label="">全部</el-radio-button>
+            <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+          </el-radio-group>
+        </el-col>  
+      </el-row>
+      <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+        <el-col>
+          <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+            <el-radio-button label="">全部</el-radio-button>
+            <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+          </el-radio-group>
+        </el-col>  
+      </el-row>
+      <el-row class="conCourse">
+        <el-col :span="12">
+          <el-pagination
+            layout="prev, pager, next"
+            :total="courseListTotal"
+            :current-page="courseListPage"
+            :page-size="30"
+            v-if="courseListTotal > 30"
+            @current-change="courseListCurrPageEvent">
+          </el-pagination>
+          <el-input
+            placeholder="去输入课程名"
+            icon="search"
+            v-model="inp_courseName"
+            @change="searchCourseEvent"
+            :on-icon-click="searchCourseEvent">
+          </el-input>
+          <div class="courseList"  v-loading="loading">
+            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid)">
+              <div class="imgbox">
+                <img :src="item.img" >
+              </div>
+              <span>{{item.iname}} ({{item.coursewarenum||item.cwnum}})</span>
             </div>
-            <span>{{item.iname}}</span>
+            <div class="nodata" v-if="courseListData.length == 0"></div>
+          </div>        
+        </el-col>
+        <el-col :span="12" class="courseware"> 
+          <el-pagination
+            layout="prev, pager, next"
+            :total="cwListTotal"
+            :current-page="cwListPage"
+            :page-size="30"
+            v-if="cwListTotal > 30"
+            @current-change="CoursewareListCurrPageEvent">
+          </el-pagination>
+          <el-input
+            placeholder="去输入课件名"
+            icon="search"
+            v-model="inp_CoursewareName"
+            @change="searchCoursewareEvent">
+          </el-input>
+          <div class="cwlist" v-loading="loading">
+            <el-radio-group v-model="radioCourseware" @change="radioCoursewareChangeEvent">
+              <div class="cwLi" v-for="(item, index) in cwlistData" :key="item.sid">
+                <div class="chapter">{{item.sname}}</div>
+                <el-radio-button v-for="(itemcw, index) in item.cwlist" :key="itemcw.cwid" :label="itemcw.cwid">{{itemcw.title}}</el-radio-button>
+              </div>
+            </el-radio-group>
+            <div class="nodata" v-if="cwlistData.length == 0"></div>
           </div>
-          <div class="nodata" v-if="courseListData.length == 0"></div>
-        </div>        
-      </el-col>
-    </el-row>
-    <span slot="footer" class="dialog-footer">        
-      <el-button @click="addSecNavName = false">取 消</el-button>
-      <el-button type="primary" @click="handleSettingCourseConfirmEvent">确 定</el-button>
-    </span>
-  </el-dialog>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogAudition = false">取 消</el-button>
+        <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="课程设置"
+      :visible.sync="dialogCoruse"
+      size="coruse" class="auditiondia">
+      <el-row>
+        <el-col class='courseSource'>
+          <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+            <el-radio-button label="self">本校课程</el-radio-button>
+            <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
+          </el-radio-group>
+        </el-col>  
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+            <el-radio-button label="">全部</el-radio-button>
+            <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+          </el-radio-group>
+        </el-col>  
+      </el-row>
+      <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+        <el-col>
+          <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+            <el-radio-button label="">全部</el-radio-button>
+            <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+          </el-radio-group>
+        </el-col>  
+      </el-row>
+      <el-row class="conCourse conCourse2" style="border:0">
+        <el-col>
+          <el-pagination
+            layout="prev, pager, next"
+            :total="courseListTotal"
+            :current-page="courseListPage"
+            :page-size="30"
+            v-if="courseListTotal > 30"
+            @current-change="courseListCurrPageEvent">
+          </el-pagination>
+          <el-input
+            placeholder="去输入课程名"
+            icon="search"
+            v-model="inp_courseName"
+            @change="searchCourseEvent"
+            :on-icon-click="searchCourseEvent">
+          </el-input>
+          <div class="courseList"  v-loading="loading">
+            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
+              <i class="el-icon-circle-check"></i>
+              <div class="imgbox">
+                <img :src="item.img" >
+              </div>
+              <span>{{item.iname}}</span>
+            </div>
+            <div class="nodata" v-if="courseListData.length == 0"></div>
+          </div>        
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="addSecNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleSettingCourseConfirmEvent">确 定</el-button>
+      </span>
+    </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -911,6 +954,25 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+        linkType: 'none',
+        linkTypeOptions: [{
+          value: 'none',
+          label: '无链接'
+        }, {
+          value: 'online',
+          label: '外部链接'
+        }, {
+          value: 'news',
+          label: '咨讯链接'
+        }, {
+          value: 'coruse',
+          label: '课程链接'
+        }],
+        inpOnline: '',
+        selectNews: [],
+        selectNewsOptions: [],
+        selectCoruse: [],
+        selectCoruseOptions: [],
       // ------------ 免费试听设置 -------------------
         dialogAudition: false,
         sourceData: [],
@@ -1901,6 +1963,7 @@
                 })
                 break
               case 'picture':
+                self.pictureUrl = self.moduleElement.find('img').attr('src')
                 self.dialogPicture = true
                 break
               case 'button':
@@ -1994,7 +2057,7 @@
                       fun: function (response) {
                         let classData = response.body.data
                         self.pClassData = classData
-                        self.courselist({pagesize: 30, page: 1, issimple: 1})
+                        self.courselist({pagesize: 30, page: 1})
                       }
                     }
                     self.httpget(param)
@@ -2083,9 +2146,10 @@
       previewEvent: function () { // 预览
         let self = this
         self.tool.missSeletedEvents(self)
+        $('.setInfo').remove()
         self.$router.push('preview')
         let params = {}
-        let topArray = $('.c_top').html()
+        let headArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
         let footArray = $('.c_foot').html()
         params = {
@@ -2099,7 +2163,7 @@
             foot: $('.c_foot').css('height')
           },
           module: {
-            top: topArray,
+            top: headArray,
             body: bodyArray,
             foot: footArray
           }
@@ -2117,6 +2181,44 @@
           $gridli.addClass('tl_li_on')
           canvas.addClass('grid')
         }
+      },
+      saveEvent: function () { // 页面保存 todo:
+        let self = this
+        let setting = {
+          pg: self.prospectColorVal,
+          bg: self.bgColorVal,
+          width: self.inp_width,
+          height: self.inp_height,
+          top: $('.c_top').css('height'),
+          body: $('.c_body').css('height'),
+          foot: $('.c_foot').css('height')
+        }
+        let strSetting = window.JSON.stringify(setting)
+        let headArray = $('.c_top').html()
+        let bodyArray = $('.c_body').html()
+        let footArray = $('.c_foot').html()
+        let param = {
+          url: '/room/design/save',
+          params: {
+            head: headArray,
+            foot: footArray,
+            body: bodyArray,
+            settings: '"' + strSetting + '"',
+            status: 0,
+            auditions: ''
+          },
+          fun: function (response) {
+            let code = response.body.code
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '保存成功',
+                type: 'success'
+              })
+            }
+          }
+        }
+        self.httppost(param)
       },
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
@@ -2434,6 +2536,7 @@
         self.dialogCarousel = false
         $('.on_module').attr('carouselData', str)
       },
+    // ------------- 图片基础组件 ------------
       handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
         let self = this
         let code = res.code
@@ -2453,6 +2556,212 @@
         let self = this
         self.dialogPicture = false
         self.moduleElement.find('img').attr('src', self.pictureUrl)
+        switch (self.linkType) {
+          case 'none':
+            self.moduleElement.find('.picBox').removeAttr('href')
+            break
+          case 'online':
+            self.moduleElement.find('.picBox').attr('href', self.inpOnline)
+            break
+          case 'news':
+            let itemid = self.selectNews[2]
+            self.moduleElement.find('.picBox').attr('href', '/dyinformation/' + itemid + '.html')
+            break
+          case 'coruse':
+            let folderid = self.selectCoruse[2]
+            self.moduleElement.find('.picBox').attr('href', '/courseinfo/' + folderid + '.html')
+            break
+        }
+      },
+      linkTypeChangeEvent: function (value) {
+        let self = this
+        switch (value) {
+          case 'news':
+            self.getNewsCategorysData()
+            break
+          case 'coruse':
+            self.courseSortData()
+            break
+        }
+        // self.selectNewsOptions
+        // self.courseSortData()
+      },
+      selectNewsChange: function () {
+      },
+      getNewsCategorysData: function () {
+        let self = this
+        let param = {
+          url: '/aroomv3/news/getNewsCategorys.html',
+          params: {},
+          fun: function (response) {
+            let navList = response.body.data
+            let obj = []
+            for (let i = 0, len = navList.length; i < len; i++) {
+              let item = navList[i]
+              let items = {
+                label: item.name,
+                value: item.code,
+                children: []
+              }
+              if (item.subnav) {
+                for (let j = 0, jen = item.subnav.length; j < jen; j++) {
+                  let jtem = item.subnav[j]
+                  let jtems = {
+                    label: jtem.name,
+                    value: jtem.code,
+                    children: []
+                  }
+                  items.children.push(jtems)
+                }
+              }
+              items.children.push({label: '其它', value: item.code, children: []})
+              obj.push(items)
+            }
+            self.selectNewsOptions = obj
+          }
+        }
+        self.httpget(param)
+      },
+      handleNewsItemChange: function (arr) {
+        let self = this
+        let code = arr[1]
+        let param = {
+          url: '/aroomv3/news.html',
+          params: {
+            navcode: code,
+            pagesize: 100,
+            page: 1
+          },
+          fun: function (response) {
+            let newsList = response.body.data
+            for (let i = 0, len = self.selectNewsOptions.length; i < len; i++) {
+              let item = self.selectNewsOptions[i]
+              if (item.code === code || item.code.split('s')[0] === code) {
+                for (let j = 0, jen = item.children.length; j < jen; j++) {
+                  let jtem = item.children[j]
+                  if (jtem.code === code) {
+                    let arrFolder = []
+                    for (let z = 0, zen = newsList.length; z < zen; z++) {
+                      let zitem = newsList[z]
+                      arrFolder.push({
+                        label: zitem.subject,
+                        value: zitem.itemid
+                      })
+                    }
+                    jtem.children = arrFolder
+                    break
+                  }
+                }
+                break
+              }
+            }
+          }
+        }
+        self.httpget(param)
+      },
+      selectCoruseChange: function () {},
+      handleCoruseItemChange: function (arr) {
+        let self = this
+        let pid = arr[0].split('|')[1]
+        let sid = ''
+        let csid = ''
+        if (arr.length < 2) return false
+        if (arr[1].split('|')[0] === 'pid') {
+          pid = arr[1].split('|')[1]
+          csid = pid
+        } else {
+          sid = arr[1].split('|')[1]
+          csid = sid
+        }
+        let param = {
+          url: '/aroomv3/course/courselist.html',
+          params: {
+            pid: pid,
+            sid: sid,
+            pagesize: 100,
+            page: 1
+          },
+          fun: function (response) {
+            let courselist = response.body.data.courselist
+            for (let i = 0, len = self.selectCoruseOptions.length; i < len; i++) {
+              let item = self.selectCoruseOptions[i]
+              if (item.pid === pid) {
+                for (let j = 0, jen = item.children.length; j < jen; j++) {
+                  let jtem = item.children[j]
+                  if (jtem.sid === csid) {
+                    let arrFolder = []
+                    for (let z = 0, zen = courselist.length; z < zen; z++) {
+                      let zitem = courselist[z]
+                      if (sid === '' && zitem.sid < 1) {
+                        arrFolder.push({
+                          label: zitem.foldername,
+                          value: zitem.folderid
+                        })
+                      } else if (sid !== '') {
+                        arrFolder.push({
+                          label: zitem.foldername,
+                          value: zitem.folderid
+                        })
+                      }
+                    }
+                    jtem.children = arrFolder
+                    break
+                  }
+                }
+                break
+              }
+            }
+          }
+        }
+        self.httpget(param)
+      },
+      courseSortData: function () { // 选择课程 cascader
+        let self = this
+        let param = {
+          url: '/aroomv3/course/coursesort.html',
+          params: {
+            showbysort: 0
+          },
+          fun: function (response) {
+            let arr = response.body.data
+            let obj = []
+            for (let i = 0, len = arr.length; i < len; i++) {
+              let item = arr[i]
+              let itemcountP = parseInt(item.itemcount, 10)
+              let items = {
+                label: item.pname,
+                value: 'pid|' + item.pid,
+                children: [],
+                pid: item.pid
+              }
+              if (item.sorts) {
+                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
+                  let jtem = item.sorts[j]
+                  itemcountP = itemcountP - parseInt(jtem.itemcount, 10)
+                  let jtems = {
+                    label: jtem.sname,
+                    value: 'sid|' + jtem.sid,
+                    children: [],
+                    sid: jtem.sid
+                  }
+                  if (jtem.itemcount > 0) {
+                    items.children.push(jtems)
+                  }
+                }
+              }
+              if (itemcountP > 0) {
+                items.children.push({label: '其它', value: 'pid|' + item.pid, children: [], sid: item.pid})
+              }
+              if (item.itemcount > 0) {
+                obj.push(items)
+              }
+            }
+            self.selectCoruseOptions = obj
+          }
+        }
+        if (self.selectCoruseOptions.length < 1) {
+          self.httpget(param)
+        }
       },
     // ------------- 导航设置 ----------------
       dialogButtonEvent: function () { // 按钮设置
@@ -2715,7 +3024,7 @@
                 fun: function (response) {
                   let classData = response.body.data
                   self.pClassData = classData
-                  self.courselist({pagesize: 30, page: 1, issimple: 1})
+                  self.courselist({pagesize: 30, page: 1})
                 }
               }
               self.httpget(param)
@@ -2744,7 +3053,6 @@
           param = {
             pagesize: 30,
             page: 1,
-            issimple: 1,
             pid: value
           }
           self.courselist(param)
@@ -2775,7 +3083,6 @@
           param = {
             pagesize: 30,
             page: 1,
-            issimple: 1,
             pid: self.radioMainClass,
             sid: value
           }
@@ -2905,7 +3212,14 @@
           })
         } else {
           self.dialogCoruse = false
-          console.log(self.courseitem)
+          self.moduleElement.attr('dataCoruse', self.courseitem.itemid)
+          self.moduleElement.find('.courseTit').text(self.courseitem.iname)
+          self.moduleElement.find('.animateBox').text(self.courseitem.iname)
+          self.moduleElement.find('img').attr('src', self.courseitem.img)
+          let studynum = parseInt(self.courseitem.studynum) > 10000 ? parseFloat(parseInt(self.courseitem.studynum) / 10000).toFixed(1) + '万' : self.courseitem.studynum
+          self.moduleElement.find('.number').text(studynum)
+          let viewnum = parseInt(self.courseitem.viewnum) > 10000 ? parseFloat(parseInt(self.courseitem.viewnum) / 10000).toFixed(1) + '万' : self.courseitem.viewnum
+          self.moduleElement.find('.popularity').text(viewnum)
         }
       },
     // ------------- 课程分类设置 ------------
@@ -3896,6 +4210,9 @@
     width: 180px;
   }
 /*picture*/
+  .el-dialog--picture{
+    width: 750px;
+  }
   .picture-uploader .el-upload{
     display: block;
     margin:0 auto; 
@@ -3903,6 +4220,18 @@
   }
   .pictureMod {    
     max-width: 100%;
+    display: block;
+    margin:0 auto;
+  }
+  .diapicture .el-col{
+    height: 36px;
+    line-height: 36px;
+  }
+  .diapicture .el-row{
+    margin-top: 20px;
+  }
+  .diapicture .el-select{
+    width: 320px;
   }
 /*button*/
   .dialogbutton .el-row{
@@ -4080,7 +4409,8 @@
     padding:0 10px;
     background-color: #199ED8;
     color: #fff;
-    cursor: pointer;   
+    cursor: pointer;
+    font-size: 12px;
   }
   .on_module .promptBox{
     display: block;
