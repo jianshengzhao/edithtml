@@ -822,6 +822,10 @@ svg.icon {
 }
 .icon-carousel { background-image: url(../icon/carousel.png); }
 
+.icon-classification { background-image: url(../icon/information.png); background-size: 20px; }
+
+.icon-audition { background-image: url(../icon/audition.png); background-size: 20px; }
+
 .icon-label { background-image: url(../icon/label.png); }
 
 .icon-information { background-image: url(../icon/introduce.png); }
@@ -833,7 +837,7 @@ svg.icon {
 .icon-introduce { background-image: url(../icon/introduce.png); }
 
 
-/*
+
 @font-face {
 	font-family:Material Icons;font-style:normal;font-weight:400;src:local("Material Icons"),local("MaterialIcons-Regular"),url(material.570eb83859dc23dd0eec423a49e147fe.woff2) format("woff2"),url(material.012cf6a10129e2275d79d6adac7f3b02.woff) format("woff"),url(material.a37b0c01c0baf1888ca812cc0508f6e2.ttf) format("truetype")
 }
@@ -3665,7 +3669,7 @@ svg.icon {
 .ci-yql-unlock:before {
 	content: "\E914"
 }
-*/
+
 .fa-spin,.is-spinning {
 	-webkit-animation: spinning 2s infinite linear;
 	-moz-animation: spinning 2s infinite linear;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- top main tool -->
+  <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">
       <div class="t_logo"></div>
       <div class="t_left">
@@ -67,7 +67,7 @@
         </div>
       </div> 
     </div>
-    <!-- attribute tool -->
+  <!-- attribute tool -->
     <div class="tool" unselectable="on" onselectstart="return false;">
       <div class="toolBox">
         <div class="property" >
@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-    <!-- assembly library -->
+  <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
       <nav class="lib_nav">
         <ol>
@@ -128,7 +128,7 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-    <!-- layer -->
+  <!-- layer -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
@@ -148,7 +148,7 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-    <!-- editBox -->
+  <!-- editBox -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 181px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
@@ -167,12 +167,12 @@
         <div class="col-l line"></div>
         <div class="col-r line"></div>
       </div>
-      <!-- copyBox  选中的组件容器盒子-->
+    <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
         </div>
       </div>
-      <!-- 自定义右键菜单 -->
+    <!-- 自定义右键菜单 -->
       <ul class="contextmenu">
         <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
         <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
@@ -205,14 +205,14 @@
         <el-col :span="4">
           <el-color-picker v-model="prospectColorVal" ></el-color-picker>
         </el-col>
-        <el-col :span="10">todo:背景图片</el-col>
+       <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
         <el-col :span="5" class="tit">网校 * 背景色</el-col>
         <el-col :span="4">
           <el-color-picker v-model="bgColorVal"></el-color-picker>
         </el-col>
-        <el-col :span="10">todo:背景图片</el-col>
+       <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
         <el-col :span="5" class="tit">分辨率 * 页宽</el-col>
@@ -461,7 +461,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="导航设置"
+      title="导航栏设置"
       :visible.sync="dialogNavigation "
       size="nav" class="diaheader">
       <el-tabs v-model="activeNav" >
@@ -510,7 +510,7 @@
                   label="状态"
                   width="120">
                   <template scope="scope">
-                    <el-checkbox :checked="scope.row.available=='1'" @change="handleEnableNavEvent(scope.$index, scope.row)">启用</el-checkbox>
+                    <el-checkbox v-model="scope.row.available" >启用</el-checkbox>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -530,17 +530,20 @@
                   <template scope="scope">
                     <el-button size="small" type="text" @click="handleEidtNavnameEvent(scope.$index, scope.row)">编辑</el-button>
                     <el-button size="small" type="text" @click="handleShiftUpNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc">上移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
                     <el-button size="small" type="text" @click="handleShiftDownNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (navData.length - 1)">下移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc">下移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
+                    <el-button size="small" type="text" @click="handleDeleteNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
                   </template>
                 </el-table-column>
               </el-table>
             </template>
-          </div>
+          </div>        
         </el-tab-pane>       
       </el-tabs>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" style="float: left;margin-left: 10px;" v-if="activeNav=='second'" @click="addNavName = true">添加导航</el-button>
         <el-button @click="dialogNavigation = false">取 消</el-button>
         <el-button type="primary" @click="dialogNavigationEvent">确 定</el-button>
       </span>
@@ -621,6 +624,7 @@
         <el-button @click="dialognews = false">取 消</el-button>
         <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
       </span>
+<<<<<<< HEAD
     </el-dialog>
     <el-dialog
       title="登录框设置"
@@ -712,6 +716,213 @@
         <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
       </span>
     </el-dialog>
+=======
+    </el-dialog>     
+
+  <el-dialog
+      title="修改导航"
+      :visible.sync="editNavName "
+      size="edit" >
+      <el-input v-model="inp_editNav" placeholder="请输入导航名称"></el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="editNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleEidtNavnameConfirmEvent">确 定</el-button>
+      </span>      
+    </el-dialog>
+    <el-dialog
+      title="添加导航"
+      :visible.sync="addNavName"
+      size="nav" class="addNavName">
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航名称</el-col>
+        <el-col :span='16'>
+          <el-input v-model="inp_addNav" placeholder="请输入导航名称"></el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航类型</el-col>
+        <el-col :span='16'>
+          <el-radio class="radio" v-model="navType" label="1">资讯</el-radio>
+          <el-radio class="radio" v-model="navType" label="2">自定义链接</el-radio>
+        </el-col>
+      </el-row>
+      <div v-if='navType=="2"'>
+        <el-row>
+          <el-col :span='4' style="text-align: center;">链接地址</el-col>
+          <el-col :span='16'>
+            <el-input v-model="inp_addNavUrl" placeholder="请输入导航跳转链接"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span='4' style="text-align: center;">打开方式</el-col>
+          <el-col :span='16' >
+            <el-radio class="radio" v-model="openType" label="1">新窗口</el-radio>
+            <el-radio class="radio" v-model="openType" label="2">当前窗口</el-radio>
+          </el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="addNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddNavConfirmEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="二级资讯导航设置"
+      :visible.sync="dialogSecNavigation "
+      size="nav" class="diaheader">
+        <div class="navBox">
+            <template>
+              <el-table
+                :data="secNavData"
+                style="width: 100%"
+                max-height="300">
+                <el-table-column
+                  label="状态"
+                  width="120">
+                  <template scope="scope">
+                    <el-checkbox v-model="scope.row.subavailable" >启用</el-checkbox>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="subnickname"
+                  label="导航名称"
+                  width="200">
+                </el-table-column>
+                <el-table-column
+                  label="操作">
+                  <template scope="scope">
+                    <el-button size="small" type="text" @click="handleEidtSecNavnameEvent(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small" type="text" @click="handleShiftUpSecNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
+                    <el-button size="small" type="text" @click="handleShiftDownSecNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (secNavData.length - 1)">下移</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
+                    <el-button size="small" type="text" @click="handleDeleteSecNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
+                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+        </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" style="float: left;margin-left: 10px;" @click="addSecNavName = true">添加导航</el-button>
+        <el-button @click="dialogSecNavigation = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSecNavigationEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="修改二级导航"
+      :visible.sync="editSecNavName "
+      size="edit" >
+      <el-input v-model="inp_editSecNav" placeholder="请输入二级导航名称"></el-input>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="editSecNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleEidtSecNavnameConfirmEvent">确 定</el-button>
+      </span>      
+    </el-dialog>
+    <el-dialog
+      title="添加二级导航"
+      :visible.sync="addSecNavName"
+      size="nav" class="addNavName">
+      <el-row>
+        <el-col :span='4' style="text-align: center;">导航名称</el-col>
+        <el-col :span='16'>
+          <el-input v-model="inp_addSecNav" placeholder="请输入导航名称"></el-input>
+        </el-col>
+      </el-row>     
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="addSecNavName = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddSecNavConfirmEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+  <!-- todo -->
+  <el-dialog
+    title="设置免费试听课件"
+    :visible.sync="dialogAudition"
+    size="audition" class="auditiondia">
+    <el-row>
+      <el-col class='courseSource'>
+        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+          <el-radio-button label="self">本校课程</el-radio-button>
+          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>  
+    <el-row>
+      <el-col>
+        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+      <el-col>
+        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row class="conCourse">
+      <el-col :span="12">
+        <el-pagination
+          layout="prev, pager, next"
+          :total="courseListTotal"
+          :current-page="courseListPage"
+          :page-size="30"
+          v-if="courseListTotal > 30"
+          @current-change="courseListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课程名"
+          icon="search"
+          v-model="inp_courseName"
+          @change="searchCourseEvent"
+          :on-icon-click="searchCourseEvent">
+        </el-input>
+        <div class="courseList"  v-loading="loading">
+          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid)">
+            <div class="imgbox">
+              <img :src="item.img" >
+            </div>
+            <span>{{item.iname}} ({{item.coursewarenum||item.cwnum}})</span>
+          </div>
+          <div class="nodata" v-if="courseListData.length == 0"></div>
+        </div>        
+      </el-col>
+      <el-col :span="12" class="courseware"> 
+        <el-pagination
+          layout="prev, pager, next"
+          :total="cwListTotal"
+          :current-page="cwListPage"
+          :page-size="30"
+          v-if="cwListTotal > 30"
+          @current-change="CoursewareListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课件名"
+          icon="search"
+          v-model="inp_CoursewareName"
+          @change="searchCoursewareEvent">
+        </el-input>
+        <div class="cwlist" v-loading="loading">
+          <el-radio-group v-model="radioCourseware" @change="radioCoursewareChangeEvent">
+            <div class="cwLi" v-for="(item, index) in cwlistData" :key="item.sid">
+              <div class="chapter">{{item.sname}}</div>
+              <el-radio-button v-for="(itemcw, index) in item.cwlist" :key="itemcw.cwid" :label="itemcw.cwid">{{itemcw.title}}</el-radio-button>
+            </div>
+          </el-radio-group>
+          <div class="nodata" v-if="cwlistData.length == 0"></div>
+        </div>
+      </el-col>
+    </el-row>
+    <span slot="footer" class="dialog-footer">        
+      <el-button @click="dialogAudition = false">取 消</el-button>
+      <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
+    </span>
+  </el-dialog>
+
+>>>>>>> 0854162ad13e1f27fe3187ea97c399c56a360436
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -735,7 +946,7 @@
     name: 'app',
     data: function () {
       return {
-      // -------------test---------
+      // -------------基础组件弹框---------
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -743,11 +954,48 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
+      // ------------免费试听设置----
+        dialogAudition: false,
+        sourceData: [],
+        radioSource: 'self',
+        pClassData: [],
+        radioMainClass: '',
+        sClassData: [],
+        radioNextClass: '',
+        courseListData: [],
+        courseListTotal: 0,
+        courseListPage: 1,
+        inp_courseName: '',
+        cwlistData: [],
+        cwListTotal: 0,
+        cwListPage: 1,
+        folderid: '',
+        inp_CoursewareName: '',
+        radioCourseware: '',
+        loading: true,
+        loadingcw: true,
+      // ------------导航设置--------
         dialogNavigation: false,
+        editNavName: false,
+        addNavName: false,
+        navType: '1',
+        openType: '1',
         searchBtn: true,
         loginBtn: true,
         registerBtn: true,
+        inp_editNav: '',
+        inp_addNav: '',
+        inp_addNavUrl: '',
+        navIndex: 0,
         navData: [],
+        dialogSecNavigation: false,
+        editSecNavName: false,
+        addSecNavName: false,
+        secNavData: [],
+        secNavIndex: 0,
+        inp_editSecNav: '',
+        inp_addSecNav: '',
+      // ------------轮播设置--------
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
@@ -920,14 +1168,14 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-      // ---------------------------------------
+      // -----------common---------------------------
         editorConfig: {
           zIndex: 3000,
           toolbars: [[
             'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
           ]]
         },
-        httpget: function (getParam, type) { // 封装的异步请求数据
+        httpget: function (getParam) { // 封装的异步请求数据
           let self = this
           self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -944,6 +1192,63 @@
             }
           }).catch(function (response) {
           })
+        },
+        moduleEvent: function () { // 特殊二级导航设置绑定事件
+          let self = this
+          let editBox = $('.editBox')
+          editBox.on('click', '.setInfo', function (e) {
+            self.dialogSecNavigation = true
+            self.navIndex = $(this).attr('dataIndex')
+            let getParam = {
+              url: '/aroomv3/roominfo/navigator.html',
+              params: {},
+              fun: function (response) {
+                let data = response.body.data
+                let navigatorlist = data.navigatorlist
+                self.navData = navigatorlist
+                self.secNavData = self.navData[self.navIndex].subnav
+                for (let i = 0, len = self.secNavData.length; i < len; i++) {
+                  let item = self.secNavData[i]
+                  if (item.subavailable === '1') {
+                    item.subavailable = true
+                  } else {
+                    item.subavailable = false
+                  }
+                }
+              }
+            }
+            self.httpget(getParam)
+          })
+        },
+        courselist: function (param) { // 课程列表
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/courselist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              self.courseListData = data.courselist
+              self.courseListTotal = parseInt(data.coursecount)
+              self.loading = false
+            }
+          }
+          self.loading = true
+          self.httpget(getParam)
+        },
+        cwlist: function (param) {
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/cwlist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              self.cwlistData = data.cwlist
+              self.cwListTotal = parseInt(data.cwcount)
+              self.loadingcw = false
+            }
+          }
+          self.loadingcw = true
+          self.httpget(getParam)
         },
       // ---------------------
         tool: { /* 工具箱事件 */
@@ -1672,7 +1977,7 @@
             })
           },
         // ------------------- todo: ------------------
-          bindDblclickEvent: function (self) { // 模块双击操作事件 todo:
+          bindDblclickEvent: function (self) { // 模块双击操作，单机设置按钮事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
               let onthis = self.moduleElement
@@ -1688,6 +1993,7 @@
           },
           switchModuleEvent: function (type, onthis, self) {
             let w
+            let getParam
             switch (type) {
               case 'text':
                 self.dialogText = true
@@ -1726,13 +2032,21 @@
                 break
               case 'navigation':
                 self.dialogNavigation = true
-                let getParam = {
+                getParam = {
                   url: '/aroomv3/roominfo/navigator.html',
                   params: {},
                   fun: function (response) {
                     let data = response.body.data
                     let navigatorlist = data.navigatorlist
                     self.navData = navigatorlist
+                    for (let i = 0, len = self.navData.length; i < len; i++) {
+                      let item = self.navData[i]
+                      if (item.available === '1') {
+                        item.available = true
+                      } else {
+                        item.available = false
+                      }
+                    }
                   }
                 }
                 self.httpget(getParam)
@@ -1752,6 +2066,30 @@
                   self.transitionTime = data.transitionTime
                   self.changeStyle = data.changeStyle
                 }
+                break
+              case 'audition':
+                self.dialogAudition = true
+                getParam = {
+                  url: '/aroomv3/schsource.html',
+                  params: {},
+                  fun: function (response) {
+                    let data = response.body.data
+                    self.sourceData = data
+                    let param = {
+                      url: '/aroomv3/course/coursesort.html',
+                      params: {
+                        showbysort: 0
+                      },
+                      fun: function (response) {
+                        let classData = response.body.data
+                        self.pClassData = classData
+                        self.courselist({pagesize: 30, page: 1, issimple: 1})
+                      }
+                    }
+                    self.httpget(param)
+                  }
+                }
+                self.httpget(getParam)
                 break
               case 'WeChat':
                 break
@@ -1796,6 +2134,7 @@
         self.tool.bindDblclickEvent(self)
         self.tool.bindRightClickEvent(self)
         self.tool.scrollHeight()
+        self.moduleEvent()
         space.scrollLeft(900)
         if (!window.saveParams) return false
         let params = window.saveParams
@@ -2240,15 +2579,408 @@
           register.hide()
         }
         self.dialogNavigation = false
+        for (let i = 0, len = self.navData.length; i < len; i++) {
+          let item = self.navData[i]
+          if (item.available) {
+            item.available = '1'
+          } else {
+            item.available = '0'
+          }
+        }
+        let getParam = {
+          url: '/aroomv3/roominfo/savenavigator.html',
+          params: {navigatorlist: self.navData},
+          fun: function (response) {
+            let code = response.body.code
+            let msg = response.body.msg
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success'
+              })
+              let navHtml = ''
+              for (let i = 0, len = self.navData.length; i < len; i++) {
+                let item = self.navData[i]
+                if (item.available === '1') {
+                  switch (item.navtype) {
+                    case '0':
+                      navHtml += '<a >' + item.nickname + '</a>'
+                      break
+                    case '1':
+                      navHtml += '<a ><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
+                      break
+                    case '2':
+                      navHtml += '<a target="' + item.target + '" href="' + item.url + '">' + item.nickname + '</a>'
+                      break
+                  }
+                }
+              }
+              self.moduleElement.find('.navaBox').html(navHtml)
+            } else {
+              self.$notify.info({
+                title: '消息',
+                message: msg
+              })
+            }
+          }
+        }
+        self.httppost(getParam)
       },
-      handleEidtNavnameEvent: function () { // 编辑导航名称
+      handleEidtNavnameEvent: function (index, value) { // 编辑导航名称
+        let self = this
+        self.editNavName = true
+        self.navIndex = index
+        self.inp_editNav = value.nickname
       },
-      handleShiftUpNavEvent: function () { // 上移
+      handleEidtNavnameConfirmEvent: function () { // 确定修改导航名称
+        let self = this
+        self.editNavName = false
+        self.navData[self.navIndex].nickname = self.inp_editNav
       },
-      handleShiftDownNavEvent: function () { // 下移
+      handleShiftUpNavEvent: function (index, value) { // 上移
+        let self = this
+        let item = self.navData.splice(index, 1)
+        self.navData.splice(index - 1, 0, item[0])
       },
-      handleEnableNavEvent: function (index, value) { // 启用
-        console.log(index, value, 1)
+      handleShiftDownNavEvent: function (index, value) { // 下移
+        let self = this
+        let item = self.navData.splice(index, 1)
+        self.navData.splice(index + 1, 0, item[0])
+      },
+      handleDeleteNavEvent: function (index, value) { // 删除
+        let self = this
+        self.navData.splice(index, 1)
+      },
+      handleAddNavConfirmEvent: function (index, value) { // 添加导航确定按钮
+        let self = this
+        let obj = {
+          available: false,
+          code: '',
+          name: self.inp_addNav,
+          navtype: self.navType,
+          nickname: self.inp_addNav,
+          subnav: [],
+          target: '',
+          url: ''
+        }
+        let len = self.navData.length
+        let code = ''
+        for (let i = 0; i < len; i++) {
+          code = 'n' + (i + 1)
+          let bloo = true
+          for (let i = 0; i < len; i++) {
+            let codes = self.navData[i].code
+            if (code === codes) {
+              bloo = false
+            }
+          }
+          if (bloo) {
+            break
+          }
+        }
+        if (self.navType === '2') {
+          obj.target = self.openType === '1' ? '_blank' : '_self'
+          obj.url = self.inp_addNavUrl
+        }
+        obj.code = code
+        self.navData.push(obj)
+        self.addNavName = false
+        self.inp_addNav = ''
+        self.navType = '1'
+      },
+      dialogSecNavigationEvent: function (index, value) { // 二级导航条设置 todo:
+        let self = this
+        self.dialogSecNavigation = false
+        for (let i = 0, len = self.secNavData.length; i < len; i++) {
+          let item = self.secNavData[i]
+          if (item.subavailable) {
+            item.subavailable = '1'
+          } else {
+            item.subavailable = '0'
+          }
+        }
+        self.navData[self.navIndex].subnav = self.secNavData
+        let getParam = {
+          url: '/aroomv3/roominfo/savenavigator.html',
+          params: {navigatorlist: self.navData},
+          fun: function (response) {
+            let code = response.body.code
+            let msg = response.body.msg
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '资讯导航设置成功',
+                type: 'success'
+              })
+            } else {
+              self.$notify.info({
+                title: '消息',
+                message: msg
+              })
+            }
+          }
+        }
+        self.httppost(getParam)
+      },
+      handleEidtSecNavnameEvent: function (index, value) { // 编辑二级导航名称
+        let self = this
+        self.editSecNavName = true
+        self.secNavIndex = index
+        self.inp_editSecNav = value.subnickname
+      },
+      handleEidtSecNavnameConfirmEvent: function (index, value) { // 确定修改二级导航名称
+        let self = this
+        self.editSecNavName = false
+        self.secNavData[self.secNavIndex].subnickname = self.inp_editSecNav
+      },
+      handleShiftUpSecNavEvent: function (index, value) { // 二级导航上移
+        let self = this
+        let item = self.secNavData.splice(index, 1)
+        self.secNavData.splice(index - 1, 0, item[0])
+      },
+      handleShiftDownSecNavEvent: function (index, value) { // 二级导航下移
+        let self = this
+        let item = self.secNavData.splice(index, 1)
+        self.secNavData.splice(index + 1, 0, item[0])
+      },
+      handleDeleteSecNavEvent: function (index, value) { // 二级导航删除
+        let self = this
+        self.secNavData.splice(index, 1)
+      },
+      handleAddSecNavConfirmEvent: function (index, value) {  // 二级导航添加
+        let self = this
+        let obj = {
+          subavailable: false,
+          subcode: '',
+          subnickname: self.inp_addSecNav
+        }
+        let len = self.secNavData.length
+        let code = ''
+        for (let i = 0; i < len; i++) {
+          code = self.navData[self.navIndex].code + 's' + (i + 1)
+          let bloo = true
+          for (let i = 0; i < len; i++) {
+            let codes = self.secNavData[i].subcode
+            if (code === codes) {
+              bloo = false
+              if (i === len - 1) {
+                code = self.navData[self.navIndex].code + 's' + (i + 2)
+              }
+            }
+          }
+          if (bloo) {
+            break
+          }
+        }
+        obj.subcode = code
+        self.secNavData.push(obj)
+        self.addSecNavName = false
+      },
+    // ------------- 免费试听 ---------------------
+      radioCourseSourceChangeEvent: function (value) { // 课程来源
+        let self = this
+        if (value !== 'self') {
+          let param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: value,
+              pid: '',
+              sid: ''
+            },
+            fun: function (response) {
+              let data = response.body.data
+              self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
+        } else {
+          let getParam = {
+            url: '/aroomv3/schsource.html',
+            params: {},
+            fun: function (response) {
+              let data = response.body.data
+              self.sourceData = data
+              let param = {
+                url: '/aroomv3/course/coursesort.html',
+                params: {
+                  showbysort: 0
+                },
+                fun: function (response) {
+                  let classData = response.body.data
+                  self.pClassData = classData
+                  self.courselist({pagesize: 30, page: 1, issimple: 1})
+                }
+              }
+              self.httpget(param)
+            }
+          }
+          self.httpget(getParam)
+        }
+      },
+      radioMainClassChangeEvent: function (value) { // 选择主类按钮
+        let self = this
+        let param
+        for (let i = 0, len = self.pClassData.length; i < len; i++) {
+          let item = self.pClassData[i]
+          if (item.pid === value) {
+            if (item.sorts) {
+              self.sClassData = item.sorts
+            } else {
+              self.sClassData = []
+            }
+            break
+          }
+        }
+        if (self.radioSource === 'self') {
+          param = {
+            pagesize: 30,
+            page: 1,
+            issimple: 1,
+            pid: value
+          }
+          self.courselist(param)
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: self.radioSource,
+              pid: value,
+              sid: ''
+            },
+            fun: function (response) {
+              let data = response.body.data
+              // self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
+        }
+        self.inp_courseName = ''
+      },
+      radioNextClassChangeEvent: function (value) { // 选择次类按钮
+        let self = this
+        let param
+        if (self.radioSource === 'self') {
+          param = {
+            pagesize: 30,
+            page: 1,
+            issimple: 1,
+            pid: self.radioMainClass,
+            sid: value
+          }
+          self.courselist(param)
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: '',
+              sourceid: self.radioSource,
+              pid: self.radioMainClass,
+              sid: value
+            },
+            fun: function (response) {
+              let data = response.body.data
+              // self.pClassData = data.splist
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
+        }
+        self.inp_courseName = ''
+      },
+      courseListCurrPageEvent: function (value) { // 课程列表分页
+        let self = this
+        let param = {
+          q: self.inp_courseName,
+          pagesize: 30,
+          page: value,
+          issimple: 1,
+          pid: self.radioMainClass,
+          sid: self.radioNextClass
+        }
+        self.courselist(param)
+      },
+      searchCourseEvent: function (value) { // 搜索课程
+        let self = this
+        let param = {
+          q: value,
+          pagesize: 30,
+          page: 1,
+          issimple: 1,
+          pid: self.radioMainClass,
+          sid: self.radioNextClass
+        }
+        self.courseListPage = 1
+        self.courselist(param)
+      },
+      viewCoursewareEvent: function (value) { // 查看课件
+        let self = this
+        let param = {
+          folderid: value,
+          page: 1,
+          pagesize: 30
+        }
+        self.folderid = value
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      CoursewareListCurrPageEvent: function (value) { // 课件列表分页
+        let self = this
+        let param = {
+          folderid: self.folderid,
+          s: self.inp_CoursewareName,
+          pagesize: 30,
+          page: value
+        }
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      searchCoursewareEvent: function (value) { // 课件列表搜索
+        let self = this
+        let param = {
+          folderid: self.folderid,
+          s: self.inp_CoursewareName,
+          pagesize: 30,
+          page: 1
+        }
+        self.cwListPage = 1
+        self.radioCourseware = ''
+        self.cwlist(param)
+      },
+      radioCoursewareChangeEvent: function () {},
+      handleSettingAuditionEvent: function () {
+        let self = this
+        let cwData
+        if (!self.radioCourseware) {
+          self.$notify({
+            title: '警告',
+            message: '你还未选择要添加的课件',
+            type: 'warning'
+          })
+        } else {
+          for (let i = 0, len = self.cwlistData.length; i < len; i++) {
+            let item = self.cwlistData[i].cwlist
+            for (let j = 0, jen = item.length; j < jen; j++) {
+              let jtem = item[j]
+              if (jtem.cwid === self.radioCourseware) {
+                cwData = jtem
+                break
+              }
+            }
+          }
+          let module = $('.on_module')
+          module.find('img').attr('src', cwData.logo)
+          module.find('.audiTit').text(cwData.title)
+          module.find('a').attr('dataHref', '/course/' + cwData.cwid + '.html')
+          self.dialogAudition = false
+        }
       },
       // ------------- 课程分类设置 ---------------------
       handlecourseClick: function () {
@@ -2492,6 +3224,12 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     cursor: default;
+  }
+  .nodata{
+    background:url(assets/img/nodata.png) no-repeat 50%;
+    min-width: 300px;
+    width: 100%;
+    height: 400px;
   }
 /*top*/
   .top{
@@ -3350,12 +4088,15 @@
   }
 /*Navigation*/
   .el-dialog__body{
-    padding-bottom: 10px;
+    padding: 10px 20px;
   }
   .el-dialog--nav{
     width: 600px;
   }
-  .navBox{
+  .el-dialog--edit{
+    width: 400px;
+  }
+  .navBox{   
     width:100%;
     height: 300px;
   }
@@ -3366,6 +4107,120 @@
     text-align: center;
     height: 30px;
     line-height: 30px;
+  }
+  .addNavName .el-row{
+    margin-bottom: 15px;
+  }
+  .addNavName .el-col{
+    font-size: 14px;
+    line-height: 36px;
+  }
+  .navaBox a{
+    position:relative;
+  }
+  .navaBox .setInfo{
+    display: none;
+    position:absolute;
+    top:0;
+    right:0;
+    font-size: 12px;
+    background-color: #199ED8;
+    height: 20px;
+    line-height: 20px;
+    padding:0 5px;
+    color: #fff;    
+  }
+  .navaBox a:hover .setInfo{
+    display: block;
+  }
+/*免费试听*/
+  .el-dialog--audition{
+    width: 1000px;
+  }
+  .auditiondia .el-col{
+    max-height:100px;
+    overflow-y:auto;
+  }
+  .auditiondia .el-radio-button .el-radio-button__inner{
+    border:0;
+    border-radius: 2px;
+  }
+  .auditiondia .el-radio-button:first-child .el-radio-button__inner{
+    border:0;
+  }
+  .auditiondia .el-row{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #d1dbe5;
+  }
+  .auditiondia .conCourse .el-col{
+    height: 480px;
+    max-height:480px;
+    border-right: 1px solid #d1dbe5;
+  }
+  .auditiondia .courseList{
+    float: left;
+    width: 100%;
+    overflow-y:auto;
+    height: 443px;
+    margin-top: 5px; 
+  }
+  .auditiondia .courseLi{
+    float: left;
+    width: 150px;
+    height: 120px;
+    overflow: hidden;
+    padding: 0 4px; 
+    cursor: pointer;
+  }
+  .auditiondia .imgbox {
+    width: 150px;
+    height: 90px;
+  }
+  .imgbox img{
+    width: 100%;
+    height: 100%;
+  }
+  .auditiondia .courseLi span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+  }
+  .conCourse  .el-input {    
+    float: right;
+    width: 180px;
+    margin-right: 5px;
+  } 
+  .conCourse .el-input__inner{
+    margin: 2px 2px 0 0;
+    height: 28px;
+    line-height: 28px;
+  }
+  .conCourse .el-pagination{
+    float: left;
+  }
+  .conCourse .cwlist{
+    float: left;
+    width: 100%;
+    overflow-y:auto;
+    height: 443px;
+    margin-top: 5px; 
+  }
+  .conCourse .cwLi{
+    margin-left: 20px;
+
+  }
+  .courseware .chapter{
+    height: 36px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+  .courseware .el-radio-button{
+    display: block;
   }
 /*设置*/
   .promptBox{

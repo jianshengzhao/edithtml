@@ -273,6 +273,45 @@
 		height: 36px;
     overflow: hidden;
 	}
+  .newsList{
+    padding:50px 20px 10px;
+  }
+  .news_li{
+    padding: 0 10px;
+    height: 36px;
+    line-height: 36px;
+    box-sizing: border-box;
+    background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/newsico.png) no-repeat left center;
+    text-indent: 5px;
+    border-bottom: 1px dashed #ebebeb;
+  }
+/*-------------audition---------------*/  
+  .audition {
+    width: 190px;
+    height: 120px;
+  }
+  .audition a{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .audiTit{
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    color: #fff;
+    background-color: rgba(0,0,0,0.5);
+    cursor: pointer;
+  }
+  .audition:hover .audiTit {
+    display: block;
+  }
+
 /*-------------enlist-----------------*/
   .enlist, .dynamics{
     width: 305px;
