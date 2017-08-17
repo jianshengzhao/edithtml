@@ -51,7 +51,7 @@ var datahtml = {
       {
         name: 'navigation',
         icon: 'icon-widget-search-input',
-        text: '导航搜索'
+        text: '导航栏'
       },
       {
         name: 'carousel',
@@ -67,6 +67,16 @@ var datahtml = {
         name: 'audition',
         icon: 'imgicon icon-audition',
         text: '免费试听'
+      },
+      {
+        name: 'news',
+        icon: 'icon-widget-sticker',
+        text: '新闻资讯'
+      },
+      {
+        name: 'course',
+        icon: 'imgicon icon-classification',
+        text: '课程'
       }
     ],
     todo: [
@@ -84,11 +94,6 @@ var datahtml = {
         name: 'hotLabel',
         icon: 'icon-widget-icon-label',
         text: '热门标签'
-      },
-      {
-        name: 'news',
-        icon: 'icon-widget-sticker',
-        text: '新闻资讯'
       },
       {
         name: 'enlist',
@@ -202,6 +207,10 @@ var datahtml = {
   audition: {
     style: 'width:190px; height:120px',
     html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img><div class="audiTit">免费试听课件</div></a></div>'
+  },
+  course: {
+    style: 'width:260px; height:220px',
+    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><img></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="number">199</div><div class="popularity">6999</div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',

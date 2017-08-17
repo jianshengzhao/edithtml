@@ -394,64 +394,64 @@
       <el-tabs v-model="courseactiveName"  @tab-click="handlecourseClick">
         <el-tab-pane label="基础设置" name="first">
           <el-form ref="courseHeightL" :model="courseHeightL" label-width="100px">
-          	<el-form-item label="主选框高度：">
-					    <el-radio-group v-model="courseHeightL.heightone">
-					      <el-radio label="默认"></el-radio>
-					      <el-radio label="自定义"></el-radio>
-					    </el-radio-group>
-					    
-					    <el-input-number v-model="courseHeightL.heightonenum" size="small" :disabled=" courseHeightL.heightone != '自定义' " :controls=false></el-input-number>
-					  </el-form-item>
-					  <el-form-item label="主类框高度：">
-					    <el-radio-group v-model="courseHeightL.heighttwo">
-					      <el-radio label="默认"></el-radio>
-					      <el-radio label="自定义"></el-radio>
-					    </el-radio-group>
-					    
-					    <el-input-number v-model="courseHeightL.heighttwonum" size="small" :disabled=" courseHeightL.heighttwo != '自定义' " :controls=false></el-input-number>
-					  </el-form-item>
-					  <el-form-item label="主类个数：">
-					    <el-radio-group v-model="courseHeightL.length">
-					      <el-radio label="默认"></el-radio>
-					      <el-radio label="自定义"></el-radio>
-					    </el-radio-group>
-					    
-					    <el-input-number v-model="courseHeightL.lengthnum" size="small" :disabled=" courseHeightL.length != '自定义' " :controls=false></el-input-number>
-					  </el-form-item>
+            <el-form-item label="主选框高度：">
+              <el-radio-group v-model="courseHeightL.heightone">
+                <el-radio label="默认"></el-radio>
+                <el-radio label="自定义"></el-radio>
+              </el-radio-group>
+              
+              <el-input-number v-model="courseHeightL.heightonenum" size="small" :disabled=" courseHeightL.heightone != '自定义' " :controls=false></el-input-number>
+            </el-form-item>
+            <el-form-item label="主类框高度：">
+              <el-radio-group v-model="courseHeightL.heighttwo">
+                <el-radio label="默认"></el-radio>
+                <el-radio label="自定义"></el-radio>
+              </el-radio-group>
+              
+              <el-input-number v-model="courseHeightL.heighttwonum" size="small" :disabled=" courseHeightL.heighttwo != '自定义' " :controls=false></el-input-number>
+            </el-form-item>
+            <el-form-item label="主类个数：">
+              <el-radio-group v-model="courseHeightL.length">
+                <el-radio label="默认"></el-radio>
+                <el-radio label="自定义"></el-radio>
+              </el-radio-group>
+              
+              <el-input-number v-model="courseHeightL.lengthnum" size="small" :disabled=" courseHeightL.length != '自定义' " :controls=false></el-input-number>
+            </el-form-item>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="样式" name="second">
          <el-form ref="courseHeightL" :model="courseHeightL" label-width="60px">
-          	<el-form-item label="颜色：">
-					    <div class="togglePaletteOnly">
-					    	<div class="Paletter Paletter1"><div color="theme_1" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter2"><div color="theme_2" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter3"><div color="theme_3" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter4"><div color="theme_4" class="Paletter-icon active-icon"></div></div>
-					    	<div class="Paletter Paletter5"><div color="theme_5" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter6"><div color="theme_6" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter7"><div color="theme_7" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter8"><div color="theme_8" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter9"><div color="theme_9" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter10"><div color="theme_10" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter11"><div color="theme_11" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter12"><div color="theme_12" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter13"><div color="theme_13" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter14"><div color="theme_14" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter15"><div color="theme_15" class="Paletter-icon"></div></div>
-					    	<div class="Paletter Paletter16"><div color="theme_16" class="Paletter-icon"></div></div>
-					    </div>
-					  </el-form-item>
-					  <div class="Palettebuttonlist">
-				    		<div color="default" class="csslist">
-				    				<div class="csslist-div">
-				    						<div class="csslist-div-top">
-				    						</div>
-				    							默认	
-				    				</div>
-				    				<p class="hovershow">默认</p>
-				    		</div>
-				    </div>
+            <el-form-item label="颜色：">
+              <div class="togglePaletteOnly">
+                <div class="Paletter Paletter1"><div color="theme_1" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter2"><div color="theme_2" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter3"><div color="theme_3" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter4"><div color="theme_4" class="Paletter-icon active-icon"></div></div>
+                <div class="Paletter Paletter5"><div color="theme_5" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter6"><div color="theme_6" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter7"><div color="theme_7" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter8"><div color="theme_8" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter9"><div color="theme_9" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter10"><div color="theme_10" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter11"><div color="theme_11" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter12"><div color="theme_12" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter13"><div color="theme_13" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter14"><div color="theme_14" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter15"><div color="theme_15" class="Paletter-icon"></div></div>
+                <div class="Paletter Paletter16"><div color="theme_16" class="Paletter-icon"></div></div>
+              </div>
+            </el-form-item>
+            <div class="Palettebuttonlist">
+                <div color="default" class="csslist">
+                    <div class="csslist-div">
+                        <div class="csslist-div-top">
+                        </div>
+                          默认  
+                    </div>
+                    <p class="hovershow">默认</p>
+                </div>
+            </div>
           </el-form>
         </el-tab-pane>
       </el-tabs>    
@@ -469,32 +469,23 @@
           <div class="navBox">
             <el-row>
               <el-col :span='4'>搜索框</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="searchBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="searchBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="searchBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span='4'>登录</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="loginBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="loginBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="loginBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span='4'>注册</el-col>
-              <el-col :span='4'>
-                <el-switch
-                  v-model="registerBtn"
-                  on-text="开启"
-                  off-text="关闭">
-                </el-switch>
+              <el-col :span='8'>
+                <el-radio class="radio" v-model="registerBtn" label="1">开启</el-radio>
+                <el-radio class="radio" v-model="registerBtn" label="0">关闭</el-radio>
               </el-col>
             </el-row>
           </div>
@@ -553,69 +544,69 @@
       :visible.sync="dialognews"
       size="dialognews" >
       <el-tabs v-model="activenews"  @tab-click="handlenewsClick">
-       	<el-tab-pane label="选择样式" name="first">
-         	<div class="Palettebuttonlist">
-		    		<div color="default" class="csslist" id="newsdefault">
-		    				<div class="csslist-div">
-		    						<div class="csslist-div-top">
-		    						</div>
-		    							默认	
-		    				</div>
-		    				<p class="hovershow">默认</p>
-		    		</div>
-			    </div>
+        <el-tab-pane label="选择样式" name="first">
+          <div class="Palettebuttonlist">
+            <div color="default" class="csslist" id="newsdefault">
+                <div class="csslist-div">
+                    <div class="csslist-div-top">
+                    </div>
+                      默认  
+                </div>
+                <p class="hovershow">默认</p>
+            </div>
+          </div>
         </el-tab-pane>
-       	<el-tab-pane label="样式设置" name="second">
+        <el-tab-pane label="样式设置" name="second">
           <el-form ref="newsDetailed" :model="newsDetailed" label-width="100px">
-          	<el-form-item label="资讯来源：">
-					    <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
-					    	<el-option
-						      v-for="item in newsDetailed.newssource"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-					  </el-form-item>
-					  <el-form-item label="模块标题：">
-					    <el-radio-group v-model="newsDetailed.ontitle">
-					      <el-radio :label="1">开启</el-radio>
-					      <el-radio :label="0">关闭</el-radio>
-					    </el-radio-group>
-					  </el-form-item>
-          	<el-form-item label="图片显示：">
-					    <el-radio-group v-model="newsDetailed.onimg">
-					     <el-radio :label="1">开启</el-radio>
-					      <el-radio :label="0">关闭</el-radio>
-					    </el-radio-group>
-					  </el-form-item>
-					  <el-form-item label="内容显示：">
-					    <el-radio-group v-model="newsDetailed.oncont">
-					      <el-radio :label="1">开启</el-radio>
-					      <el-radio :label="0">关闭</el-radio>
-					    </el-radio-group>
-					  </el-form-item>
-					  <el-form-item label="时间显示：">
-					    <el-radio-group v-model="newsDetailed.ontime">
-					      <el-radio :label="1">开启</el-radio>
-					      <el-radio :label="0">关闭</el-radio>
-					    </el-radio-group>
-					  </el-form-item>
-					  <el-form-item label="单行显示：">
-					    <el-radio-group v-model="newsDetailed.onrow">
-					      <el-radio :label="1">1条</el-radio>
-					      <el-radio :label="2">2条</el-radio>
-					    </el-radio-group>
-					  </el-form-item>
-					  <el-form-item label="行数：">
-					    <el-radio-group v-model="newsDetailed.oncol">
-					      <el-radio :label="1">1</el-radio>
-					      <el-radio :label="2">2</el-radio>
-					      <el-radio :label="3">3</el-radio>
-					      <el-radio :label="0">自定义</el-radio>
-					    </el-radio-group>
-					     <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
-					  </el-form-item>
+            <el-form-item label="资讯来源：">
+              <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
+                <el-option
+                  v-for="item in newsDetailed.newssource"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="模块标题：">
+              <el-radio-group v-model="newsDetailed.ontitle">
+                <el-radio :label="1">开启</el-radio>
+                <el-radio :label="0">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="图片显示：">
+              <el-radio-group v-model="newsDetailed.onimg">
+               <el-radio :label="1">开启</el-radio>
+                <el-radio :label="0">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="内容显示：">
+              <el-radio-group v-model="newsDetailed.oncont">
+                <el-radio :label="1">开启</el-radio>
+                <el-radio :label="0">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="时间显示：">
+              <el-radio-group v-model="newsDetailed.ontime">
+                <el-radio :label="1">开启</el-radio>
+                <el-radio :label="0">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="单行显示：">
+              <el-radio-group v-model="newsDetailed.onrow">
+                <el-radio :label="1">1条</el-radio>
+                <el-radio :label="2">2条</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="行数：">
+              <el-radio-group v-model="newsDetailed.oncol">
+                <el-radio :label="1">1</el-radio>
+                <el-radio :label="2">2</el-radio>
+                <el-radio :label="3">3</el-radio>
+                <el-radio :label="0">自定义</el-radio>
+              </el-radio-group>
+               <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
+            </el-form-item>
           </el-form>
         </el-tab-pane>
         
@@ -624,7 +615,6 @@
         <el-button @click="dialognews = false">取 消</el-button>
         <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
       </span>
-<<<<<<< HEAD
     </el-dialog>
     <el-dialog
       title="登录框设置"
@@ -716,10 +706,7 @@
         <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
       </span>
     </el-dialog>
-=======
-    </el-dialog>     
-
-  <el-dialog
+    <el-dialog
       title="修改导航"
       :visible.sync="editNavName "
       size="edit" >
@@ -922,7 +909,68 @@
     </span>
   </el-dialog>
 
->>>>>>> 0854162ad13e1f27fe3187ea97c399c56a360436
+  <el-dialog
+    title="课程设置"
+    :visible.sync="dialogCoruse"
+    size="coruse" class="auditiondia">
+    <el-row>
+      <el-col class='courseSource'>
+        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
+          <el-radio-button label="self">本校课程</el-radio-button>
+          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row>
+      <el-col>
+        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
+      <el-col>
+        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
+          <el-radio-button label="">全部</el-radio-button>
+          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
+        </el-radio-group>
+      </el-col>  
+    </el-row>
+    <el-row class="conCourse conCourse2" style="border:0">
+      <el-col>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="courseListTotal"
+          :current-page="courseListPage"
+          :page-size="30"
+          v-if="courseListTotal > 30"
+          @current-change="courseListCurrPageEvent">
+        </el-pagination>
+        <el-input
+          placeholder="去输入课程名"
+          icon="search"
+          v-model="inp_courseName"
+          @change="searchCourseEvent"
+          :on-icon-click="searchCourseEvent">
+        </el-input>
+        <div class="courseList"  v-loading="loading">
+          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
+            <i class="el-icon-circle-check"></i>
+            <div class="imgbox">
+              <img :src="item.img" >
+            </div>
+            <span>{{item.iname}}</span>
+          </div>
+          <div class="nodata" v-if="courseListData.length == 0"></div>
+        </div>        
+      </el-col>
+    </el-row>
+    <span slot="footer" class="dialog-footer">        
+      <el-button @click="addSecNavName = false">取 消</el-button>
+      <el-button type="primary" @click="handleSettingCourseConfirmEvent">确 定</el-button>
+    </span>
+  </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -946,7 +994,7 @@
     name: 'app',
     data: function () {
       return {
-      // -------------基础组件弹框---------
+      // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -954,7 +1002,7 @@
         dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
-      // ------------免费试听设置----
+      // ------------ 免费试听设置 -------------------
         dialogAudition: false,
         sourceData: [],
         radioSource: 'self',
@@ -974,15 +1022,18 @@
         radioCourseware: '',
         loading: true,
         loadingcw: true,
-      // ------------导航设置--------
+      // ------------ 课程设置 -----------------------
+        dialogCoruse: false,
+        courseitem: {},
+      // ------------ 导航设置 -----------------------
         dialogNavigation: false,
         editNavName: false,
         addNavName: false,
         navType: '1',
         openType: '1',
-        searchBtn: true,
-        loginBtn: true,
-        registerBtn: true,
+        searchBtn: '1',
+        loginBtn: '1',
+        registerBtn: '1',
         inp_editNav: '',
         inp_addNav: '',
         inp_addNavUrl: '',
@@ -995,7 +1046,7 @@
         secNavIndex: 0,
         inp_editSecNav: '',
         inp_addSecNav: '',
-      // ------------轮播设置--------
+      // ------------ 轮播设置 -----------------------
         inputBtnText: '',
         inputBtnHref: '',
         imageUrl: '',
@@ -1028,7 +1079,7 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // ------------课程分类设置----------------
+      // ------------ 课程分类设置 -------------------
         courseactiveName: 'first',
         dialogAddcoursetype: false,
         courseHeightL: {
@@ -1168,7 +1219,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-      // -----------common---------------------------
+      // ------------ common -------------------------
         editorConfig: {
           zIndex: 3000,
           toolbars: [[
@@ -1250,9 +1301,9 @@
           self.loadingcw = true
           self.httpget(getParam)
         },
-      // ---------------------
+      // ---------------------------------------------
         tool: { /* 工具箱事件 */
-        // --------------- complete ----------------
+        // --------------- complete ------------------
           linePosition: function (editBox, copyBox, self, e) {
             let rowT = $('.row-t')
             let rowB = $('.row-b')
@@ -1976,7 +2027,7 @@
               }
             })
           },
-        // ------------------- todo: ------------------
+        // --------------- todo: ---------------------
           bindDblclickEvent: function (self) { // 模块双击操作，单机设置按钮事件 todo:
             let editBox = $('.editBox')
             editBox.on('dblclick', '.on_module', function (e) {
@@ -2091,6 +2142,30 @@
                 }
                 self.httpget(getParam)
                 break
+              case 'course':
+                self.dialogCoruse = true
+                getParam = {
+                  url: '/aroomv3/schsource.html',
+                  params: {},
+                  fun: function (response) {
+                    let data = response.body.data
+                    self.sourceData = data
+                    let param = {
+                      url: '/aroomv3/course/coursesort.html',
+                      params: {
+                        showbysort: 0
+                      },
+                      fun: function (response) {
+                        let classData = response.body.data
+                        self.pClassData = classData
+                        self.courselist({pagesize: 30, page: 1, issimple: 1})
+                      }
+                    }
+                    self.httpget(param)
+                  }
+                }
+                self.httpget(getParam)
+                break
               case 'WeChat':
                 break
               case 'addcoursetype':
@@ -2164,7 +2239,48 @@
       })
     },
     methods: {
-    //   ---------------- complete --------------------
+    //  ------------ complete ----------------
+      settingEvent: function () { // 页面设置
+        let self = this
+        self.dialogPageSetting = true
+      },
+      dialogPageSettingEvent: function () { // 页面设置弹框保存
+        var self = this
+        let space = $('.space')
+        let canvas = $('.canvas')
+        space.css('backgroundColor', self.bgColorVal)
+        canvas.css('backgroundColor', self.prospectColorVal)
+        canvas.css('width', self.inp_width)
+        canvas.css('height', self.inp_height)
+        self.tool.scrollHeight()
+        self.dialogPageSetting = false
+      },
+      previewEvent: function () { // 预览
+        let self = this
+        self.tool.missSeletedEvents(self)
+        self.$router.push('preview')
+        let params = {}
+        let topArray = $('.c_top').html()
+        let bodyArray = $('.c_body').html()
+        let footArray = $('.c_foot').html()
+        params = {
+          page: {
+            pg: self.prospectColorVal,
+            bg: self.bgColorVal,
+            width: self.inp_width,
+            height: self.inp_height,
+            top: $('.c_top').css('height'),
+            body: $('.c_body').css('height'),
+            foot: $('.c_foot').css('height')
+          },
+          module: {
+            top: topArray,
+            body: bodyArray,
+            foot: footArray
+          }
+        }
+        window.saveParams = params
+      },
       gridHangle: function (e) { // 格线开关
         let $gridli = $('.gridli')
         let bloo = $gridli.hasClass('tl_li_on')
@@ -2177,6 +2293,7 @@
           canvas.addClass('grid')
         }
       },
+    // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
         if (val < 0) {
@@ -2264,6 +2381,7 @@
           self.moduleElement.css('backgroundColor', val)
         }
       },
+    // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
         let self = this
         self.moduleElement.css('top', '0px')
@@ -2394,32 +2512,7 @@
           self.tool.getLayerElement(self, self.original)
         }
       },
-      previewEvent: function () { // 预览
-        let self = this
-        self.tool.missSeletedEvents(self)
-        self.$router.push('preview')
-        let params = {}
-        let topArray = $('.c_top').html()
-        let bodyArray = $('.c_body').html()
-        let footArray = $('.c_foot').html()
-        params = {
-          page: {
-            pg: self.prospectColorVal,
-            bg: self.bgColorVal,
-            width: self.inp_width,
-            height: self.inp_height,
-            top: $('.c_top').css('height'),
-            body: $('.c_body').css('height'),
-            foot: $('.c_foot').css('height')
-          },
-          module: {
-            top: topArray,
-            body: bodyArray,
-            foot: footArray
-          }
-        }
-        window.saveParams = params
-      },
+    // ------------- 基础模块 ----------------
       dialogTextEvent: function () { // 编辑文本窗口
         let self = this
         self.moduleElement.text(self.textarea)
@@ -2465,21 +2558,6 @@
         let self = this
         self.dialogPageHeader = false
         self.moduleElement.find('img').attr('src', self.imageUrl)
-      },
-      settingEvent: function () { // 页面设置
-        let self = this
-        self.dialogPageSetting = true
-      },
-      dialogPageSettingEvent: function () { // 页面设置弹框保存
-        var self = this
-        let space = $('.space')
-        let canvas = $('.canvas')
-        space.css('backgroundColor', self.bgColorVal)
-        canvas.css('backgroundColor', self.prospectColorVal)
-        canvas.css('width', self.inp_width)
-        canvas.css('height', self.inp_height)
-        self.tool.scrollHeight()
-        self.dialogPageSetting = false
       },
       carouselShiftUpEvent: function (index) { // 上移
         let self = this
@@ -2551,7 +2629,7 @@
         self.dialogPicture = false
         self.moduleElement.find('img').attr('src', self.pictureUrl)
       },
-    //   ---------------- todo: -----------------------
+    // ------------- 导航设置 ----------------
       dialogButtonEvent: function () { // 按钮设置
         let self = this
         self.dialogButton = false
@@ -2563,17 +2641,17 @@
         let search = self.moduleElement.find('.search_box')
         let login = self.moduleElement.find('.log')
         let register = self.moduleElement.find('.reg')
-        if (self.searchBtn) {
+        if (self.searchBtn === '1') {
           search.show()
         } else {
           search.hide()
         }
-        if (self.loginBtn) {
+        if (self.loginBtn === '1') {
           login.show()
         } else {
           login.hide()
         }
-        if (self.registerBtn) {
+        if (self.registerBtn === '1') {
           register.show()
         } else {
           register.hide()
@@ -2777,7 +2855,7 @@
         self.secNavData.push(obj)
         self.addSecNavName = false
       },
-    // ------------- 免费试听 ---------------------
+    // ------------- 免费试听 ----------------
       radioCourseSourceChangeEvent: function (value) { // 课程来源
         let self = this
         if (value !== 'self') {
@@ -2820,6 +2898,8 @@
           }
           self.httpget(getParam)
         }
+        self.radioMainClass = ''
+        self.radioNextClass = ''
       },
       radioMainClassChangeEvent: function (value) { // 选择主类按钮
         let self = this
@@ -2982,7 +3062,28 @@
           self.dialogAudition = false
         }
       },
-      // ------------- 课程分类设置 ---------------------
+    // ------------- 课程选择 ----------------
+      chooseCourseEvent: function (item, index) { // 选择课程
+        let self = this
+        let courselists = $('.conCourse2').find('.courseLi')
+        self.courseitem = item
+        $('.courseOn').removeClass('courseOn')
+        courselists.eq(index).addClass('courseOn')
+      },
+      handleSettingCourseConfirmEvent: function () {
+        let self = this
+        if ($('.courseOn').length < 1) {
+          self.$notify({
+            title: '警告',
+            message: '你还未选择课程',
+            type: 'warning'
+          })
+        } else {
+          self.dialogCoruse = false
+          console.log(self.courseitem)
+        }
+      },
+    // ------------- 课程分类设置 ------------
       handlecourseClick: function () {
         let self = this
         let courseactiveName = self.courseactiveName
@@ -3005,22 +3106,23 @@
         let heightoneisdefault = self.courseHeightL.heightone
         let heighttwoisdefault = self.courseHeightL.heighttwo
         let lengthisdefault = self.courseHeightL.length
-        if(lengthisdefault == '默认'){
-        	var  lengthnum = 2
-        }else{
-        	var  lengthnum = self.courseHeightL.lengthnum
+        var lengthnum
+        var heightonenum
+        var heighttwonum
+        if (lengthisdefault === '默认') {
+          lengthnum = 2
+        } else {
+          lengthnum = self.courseHeightL.lengthnum
         }
-        
-        if(heightoneisdefault == '默认'){
-        	var  heightonenum = 50
-        }else{
-        	var  heightonenum = self.courseHeightL.heightonenum
+        if (heightoneisdefault === '默认') {
+          heightonenum = 50
+        } else {
+          heightonenum = self.courseHeightL.heightonenum
         }
-        
-        if(heighttwoisdefault == '默认'){
-        	var   heighttwonum = 65
-        }else{
-        	var   heighttwonum = self.courseHeightL.heighttwonum
+        if (heighttwoisdefault === '默认') {
+          heighttwonum = 65
+        } else {
+          heighttwonum = self.courseHeightL.heighttwonum
         }
         let obj = {
           classs: self.courseHeightL.classs,
@@ -3035,54 +3137,63 @@
         self.dialogAddcoursetype = false
         $('.on_module').attr('carouselData', str)
       },
-      
-      
-      //-------------新闻资讯设置------------
-      handlenewsClick : function(){
-      	let self = this
+    // ------------- 新闻资讯设置 ------------
+      handlenewsClick: function () {
+        let self = this
         let activenews = self.activenews
         if (activenews === 'first') {
           $('.Palettebuttonlist #newsdefault').on('click', function () {
-         			self.newsDetailed = {
-         				newssource : [
-			      		{
-			          value: '1',
-			          label: '系统资讯'
-			        	},
-			        	{
-			          value: '2',
-			          label: '非系统资讯'
-			        	}
-			      		],
-			      		newsvalue : '1',
-			      		ontitle : 1,
-			      		title : '新闻资讯',
-			      		onimg : 1,
-			      		oncont : 1,
-			      		ontime : 1,
-			      		onrow : 2,
-			      		oncol : 3,
-			      		col : 1
-         			}
+            self.newsDetailed = {
+              newssource: [{
+                value: '1',
+                label: '系统资讯'
+              },
+              {
+                value: '2',
+                label: '非系统资讯'
+              }],
+              newsvalue: '1',
+              ontitle: 1,
+              title: '新闻资讯',
+              onimg: 1,
+              oncont: 1,
+              ontime: 1,
+              onrow: 2,
+              oncol: 3,
+              col: 1
+            }
           })
         }
       },
-      dialognewsEvent : function(){
-      	let self = this
-      	let newsDetailed = self.newsDetailed
-      	if(newsDetailed.oncol == '自定义'){
-      		var  col = newsDetailed.col
-      	}else{
-      		var  col = newsDetailed.oncol
-      	}
-      	let obj = {
+      dialognewsEvent: function () {
+        let self = this
+        let newsDetailed = self.newsDetailed
+        var col
+        if (newsDetailed.oncol === '自定义') {
+          col = newsDetailed.col
+        } else {
+          col = newsDetailed.oncol
+        }
+        let obj = {
           newssource: newsDetailed.newsvalue,
           ontitle: newsDetailed.ontitle,
-          onimg : newsDetailed.onimg,
-          oncont : newsDetailed.oncont,
-          ontime : newsDetailed.ontime,
-          onrow : newsDetailed.onrow,
-          col : col
+          onimg: newsDetailed.onimg,
+          oncont: newsDetailed.oncont,
+          ontime: newsDetailed.ontime,
+          onrow: newsDetailed.onrow,
+          col: col
+        }
+        if (!newsDetailed.ontitle) {
+          $('.news .mod-title').hide()
+          $('.news .newsList').css('padding-top', '0px')
+        } else {
+          $('.news .mod-title').show()
+          $('.news .newsList').css('padding-top', '50px')
+        }
+        if (!newsDetailed.onimg) {
+          $('.news .news_li .news_li_left').hide()
+        } else {
+          $('.news .news_li .news_li_left').show()
         }
       	if(!newsDetailed.ontitle){
       		$('.news .mod-title').hide();
@@ -4067,7 +4178,7 @@
   .scrollBox .el-select{
     width: 180px;
   }
-/*picture*/  
+/*picture*/
   .picture-uploader .el-upload{
     display: block;
     margin:0 auto; 
@@ -4158,6 +4269,9 @@
     max-height:480px;
     border-right: 1px solid #d1dbe5;
   }
+  .auditiondia .conCourse2 .el-col{
+    border:0;
+  }
   .auditiondia .courseList{
     float: left;
     width: 100%;
@@ -4172,6 +4286,18 @@
     overflow: hidden;
     padding: 0 4px; 
     cursor: pointer;
+    position: relative;
+  }
+  .auditiondia .courseLi i {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #13CE66;
+    font-size: 18px;
+    display: none;
+  }
+  .auditiondia .courseOn i {
+    display:block;
   }
   .auditiondia .imgbox {
     width: 150px;
@@ -4222,6 +4348,10 @@
   .courseware .el-radio-button{
     display: block;
   }
+/*课程*/
+  .el-dialog--coruse{
+    width: 840px;
+  }
 /*设置*/
   .promptBox{
     display: none;
@@ -4239,73 +4369,73 @@
     display: block;
   }
 /*课程分类设置*/
-	.el-dialog--dialogAddcoursetype{
+  .el-dialog--dialogAddcoursetype{
     width: 680px;
   }
   .togglePaletteOnly .Paletter{
-  	width: 16px;
-  	height: 16px;
-  	float: left;
-  	background: #000;
-  	margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    float: left;
+    background: #000;
+    margin-right: 8px;
     margin-top: 10px;
     cursor: pointer;
   }
   .togglePaletteOnly .Paletter1{
-  	background: #9b28ae;
+    background: #9b28ae;
   }
   .togglePaletteOnly .Paletter2{
-  	background: #663db5;
+    background: #663db5;
   }
   .togglePaletteOnly .Paletter3{
-  	background: #4052b4;
+    background: #4052b4;
   }
   .togglePaletteOnly .Paletter4{
-  	background: #1f96f2;
+    background: #1f96f2;
   }
   .togglePaletteOnly .Paletter5{
-  	background: #ff753f;
+    background: #ff753f;
   }
   .togglePaletteOnly .Paletter6{
-  	background: #00bcd2;
+    background: #00bcd2;
   }
   .togglePaletteOnly .Paletter7{
-  	background: #fea000;
+    background: #fea000;
   }
   .togglePaletteOnly .Paletter8{
-  	background: #f2c300;
+    background: #f2c300;
   }
   .togglePaletteOnly .Paletter9{
-  	background: #b7c500;
+    background: #b7c500;
   }
   .togglePaletteOnly .Paletter10{
-  	background: #89c34a;
+    background: #89c34a;
   }
   .togglePaletteOnly .Paletter11{
-  	background: #4daf51;
+    background: #4daf51;
   }
   .togglePaletteOnly .Paletter12{
-  	background: #009687;
+    background: #009687;
   }
   .togglePaletteOnly .Paletter13{
-  	background: #f47d00;
+    background: #f47d00;
   }
   .togglePaletteOnly .Paletter14{
-  	background: #f34637;
+    background: #f34637;
   }
   .togglePaletteOnly .Paletter15{
-  	background: #e71e62;
+    background: #e71e62;
   }
   .togglePaletteOnly .Paletter16{
-  	background: #c11759;
+    background: #c11759;
   }
   .togglePaletteOnly .Paletter .Paletter-icon{
-  	width: 16px;
-  	height: 16px;
+    width: 16px;
+    height: 16px;
   }
   .togglePaletteOnly .Paletter .active-icon{
-  	background: url(assets/icon/xuanzhong.png) no-repeat;
-  	background-size: 16px;
+    background: url(assets/icon/xuanzhong.png) no-repeat;
+    background-size: 16px;
   }
   .Palettebuttonlist .csslist{
   	width: 178px;
@@ -4317,21 +4447,21 @@
   	margin: 10px;
   }
   .Palettebuttonlist .csslist .hovershow{
-   	height: 28px;
-   	display: none;
-   	position: absolute;
-   	bottom: 0;
-   	width: 100%;
-   	background: #666666;
-   	color: #fff;
-   	text-align: center;
-   	line-height: 28px;
+    height: 28px;
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #666666;
+    color: #fff;
+    text-align: center;
+    line-height: 28px;
   }
   .Palettebuttonlist .csslist:hover  .hovershow{
-  	display: block;
+    display: block;
   }
   .Palettebuttonlist .csslist .csslist-div{
-  	width: 134px;
+    width: 134px;
     height: 80px;
     margin: 0 auto;
     text-align: center;
@@ -4347,9 +4477,9 @@
   	background: url(assets/icon/logintype1.png)center center no-repeat;
   }
   .Palettebuttonlist .csslist .csslist-div .csslist-div-top{
-  	width: 100%;
-  	height: 20px;
-  	background: #338bff;
+    width: 100%;
+    height: 20px;
+    background: #338bff;
   }
   
  	/*新闻资讯设置*/
