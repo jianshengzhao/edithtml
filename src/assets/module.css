@@ -192,7 +192,7 @@
   }
   .course .imgbox {   
     padding: 10px;
-    height: 140px;    
+    min-height: 144px;    
   }
   .course .listBox{    
      position: relative;
@@ -213,6 +213,7 @@
     text-indent: 10px;
   }
   .course .imgbox img{
+    display: block;
     width: 100%;
     height: 100%;
     transition: transform 0.8s;
@@ -1631,7 +1632,6 @@
 		width: 18px;
 		height: 14px;
 	}
-	
 	.thirdlogin a.md-weixin:hover {
 		background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/md-weixin2.png) no-repeat;
 	}
@@ -1641,10 +1641,15 @@
 	.userregistration a,
 	.forgotpassword a,
 	.sethomepage a,
-	.collection a{
-		color: #338bff;
+	.collection a{		
 		font-size: 13px;
 	}
+  .userregistration,
+  .forgotpassword,
+  .sethomepage,
+  .collection{
+    color: #338bff;
+  }
 	.userregistration a:hover,
 	.forgotpassword a:hover,
 	.sethomepage a:hover,
@@ -1657,16 +1662,17 @@
 		height: 228px
 	}
 	.theteacherteam .addtheteateam{
-		width: 247px;
+		width: 100%;
 		height: 100%;
 	}
 	.theteacherteam .addtea-icon{
-		width: 247px;
+		width: 100%;
 		height: 100%;
 		background: url(icon/addtea.png) center center no-repeat;
+    background-size: 100% auto;
 	}
 	.theteacherteam .addtheteateam .team_bk {
-    width: 247px;
+    width: 100%;
     height: 100%;
     transition: all 0.45s ease-out 0s;
     position: relative;
@@ -1699,7 +1705,8 @@
 	}
 	.theteacherteam .addtheteateam  .team_hbj img {
 		border-radius:100%;
-		margin:10px 0 10px 75px;
+		margin:10px auto;
+    display: block;
 		width:98px;
 		height:98px;
 	}

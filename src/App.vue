@@ -2171,7 +2171,7 @@
               case 'editor':
                 self.dialogEditor = true
                 w = parseInt(onthis.css('width'))
-                let html = onthis.html()
+                let html = onthis.find('.editorCon').html()
                 self.$nextTick(function () {
                   self.$refs.ueditor.id = self.ueditorid
                   $('.ueditor .el-dialog').css('width', w + 40)
@@ -2682,7 +2682,7 @@
         let h = $('.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
         self.moduleElement.css('height', h)
-        self.moduleElement.html(content)
+        self.moduleElement.find('.editorCon').html(content)
       },
       beforePictureUpload: function (file) {
         let self = this

@@ -77,6 +77,41 @@ var datahtml = {
         name: 'course',
         icon: 'imgicon icon-classification',
         text: '课程'
+      },
+      {
+        name: 'login',
+        icon: 'icon-widget-icon-label',
+        text: '用户登录'
+      },
+      {
+        name: 'thirdlogin',
+        icon: 'mb icon-qq',
+        text: '第三方登录'
+      },
+      {
+        name: 'userregistration',
+        icon: 'icon-widget-icon-label',
+        text: '用户注册'
+      },
+      {
+        name: 'forgotpassword',
+        icon: 'icon-widget-icon-label',
+        text: '忘记密码'
+      },
+      {
+        name: 'sethomepage',
+        icon: 'icon-widget-icon-label',
+        text: '设为主页'
+      },
+      {
+        name: 'collection',
+        icon: 'icon-widget-icon-label',
+        text: '收藏'
+      },
+      {
+        name: 'theteacherteam',
+        icon: 'icon-widget-icon-label',
+        text: '名师团队'
       }
     ],
     todo: [
@@ -119,46 +154,6 @@ var datahtml = {
         name: 'dynamics',
         icon: 'icon-widget-sticker',
         text: '网校应用'
-      },
-      {
-        name: 'addcoursetype',
-        icon: 'mb icon-wechat',
-        text: '课程分类'
-      },
-      {
-        name: 'login',
-        icon: 'mb icon-wechat',
-        text: '用户登录'
-      },
-      {
-        name: 'thirdlogin',
-        icon: 'mb icon-wechat',
-        text: '第三方登录'
-      },
-      {
-        name: 'userregistration',
-        icon: 'mb icon-wechat',
-        text: '用户注册'
-      },
-      {
-        name: 'forgotpassword',
-        icon: 'mb icon-wechat',
-        text: '忘记密码'
-      },
-      {
-        name: 'sethomepage',
-        icon: 'mb icon-wechat',
-        text: '设为主页'
-      },
-      {
-        name: 'collection',
-        icon: 'mb icon-wechat',
-        text: '收藏'
-      },
-      {
-        name: 'theteacherteam',
-        icon: 'mb icon-wechat',
-        text: '名师团队'
       }
     ],
     expect: []
@@ -178,7 +173,7 @@ var datahtml = {
   },
   editor: {
     style: 'width:400px; height:400px',
-    html: '<div class="editor module"  datatext="富文本"><div class="promptBox">修改</div></div>'
+    html: '<div class="editor module"  datatext="富文本"><div class="promptBox">编辑富文本</div><div class="editorCon"></div></div>'
   },
   picture: {
     style: 'width:200px; height:120px',
@@ -270,7 +265,7 @@ var datahtml = {
   },
   theteacherteam: {
     style: 'width: 247px; height: 228px',
-    html: '<div class="theteacherteam module" datatext="名师团队"><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
+    html: '<div class="theteacherteam module" datatext="名师团队"><div class="promptBox">名师团队设置</div><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
   }
 }
 exports.datahtml = datahtml
