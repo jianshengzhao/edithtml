@@ -1003,67 +1003,6 @@
                 <img :src="item.img" >
               </div>
               <span>{{item.iname}}</span>
-
-<!--       <div class="nodata" v-if="cwlistData.length == 0"></div>
-        </div>
-      </el-col>
-    </el-row>
-    <span slot="footer" class="dialog-footer">        
-      <el-button @click="dialogAudition = false">取 消</el-button>
-      <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
-    </span>
-  </el-dialog>
-
-  <el-dialog
-    title="课程设置"
-    :visible.sync="dialogCoruse"
-    size="coruse" class="auditiondia">
-    <el-row>
-      <el-col class='courseSource'>
-        <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> 
-          <el-radio-button label="self">本校课程</el-radio-button>
-          <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row>
-      <el-col>
-        <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
-      <el-col>
-        <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
-          <el-radio-button label="">全部</el-radio-button>
-          <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
-        </el-radio-group>
-      </el-col>  
-    </el-row>
-    <el-row class="conCourse conCourse2" style="border:0">
-      <el-col>
-        <el-pagination
-          layout="prev, pager, next"
-          :total="courseListTotal"
-          :current-page="courseListPage"
-          :page-size="30"
-          v-if="courseListTotal > 30"
-          @current-change="courseListCurrPageEvent">
-        </el-pagination>
-        <el-input
-          placeholder="去输入课程名"
-          icon="search"
-          v-model="inp_courseName"
-          @change="searchCourseEvent"
-          :on-icon-click="searchCourseEvent">
-        </el-input>
-        <div class="courseList"  v-loading="loading">
-          <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
-            <i class="el-icon-circle-check"></i>
-            <div class="imgbox">
-              <img :src="item.img" > -->
             </div>
             <div class="nodata" v-if="courseListData.length == 0"></div>
           </div>        
@@ -1118,6 +1057,9 @@
         }, {
           value: 'coruse',
           label: '课程链接'
+        }, {
+          value: 'login',
+          label: '登录弹框'
         }],
         inpOnline: '',
         selectNews: [],
@@ -1309,7 +1251,7 @@
         },
       // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
-        bgColorVal: '#8493af',
+        bgColorVal: '#F5F5F5',
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
@@ -1335,6 +1277,7 @@
         paddingleft: 181, // left栏高度
         postop: 50, // editbox  top值
         posleft: 1000, // editbox  left值
+        preHandleTime: 0,
         elementHead: [],
         elementMain: [],
         elementTail: [],
@@ -1488,6 +1431,7 @@
             $('.module').removeClass('on_module')
             $('.module').parent().unbind('mousemove')
             $('.module').unbind('mouseup')
+            $('.touch_module').removeClass('touch_module')
             self.inp_z = ''
             self.inp_x = ''
             self.inp_y = ''
@@ -1514,6 +1458,10 @@
               let item = ele.eq(i)
               let text = item.attr('datatext')
               let obj = {
+                x: parseInt(item.css('left')),
+                y: parseInt(item.css('top')),
+                x1: parseInt(item.css('left')) + parseInt(item.css('width')),
+                y1: parseInt(item.css('top')) + parseInt(item.css('height')),
                 ele: item,
                 text: text
               }
@@ -1529,6 +1477,34 @@
               case 'c_foot':
                 self.elementTail = arr
                 break
+            }
+          },
+          getAlignmentElement: function (self) { // 触碰
+            let parent = self.moduleElement.parent()
+            let arrEle
+            let item = {
+              x: parseInt(self.moduleElement.css('left')),
+              x1: parseInt(self.moduleElement.css('left')) + parseInt(self.moduleElement.css('width')),
+              y: parseInt(self.moduleElement.css('top')),
+              y1: parseInt(self.moduleElement.css('top')) + parseInt(self.moduleElement.css('height'))
+            }
+            switch (parent.attr('class')) {
+              case 'c_top':
+                arrEle = self.elementHead
+                break
+              case 'c_body':
+                arrEle = self.elementMain
+                break
+              case 'c_foot':
+                arrEle = self.elementTail
+                break
+            }
+            $('.touch_module').removeClass('touch_module')
+            for (let i = 0, len = arrEle.length; i < len; i++) {
+              let ele = arrEle[i]
+              if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
+                ele.ele.addClass('touch_module')
+              }
             }
           },
           bindLibraryMenu: function (self) { // 左侧菜单栏
@@ -1828,6 +1804,11 @@
                   }
                   self[key[3]] = moveXY
                   module.css(key[1], moveXY)
+                  self.tool.getAlignmentElement(self) // todo:
+                  if (new Date() - self.preHandleTime > 1000) {
+                    self.preHandleTime = new Date()
+                    self.tool.getLayerElement(self, module.parent())
+                  }
                   return false
                 }
                 if (e.key === 'Delete') {
@@ -1842,15 +1823,18 @@
               toolself.missSeletedEvents(self)
             })
             function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
-              rowT.css('top', self.inp_y + warp + self.postop)
+              rowT.css('top', self.inp_y + warp + self.postop - 1)
               rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
-              colL.css('left', self.inp_x + self.posleft)
+              colL.css('left', self.inp_x + self.posleft - 1)
               colR.css('left', self.inp_x + self.posleft + self.inp_w)
+              self.tool.getAlignmentElement(self)
             }
             function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
               editBox.mouseup(function () {
                 editBox.unbind('mousemove mouseup')
                 line.hide()
+                $('.touch_module').removeClass('touch_module')
+                self.tool.getLayerElement(self, parent)
                 return false
               })
             }
@@ -2801,6 +2785,9 @@
           case 'coruse':
             let folderid = self.selectCoruse[2]
             self.moduleElement.find('.picBox').attr('href', '/courseinfo/' + folderid + '.html')
+            break
+          case 'login':
+            self.moduleElement.find('.picBox').attr('loginEvent', 'true')
             break
         }
       },
@@ -4008,7 +3995,7 @@
   .library .shrink{
     position: absolute;
     top:50%;
-    right: -22px;
+    right: -24px;
     width: 22px;
     height: 24px;
     background-color: #fff;
@@ -4147,7 +4134,7 @@
     height: 100%;
     padding: 62px 0px 0 181px;
     box-sizing:border-box;    
-    background-color: #8493af;
+    background-color: #f5f5f5;
     z-index: 1;
     transition: all 400ms;
     -moz-transition: all 400ms; 
@@ -4174,7 +4161,7 @@
     height: 1800px;
     background-color: #fff;
     background-size:10px 10px;
-    /*border:1px solid #d9d9d9;*/
+    outline:1px solid #d9d9d9;
     box-sizing: border-box;
     /*overflow: hidden;*/
     cursor: default;
@@ -4213,11 +4200,11 @@
     bottom: -30px;
     width: 100%;
     height:30px; 
-    background-color: rgba(129, 199, 243, 0.4);
+    background-color: rgba(245, 93, 84, 0.2);
     font-size: 14px;
     line-height: 30px;
     text-align: center;
-    color: #333;
+    color: #777;
     cursor: ns-resize;  
     z-index: 99; 
   }
@@ -4228,8 +4215,8 @@
    display: block;
   }
   .on_hoverbar{
-    border-top: 1px solid #75EFF4;
-    border-bottom: 1px solid #75EFF4;
+    border-top: 1px solid #f55d54;
+    border-bottom: 1px solid #f55d54;
   }
   .c_foot .hoverbar{
     top:-30px;
@@ -4281,9 +4268,12 @@
   }
   .editBox .on_module{
     border-color: #46a8fb;
-    outline:1px solid #46a8fb;
+    outline:1px solid #f55d54;
     box-sizing: border-box;
     cursor: move;
+  }
+  .editBox .touch_module {
+    outline: 1px solid #f55d54;
   }
   .resize{
     position: absolute;
@@ -4291,7 +4281,7 @@
     height: 8px;
     border-radius: 50%;
     background-color:#fff;
-    border:1px solid #46a8fb;
+    border:1px solid #f55d54;
     pointer-events: auto;
     z-index: 100;
   }
@@ -4742,7 +4732,7 @@
     height: 20px;
     line-height: 20px;
     padding:0 10px;
-    background-color: #199ED8;
+    background-color: rgba(245,93,84,0.9);
     color: #fff;
     cursor: pointer;
     font-size: 12px;
