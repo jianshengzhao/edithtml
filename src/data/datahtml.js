@@ -114,6 +114,41 @@ var datahtml = {
         name: 'addcoursetype',
         icon: 'mb icon-wechat',
         text: '课程分类'
+      },
+      {
+        name: 'login',
+        icon: 'mb icon-wechat',
+        text: '用户登录'
+      },
+      {
+        name: 'thirdlogin',
+        icon: 'mb icon-wechat',
+        text: '第三方登录'
+      },
+      {
+        name: 'userregistration',
+        icon: 'mb icon-wechat',
+        text: '用户注册'
+      },
+      {
+        name: 'forgotpassword',
+        icon: 'mb icon-wechat',
+        text: '忘记密码'
+      },
+      {
+        name: 'sethomepage',
+        icon: 'mb icon-wechat',
+        text: '设为主页'
+      },
+      {
+        name: 'collection',
+        icon: 'mb icon-wechat',
+        text: '收藏'
+      },
+      {
+        name: 'theteacherteam',
+        icon: 'mb icon-wechat',
+        text: '名师团队'
       }
     ],
     expect: []
@@ -190,6 +225,35 @@ var datahtml = {
   addcoursetype: {
     style: 'width: 200px; height: 217px',
     html: '<div class="addcoursetype module" datatext="课程分类"><div class="promptBox">分类设置</div><div class="courseclassification"><div class="nav"><ul id="coursenav_ul" class="theme_4"><li class="first_li"><p class="allcourse">全部课程</p><ul class="second_mune_ul"><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服</a></h3><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><div class="first_li_three_mune"><h2 class="nav-second"><a class="second-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服务包</a></h2><a class="nav-third_line" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a></div></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li class="morey"><div class="fosnte"><a href="/platform.html">更多</a></div></li></ul></li></ul></div></div></div>'
+  },
+  login: {
+    style: 'width: 285px; height: 210px',
+    html: '<div class="login module" datatext="用户登录"><div class="promptBox">登录框设置</div><div class="denser"><input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="立即登录" name="Submit" type="submit"></div></div>'
+  },
+  thirdlogin:{
+  	style: 'width: 248px; height: 30px',
+  	html: '<div class="thirdlogin module" datatext="第三方登录"><div class="promptBox">第三方登录设置</div><div class="aerire"><span class="fl">用其他账号登录：</span><a class="md-qq" href="http://www.ebh.net/otherlogin/qq.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-sina" href="http://www.ebh.net/otherlogin/sina.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-weixin" href="http://www.ebh.net/otherlogin/wx.html?returnurl=http%3A%2F%2Fss.ebh.net"></a></div></div>'
+  },
+  userregistration :{
+  	style: 'width: 52px; height: 20px',
+  	html: '<div class="userregistration module" datatext="用户注册"><a href="/forget.html">用户注册</a></div>'
+  },
+  forgotpassword  :{
+  	style: 'width: 52px; height: 20px',
+  	html: '<div class="forgotpassword  module" datatext="忘记密码"><a href="/forget.html">忘记密码</a></div>'
+  },
+  sethomepage  :{
+  	style: 'width: 52px; height: 20px',
+  	html: '<div class="sethomepage  module" datatext="设为主页"><a href="/forget.html">设为主页</a></div>'
+  },
+  collection :{
+  	style: 'width: 52px; height: 20px',
+  	html: '<div class="collection module" datatext="收藏"><a href="/forget.html">收藏</a></div>'
+  },
+  theteacherteam : {
+  	style: 'width: 247px; height: 228px',
+  	html: '<div class="theteacherteam module" datatext="名师团队"><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
   }
+  
 }
 exports.datahtml = datahtml
