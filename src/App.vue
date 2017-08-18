@@ -199,30 +199,42 @@
     <el-dialog
       title="页面设置"
       :visible.sync="dialogPageSetting"
-      size="tiny" class="dialogSetting">
+      size="pageSet" class="dialogSetting">
       <el-row>
-        <el-col :span="5" class="tit">网校 * 前景色</el-col>
-        <el-col :span="4">
+        <el-col :span="3" class="tit">前景色</el-col>
+        <el-col :span="7">
           <el-color-picker v-model="prospectColorVal" ></el-color-picker>
         </el-col>
        <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
-        <el-col :span="5" class="tit">网校 * 背景色</el-col>
-        <el-col :span="4">
+        <el-col :span="3" class="tit">背景色</el-col>
+        <el-col :span="7">
           <el-color-picker v-model="bgColorVal"></el-color-picker>
+        </el-col>
+        <el-col :span="3" class="tit">背景图</el-col>
+        <el-col :span="7">
+          <el-upload
+            class="upload-demo"
+            name="upfile"
+            :show-file-list="false"
+            action="/uploadv2/image.html"
+            :on-preview="handleBackImgSuccess"
+            :before-upload="beforePictureUpload">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-col>
        <!--  <el-col :span="10">todo:背景图片</el-col> -->
       </el-row>
       <el-row>
-        <el-col :span="5" class="tit">分辨率 * 页宽</el-col>
-        <el-col :span="8">
+        <el-col :span="3" class="tit">页宽</el-col>
+        <el-col :span="7">
           <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="5" class="tit">分辨率 * 页高</el-col>          
-        <el-col :span="8">          
+        <el-col :span="3" class="tit">页高</el-col>          
+        <el-col :span="7">          
           <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
         </el-col>
       </el-row>
@@ -2314,31 +2326,51 @@
         self.tool.scrollHeight()
         self.moduleEvent()
         space.scrollLeft(900)
-        if (!window.saveParams) return false
-        let params = window.saveParams
-        let pp = params.page
-        self.prospectColorVal = pp.pg
-        self.bgColorVal = pp.bg
-        self.inp_width = pp.width
-        self.inp_height = pp.height
-        space.css('backgroundColor', self.bgColorVal)
-        canvas.css('backgroundColor', self.prospectColorVal)
-        canvas.css('width', self.inp_width)
-        canvas.css('height', self.inp_height)
-        let head = $('.c_top')
-        let middle = $('.c_body')
-        let foot = $('.c_foot')
-        head.css('height', pp.top)
-        foot.css('height', pp.foot)
-        canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
-        let module = params.module
-        head.html(module.top)
-        middle.html(module.body)
-        foot.html(module.foot)
-        self.tool.getLayerElement(self, head)
-        self.tool.getLayerElement(self, middle)
-        self.tool.getLayerElement(self, foot)
-        self.tool.scrollHeight()
+        if (window.saveParams) {
+          let params = window.saveParams
+          let pp = params.page
+          self.prospectColorVal = pp.pg
+          self.bgColorVal = pp.bg
+          self.inp_width = pp.width
+          self.inp_height = pp.height
+          space.css('backgroundColor', self.bgColorVal)
+          canvas.css('backgroundColor', self.prospectColorVal)
+          canvas.css('width', self.inp_width)
+          canvas.css('height', self.inp_height)
+          let head = $('.c_top')
+          let middle = $('.c_body')
+          let foot = $('.c_foot')
+          head.css('height', pp.top)
+          foot.css('height', pp.foot)
+          canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
+          let module = params.module
+          head.html(module.top)
+          middle.html(module.body)
+          foot.html(module.foot)
+          self.tool.getLayerElement(self, head)
+          self.tool.getLayerElement(self, middle)
+          self.tool.getLayerElement(self, foot)
+          self.tool.scrollHeight()
+        } else {
+          // /aroomv3/roominfo.html
+          let getParam = {
+            url: '/aroomv3/roominfo.html',
+            params: {},
+            fun: function (response) {
+              let crid = response.body.data.crid
+              let getParams = {
+                url: '/room/design/getdesign',
+                params: {crid: crid},
+                fun: function (response) {
+                  let saveParams = response.body.data
+                  console.log(saveParams)
+                }
+              }
+              self.httppost(getParams)
+            }
+          }
+          self.httpget(getParam)
+        }
       })
     },
     methods: {
@@ -2347,12 +2379,24 @@
         let self = this
         self.dialogPageSetting = true
       },
+      handleBackImgSuccess: function (res) { // 背景图上传成功后
+        // var self = this
+        console.log(res)
+      },
       dialogPageSettingEvent: function () { // 页面设置弹框保存
         var self = this
         let space = $('.space')
         let canvas = $('.canvas')
-        space.css('backgroundColor', self.bgColorVal)
-        canvas.css('backgroundColor', self.prospectColorVal)
+        if (self.bgColorVal) {
+          space.css('backgroundColor', self.bgColorVal)
+        } else {
+          space.css('backgroundColor', 'transparent')
+        }
+        if (self.prospectColorVal) {
+          canvas.css('backgroundColor', self.prospectColorVal)
+        } else {
+          canvas.css('backgroundColor', 'transparent')
+        }
         canvas.css('width', self.inp_width)
         canvas.css('height', self.inp_height)
         self.tool.scrollHeight()
@@ -4423,7 +4467,10 @@
     padding: 10px 10px 15px;
   }
 /*pageHeader-uploader*/
- .pageHeader-uploader .el-upload {
+  .el-dialog--pageSet{
+    width: 500px;
+  }
+  .pageHeader-uploader .el-upload {
     width: 100%;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;

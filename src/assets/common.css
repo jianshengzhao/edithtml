@@ -5,6 +5,9 @@
     font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
     /*font-family: "Microsoft YaHe";*/
   }
+  a:-webkit-any-link{
+    color: inherit;
+  }
   a{
     text-decoration: none;
   }
