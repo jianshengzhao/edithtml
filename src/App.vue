@@ -725,7 +725,7 @@
         <el-button type="primary" @click="dialogthirdloginEvent">确 定</el-button>
       </span>
     </el-dialog>
-        <el-dialog
+    <el-dialog
       title="教师列表"
       :visible.sync="dialogaddtea"
       size="dialogaddtea" >
@@ -1608,7 +1608,7 @@
               self.tool.initialize(self, ele)
             })
           },
-          bindMouseEvent: function (self) { // top,foot大小调整事件，添加模块到画布的鼠标事件
+          bindMouseEvent: function (self) { // top,foot大小调整事件;添加模块到画布的鼠标事件
             var toolself = this
             let canvas = $('.canvas')
             let cTop = $('.c_top')
@@ -4606,7 +4606,7 @@
     top:0;
     right:0;
     font-size: 12px;
-    background-color: #199ED8;
+    background-color: #f55d54;
     height: 20px;
     line-height: 20px;
     padding:0 5px;

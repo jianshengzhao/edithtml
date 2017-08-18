@@ -461,7 +461,6 @@
   }
 /*-------------carousel-----------------*/
   .carousel{
-    position: relative;
     width: 1200px;
     height: 320px;
     background: #fff;
