@@ -186,7 +186,6 @@
     background-color: #ebf3ff;
     color: #157aff;
   }
-<<<<<<< HEAD
  /* 新闻资讯*/
   .newsList {
 		/*padding: 50px 20px 10px 20px;*/
@@ -285,19 +284,79 @@
 	}
   /*.newsList{
     padding:50px 20px 10px;
-=======
   .course{
     width: 260px;
     height: 220px;
   }
-  .course .imgbox {
+  .course .imgbox {   
     padding: 10px;
     height: 140px;
->>>>>>> c4161d6e61725ece44a43ef50acf7b4924a7f93c
+    min-height: 144px;    
   }
-  .course .imgbox img{
+  .course .listBox{    
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+  }
+  .course .animateBox{
+    position: absolute;
     width: 100%;
     height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    color: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    text-decoration:none;
+    text-indent: 10px;
+  }
+  .course .imgbox img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    -moz-transition: transform 0.8s; 
+    -webkit-transition: transform 0.8s; 
+    -o-transition: transform 0.8s; 
+  }
+  .course .imgbox:hover img{
+    transform: scale(1.2);
+    -ms-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    -webkit-transform:scale(1.2); 
+    -o-transform:scale(1.2);
+  }
+  .course .imgbox:hover .animateBox{
+    display: block;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .course .imgbox .openState{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 66px;
+    height: 66px;
+    background-repeat: no-repeat;
+    background-position: center;    
+    cursor: pointer;
+    z-index: 3;
+  }  
+  .course .imgbox .openState_canpay1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
+  }
+  .course .imgbox .openState_djbmbg1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
+  }
+  .course .imgbox .openState_djkt{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
+  }
+  .course .imgbox .openState_free{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
+  }  
+  .course .imgbox .openState_jrxx{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
   }
   .course .courseTit{
     padding: 0 10px;
@@ -321,12 +380,14 @@
     color: #999999;
   }
   .course .number{
+    float: right;
     padding-left: 0;
     width: 60px;
     text-indent: 20px;
     background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
   }
   .course .popularity{
+    float: right;
     padding-left: 0;
     width: 60px;
     text-indent: 20px;
@@ -362,10 +423,6 @@
     display:box;
     /*background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/newsico.png) no-repeat left center;
     text-indent: 5px;
-<<<<<<< HEAD
-    border-bottom: 1px dashed #ebebeb;
-  }*/
-=======
     border-bottom: 1px dashed #ebebeb;*/
   }
   .news_li .news_li_left{
@@ -424,7 +481,6 @@
     height: 36px;
     overflow: hidden;
   }
->>>>>>> c4161d6e61725ece44a43ef50acf7b4924a7f93c
 /*-------------audition---------------*/  
   .audition {
     width: 190px;
@@ -432,6 +488,10 @@
   }
   .audition a{
     display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .audition img {
     width: 100%;
     height: 100%;
   }
@@ -500,7 +560,6 @@
   }
 /*-------------carousel-----------------*/
   .carousel{
-    position: relative;
     width: 1200px;
     height: 320px;
     background: #fff;
@@ -583,6 +642,7 @@
     height: 120px;  
   }
   .picBox{
+    display: block;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -621,10 +681,9 @@
 /*-----------课程分类---------------*/
 	.addcoursetype{
 		width:200px;
-		height:217px;
+    height: 50px;
 	}
 	.courseclassification{
-		
 		width:100%;
 		height:100%;
 		position:relative;
@@ -1670,7 +1729,6 @@
 		width: 18px;
 		height: 14px;
 	}
-	
 	.thirdlogin a.md-weixin:hover {
 		background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/md-weixin2.png) no-repeat;
 	}
@@ -1680,10 +1738,15 @@
 	.userregistration a,
 	.forgotpassword a,
 	.sethomepage a,
-	.collection a{
-		color: #338bff;
+	.collection a{		
 		font-size: 13px;
 	}
+  .userregistration,
+  .forgotpassword,
+  .sethomepage,
+  .collection{
+    color: #338bff;
+  }
 	.userregistration a:hover,
 	.forgotpassword a:hover,
 	.sethomepage a:hover,
@@ -1696,16 +1759,17 @@
 		height: 228px
 	}
 	.theteacherteam .addtheteateam{
-		width: 247px;
+		width: 100%;
 		height: 100%;
 	}
 	.theteacherteam .addtea-icon{
-		width: 247px;
+		width: 100%;
 		height: 100%;
 		background: url(icon/addtea.png) center center no-repeat;
+    background-size: 100% auto;
 	}
 	.theteacherteam .addtheteateam .team_bk {
-    width: 247px;
+    width: 100%;
     height: 100%;
     transition: all 0.45s ease-out 0s;
     position: relative;
@@ -1738,7 +1802,8 @@
 	}
 	.theteacherteam .addtheteateam  .team_hbj img {
 		border-radius:100%;
-		margin:10px 0 10px 75px;
+		margin:10px auto;
+    display: block;
 		width:98px;
 		height:98px;
 	}

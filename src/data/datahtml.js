@@ -77,6 +77,41 @@ var datahtml = {
         name: 'course',
         icon: 'imgicon icon-classification',
         text: '课程'
+      },
+      {
+        name: 'login',
+        icon: 'icon-widget-icon-label',
+        text: '用户登录'
+      },
+      {
+        name: 'thirdlogin',
+        icon: 'mb icon-qq',
+        text: '第三方登录'
+      },
+      {
+        name: 'userregistration',
+        icon: 'icon-widget-icon-label',
+        text: '用户注册'
+      },
+      {
+        name: 'forgotpassword',
+        icon: 'icon-widget-icon-label',
+        text: '忘记密码'
+      },
+      {
+        name: 'sethomepage',
+        icon: 'icon-widget-icon-label',
+        text: '设为主页'
+      },
+      {
+        name: 'collection',
+        icon: 'icon-widget-icon-label',
+        text: '收藏'
+      },
+      {
+        name: 'theteacherteam',
+        icon: 'icon-widget-icon-label',
+        text: '名师团队'
       }
     ],
     todo: [
@@ -183,11 +218,11 @@ var datahtml = {
   },
   editor: {
     style: 'width:400px; height:400px',
-    html: '<div class="editor module"  datatext="富文本"><div class="promptBox">修改</div></div>'
+    html: '<div class="editor module"  datatext="富文本"><div class="promptBox">编辑富文本</div><div class="editorCon"></div></div>'
   },
   picture: {
     style: 'width:200px; height:120px',
-    html: '<div class="picture module"  datatext="图片"><div class="promptBox">修改图片</div><div class="picBox"><img></div></div>'
+    html: '<div class="picture module"  datatext="图片"><div class="promptBox">修改图片</div><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
   },
   button: {
     style: 'width:80px; height:30px',
@@ -211,11 +246,11 @@ var datahtml = {
   },
   audition: {
     style: 'width:190px; height:120px',
-    html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img><div class="audiTit">免费试听课件</div></a></div>'
+    html: '<div class="audition module"  datatext="免费试听"><div class="promptBox">免费试听设置</div><a dataHref="" target="_blank"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><div class="audiTit">免费试听课件</div></a></div>'
   },
   course: {
     style: 'width:260px; height:220px',
-    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><img></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="number">199</div><div class="popularity">6999</div></div>'
+    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><div class="listBox"><a class="animateBox">课程</a><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><div class="openState openState_djbmbg1"></div></div></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="popularity">6999</div><div class="number">199</div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',
@@ -253,25 +288,25 @@ var datahtml = {
     style: 'width: 285px; height: 210px',
     html: '<div class="login module" datatext="用户登录"><div class="promptBox">登录框设置</div><div class="denser"><input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="立即登录" name="Submit" type="submit"></div></div>'
   },
-  thirdlogin:{
-  	style: 'width: 248px; height: 30px',
-  	html: '<div class="thirdlogin module" datatext="第三方登录"><div class="promptBox">第三方登录设置</div><div class="aerire"><span class="fl">用其他账号登录：</span><a class="md-qq" href="http://www.ebh.net/otherlogin/qq.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-sina" href="http://www.ebh.net/otherlogin/sina.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-weixin" href="http://www.ebh.net/otherlogin/wx.html?returnurl=http%3A%2F%2Fss.ebh.net"></a></div></div>'
+  thirdlogin: {
+    style: 'width: 248px; height: 30px',
+    html: '<div class="thirdlogin module" datatext="第三方登录"><div class="promptBox">第三方登录设置</div><div class="aerire"><span class="fl">用其他账号登录：</span><a class="md-qq" href="http://www.ebh.net/otherlogin/qq.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-sina" href="http://www.ebh.net/otherlogin/sina.html?returnurl=http%3A%2F%2Fss.ebh.net"></a><a class="md-weixin" href="http://www.ebh.net/otherlogin/wx.html?returnurl=http%3A%2F%2Fss.ebh.net"></a></div></div>'
   },
-  userregistration :{
-  	style: 'width: 52px; height: 20px',
-  	html: '<div class="userregistration module" datatext="用户注册"><a href="/forget.html">用户注册</a></div>'
+  userregistration: {
+    style: 'width: 52px; height: 20px',
+    html: '<div class="userregistration module" datatext="用户注册"><a href="/forget.html">用户注册</a></div>'
   },
-  forgotpassword  :{
-  	style: 'width: 52px; height: 20px',
-  	html: '<div class="forgotpassword  module" datatext="忘记密码"><a href="/forget.html">忘记密码</a></div>'
+  forgotpassword: {
+    style: 'width: 52px; height: 20px',
+    html: '<div class="forgotpassword  module" datatext="忘记密码"><a href="/forget.html">忘记密码</a></div>'
   },
-  sethomepage  :{
-  	style: 'width: 52px; height: 20px',
-  	html: '<div class="sethomepage  module" datatext="设为主页"><a href="/forget.html">设为主页</a></div>'
+  sethomepage: {
+    style: 'width: 52px; height: 20px',
+    html: '<div class="sethomepage  module" datatext="设为主页"><a href="/forget.html">设为主页</a></div>'
   },
-  collection :{
-  	style: 'width: 52px; height: 20px',
-  	html: '<div class="collection module" datatext="收藏"><a href="/forget.html">收藏</a></div>'
+  collection: {
+    style: 'width: 52px; height: 20px',
+    html: '<div class="collection module" datatext="收藏"><a href="/forget.html">收藏</a></div>'
   },
   theteacherteam : {
   	style: 'width: 247px; height: 228px',
@@ -281,6 +316,5 @@ var datahtml = {
   	style: 'width: 340px; height: 122px',
   	html: '<div class="contactway module" datatext="联系方式"><div class="contactwaycont"><div class="address">联系地址：杭州市</div><div class="address hotline">电话：15267131310</div><div class="address home">邮箱：6488479@qq.com</div></div></div>'
   }
-  
 }
 exports.datahtml = datahtml
