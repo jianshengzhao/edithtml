@@ -243,6 +243,9 @@
 	    font-weight: 500;
 	    line-height: 20px;
 	}
+	.news_li .news_li_right h3 a{
+		color: #333f5f;
+	}
 	.news_li .news_li_right h3 span.news_title{
 		text-align: left;
 		display: block;
@@ -272,8 +275,14 @@
 		word-break: break-all;
 		height: 36px;
     overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 2; /** 显示的行数 **/
+    overflow: hidden;  /** 隐藏超出的内容 **/
 	}
-  .newsList{
+  /*.newsList{
     padding:50px 20px 10px;
   }
   .news_li{
@@ -284,7 +293,7 @@
     background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/newsico.png) no-repeat left center;
     text-indent: 5px;
     border-bottom: 1px dashed #ebebeb;
-  }
+  }*/
 /*-------------audition---------------*/  
   .audition {
     width: 190px;
@@ -535,7 +544,7 @@
 		width: 100%;
 	}
 	#app .courseclassification .second_mune_ul{
-		display: block;
+		display: none;
 	}
 	.courseclassification .second_mune_ul li {
 		list-style: none;
@@ -1616,6 +1625,7 @@
 		overflow:hidden;
 		font-size:13px;
 		margin-top:5px;
+		height: 20px;
 	}
 	.theteacherteam .addtheteateam  .team_p2 {
 		line-height:1.8;
@@ -1628,4 +1638,44 @@
 		width:100%;
 		color:#999;
 		font-size:13px;
+		word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 2; /** 显示的行数 **/
+    overflow: hidden;  /** 隐藏超出的内容 **/
+	}
+	/*联系方式*/
+	.contactway{
+		height: 122px;
+		width: 340px;
+		background: #8493af;
+		color: #fff;
+	}
+	.contactwaycont{
+		height: 122px;
+		width: 100%;
+		padding: 0 10px;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box; /* Firefox */
+		-webkit-box-sizing:border-box; /* Safari */
+		font-size:14px;
+		
+	}
+	.contactway .address{
+		background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/ico.png?v=01) no-repeat 0 2px;
+		padding-left:25px;
+		line-height:24px;
+		margin-top:4px;
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
+	}
+	.contactway .hotline{
+		background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/ico.png?v=01) no-repeat 0 -42px;
+		margin-top:21px;
+	} 
+	.contactway .home{
+		background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/ico.png?v=01) no-repeat 0 -85px;
+		margin-top:21px;
 	}

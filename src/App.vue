@@ -570,10 +570,9 @@
           	<el-form-item label="资讯来源：">
 					    <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
 					    	<el-option
-						      v-for="item in newsDetailed.newssource"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
+						      v-for="(key,item) in newsDetailed.newssource"
+						      :label="key.name" 
+						      :value="key.code">
 						    </el-option>
 						  </el-select>
 					  </el-form-item>
@@ -624,7 +623,6 @@
         <el-button @click="dialognews = false">取 消</el-button>
         <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
       </span>
-<<<<<<< HEAD
     </el-dialog>
     <el-dialog
       title="登录框设置"
@@ -715,9 +713,7 @@
         <el-button @click="dialogaddtea = false">取 消</el-button>
         <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
       </span>
-    </el-dialog>
-=======
-    </el-dialog>     
+    </el-dialog> 
 
   <el-dialog
       title="修改导航"
@@ -921,8 +917,6 @@
       <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
     </span>
   </el-dialog>
-
->>>>>>> 0854162ad13e1f27fe3187ea97c399c56a360436
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -1046,18 +1040,66 @@
       //---------------新闻资讯设置------------------
       	dialognews : false,
       	activenews : 'first',
+      	navcode :'news',
+      	getTime:function (value) {		//换日期格式不包括时分
+      		let d = new Date(parseInt(value) * 1000)
+			    let year = d.getFullYear(),
+			    month = (d.getMonth()+1) < 10 ? '0' + (d.getMonth()+1):d.getMonth()+1,
+			    date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+			    hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours(),
+			   	minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes(),
+			    second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+			
+			    return  year+"-"+month+"-"+date;   
+        },
+      	getnews : function(pagesize){
+      		let self = this;
+	    			self.$http.get(window.host +"/aroomv3/news.html", {
+	    				params:{
+	    					q : '',
+								pagesize : pagesize || 6,
+								pagenum : 1,
+								navcode : self.newsDetailed.newsvalue,
+								starttime : '',
+								endtime : '',
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				
+	    				let datas = response.data.data
+	    				$('.on_module .newsList').empty()
+	    				
+	    				if(datas.length){
+	    					for(let i=0;i<datas.length;i++){
+	    						let time = self.getTime(datas[i].dateline)
+	    						
+	    						let newli = '<div class="news_li"><div class="news_li_left"><img src="'+datas[i].thumb+'"></div><div class="news_li_right"><h3><a href="/dyinformation/'+datas[i].itemid+'.html" target="_blank" title="'+datas[i].subject+'"><span class="news_title">'+datas[i].subject+'</span></a><span class="times">'+time+'</span></h3><p class="news_cont">'+datas[i].note+'</p></div></div>'
+	    						$('.on_module .newsList').append(newli)
+	    					}
+	    				}
+					},function(response){
+						console.log(response)
+					});
+      	},
+      	getNewsCategorys  : function(pagesize){
+      		var self = this;
+	    			self.$http.get(window.host +"/aroomv3/news/getNewsCategorys.html", {
+	    				params:{
+	    					
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				if(response.data.code == 0){
+		    					self.newsDetailed.newssource = response.data.data;
+							}else{
+								console.log("数据错误");
+							}
+					},function(response){
+						console.log(response)
+					});
+      	},
+      	
       	newsDetailed : {
-      		newssource : [
-      		{
-          value: '1',
-          label: '系统资讯'
-        	},
-        	{
-          value: '2',
-          label: '非系统资讯'
-        	}
-      		],
-      		newsvalue : '1',
+      		newssource : [],
+      		newsvalue : 'news',
       		ontitle : 1,
       		title : '新闻资讯',
       		onimg : 1,
@@ -2097,6 +2139,7 @@
                 self.dialogAddcoursetype = true
                 break
               case 'news':
+              	self.getNewsCategorys()
                 self.dialognews = true
                 break
               case 'login':
@@ -3043,27 +3086,14 @@
         let activenews = self.activenews
         if (activenews === 'first') {
           $('.Palettebuttonlist #newsdefault').on('click', function () {
-         			self.newsDetailed = {
-         				newssource : [
-			      		{
-			          value: '1',
-			          label: '系统资讯'
-			        	},
-			        	{
-			          value: '2',
-			          label: '非系统资讯'
-			        	}
-			      		],
-			      		newsvalue : '1',
-			      		ontitle : 1,
-			      		title : '新闻资讯',
-			      		onimg : 1,
-			      		oncont : 1,
-			      		ontime : 1,
-			      		onrow : 2,
-			      		oncol : 3,
-			      		col : 1
-         			}
+          	self.newsDetailed.newsvalue = 'news'
+          	self.newsDetailed.ontitle = 1
+          	self.newsDetailed.onimg = 1
+          	self.newsDetailed.oncont = 1
+          	self.newsDetailed.ontime = 1
+          	self.newsDetailed.onrow = 2
+          	self.newsDetailed.oncol = 3
+          	self.newsDetailed.col = 3
           })
         }
       },
@@ -3075,6 +3105,9 @@
       	}else{
       		var  col = newsDetailed.oncol
       	}
+      	let pagesize =  col * newsDetailed.onrow
+      	self.getnews(pagesize)
+      	let newli = '<div class="news_li"><div class="news_li_left"><img src=""></div><div class="news_li_right"><h3><span class="news_title"></span><span class="times"></span></h3><p class="news_cont"></p></div></div>'
       	let obj = {
           newssource: newsDetailed.newsvalue,
           ontitle: newsDetailed.ontitle,

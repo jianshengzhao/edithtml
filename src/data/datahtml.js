@@ -154,6 +154,11 @@ var datahtml = {
         name: 'theteacherteam',
         icon: 'mb icon-wechat',
         text: '名师团队'
+      },
+      {
+      	name: 'contactway',
+        icon: 'mb icon-wechat',
+        text: '联系方式'
       }
     ],
     expect: []
@@ -262,6 +267,10 @@ var datahtml = {
   theteacherteam : {
   	style: 'width: 247px; height: 228px',
   	html: '<div class="theteacherteam module" datatext="名师团队"><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
+  },
+  contactway : {
+  	style: 'width: 340px; height: 122px',
+  	html: '<div class="contactway module" datatext="联系方式"><div class="contactwaycont"><div class="address">联系地址：杭州市</div><div class="address hotline">电话：15267131310</div><div class="address home">邮箱：6488479@qq.com</div></div></div>'
   }
   
 }

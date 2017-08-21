@@ -130,7 +130,59 @@
               U.css('left', '-' + L + 'px')
             }
           })
-        }
+        },
+        getTime:function (value) {		//换日期格式不包括时分
+      		let d = new Date(parseInt(value) * 1000)
+			    let year = d.getFullYear(),
+			    month = (d.getMonth()+1) < 10 ? '0' + (d.getMonth()+1):d.getMonth()+1,
+			    date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+			    hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours(),
+			   	minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes(),
+			    second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+			
+			    return  year+"-"+month+"-"+date;   
+        },
+        getnews : function(carouseldata){
+      		let self = this;
+      		if(carouseldata){
+      			let newscarouseldata = $.parseJSON(carouseldata)
+	      		if(newscarouseldata.oncol == '自定义'){
+		      		var  col = newscarouseldata.col
+		      	}else{
+		      		var  col = newscarouseldata.oncol
+		      	}
+		      	var pagesize =  col * newscarouseldata.onrow
+		      	var navcode =  newscarouseldata.newsvalue
+      		}else{
+      			var pagesize =  6
+		      	var navcode =  'news'
+      		}
+      		
+    			self.$http.get(window.host +"/aroomv3/news.html", {
+    				params:{
+    					q : '',
+							pagesize : pagesize,
+							pagenum : 1,
+							navcode : navcode,
+							starttime : '',
+							endtime : '',
+    				}
+    			},{emulateJSON:true}).then(function(response){
+    				
+    				let datas = response.data.data
+    				$('.newsList').empty()
+    				if(datas.length){
+    					for(let i=0;i<datas.length;i++){
+    						let time = self.getTime(datas[i].dateline)
+    						
+    						let newli = '<div class="news_li"><div class="news_li_left"><img src="'+datas[i].thumb+'"></div><div class="news_li_right"><h3><a href="/dyinformation/'+datas[i].itemid+'.html" target="_blank" title="'+datas[i].subject+'"><span class="news_title">'+datas[i].subject+'</span></a><span class="times">'+time+'</span></h3><p class="news_cont" title="'+datas[i].note+'">'+datas[i].note+'</p></div></div>'
+    						$('.newsList').append(newli)
+    					}
+    				}
+				},function(response){
+					console.log(response)
+				});
+      }
       }
     },
     created: function () { // 增加白名单，各模块所加载的js
@@ -159,6 +211,8 @@
         for (let i = 0, len = carousel.length; i < len; i++) {
           self.carouselEvent(self, carousel.eq(i), i)
         }
+        let newscarouseldata  = $('.news').attr('carouseldata') || ''
+        self.getnews(newscarouseldata)
       })
     },
     methods: {
