@@ -154,6 +154,51 @@ var datahtml = {
         name: 'dynamics',
         icon: 'icon-widget-sticker',
         text: '网校应用'
+      },
+      {
+        name: 'addcoursetype',
+        icon: 'mb icon-wechat',
+        text: '课程分类'
+      },
+      {
+        name: 'login',
+        icon: 'mb icon-wechat',
+        text: '用户登录'
+      },
+      {
+        name: 'thirdlogin',
+        icon: 'mb icon-wechat',
+        text: '第三方登录'
+      },
+      {
+        name: 'userregistration',
+        icon: 'mb icon-wechat',
+        text: '用户注册'
+      },
+      {
+        name: 'forgotpassword',
+        icon: 'mb icon-wechat',
+        text: '忘记密码'
+      },
+      {
+        name: 'sethomepage',
+        icon: 'mb icon-wechat',
+        text: '设为主页'
+      },
+      {
+        name: 'collection',
+        icon: 'mb icon-wechat',
+        text: '收藏'
+      },
+      {
+        name: 'theteacherteam',
+        icon: 'mb icon-wechat',
+        text: '名师团队'
+      },
+      {
+      	name: 'contactway',
+        icon: 'mb icon-wechat',
+        text: '联系方式'
       }
     ],
     expect: []
@@ -263,9 +308,13 @@ var datahtml = {
     style: 'width: 52px; height: 20px',
     html: '<div class="collection module" datatext="收藏"><a href="/forget.html">收藏</a></div>'
   },
-  theteacherteam: {
-    style: 'width: 247px; height: 228px',
-    html: '<div class="theteacherteam module" datatext="名师团队"><div class="promptBox">名师团队设置</div><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
+  theteacherteam : {
+  	style: 'width: 247px; height: 228px',
+  	html: '<div class="theteacherteam module" datatext="名师团队"><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
+  },
+  contactway : {
+  	style: 'width: 340px; height: 122px',
+  	html: '<div class="contactway module" datatext="联系方式"><div class="contactwaycont"><div class="address">联系地址：杭州市</div><div class="address hotline">电话：15267131310</div><div class="address home">邮箱：6488479@qq.com</div></div></div>'
   }
 }
 exports.datahtml = datahtml

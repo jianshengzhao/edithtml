@@ -613,55 +613,54 @@
         </el-tab-pane>
         <el-tab-pane label="样式设置" name="second">
           <el-form ref="newsDetailed" :model="newsDetailed" label-width="100px">
-            <el-form-item label="资讯来源：">
-              <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
-                <el-option
-                  v-for="item in newsDetailed.newssource"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="模块标题：">
-              <el-radio-group v-model="newsDetailed.ontitle">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="图片显示：">
-              <el-radio-group v-model="newsDetailed.onimg">
-               <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="内容显示：">
-              <el-radio-group v-model="newsDetailed.oncont">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="时间显示：">
-              <el-radio-group v-model="newsDetailed.ontime">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="单行显示：">
-              <el-radio-group v-model="newsDetailed.onrow">
-                <el-radio :label="1">1条</el-radio>
-                <el-radio :label="2">2条</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="行数：">
-              <el-radio-group v-model="newsDetailed.oncol">
-                <el-radio :label="1">1</el-radio>
-                <el-radio :label="2">2</el-radio>
-                <el-radio :label="3">3</el-radio>
-                <el-radio :label="0">自定义</el-radio>
-              </el-radio-group>
-               <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
-            </el-form-item>
+          	<el-form-item label="资讯来源：">
+					    <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
+					    	<el-option
+						      v-for="(key,item) in newsDetailed.newssource"
+						      :label="key.name" 
+						      :value="key.code">
+						    </el-option>
+						  </el-select>
+					  </el-form-item>
+					  <el-form-item label="模块标题：">
+					    <el-radio-group v-model="newsDetailed.ontitle">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+          	<el-form-item label="图片显示：">
+					    <el-radio-group v-model="newsDetailed.onimg">
+					     <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="内容显示：">
+					    <el-radio-group v-model="newsDetailed.oncont">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="时间显示：">
+					    <el-radio-group v-model="newsDetailed.ontime">
+					      <el-radio :label="1">开启</el-radio>
+					      <el-radio :label="0">关闭</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="单行显示：">
+					    <el-radio-group v-model="newsDetailed.onrow">
+					      <el-radio :label="1">1条</el-radio>
+					      <el-radio :label="2">2条</el-radio>
+					    </el-radio-group>
+					  </el-form-item>
+					  <el-form-item label="行数：">
+					    <el-radio-group v-model="newsDetailed.oncol">
+					      <el-radio :label="1">1</el-radio>
+					      <el-radio :label="2">2</el-radio>
+					      <el-radio :label="3">3</el-radio>
+					      <el-radio :label="0">自定义</el-radio>
+					    </el-radio-group>
+					     <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
+					  </el-form-item>
           </el-form>
         </el-tab-pane>
         
@@ -760,7 +759,7 @@
         <el-button @click="dialogaddtea = false">取 消</el-button>
         <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> 
     <el-dialog
       title="修改导航"
       :visible.sync="editNavName "
@@ -973,6 +972,7 @@
             <el-radio-button label="self">本校课程</el-radio-button>
             <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
           </el-radio-group>
+
         </el-col>  
       </el-row>
       <el-row>
@@ -1170,97 +1170,149 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // --------------- 新闻资讯设置 ------------------
-        dialognews: false,
-        activenews: 'first',
-        newsDetailed: {
-          newssource: [{
-            value: '1',
-            label: '系统资讯'
-          },
-          {
-            value: '2',
-            label: '非系统资讯'
-          }],
-          newsvalue: '1',
-          ontitle: 1,
-          title: '新闻资讯',
-          onimg: 1,
-          oncont: 1,
-          ontime: 1,
-          onrow: 2,
-          oncol: 3,
-          col: 1
+      //---------------新闻资讯设置------------------
+      	dialognews : false,
+      	activenews : 'first',
+      	navcode :'news',
+      	getTime:function (value) {		//换日期格式不包括时分
+      		let d = new Date(parseInt(value) * 1000)
+			    let year = d.getFullYear(),
+			    month = (d.getMonth()+1) < 10 ? '0' + (d.getMonth()+1):d.getMonth()+1,
+			    date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+			    hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours(),
+			   	minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes(),
+			    second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+			
+			    return  year+"-"+month+"-"+date;   
         },
-      // ----------- 登录框设置 --------------
-        activelogin: 'first',
-        dialoglogin: false,
-        loginDetailed: {
-          ontext: 1,
-          onpassword: 1,
-          logintype: ''
-        },
-      // ----------- 第三方登录设置 --------------
-        dialogthirdlogin: false,
-        activethirdlogin: 'first',
-        thirdloginDetailed: {
-          third: ['1', '2', '3']
-        },
-      // ----------- 名师团队 ----------------
-        dialogaddtea: false,
-        teavalue: '',
-        teainput: '',
-        teauid: '',
-        getealist: function () {
-          let self = this
-          self.$http.get(window.host + '/aroomv3/teacher/lists.html', {
-            params: {
-              q: self.teainput,
-              pagenum: 1,
-              pagesize: 1000
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.list
-            let tids = []
-            $('.addtheteateam .team_bk').each(function () {
-              tids.push($(this).attr('tid'))
-            })
-            $('.teater_all').empty()
-            if (list.length) {
-              for (var i = 0; i < list.length; i++) {
-                let face = list[i].face
-                if (face === '') {
-                  if (list[i].sex === '0') {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
-                  } else {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
-                  }
-                }
-                let teas = '<a href="javascript:;" class="lisnres" tid="' + list[i].teacherid + '" urealname="' + list[i].realname + '" uname="' + list[i].username + '" uface="' + face + '" uprofile="' + list[i].profile + '" uprofessionaltitle="' + list[i].professionaltitle + '">' + list[i].realname + '(' + list[i].username + ')<span class="selectico"></span></a>'
-                $('.teater_all').append(teas)
-              }
-            }
-            self.$nextTick(function () {
-              for (var i = 0; i < tids.length; i++) {
-                $(".teater_all a[tid='" + tids[i] + "']").addClass('unonlock')
-              }
-              let teamBktid = $('.on_module .team_bk').attr('tid') || ''
-              if (teamBktid !== '') {
-                $(".teater_all a[tid='" + teamBktid + "']").removeClass('unonlock').addClass('onlock')
-              }
-              $('.teater_all a').on('click', function () {
-                if ($(this).hasClass('unonlock')) {
-                  return false
-                } else {
-                  $('.teater_all a').removeClass('onlock')
-                  $(this).addClass('onlock')
-                }
-              })
-            })
-          }, function (response) {
-            console.log(response)
-          })
-        },
+      	getnews : function(pagesize){
+      		let self = this;
+	    			self.$http.get(window.host +"/aroomv3/news.html", {
+	    				params:{
+	    					q : '',
+								pagesize : pagesize || 6,
+								pagenum : 1,
+								navcode : self.newsDetailed.newsvalue,
+								starttime : '',
+								endtime : '',
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				
+	    				let datas = response.data.data
+	    				$('.on_module .newsList').empty()
+	    				
+	    				if(datas.length){
+	    					for(let i=0;i<datas.length;i++){
+	    						let time = self.getTime(datas[i].dateline)
+	    						
+	    						let newli = '<div class="news_li"><div class="news_li_left"><img src="'+datas[i].thumb+'"></div><div class="news_li_right"><h3><a href="/dyinformation/'+datas[i].itemid+'.html" target="_blank" title="'+datas[i].subject+'"><span class="news_title">'+datas[i].subject+'</span></a><span class="times">'+time+'</span></h3><p class="news_cont">'+datas[i].note+'</p></div></div>'
+	    						$('.on_module .newsList').append(newli)
+	    					}
+	    				}
+					},function(response){
+						console.log(response)
+					});
+      	},
+      	getNewsCategorys  : function(pagesize){
+      		var self = this;
+	    			self.$http.get(window.host +"/aroomv3/news/getNewsCategorys.html", {
+	    				params:{
+	    					
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				if(response.data.code == 0){
+		    					self.newsDetailed.newssource = response.data.data;
+							}else{
+								console.log("数据错误");
+							}
+					},function(response){
+						console.log(response)
+					});
+      	},
+      	
+      	newsDetailed : {
+      		newssource : [],
+      		newsvalue : 'news',
+      		ontitle : 1,
+      		title : '新闻资讯',
+      		onimg : 1,
+      		oncont : 1,
+      		ontime : 1,
+      		onrow : 2,
+      		oncol : 3,
+      		col : 1
+      	},
+     	// ----------- 登录框设置 --------------
+     		activelogin : 'first',
+     		dialoglogin : false,
+     		loginDetailed :{
+     			ontext : 1,
+     			onpassword : 1,
+     			logintype :''
+     		},
+     	// ----------- 第三方登录设置 --------------
+     		dialogthirdlogin : false,
+     		activethirdlogin : 'first',
+     		thirdloginDetailed :{
+     			third :['1','2','3']
+     		},
+     	// ----------- 名师团队 ----------------
+     		dialogaddtea :false,
+     		teavalue : '',
+     		teainput : '',
+     		teauid : '',
+     		getealist : function(){
+     			let self = this;
+	    		self.$http.get(window.host +"/aroomv3/teacher/lists.html", {
+	    				params:{
+	    					q : self.teainput,
+	    					pagenum : 1,
+	    					pagesize : 1000
+	    				}
+	    			},{emulateJSON:true}).then(function(response){
+	    				let list = response.data.data.list
+	    				let tids = [];
+	    				$('.addtheteateam .team_bk').each(function(){  
+							    tids.push($(this).attr('tid'))   
+							});
+	    				$('.teater_all').empty();
+	    				if(list.length){
+	    						for(var i=0;i<list.length;i++){
+	    							let face = list[i].face
+	    							if(face == ''){
+	    								if(list[i].sex == '0'){
+	    									face =  'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
+	    								}else{
+	    									face =  'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
+	    								}
+	    							}
+	    							let teas =  '<a  href="javascript:;" class="lisnres" tid="'+list[i].teacherid+'" urealname="'+list[i].realname+'" uname="'+list[i].username+'" uface="'+face+'" uprofile="'+list[i].profile+'" uprofessionaltitle="'+list[i].professionaltitle+'">'+list[i].realname+'('+list[i].username+')<span class="selectico"></span></a>'
+	    							$('.teater_all').append(teas)
+	    						}
+	    				}
+	    				self.$nextTick(function () {
+	    					for(var i=0;i<tids.length;i++){
+	    						$(".teater_all a[tid='"+tids[i]+"']").addClass('unonlock')
+	    					}
+	    					let team_bktid = $('.on_module .team_bk').attr('tid') || ''
+	    					if(team_bktid != ''){
+	    						$(".teater_all a[tid='"+team_bktid+"']").removeClass('unonlock').addClass('onlock')
+	    					}
+								$('.teater_all a').on('click',function(){
+									if($(this).hasClass('unonlock')){
+										return false
+									}else{
+										$('.teater_all a').removeClass('onlock')
+                		$(this).addClass('onlock')
+									}
+                	
+                })	
+					    })
+					},function(response){
+						console.log(response)
+					});
+     		},
+
       // -----------工具栏+全局设置+右侧元素图层-----------------
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
@@ -2287,6 +2339,7 @@
                 self.dialogAddcoursetype = true
                 break
               case 'news':
+              	self.getNewsCategorys()
                 self.dialognews = true
                 break
               case 'login':
@@ -3544,38 +3597,29 @@
         let activenews = self.activenews
         if (activenews === 'first') {
           $('.Palettebuttonlist #newsdefault').on('click', function () {
-            self.newsDetailed = {
-              newssource: [{
-                value: '1',
-                label: '系统资讯'
-              },
-              {
-                value: '2',
-                label: '非系统资讯'
-              }],
-              newsvalue: '1',
-              ontitle: 1,
-              title: '新闻资讯',
-              onimg: 1,
-              oncont: 1,
-              ontime: 1,
-              onrow: 2,
-              oncol: 3,
-              col: 1
-            }
+          	self.newsDetailed.newsvalue = 'news'
+          	self.newsDetailed.ontitle = 1
+          	self.newsDetailed.onimg = 1
+          	self.newsDetailed.oncont = 1
+          	self.newsDetailed.ontime = 1
+          	self.newsDetailed.onrow = 2
+          	self.newsDetailed.oncol = 3
+          	self.newsDetailed.col = 3
           })
         }
       },
-      dialognewsEvent: function () {
-        let self = this
-        let newsDetailed = self.newsDetailed
-        var col
-        if (newsDetailed.oncol === '自定义') {
-          col = newsDetailed.col
-        } else {
-          col = newsDetailed.oncol
-        }
-        let obj = {
+      dialognewsEvent : function(){
+      	let self = this
+      	let newsDetailed = self.newsDetailed
+      	if(newsDetailed.oncol == '自定义'){
+      		var  col = newsDetailed.col
+      	}else{
+      		var  col = newsDetailed.oncol
+      	}
+      	let pagesize =  col * newsDetailed.onrow
+      	self.getnews(pagesize)
+      	let newli = '<div class="news_li"><div class="news_li_left"><img src=""></div><div class="news_li_right"><h3><span class="news_title"></span><span class="times"></span></h3><p class="news_cont"></p></div></div>'
+      	let obj = {
           newssource: newsDetailed.newsvalue,
           ontitle: newsDetailed.ontitle,
           onimg: newsDetailed.onimg,
