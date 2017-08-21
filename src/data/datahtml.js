@@ -169,7 +169,7 @@ var datahtml = {
   },
   text: {
     style: 'width:200px; height:30px',
-    html: '<div class="text module"  datatext="文字"><div class="promptBox">修改文字</div>啦啦啦我是文字模块</div>'
+    html: '<div class="text module"  datatext="文字"><div class="promptBox">修改文字</div><a>啦啦啦我是文字模块</a></div>'
   },
   editor: {
     style: 'width:400px; height:400px',

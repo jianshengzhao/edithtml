@@ -246,13 +246,58 @@
     <el-dialog
       title="编辑文本"
       :visible.sync="dialogText"
-      size="tiny">
-      <el-input
-        type="textarea"
-        autosize
-        placeholder="请输入内容"
-        v-model="textarea">
-      </el-input>
+      size="text">
+      <el-row>
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入内容"
+          v-model="textarea">
+        </el-input>
+      </el-row>
+      <el-row>
+        <el-col :span="3" style="text-align: right">链接类型：</el-col>
+        <el-col :span="17">
+          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
+            <el-option
+              v-for="item in linkTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>  
+      </el-row>
+      <el-row v-if="linkType == 'online'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-input v-model="inpOnline" placeholder="请输入内容"></el-input>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'news'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择咨讯"
+            :options="selectNewsOptions"
+            v-model="selectNews"
+            @change="selectNewsChange"
+            @active-item-change="handleNewsItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'coruse'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择课程"
+            :options="selectCoruseOptions"
+            v-model="selectCoruse"
+            @change="selectCoruseChange"
+            @active-item-change="handleCoruseItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">        
         <el-button @click="dialogText = false">取 消</el-button>
         <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
@@ -1170,7 +1215,7 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // --------------- 新闻资讯设置 ------------------
+      // ------------ 新闻资讯设置 -------------------
         dialognews: false,
         activenews: 'first',
         newsDetailed: {
@@ -1192,7 +1237,7 @@
           oncol: 3,
           col: 1
         },
-      // ----------- 登录框设置 --------------
+      // ------------ 登录框设置 ---------------------
         activelogin: 'first',
         dialoglogin: false,
         loginDetailed: {
@@ -1200,13 +1245,13 @@
           onpassword: 1,
           logintype: ''
         },
-      // ----------- 第三方登录设置 --------------
+      // ------------ 第三方登录设置 -----------------
         dialogthirdlogin: false,
         activethirdlogin: 'first',
         thirdloginDetailed: {
           third: ['1', '2', '3']
         },
-      // ----------- 名师团队 ----------------
+      // ------------ 名师团队 -----------------------
         dialogaddtea: false,
         teavalue: '',
         teainput: '',
@@ -1261,7 +1306,7 @@
             console.log(response)
           })
         },
-      // -----------工具栏+全局设置+右侧元素图层-----------------
+      // ------------ 全局设置+工具栏+右侧元素图层 ---
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
         inp_width: 1200,
@@ -2359,11 +2404,12 @@
             fun: function (response) {
               let crid = response.body.data.crid
               let getParams = {
-                url: '/room/design/getdesign',
+                url: '/room/design/getdesign.html',
                 params: {crid: crid},
                 fun: function (response) {
                   let saveParams = response.body.data
                   console.log(saveParams)
+                  console.log(window.JSON.parse(saveParams.settings))
                 }
               }
               self.httppost(getParams)
@@ -2457,7 +2503,7 @@
         let bodyArray = $('.c_body').html()
         let footArray = $('.c_foot').html()
         let param = {
-          url: '/room/design/save',
+          url: '/room/design/save.html',
           params: {
             head: headArray,
             foot: footArray,
@@ -2701,7 +2747,27 @@
     // ------------- 基础模块 ----------------
       dialogTextEvent: function () { // 编辑文本窗口
         let self = this
-        self.moduleElement.text(self.textarea)
+        let a = self.moduleElement.find('a')
+        a.text(self.textarea)
+        switch (self.linkType) {
+          case 'none':
+            a.removeAttr('href')
+            break
+          case 'online':
+            a.attr('href', self.inpOnline)
+            break
+          case 'news':
+            let itemid = self.selectNews[2]
+            a.attr('href', '/dyinformation/' + itemid + '.html')
+            break
+          case 'coruse':
+            let folderid = self.selectCoruse[2]
+            a.attr('href', '/courseinfo/' + folderid + '.html')
+            break
+          case 'login':
+            a.attr('loginEvent', 'true')
+            break
+        }
         self.dialogText = false
       },
       dialogEditorEvent: function () { // 富文本窗口
@@ -4467,6 +4533,16 @@
     padding: 10px 10px 15px;
   }
 /*pageHeader-uploader*/
+  .el-dialog--text{
+    width: 600px;
+  }
+  .el-dialog--text .el-row{
+    margin-bottom: 20px;
+  }
+  .el-dialog--text .el-col{
+    height: 36px;
+    line-height: 36px;
+  }
   .el-dialog--pageSet{
     width: 500px;
   }
