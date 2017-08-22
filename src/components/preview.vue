@@ -148,7 +148,7 @@
           let navcode
           if (carouseldata) {
             let newscarouseldata = $.parseJSON(carouseldata)
-            if (newscarouseldata.oncol === '自定义') {
+            if (newscarouseldata.oncol === '0') {
               col = newscarouseldata.col
             } else {
               col = newscarouseldata.oncol

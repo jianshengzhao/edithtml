@@ -2676,6 +2676,15 @@
         let headArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
         let footArray = $('.c_foot').html()
+        let audition = $('.audition ')
+        let auditions = ''
+        for (let i = 0, len = audition.length; i < len; i++) {
+          let item = audition.eq(i)
+          auditions += item.attr('auditionid')
+          if (i < len - 1) {
+            auditions += ','
+          }
+        }
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -2684,7 +2693,7 @@
             body: bodyArray,
             settings: strSetting,
             status: 0,
-            auditions: ''
+            auditions: auditions
           },
           fun: function (response) {
             let code = response.body.code
@@ -2697,7 +2706,7 @@
             }
           }
         }
-        self.httppost(param)
+        // self.httppost(param)
       },
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
@@ -3808,7 +3817,7 @@
         let self = this
         let newsDetailed = self.newsDetailed
         let col
-        if (newsDetailed.oncol === '自定义') {
+        if (newsDetailed.oncol === '0') {
           col = newsDetailed.col
         } else {
           col = newsDetailed.oncol
@@ -3823,6 +3832,7 @@
           oncont: newsDetailed.oncont,
           ontime: newsDetailed.ontime,
           onrow: newsDetailed.onrow,
+          oncol: newsDetailed.oncol,
           col: col
         }
         if (!newsDetailed.ontitle) {
