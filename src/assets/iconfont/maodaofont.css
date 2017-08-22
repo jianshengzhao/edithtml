@@ -824,17 +824,61 @@ svg.icon {
 
 .icon-classification { background-image: url(../icon/information.png); background-size: 20px; }
 
-.icon-audition { background-image: url(../icon/audition.png); background-size: 20px; }
-
 .icon-label { background-image: url(../icon/label.png); }
 
 .icon-information { background-image: url(../icon/introduce.png); }
 
 .icon-introduce { background-image: url(../icon/introduce.png); }
 
-.icon-introduce { background-image: url(../icon/introduce.png); }
 
-.icon-introduce { background-image: url(../icon/introduce.png); }
+
+.icon-rectangle { background-image: url(../img/rectangle.png); background-size: 28px; }
+
+.icon-radius { background-image: url(../img/radius.png); background-size: 28px; }
+
+.icon-text { background-image: url(../img/text.png); background-size: 28px; }
+
+.icon-editor { background-image: url(../img/editor.png); background-size: 28px; }
+
+.icon-picture { background-image: url(../img/picture.png); background-size: 28px; }
+
+.icon-button { background-image: url(../img/button.png); background-size: 28px; }
+
+.icon-hline { background-image: url(../img/hline.png); background-size: 28px; }
+
+.icon-sline { background-image: url(../img/sline.png); background-size:auto 28px; }
+
+.icon-pageHeader { background-image: url(../img/pageHeader.png); background-size: 28px; }
+
+.icon-navigation { background-image: url(../img/navigation.png); background-size: 28px; }
+
+.icon-carousel { background-image: url(../img/carousel.png); background-size: 28px; }
+
+.icon-addcoursetype { background-image: url(../img/addcoursetype.png); background-size: 20px; }
+
+.icon-audition { background-image: url(../img/audition.png); background-size: 28px; }
+
+.icon-news { background-image: url(../img/news.png); background-size: 20px; }
+
+.icon-course { background-image: url(../img/course.png); background-size: 20px; }
+
+.icon-login { background-image: url(../img/login.png); background-size: 20px; }
+
+.icon-thirdlogin { background-image: url(../img/thirdlogin.png); background-size: 20px; }
+
+.icon-userregistration { background-image: url(../img/userregistration.png); background-size: 20px; }
+
+.icon-forgotpassword { background-image: url(../img/forgotpassword.png); background-size: 20px; }
+
+.icon-collection { background-image: url(../img/collection.png); background-size: 28px; }
+
+.icon-theteacherteam { background-image: url(../img/theteacherteam.png); background-size: 28px; }
+
+.icon-sethomepage { background-image: url(../img/sethomepage.png); background-size: 28px; }
+
+.icon-contactway { background-image: url(../img/contactway.png); background-size: 28px; }
+
+.icon-schoolProfile { background-image: url(../img/schoolProfile.png); background-size: 28px; }
 
 
 

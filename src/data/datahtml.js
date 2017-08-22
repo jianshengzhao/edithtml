@@ -3,54 +3,54 @@ var datahtml = {
     basic: [
       {
         name: 'rectangle',
-        icon: 'icon-widget-rectangle',
+        icon: 'imgicon icon-rectangle',
         text: '矩形'
       },
       {
         name: 'radius',
-        icon: 'icon-widget-circle',
+        icon: 'imgicon icon-radius',
         text: '圆角'
       },
       {
         name: 'text',
-        icon: 'icon-widget-text',
+        icon: 'imgicon icon-text',
         text: '文字'
       },
       {
         name: 'editor',
-        icon: 'icon-widget-textarea',
+        icon: 'imgicon icon-editor',
         text: '富文本'
       },
       {
         name: 'picture',
-        icon: 'icon-widget-img',
+        icon: 'imgicon icon-picture',
         text: '图片'
       },
       {
         name: 'button',
-        icon: 'icon-widget-btn',
+        icon: 'imgicon icon-button',
         text: '按钮'
       },
       {
         name: 'hline',
-        icon: 'icon-widget-horizontal-line',
+        icon: 'imgicon icon-hline',
         text: '横线'
       },
       {
         name: 'sline',
-        icon: 'icon-widget-vertical-line',
+        icon: 'imgicon icon-sline',
         text: '竖线'
       }
     ],
     online: [
       {
         name: 'pageHeader',
-        icon: 'icon-widget-input',
+        icon: 'imgicon icon-pageHeader',
         text: '页头'
       },
       {
         name: 'navigation',
-        icon: 'icon-widget-search-input',
+        icon: 'imgicon icon-navigation',
         text: '导航栏'
       },
       {
@@ -60,7 +60,7 @@ var datahtml = {
       },
       {
         name: 'addcoursetype',
-        icon: 'imgicon icon-classification',
+        icon: 'imgicon icon-addcoursetype',
         text: '课程分类'
       },
       {
@@ -70,57 +70,57 @@ var datahtml = {
       },
       {
         name: 'news',
-        icon: 'icon-widget-sticker',
+        icon: 'imgicon icon-news',
         text: '新闻资讯'
       },
       {
         name: 'course',
-        icon: 'imgicon icon-classification',
+        icon: 'imgicon icon-course',
         text: '课程'
       },
       {
         name: 'login',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-login',
         text: '用户登录'
       },
       {
         name: 'thirdlogin',
-        icon: 'mb icon-qq',
+        icon: 'imgicon icon-thirdlogin',
         text: '第三方登录'
       },
       {
         name: 'userregistration',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-userregistration',
         text: '用户注册'
       },
       {
         name: 'forgotpassword',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-forgotpassword',
         text: '忘记密码'
       },
       {
         name: 'sethomepage',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-sethomepage',
         text: '设为主页'
       },
       {
         name: 'collection',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-collection',
         text: '收藏'
       },
       {
         name: 'theteacherteam',
-        icon: 'icon-widget-icon-label',
+        icon: 'imgicon icon-theteacherteam',
         text: '名师团队'
       },
       {
         name: 'contactway',
-        icon: 'mb icon-wechat',
+        icon: 'imgicon icon-contactway',
         text: '联系方式'
       },
       {
         name: 'schoolProfile',
-        icon: 'imgicon icon-introduce',
+        icon: 'imgicon icon-schoolProfile',
         text: '网校介绍'
       }
     ],
