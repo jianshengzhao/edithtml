@@ -748,6 +748,7 @@
               <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
                 <el-option
                   v-for="(key,item) in newsDetailed.newssource"
+                  :key="key.code"
                   :label="key.name" 
                   :value="key.code">
                 </el-option>
@@ -2530,6 +2531,9 @@
         self.tool.scrollHeight()
         self.moduleEvent()
         space.scrollLeft(900)
+        let head = $('.c_top')
+        let middle = $('.c_body')
+        let foot = $('.c_foot')
         if (window.saveParams) {
           let params = window.saveParams
           let pp = params.page
@@ -2537,13 +2541,10 @@
           self.bgColorVal = pp.bg
           self.inp_width = pp.width
           self.inp_height = pp.height
-          space.css('backgroundColor', self.bgColorVal)
-          canvas.css('backgroundColor', self.prospectColorVal)
+          space.css('background', self.bgColorVal)
+          canvas.css('background', self.prospectColorVal)
           canvas.css('width', self.inp_width)
           canvas.css('height', self.inp_height)
-          let head = $('.c_top')
-          let middle = $('.c_body')
-          let foot = $('.c_foot')
           head.css('height', pp.top)
           foot.css('height', pp.foot)
           canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
@@ -2556,7 +2557,6 @@
           self.tool.getLayerElement(self, foot)
           self.tool.scrollHeight()
         } else {
-          // /aroomv3/roominfo.html
           let getParam = {
             url: '/aroomv3/roominfo.html',
             params: {},
@@ -2564,11 +2564,27 @@
               let crid = response.body.data.crid
               let getParams = {
                 url: '/room/design/getdesign.html',
-                params: {crid: 10194},
+                params: {crid: crid},
                 fun: function (response) {
-                  let saveParams = response.body.data
-                  console.log(saveParams)
-                  console.log(window.JSON.parse(saveParams.settings))
+                  let saveParams = response.body.data                  
+                  let headHtml = saveParams.head.replace(/[\\]/g,'')
+                  let bodyHtml = saveParams.body.replace(/[\\]/g,'')
+                  let footHtml = saveParams.foot.replace(/[\\]/g,'')
+                  let settings = JSON.parse(saveParams.settings.replace(/[\\]/g,''))
+                  self.prospectColorVal = settings.pg
+                  self.bgColorVal = settings.bg
+                  self.inp_width = settings.width
+                  self.inp_height = settings.height
+                  space.css('background', self.bgColorVal)
+                  canvas.css('background', self.prospectColorVal)
+                  canvas.css('width', self.inp_width)
+                  canvas.css('height', self.inp_height)
+                  head.css('height', settings.top)
+                  foot.css('height', settings.foot)
+                  canvas.css({'paddingTop': settings.top, 'paddingBottom': settings.foot})
+                  head.html(headHtml)
+                  middle.html(bodyHtml)
+                  foot.html(footHtml)
                 }
               }
               self.httppost(getParams)
