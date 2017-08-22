@@ -200,45 +200,131 @@
       title="页面设置"
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
-      <el-row>
-        <el-col :span="3" class="tit">前景色</el-col>
-        <el-col :span="7">
-          <el-color-picker v-model="prospectColorVal" ></el-color-picker>
-        </el-col>
-       <!--  <el-col :span="10">todo:背景图片</el-col> -->
-      </el-row>
-      <el-row>
-        <el-col :span="3" class="tit">背景色</el-col>
-        <el-col :span="7">
-          <el-color-picker v-model="bgColorVal"></el-color-picker>
-        </el-col>
-        <el-col :span="3" class="tit">背景图</el-col>
-        <el-col :span="7">
-          <el-upload
-            class="upload-demo"
-            name="upfile"
-            :show-file-list="false"
-            action="/uploadv2/image.html"
-            :on-preview="handleBackImgSuccess"
-            :before-upload="beforePictureUpload">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-col>
-       <!--  <el-col :span="10">todo:背景图片</el-col> -->
-      </el-row>
-      <el-row>
-        <el-col :span="3" class="tit">页宽</el-col>
-        <el-col :span="7">
-          <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="3" class="tit">页高</el-col>          
-        <el-col :span="7">          
-          <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">        
+      <el-tabs v-model="activeSetting" type="card" >
+        <el-tab-pane label="页面设置" name="first">
+          <el-row>
+            <el-col :span="4" class="tit">前景色</el-col>
+            <el-col :span="7">
+              <el-color-picker v-model="prospectColorVal" ></el-color-picker>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">背景色</el-col>
+            <el-col :span="7">
+              <el-color-picker v-model="bgColorVal"></el-color-picker>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">页宽</el-col>
+            <el-col :span="7">
+              <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">页高</el-col>          
+            <el-col :span="7">          
+              <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="前景图设置" name="second">
+          <el-row>
+            <el-col :span="4" class="tit">背景图</el-col>
+            <el-col :span="10">
+              <el-upload
+                class="upload-demo"
+                name="upfile"
+                :show-file-list="false"
+                action="/uploadv2/image.html"
+                :on-preview="handleBackImgSuccess"
+                :before-upload="beforePictureUpload">
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">背景图尺寸</el-col>
+            <el-col :span="10">
+              <el-input-number v-model="inp_width" :step="2" size="small"></el-input-number> %
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">平铺模式</el-col>
+            <el-col :span="10">
+              <el-select v-model="repeatPgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in repeatOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">固定背景</el-col>
+            <el-col :span="10">
+              <el-select v-model="attachmentPgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in attachmentOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="背景图设置" name="third">
+          <el-row>
+            <el-col :span="4" class="tit">背景图</el-col>
+            <el-col :span="10">
+              <el-upload
+                class="upload-demo"
+                name="upfile"
+                :show-file-list="false"
+                action="/uploadv2/image.html"
+                :on-preview="handleBackImgSuccess"
+                :before-upload="beforePictureUpload">
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">背景图尺寸</el-col>
+            <el-col :span="10">
+              <el-input-number v-model="inp_width" :step="2" size="small"></el-input-number>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">平铺模式</el-col>
+            <el-col :span="10">
+              <el-select v-model="repeatBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in repeatOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">固定背景</el-col>
+            <el-col :span="10">
+              <el-select v-model="attachmentBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in attachmentOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
         <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
       </span>
@@ -661,10 +747,9 @@
             <el-form-item label="资讯来源：">
               <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
                 <el-option
-                  v-for="item in newsDetailed.newssource"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="(key,item) in newsDetailed.newssource"
+                  :label="key.name" 
+                  :value="key.code">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -805,7 +890,7 @@
         <el-button @click="dialogaddtea = false">取 消</el-button>
         <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> 
     <el-dialog
       title="修改导航"
       :visible.sync="editNavName "
@@ -1018,6 +1103,7 @@
             <el-radio-button label="self">本校课程</el-radio-button>
             <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
           </el-radio-group>
+
         </el-col>  
       </el-row>
       <el-row>
@@ -1215,19 +1301,62 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // ------------ 新闻资讯设置 -------------------
+      // ---------------新闻资讯设置------------------
         dialognews: false,
         activenews: 'first',
+        navcode: 'news',
+        getTime: function (value) {   // 换日期格式不包括时分
+          let d = new Date(parseInt(value) * 1000)
+          let year = d.getFullYear()
+          let month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1
+          let date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate()
+          // let hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours()
+          // let minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()
+          // let second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds()
+          return year + '-' + month + '-' + date
+        },
+        getnews: function (pagesize) {
+          let self = this
+          self.$http.get(window.host + '/aroomv3/news.html', {
+            params: {
+              q: '',
+              pagesize: pagesize || 6,
+              pagenum: 1,
+              navcode: self.newsDetailed.newsvalue,
+              starttime: '',
+              endtime: ''
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            let datas = response.data.data
+            $('.on_module .newsList').empty()
+            if (datas.length) {
+              for (let i = 0; i < datas.length; i++) {
+                let time = self.getTime(datas[i].dateline)
+                let newli = '<div class="news_li"><div class="news_li_left"><img src="' + datas[i].thumb + '"></div><div class="news_li_right"><h3><a href="/dyinformation/' + datas[i].itemid + '.html" target="_blank" title="' + datas[i].subject + '"><span class="news_title">' + datas[i].subject + '</span></a><span class="times">' + time + '</span></h3><p class="news_cont">' + datas[i].note + '</p></div></div>'
+                $('.on_module .newsList').append(newli)
+              }
+            }
+          }, function (response) {
+            console.log(response)
+          })
+        },
+        getNewsCategorys: function (pagesize) {
+          var self = this
+          self.$http.get(window.host + '/aroomv3/news/getNewsCategorys.html', {
+            params: {}
+          }, {emulateJSON: true}).then(function (response) {
+            if (response.data.code === 0) {
+              self.newsDetailed.newssource = response.data.data
+            } else {
+              console.log('数据错误')
+            }
+          }, function (response) {
+            console.log(response)
+          })
+        },
         newsDetailed: {
-          newssource: [{
-            value: '1',
-            label: '系统资讯'
-          },
-          {
-            value: '2',
-            label: '非系统资讯'
-          }],
-          newsvalue: '1',
+          newssource: [],
+          newsvalue: 'news',
           ontitle: 1,
           title: '新闻资讯',
           onimg: 1,
@@ -1237,7 +1366,7 @@
           oncol: 3,
           col: 1
         },
-      // ------------ 登录框设置 ---------------------
+      // ----------- 登录框设置 --------------
         activelogin: 'first',
         dialoglogin: false,
         loginDetailed: {
@@ -1245,13 +1374,13 @@
           onpassword: 1,
           logintype: ''
         },
-      // ------------ 第三方登录设置 -----------------
+      // ----------- 第三方登录设置 --------------
         dialogthirdlogin: false,
         activethirdlogin: 'first',
         thirdloginDetailed: {
           third: ['1', '2', '3']
         },
-      // ------------ 名师团队 -----------------------
+      // ----------- 名师团队 ----------------
         dialogaddtea: false,
         teavalue: '',
         teainput: '',
@@ -1306,7 +1435,36 @@
             console.log(response)
           })
         },
-      // ------------ 全局设置+工具栏+右侧元素图层 ---
+      // -----------工具栏+全局设置+右侧元素图层-----------------
+        attachmentPgValue: 'scroll',
+        attachmentBgValue: 'scroll',
+        attachmentOptions: [{
+          value: 'scroll',
+          label: '滚动'
+        },
+        {
+          value: 'fixed',
+          label: '固定'
+        }],
+        repeatPgValue: 'no-repeat',
+        repeatBgValue: 'no-repeat',
+        repeatOptions: [{
+          value: 'no-repeat',
+          label: '不平铺'
+        },
+        {
+          value: 'repeat-y',
+          label: 'Y轴平铺'
+        },
+        {
+          value: 'repeat-x',
+          label: 'X轴平铺'
+        },
+        {
+          value: 'repeat',
+          label: '平铺'
+        }],
+        activeSetting: 'first',
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
         inp_width: 1200,
@@ -2332,6 +2490,7 @@
                 self.dialogAddcoursetype = true
                 break
               case 'news':
+                self.getNewsCategorys()
                 self.dialognews = true
                 break
               case 'login':
@@ -2405,7 +2564,7 @@
               let crid = response.body.data.crid
               let getParams = {
                 url: '/room/design/getdesign.html',
-                params: {crid: crid},
+                params: {crid: 10194},
                 fun: function (response) {
                   let saveParams = response.body.data
                   console.log(saveParams)
@@ -2487,13 +2646,13 @@
           canvas.addClass('grid')
         }
       },
-      saveEvent: function () { // 页面保存 todo:
+      saveEvent: function () { // 页面保存
         let self = this
         let setting = {
           pg: self.prospectColorVal,
           bg: self.bgColorVal,
-          width: self.inp_width,
-          height: self.inp_height,
+          width: self.inp_width + 'px',
+          height: self.inp_height + 'px',
           top: $('.c_top').css('height'),
           body: $('.c_body').css('height'),
           foot: $('.c_foot').css('height')
@@ -3610,37 +3769,29 @@
         let activenews = self.activenews
         if (activenews === 'first') {
           $('.Palettebuttonlist #newsdefault').on('click', function () {
-            self.newsDetailed = {
-              newssource: [{
-                value: '1',
-                label: '系统资讯'
-              },
-              {
-                value: '2',
-                label: '非系统资讯'
-              }],
-              newsvalue: '1',
-              ontitle: 1,
-              title: '新闻资讯',
-              onimg: 1,
-              oncont: 1,
-              ontime: 1,
-              onrow: 2,
-              oncol: 3,
-              col: 1
-            }
+            self.newsDetailed.newsvalue = 'news'
+            self.newsDetailed.ontitle = 1
+            self.newsDetailed.onimg = 1
+            self.newsDetailed.oncont = 1
+            self.newsDetailed.ontime = 1
+            self.newsDetailed.onrow = 2
+            self.newsDetailed.oncol = 3
+            self.newsDetailed.col = 3
           })
         }
       },
       dialognewsEvent: function () {
         let self = this
         let newsDetailed = self.newsDetailed
-        var col
+        let col
         if (newsDetailed.oncol === '自定义') {
           col = newsDetailed.col
         } else {
           col = newsDetailed.oncol
         }
+        let pagesize = col * newsDetailed.onrow
+        self.getnews(pagesize)
+        // let newli = '<div class="news_li"><div class="news_li_left"><img src=""></div><div class="news_li_right"><h3><span class="news_title"></span><span class="times"></span></h3><p class="news_cont"></p></div></div>'
         let obj = {
           newssource: newsDetailed.newsvalue,
           ontitle: newsDetailed.ontitle,
