@@ -585,7 +585,6 @@
                 <el-radio label="默认"></el-radio>
                 <el-radio label="自定义"></el-radio>
               </el-radio-group>
-              
               <el-input-number v-model="courseHeightL.heightonenum" size="small" :disabled=" courseHeightL.heightone != '自定义' " :controls=false></el-input-number>
             </el-form-item>
             <el-form-item label="主类框高度：">
@@ -1302,7 +1301,7 @@
           lengthnum: 2,
           classs: 'theme_4'
         },
-      // ---------------新闻资讯设置------------------
+      // ------------ 新闻资讯设置 -------------------
         dialognews: false,
         activenews: 'first',
         navcode: 'news',
@@ -1367,7 +1366,7 @@
           oncol: 3,
           col: 1
         },
-      // ----------- 登录框设置 --------------
+      // ------------ 登录框设置 ---------------------
         activelogin: 'first',
         dialoglogin: false,
         loginDetailed: {
@@ -1375,13 +1374,13 @@
           onpassword: 1,
           logintype: ''
         },
-      // ----------- 第三方登录设置 --------------
+      // ------------ 第三方登录设置 -----------------
         dialogthirdlogin: false,
         activethirdlogin: 'first',
         thirdloginDetailed: {
           third: ['1', '2', '3']
         },
-      // ----------- 名师团队 ----------------
+      // ------------ 名师团队 -----------------------
         dialogaddtea: false,
         teavalue: '',
         teainput: '',
@@ -1436,7 +1435,7 @@
             console.log(response)
           })
         },
-      // -----------工具栏+全局设置+右侧元素图层-----------------
+      // ------------ 工具栏+全局设置+右侧元素图层 ---
         attachmentPgValue: 'scroll',
         attachmentBgValue: 'scroll',
         attachmentOptions: [{
@@ -2366,7 +2365,7 @@
             switch (type) {
               case 'text':
                 self.dialogText = true
-                self.textarea = onthis.text()
+                self.textarea = onthis.find('a').text()
                 break
               case 'editor':
                 self.dialogEditor = true
@@ -3101,24 +3100,26 @@
             let obj = []
             for (let i = 0, len = navList.length; i < len; i++) {
               let item = navList[i]
-              let items = {
-                label: item.name,
-                value: item.code,
-                children: []
-              }
-              if (item.subnav) {
-                for (let j = 0, jen = item.subnav.length; j < jen; j++) {
-                  let jtem = item.subnav[j]
-                  let jtems = {
-                    label: jtem.name,
-                    value: jtem.code,
-                    children: []
-                  }
-                  items.children.push(jtems)
+              if (item.code.length < 4 || item.code === 'news' ) {
+                let items = {
+                  label: item.name,
+                  value: item.code,
+                  children: []
                 }
+                if (item.subnav) {
+                  for (let j = 0, jen = item.subnav.length; j < jen; j++) {
+                    let jtem = item.subnav[j]
+                    let jtems = {
+                      label: jtem.name,
+                      value: jtem.code,
+                      children: []
+                    }
+                    items.children.push(jtems)
+                  }
+                }
+                items.children.push({label: '其它', value: item.code, children: []})
+                obj.push(items)
               }
-              items.children.push({label: '其它', value: item.code, children: []})
-              obj.push(items)
             }
             self.selectNewsOptions = obj
           }
@@ -3128,6 +3129,9 @@
       handleNewsItemChange: function (arr) {
         let self = this
         let code = arr[1]
+        if (arr.length < 2) {
+          return false
+        }
         let param = {
           url: '/aroomv3/news.html',
           params: {
@@ -3139,10 +3143,10 @@
             let newsList = response.body.data
             for (let i = 0, len = self.selectNewsOptions.length; i < len; i++) {
               let item = self.selectNewsOptions[i]
-              if (item.code === code || item.code.split('s')[0] === code) {
+              if (item.value === code || item.value === code.split('s')[0]) {
                 for (let j = 0, jen = item.children.length; j < jen; j++) {
                   let jtem = item.children[j]
-                  if (jtem.code === code) {
+                  if (jtem.value === code) {
                     let arrFolder = []
                     for (let z = 0, zen = newsList.length; z < zen; z++) {
                       let zitem = newsList[z]
@@ -3320,10 +3324,10 @@
                 if (item.available === '1') {
                   switch (item.navtype) {
                     case '0':
-                      navHtml += '<a >' + item.nickname + '</a>'
+                      navHtml += '<a href="/' + item.code + '.html">' + item.nickname + '</a>'
                       break
                     case '1':
-                      navHtml += '<a ><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
+                      navHtml += '<a href="/navcm/' + item.code.split('')[1] + '.html"><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
                       break
                     case '2':
                       navHtml += '<a target="' + item.target + '" href="' + item.url + '">' + item.nickname + '</a>'
@@ -3691,9 +3695,13 @@
             }
           }
           let module = $('.on_module')
+          if (!cwData.logo) {
+            cwData.logo = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg'
+          }
+          module.attr('auditionId', cwData.cwid) 
           module.find('img').attr('src', cwData.logo)
           module.find('.audiTit').text(cwData.title)
-          module.find('a').attr('dataHref', '/course/' + cwData.cwid + '.html')
+          module.find('a').attr('href', '/course/' + cwData.cwid + '.html')
           self.dialogAudition = false
         }
       },
@@ -3862,7 +3870,7 @@
         self.dialognews = false
         $('.on_module').attr('carouselData', str)
       },
-    // ---------------登录框设置-------------
+    // ------------- 登录框设置 --------------
       handleloginClick: function () {
         let self = this
         let activelogin = self.activelogin
