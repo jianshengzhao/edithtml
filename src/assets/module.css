@@ -915,7 +915,12 @@
 	}
 	
 	.courseclassification #coursenav_ul .nav-first a.first-link {
+    display: block;
 		color: #fff;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 	}
 	
 	.courseclassification .wrap-nav-hot {

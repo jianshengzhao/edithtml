@@ -122,15 +122,15 @@
         <div class="lib_ol basicBox"></div>
         <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol onlineBox"></div>
-        <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol todoBox"></div>
+        <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol todoBox"></div> -->
         <div class="header">尽请期待。。。</div>
       </div>
       <div class="shrink">
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-  <!-- layer -->
+  <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
@@ -150,7 +150,7 @@
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-  <!-- editBox -->
+  <!-- editBox    -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 181px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
@@ -229,7 +229,7 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="前景图设置" name="second">
+       <!--  <el-tab-pane label="前景图设置" name="second">
           <el-row>
             <el-col :span="4" class="tit">背景图</el-col>
             <el-col :span="10">
@@ -324,7 +324,7 @@
               </el-select>
             </el-col>
           </el-row>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
@@ -481,7 +481,7 @@
         <el-button type="primary" @click="dialogButtonEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- 网校模块 -->
+  <!-- 网校模块   -->
     <el-dialog
       title="修改页头 (图片尺寸：1200*140 )"
       :visible.sync="dialogPageHeader"
@@ -499,6 +499,28 @@
       <span slot="footer" class="dialog-footer">        
         <el-button @click="dialogPageHeader = false">取 消</el-button>
         <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+     <el-dialog
+      title="网校介绍设置"
+      :visible.sync="dialogProfile "
+      size="nav" class="diaProfile">
+      <el-row>
+        <el-col :span='4'>网校logo</el-col>
+        <el-col :span='8'>
+          <el-radio class="radio" v-model="logoBtn" label="1">开启</el-radio>
+          <el-radio class="radio" v-model="logoBtn" label="0">关闭</el-radio>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">字数限制</el-col>
+        <el-col :span="7">
+          <el-input-number v-model="textNum" :step="1" size="small"></el-input-number>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogProfile = false">取 消</el-button>
+        <el-button type="primary" @click="dialogProfileEvent">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -1007,7 +1029,7 @@
         <el-button type="primary" @click="handleAddSecNavConfirmEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- todo -->
+  <!-- todo       -->
     <el-dialog
       title="设置免费试听课件"
       :visible.sync="dialogAudition"
@@ -1210,6 +1232,11 @@
         selectNewsOptions: [],
         selectCoruse: [],
         selectCoruseOptions: [],
+      // ------------ 网校简介设置 -------------------
+        roominfo: '',
+        dialogProfile: false,
+        logoBtn: '1',
+        textNum: 200,
       // ------------ 免费试听设置 -------------------
         dialogAudition: false,
         sourceData: [],
@@ -2421,6 +2448,11 @@
                 }
                 self.httpget(getParam)
                 break
+              case 'schoolProfile':
+                self.dialogProfile = true
+                let htmlProfile = '<img id="badge" src=' + self.roominfo.cface + '>' + self.roominfo.summary + '...'
+                self.moduleElement.find('.profile').html(htmlProfile)
+                break
               case 'carousel':
                 self.dialogCarousel = true
                 let carouselData = $('.on_module').attr('carouselData')
@@ -2489,6 +2521,7 @@
                 break
               case 'addcoursetype':
                 self.dialogAddcoursetype = true
+                // todo
                 break
               case 'news':
                 self.getNewsCategorys()
@@ -2562,6 +2595,7 @@
             params: {},
             fun: function (response) {
               let crid = response.body.data.crid
+              self.roominfo = response.body.data
               let getParams = {
                 url: '/room/design/getdesign.html',
                 params: {crid: crid},
@@ -2585,6 +2619,9 @@
                   head.html(headHtml)
                   middle.html(bodyHtml)
                   foot.html(footHtml)
+                  self.tool.getLayerElement(self, head)
+                  self.tool.getLayerElement(self, middle)
+                  self.tool.getLayerElement(self, foot)
                 }
               }
               self.httppost(getParams)
@@ -3761,7 +3798,7 @@
           })
         }
       },
-      dialogAddcoursetypeEvent: function () { // 分类设置配置数据
+      dialogAddcoursetypeEvent: function () { // 分类设置配置数据 todo
         let self = this
         let heightoneisdefault = self.courseHeightL.heightone
         let heighttwoisdefault = self.courseHeightL.heighttwo
@@ -3796,6 +3833,45 @@
         let str = JSON.stringify(obj)
         self.dialogAddcoursetype = false
         $('.on_module').attr('carouselData', str)
+        let param = {
+          url: '/aroomv3/course/coursesort.html',
+          params: {
+            showbysort: 0
+          },
+          fun: function (res) {
+            let data = res.body.data
+            let html = ''
+            for (let i = 0, len = data.length < lengthnum ? data.length : lengthnum; i < len; i++) {
+              let item = data[i]
+              let secNav1 = ''
+              let secNav = ''
+              if (item.sorts) {
+                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + item.sorts[0].sid + '" title="' + item.sorts[0].sname + '">' + item.sorts[0].sname + '</a>'
+                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
+                  let jtem = item.sorts[j]
+                  secNav += '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
+                }
+              } else {
+                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
+                secNav = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
+              }
+              html += '<li>' +
+                   '<h3 class="nav-first">' +
+                   '<a class="first-link" href="/platform-1-0-0.html?pid=' + item.pid + '" title="' + item.pname + '">' + item.pname + '</a></h3>' +
+                   secNav1 +
+                   '<div class="first_li_three_mune">' +
+                   '<h2 class="nav-second">' +
+                   '<a class="second-link" href="/platform-1-0-0.html?pid=2143" title="' + item.pname + '">' + item.pname + '</a>' +
+                   '</h2>' +
+                   secNav +
+                   '</div>' +
+                   '</li>'
+            }
+            html += '<li class="morey" style="height: 65px;"><div class="fosnte"><a href="/platform.html">更多</a></div></li>'
+            self.moduleElement.find('.second_mune_ul').html(html)
+          }
+        }
+        self.httpget(param)
       },
     // ------------- 新闻资讯设置 ------------
       handlenewsClick: function () {
@@ -3926,7 +4002,7 @@
         self.dialoglogin = false
         $('.on_module').attr('carouselData', str)
       },
-      // -----------第三方登录设置---------
+    // ------------- 第三方登录设置 ----------
       handlethirdloginClick: function () {
       },
       dialogthirdloginEvent: function () {
@@ -3952,7 +4028,7 @@
         self.dialogthirdlogin = false
         $('.on_module').attr('carouselData', str)
       },
-      // --------------名师团队-----------
+    // ------------- 名师团队 ----------------
       searchtealist: function () {
         let self = this
         self.getealist()
@@ -3970,6 +4046,18 @@
         $('.on_module .addtheteateam').append(teamBk)
         $('.on_module .addtea-icon').hide()
         self.dialogaddtea = false
+      },
+    // ------------- 网校介绍 ----------------
+      dialogProfileEvent: function () { // 保存网校设置
+        let self = this
+        let html = '<img id="badge" src=' + self.roominfo.cface + '>' + self.roominfo.summary.substring(0, self.textNum) + '...'
+        self.moduleElement.find('.profile').html(html)
+        if (parseInt(self.logoBtn)) {
+          self.moduleElement.find('img').show()
+        } else {
+          self.moduleElement.find('img').hide()
+        }
+        self.dialogProfile = false
       }
     }
   }
@@ -5245,5 +5333,15 @@
   .el-dialog--dialogaddtea .teater_all .unonlock{
     color: #f3f3f3;
     cursor: inherit;
+  }
+  .diaProfile .el-dialog__body{
+    margin-top: 20px;
+  }
+  .diaProfile .el-col{
+    height: 36px;
+    line-height: 36px;
+  }
+  .diaProfile .el-row{
+    margin-bottom: 15px;
   }
 </style>

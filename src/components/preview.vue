@@ -213,42 +213,49 @@
               courses += ','
             }
           }
-          $.ajax({
-            type: 'post',
-            url: window.host + '/room/design/getselectedourse.html',
-            data: {
-              itemid: courses
-            },
-            dataType: 'json',
-            success: function (data) {
-              let jData = data.data
-              for (let i = 0, len = course.length; i < len; i++) {
-                let item = course.eq(i)
-                let itemid = item.attr('datacoruse')
-                let itemData = jData[itemid]
-                item.find('.speak').text(itemData.speaker)
-                let openState = item.find('.openState')
-                if (itemData.cannotpay) {
-                  openState.attr('class', 'openState openState_canpay1')
-                } else {
-                  if (itemData.isschoolfree) {
-                    if (itemData.haspower) {
-                      openState.attr('class', 'openState openState_free')
-                    } else {
-                      openState.attr('class', 'openState openState_djbmbg1')
-                    }
+          if (course.length > 0) {
+            $.ajax({
+              type: 'post',
+              url: window.host + '/room/design/getselectedourse.html',
+              data: {
+                itemid: courses
+              },
+              dataType: 'json',
+              success: function (data) {
+                let jData = data.data
+                for (let i = 0, len = course.length; i < len; i++) {
+                  let item = course.eq(i)
+                  let itemid = item.attr('datacoruse')
+                  let itemData = jData[itemid]
+                  item.find('.speak').text(itemData.speaker)
+                  let openState = item.find('.openState')
+                  if (itemData.cannotpay) {
+                    openState.attr('class', 'openState openState_canpay1') // 不能报名
                   } else {
-                    if (itemData.haspower) {
-                      openState.attr('class', 'openState openState_jrxx')
+                    item.find('.animateBox').attr('href', '/courseinfo/' + itemid + '.html')
+                    if (itemData.isschoolfree) {
+                      if (itemData.haspower) {
+                        openState.attr('class', 'openState openState_free') // 免费课程
+                        openState.attr('href', '/courseinfo/' + itemid + '.html')
+                      } else {
+                        openState.attr('class', 'openState openState_djbmbg1') // 点击报名
+                        openState.attr('href', '/courseinfo/' + itemid + '.html')
+                      }
                     } else {
-                      openState.attr('class', 'openState openState_djkt')
+                      if (itemData.haspower) {
+                        openState.attr('class', 'openState openState_jrxx') // 进入学习
+                        openState.attr('href', '/myroom/college/study/cwlist/' + itemData.folderid + '.html')
+                      } else {
+                        openState.attr('class', 'openState openState_djkt') // 点击开通
+                        openState.attr('href', '/ibuy.html?itemid=' + itemid)
+                      }
                     }
                   }
+                  console.log(jData[itemid])
                 }
-                console.log(jData[itemid])
               }
-            }
-          })
+            })
+          }
         }
       }
     },

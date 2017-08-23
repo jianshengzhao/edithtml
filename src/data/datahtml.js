@@ -98,16 +98,16 @@ var datahtml = {
         icon: 'imgicon icon-forgotpassword',
         text: '忘记密码'
       },
-      {
-        name: 'sethomepage',
-        icon: 'imgicon icon-sethomepage',
-        text: '设为主页'
-      },
-      {
-        name: 'collection',
-        icon: 'imgicon icon-collection',
-        text: '收藏'
-      },
+      // {
+      //   name: 'sethomepage',
+      //   icon: 'imgicon icon-sethomepage',
+      //   text: '设为主页'
+      // },
+      // {
+      //   name: 'collection',
+      //   icon: 'imgicon icon-collection',
+      //   text: '收藏'
+      // },
       {
         name: 'theteacherteam',
         icon: 'imgicon icon-theteacherteam',
@@ -124,38 +124,7 @@ var datahtml = {
         text: '网校介绍'
       }
     ],
-    todo: [
-      {
-        name: 'WeChat',
-        icon: 'mb icon-wechat',
-        text: '微信公众号'
-      },
-      {
-        name: 'hotLabel',
-        icon: 'icon-widget-icon-label',
-        text: '热门标签'
-      },
-      {
-        name: 'enlist',
-        icon: 'icon-widget-sticker',
-        text: '最新报名'
-      },
-      {
-        name: 'dynamics',
-        icon: 'icon-widget-sticker',
-        text: '学员动态'
-      },
-      {
-        name: 'dynamics',
-        icon: 'icon-widget-sticker',
-        text: '学员评价'
-      },
-      {
-        name: 'dynamics',
-        icon: 'icon-widget-sticker',
-        text: '网校应用'
-      }
-    ],
+    todo: [],
     expect: []
   },
   // 模块配置项
@@ -205,7 +174,7 @@ var datahtml = {
   },
   course: {
     style: 'width:260px; height:220px',
-    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><div class="listBox"><a class="animateBox">课程</a><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><div class="openState openState_djbmbg1"></div></div></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="popularity">6999</div><div class="number">199</div></div>'
+    html: '<div class="course module" datatext="课程"><div class="promptBox">课程设置</div><div class="imgbox"><div class="listBox"><a target="_blank" class="animateBox">课程</a><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><a target="_blank" class="openState openState_djbmbg1"></a></div></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="popularity">6999</div><div class="number">199</div></div>'
   },
   WeChat: {
     style: 'width:305px; height:330px',
@@ -213,7 +182,7 @@ var datahtml = {
   },
   schoolProfile: {
     style: 'width:900px; height:330px',
-    html: '<div class="schoolProfile module" datatext="新闻资讯"><div class="mod-title">新闻资讯</div><div class="profile"><img id="badge" src="http://static.ebanhui.com/ebh/tpl/2012/images/face/2.jpg" >~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复...</div></div>'
+    html: '<div class="schoolProfile module" datatext="网校介绍"><div class="promptBox">网校介绍设置</div><div class="mod-title">网校介绍</div><div class="profile"><img id="badge" src="http://static.ebanhui.com/ebh/tpl/2012/images/face/2.jpg" >网校介绍——+网校介绍——+ 网校介绍——+网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分非 网校介绍——+网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分发分网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍分非 网校介绍——+网校介绍网校介绍网校介绍网校介绍网校介绍网校介绍反反复...</div></div>'
   },
   hotLabel: {
     style: 'width:305px; height:330px',
