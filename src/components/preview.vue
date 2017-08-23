@@ -181,29 +181,57 @@
           }, function (response) {
             console.log(response)
           })
-        },switchPwd : function() {
-         var passwordeye = $('#passwordeye');
-         var showPwd = $("#password");
-         passwordeye.off('click').on('click',function(){
-             if(passwordeye.hasClass('invisible')){
-                 passwordeye.removeClass('invisible').addClass('visible');//密码可见
-                 showPwd.prop('type','text');
-             }else{
-                 passwordeye.removeClass('visible').addClass('invisible');//密码不可见
-                 showPwd.prop('type','password');
-             };
-         });     
-      },
-      userlogin:function(){
-        var signbtn = $('#signbtnsubmit')
-        var onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><input class="signbtn" value="马上进入" name="Submit" type="submit" id="enter"><div class="flosret"><a href="/logout.html">退出</a></div>'
-        var logintype1 =  '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
-        
-        signbtn.on('click',function(){
-          $('.login .denser').empty().append(logintype1)
-        })
-        
-      }
+        },
+        switchPwd: function () {
+          var passwordeye = $('#passwordeye')
+          var showPwd = $('#password')
+          passwordeye.off('click').on('click', function () {
+            if (passwordeye.hasClass('invisible')) {
+              passwordeye.removeClass('invisible').addClass('visible') // 密码可见
+              showPwd.prop('type', 'text')
+            } else {
+              passwordeye.removeClass('visible').addClass('invisible') // 密码不可见
+              showPwd.prop('type', 'password')
+            }
+          })
+        },
+        userlogin: function () {
+          var signbtn = $('#signbtnsubmit')
+          var onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><input class="signbtn" value="马上进入" name="Submit" type="submit" id="enter"><div class="flosret"><a href="/logout.html">退出</a></div>'
+          // var logintype1 = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
+          signbtn.on('click', function () {
+            $('.login .denser').empty().append(onlogin)
+          })
+        },
+        courseList: function () {
+          let course = $('.course')
+          let courses = ''
+          for (let i = 0, len = course.length; i < len; i++) {
+            let item = course.eq(i)
+            courses += item.attr('datacoruse')
+            if (i < len - 1) {
+              courses += ','
+            }
+          }
+          $.ajax({
+            type: 'post',
+            url: window.host + '/room/design/getselectedourse.html',
+            data: {
+              itemid: courses
+            },
+            dataType: 'json',
+            success: function (data) {
+              let jData = data.data
+              console.log(jData)
+              for (let i = 0, len = course.length; i < len; i++) {
+                let item = course.eq(i)
+                let itemid = item.attr('datacoruse')
+                console.log(itemid)
+                console.log(jData[itemid])
+              }
+            }
+          })
+        }
       }
     },
     created: function () { // 增加白名单，各模块所加载的js
@@ -236,6 +264,7 @@
         self.getnews(newscarouseldata)
         self.switchPwd()
         self.userlogin()
+        self.courseList()
       })
     },
     methods: {

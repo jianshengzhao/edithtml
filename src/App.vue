@@ -16,10 +16,10 @@
           <i class="iconfont icon-preview"></i>
           <span>预览</span>
         </div>
-        <div class="tl_li" title="量尺">
+       <!--  <div class="tl_li" title="量尺">
           <i class="iconfont icon-scale"></i>
           <span>量尺</span>
-        </div>
+        </div> -->
         <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
           <i class="iconfont icon-gridlines"></i>
           <span>格线</span>
@@ -2564,11 +2564,11 @@
                 url: '/room/design/getdesign.html',
                 params: {crid: crid},
                 fun: function (response) {
-                  let saveParams = response.body.data                  
-                  let headHtml = saveParams.head.replace(/[\\]/g,'')
-                  let bodyHtml = saveParams.body.replace(/[\\]/g,'')
-                  let footHtml = saveParams.foot.replace(/[\\]/g,'')
-                  let settings = JSON.parse(saveParams.settings.replace(/[\\]/g,''))
+                  let saveParams = response.body.data
+                  let headHtml = saveParams.head.replace(/[\\]/g, '')
+                  let bodyHtml = saveParams.body.replace(/[\\]/g, '')
+                  let footHtml = saveParams.foot.replace(/[\\]/g, '')
+                  let settings = JSON.parse(saveParams.settings.replace(/[\\]/g, ''))
                   self.prospectColorVal = settings.pg
                   self.bgColorVal = settings.bg
                   self.inp_width = settings.width
@@ -2705,7 +2705,7 @@
             }
           }
         }
-        // self.httppost(param)
+        self.httppost(param)
       },
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
@@ -3108,7 +3108,7 @@
             let obj = []
             for (let i = 0, len = navList.length; i < len; i++) {
               let item = navList[i]
-              if (item.code.length < 4 || item.code === 'news' ) {
+              if (item.code.length < 4 || item.code === 'news') {
                 let items = {
                   label: item.name,
                   value: item.code,
@@ -3706,7 +3706,7 @@
           if (!cwData.logo) {
             cwData.logo = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg'
           }
-          module.attr('auditionId', cwData.cwid) 
+          module.attr('auditionId', cwData.cwid)
           module.find('img').attr('src', cwData.logo)
           module.find('.audiTit').text(cwData.title)
           module.find('a').attr('href', '/course/' + cwData.cwid + '.html')
