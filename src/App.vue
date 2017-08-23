@@ -2593,7 +2593,7 @@
       })
     },
     methods: {
-    //  ------------ complete ----------------
+    // ------------- complete ----------------
       settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
