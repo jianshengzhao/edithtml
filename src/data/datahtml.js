@@ -213,7 +213,7 @@ var datahtml = {
   },
   schoolProfile: {
     style: 'width:900px; height:330px',
-    html: '<div class="schoolProfile module" datatext="新闻资讯"><div class="mod-title">新闻资讯</div><div class="profile"><img id="badge" src="http://img.ebanhui.com/aroomv3/2017/07/04/14991557204386_220_220.jpg" >~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复...</div></div>'
+    html: '<div class="schoolProfile module" datatext="新闻资讯"><div class="mod-title">新闻资讯</div><div class="profile"><img id="badge" src="http://static.ebanhui.com/ebh/tpl/2012/images/face/2.jpg" >~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复复分发分反反复复反反复复反反复复反反复复反反复复反反复复反反复复分非 ~！@#￥%……&*（）——+反反复复反反复复反反复复反反复复反反复复反反复复反反复...</div></div>'
   },
   hotLabel: {
     style: 'width:305px; height:330px',
@@ -241,7 +241,7 @@ var datahtml = {
   },
   login: {
     style: 'width: 285px; height: 210px',
-    html: '<div class="login module" datatext="用户登录"><div class="promptBox">登录框设置</div><div class="denser"><input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="立即登录" name="Submit" type="submit"></div></div>'
+    html: '<div class="login module" datatext="用户登录"><div class="promptBox">登录框设置</div><div class="denser"><input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtn" value="立即登录" name="Submit" type="submit"></div></div>'
   },
   thirdlogin: {
     style: 'width: 248px; height: 30px',

@@ -836,7 +836,7 @@ svg.icon {
 
 .icon-radius { background-image: url(../img/radius.png); background-size: 28px; }
 
-.icon-text { background-image: url(../img/text.png); background-size: 28px; }
+.icon-text { background-image: url(../img/text.png); background-size: 24px; }
 
 .icon-editor { background-image: url(../img/editor.png); background-size: 28px; }
 
@@ -864,7 +864,7 @@ svg.icon {
 
 .icon-login { background-image: url(../img/login.png); background-size: 20px; }
 
-.icon-thirdlogin { background-image: url(../img/thirdlogin.png); background-size: 20px; }
+.icon-thirdlogin { background-image: url(../img/thirdlogin.png); background-size: 24px; }
 
 .icon-userregistration { background-image: url(../img/userregistration.png); background-size: 20px; }
 

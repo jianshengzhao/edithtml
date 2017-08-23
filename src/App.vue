@@ -592,7 +592,6 @@
                 <el-radio label="默认"></el-radio>
                 <el-radio label="自定义"></el-radio>
               </el-radio-group>
-              
               <el-input-number v-model="courseHeightL.heighttwonum" size="small" :disabled=" courseHeightL.heighttwo != '自定义' " :controls=false></el-input-number>
             </el-form-item>
             <el-form-item label="主类个数：">
@@ -3899,8 +3898,8 @@
       dialogloginEvent: function () {
         let self = this
         let loginDetailed = self.loginDetailed
-        let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="" name="Submit" type="submit">'
-        let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" value="立即登录" name="Submit" type="submit">'
+        let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtn" value="" name="Submit" type="submit">'
+        let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" id="signbtnsubmit" value="立即登录" name="Submit" type="submit">'
         if (loginDetailed.logintype === 'logintype1') {
           $('.login .denser').empty().append(typeone)
           $('.login .denser').attr('id', loginDetailed.logintype)
