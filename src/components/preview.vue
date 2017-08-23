@@ -242,7 +242,7 @@
       let pp = params.page
       let style = '<style id="previewStyle">' +
                   'body,#preview{background-color:' + pp.bg + '}' +
-                  '.content{width:' + pp.width + 'px;height:' + pp.height + 'px;background-color:' + pp.pg + '}' +
+                  '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + '}' +
                   '.head{height:' + pp.top + ';}' +
                   '.middle{height:' + pp.body + ';}' +
                   '.foot{height:' + pp.foot + ';}' +
