@@ -61,10 +61,12 @@
         </div>
       </div>
       <div class="t_right">
+      <a href="/">
         <div class="tl_li">
           <i class="iconfont icon-exits"></i>
           <span>退出</span>
         </div>
+      </a>
       </div> 
     </div>
   <!-- attribute tool -->
@@ -2537,8 +2539,8 @@
           let pp = params.page
           self.prospectColorVal = pp.pg
           self.bgColorVal = pp.bg
-          self.inp_width = pp.width
-          self.inp_height = pp.height
+          self.inp_width = parseInt(pp.width)
+          self.inp_height = parseInt(pp.height)
           space.css('background', self.bgColorVal)
           canvas.css('background', self.prospectColorVal)
           canvas.css('width', self.inp_width)
@@ -2571,8 +2573,8 @@
                   let settings = JSON.parse(saveParams.settings.replace(/[\\]/g, ''))
                   self.prospectColorVal = settings.pg
                   self.bgColorVal = settings.bg
-                  self.inp_width = settings.width
-                  self.inp_height = settings.height
+                  self.inp_width = parseInt(settings.width)
+                  self.inp_height = parseInt(settings.height)
                   space.css('background', self.bgColorVal)
                   canvas.css('background', self.prospectColorVal)
                   canvas.css('width', self.inp_width)
@@ -3898,8 +3900,8 @@
       dialogloginEvent: function () {
         let self = this
         let loginDetailed = self.loginDetailed
-        let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtn" value="" name="Submit" type="submit">'
-        let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="#" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" id="signbtnsubmit" value="立即登录" name="Submit" type="submit">'
+        let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtnexit" value="" name="Submit" type="submit">'
+        let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" id="signbtnsubmit" value="立即登录" name="Submit" type="submit">'
         if (loginDetailed.logintype === 'logintype1') {
           $('.login .denser').empty().append(typeone)
           $('.login .denser').attr('id', loginDetailed.logintype)

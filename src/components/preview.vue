@@ -197,8 +197,8 @@
         },
         userlogin: function () {
           var signbtn = $('#signbtnsubmit')
-          var onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><input class="signbtn" value="马上进入" name="Submit" type="submit" id="enter"><div class="flosret"><a href="/logout.html">退出</a></div>'
-          // var logintype1 = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
+          var onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="exitbtn fl">退出</a><input class="signbtnexit" value="马上进入" id="enter" name="Submit" type="submit"></div></div>'
+          // var logintype1 =  '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
           signbtn.on('click', function () {
             $('.login .denser').empty().append(onlogin)
           })
@@ -222,11 +222,29 @@
             dataType: 'json',
             success: function (data) {
               let jData = data.data
-              console.log(jData)
               for (let i = 0, len = course.length; i < len; i++) {
                 let item = course.eq(i)
                 let itemid = item.attr('datacoruse')
-                console.log(itemid)
+                let itemData = jData[itemid]
+                item.find('.speak').text(itemData.speaker)
+                let openState = item.find('.openState')
+                if (itemData.cannotpay) {
+                  openState.attr('class', 'openState openState_canpay1')
+                } else {
+                  if (itemData.isschoolfree) {
+                    if (itemData.haspower) {
+                      openState.attr('class', 'openState openState_free')
+                    } else {
+                      openState.attr('class', 'openState openState_djbmbg1')
+                    }
+                  } else {
+                    if (itemData.haspower) {
+                      openState.attr('class', 'openState openState_jrxx')
+                    } else {
+                      openState.attr('class', 'openState openState_djkt')
+                    }
+                  }
+                }
                 console.log(jData[itemid])
               }
             }
