@@ -2,7 +2,7 @@
   <div id="preview">
     <div class="top">
       <div class="t_right">
-        <div class="tl_li" style="margin-left:50px;">
+        <div class="tl_li" style="margin-left:50px;" @click="saveEvent">
           <i class="iconfont icon-save"></i>
           <span>保存</span>
         </div>
@@ -26,6 +26,15 @@
     data: function () {
       return {
         carInter: '',
+        httppost: function (getParam) { // 封装的异步请求数据
+          let self = this
+          self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
+            if (getParam.fun !== undefined) {
+              getParam.fun(response)
+            }
+          }).catch(function (response) {
+          })
+        },
         carouselEvent: function (self, element, id) { // 轮播图
         // ------------渲染轮播结构------------
           let C = element
@@ -300,6 +309,54 @@
           clearInterval(self['carInter' + i])
         }
         self.$router.push('/')
+      },
+      saveEvent: function () { // 页面保存
+        let self = this
+        let obj = window.saveParams
+        let setting = {
+          pg: obj.page.pg,
+          bg: obj.page.bg,
+          width: obj.page.width + 'px',
+          height: obj.page.height + 'px',
+          top: obj.page.top,
+          body: obj.page.body,
+          foot: obj.page.foot
+        }
+        let strSetting = window.JSON.stringify(setting)
+        let headArray = obj.module.top
+        let bodyArray = obj.module.body
+        let footArray = obj.module.foot
+        let audition = $('.audition ')
+        let auditions = ''
+        for (let i = 0, len = audition.length; i < len; i++) {
+          let item = audition.eq(i)
+          auditions += item.attr('auditionid')
+          if (i < len - 1) {
+            auditions += ','
+          }
+        }
+        let param = {
+          url: '/room/design/save.html',
+          params: {
+            head: headArray,
+            foot: footArray,
+            body: bodyArray,
+            settings: strSetting,
+            status: 0,
+            auditions: auditions
+          },
+          fun: function (response) {
+            let code = response.body.code
+            if (code === 0) {
+              self.$notify({
+                title: '成功',
+                message: '保存成功',
+                type: 'success'
+              })
+            }
+          }
+        }
+        self.httppost(param)
       }
     }
   }
