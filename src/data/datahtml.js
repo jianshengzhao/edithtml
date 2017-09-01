@@ -138,7 +138,7 @@ var datahtml = {
   },
   text: {
     style: 'width:200px; height:30px',
-    html: '<div class="text module"  datatext="文字"><div class="promptBox">修改文字</div><a>啦啦啦我是文字模块</a></div>'
+    html: '<div class="text module"  datatext="文字"><div class="promptBox">修改文字</div><a>请输入文字</a></div>'
   },
   editor: {
     style: 'width:400px; height:400px',
@@ -202,7 +202,7 @@ var datahtml = {
   },
   carousel: {
     style: 'width:1200px; height:320px',
-    html: '<div class="carousel module" datatext="轮播图"><div class="promptBox">轮播图设置</div><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+    html: '<div class="carousel module" datatext="轮播图"><div class="promptBox">轮播图设置</div><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
   },
   addcoursetype: {
     style: 'width: 200px; height: 217px',
@@ -218,7 +218,7 @@ var datahtml = {
   },
   userregistration: {
     style: 'width: 52px; height: 20px',
-    html: '<div class="userregistration module" datatext="用户注册"><a href="/forget.html">用户注册</a></div>'
+    html: '<div class="userregistration module" datatext="用户注册"><a>用户注册</a></div>'
   },
   forgotpassword: {
     style: 'width: 52px; height: 20px',
@@ -234,7 +234,7 @@ var datahtml = {
   },
   theteacherteam: {
     style: 'width: 247px; height: 228px',
-    html: '<div class="theteacherteam module" datatext="名师团队"><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
+    html: '<div class="theteacherteam module" datatext="名师团队"><div class="promptBox">名师团队设置</div><div class="addtheteateam"><div class="addtea-icon"></div></div></div>'
   },
   contactway: {
     style: 'width: 340px; height: 122px',

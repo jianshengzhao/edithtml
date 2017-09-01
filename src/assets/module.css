@@ -23,11 +23,24 @@
     cursor: pointer;
     font-size: 12px;
   }
+  .navaBox{
+    float: left;
+    max-width: 920px;
+    overflow: hidden;
+    height: 50px;
+  }
+  .navaBox:hover{
+    height: auto;
+  }
 /* module */
   .module{
     position: absolute;
     /*background-color: #fff;*/
     z-index: 49;
+    
+  }
+  #app .module{
+    overflow: visible;
   }
   .rectangle{    
     width: 200px;
@@ -50,6 +63,9 @@
     text-align: left;
     word-break:break-all;
     word-wrap:break-word;
+  }
+  .text a{
+    font-size: inherit;
   }
   .editor{
     box-sizing: border-box;
@@ -109,6 +125,7 @@
     border: 1px solid #dcdcdc;
     background-color: #fff;
     border-radius: 2px;
+    margin-right: 5px;
   }
   .inp_search{
     width: 100px;
@@ -176,6 +193,7 @@
     overflow: hidden;
     box-sizing: border-box;
     font-size: inherit;
+    word-wrap:break-word;
   }
   #badge{
     float: left;
@@ -235,7 +253,6 @@
 		height: 83px;
 		float: left;
 		padding-top: 15px;
-		background: #fff;
 		display:-moz-box; /* Firefox */
 		display:-webkit-box; /* Safari and Chrome */
 		display:box;
@@ -444,7 +461,6 @@
     height: 83px;
     float: left;
     padding-top: 15px;
-    background: #fff;
     display:-moz-box; /* Firefox */
     display:-webkit-box; /* Safari and Chrome */
     display:box;
@@ -508,7 +524,7 @@
     height: 36px;
     overflow: hidden;
   }
-/*-------------audition---------------*/  
+/*-------------audition---------------*/
   .audition {
     width: 190px;
     height: 120px;
@@ -538,7 +554,6 @@
   .audition:hover .audiTit {
     display: block;
   }
-
 /*-------------enlist-----------------*/
   .enlist, .dynamics{
     width: 305px;
@@ -655,7 +670,7 @@
     cursor: pointer;
   }
   .barbox li.on {
-    background-color:#010f17;
+    background-color:#9E9E9E;
   }
   .transition {
      transition: all 400ms;
@@ -709,6 +724,7 @@
 	.addcoursetype{
 		width:200px;
     height: 50px;
+    z-index: 98;
 	}
 	.courseclassification{
 		width:100%;
@@ -1543,7 +1559,7 @@
 	.courseclassification ul.theme_16 .second_mune_ul div.fosnte a{color:#ffb1cf !important;}
 	.courseclassification ul.theme_16 .second_mune_ul div.fosnte a:hover{color:#ffb1cf !important;}
 	
-  /*用户登录*/
+  	/*用户登录*/
   .login{
   	width: 285px;
   	height: 210px;
@@ -1593,16 +1609,28 @@
 	.login .signbtn {
 		background: #338bff;
 		border: medium none;
-		border-radius: 4px;
+		border-radius: 4px; 
 		cursor: pointer;
 		height: 45px;
 		line-height: 45px;
 		width: 245px;
 		color: #fff;
 		font-size: 16px;
-		margin-top: 25px;
+		margin-top: 21px;
 	}
-	
+	.login .signbtnexit{
+		background: #338bff;
+		border: medium none;
+		border-radius: 4px;
+		cursor: pointer;
+		height: 45px;
+		line-height: 45px;
+		width: 165px;
+		color: #fff;
+		font-size: 16px;
+		font-family: 微软雅黑;
+		margin-top: 0px;
+	}
 	.login .txtarea {
 		height: 40px;
 		line-height: 40px;
@@ -1676,8 +1704,8 @@
       border: 1px solid #cdcdcd;
       float: left;
       height: 100px;
-      margin-top: 35px;
-      margin-bottom: 25px;
+      margin-top: 28px;
+      margin-bottom: 15px;
       width: 100px;
       border-radius: 50px;
   }
@@ -1686,10 +1714,15 @@
     margin-left: 15px;
   }
   .denser .waisrd {
-      margin-top: 40px;
-      font-size: 16px;
-      margin-bottom: 10px;
-  }
+    margin-top: 40px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    max-width: 110px;
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+	}
   .denser .mdistr {
       font-size: 13px;
       line-height: 2;
@@ -1708,22 +1741,35 @@
       font-size: 13px;
       color: #888;
   }
-	
+	.entryandexit .exitbtn{
+		background: #338bff;
+    border: medium none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 45px;
+    line-height: 45px;
+    width: 70px;
+    color: #fff;
+    font-size: 16px;
+    font-family: 微软雅黑;
+    margin-top: 0px;
+	  text-align: center;
+    margin-right: 8px;
+	}
 	/*登录框样式1*/
 	  #logintype1{
     background: #338bff;
-    width: 292px;
     color: #fff;
   }
   #logintype1 .chorejrxtxtarea{
     background: none;
     padding: 0;
-    width: 285px;       
+    width: 245px;       
   }
   #logintype1 .chorejrxtxtpass{
     background: none;
     padding: 0;
-    width: 285px;
+    width: 245px;
     position: relative;
   }
   #logintype1 .chorejrxtxtarea span,#logintype1 .chorejrxtxtpass span{
@@ -1737,44 +1783,44 @@
   #logintype1 .txtarea,#logintype1 .txtpass{
     background: #fff;
     border-radius: 3px;
-      width: 220px;
+      width: 180px;
       height: 34px;
       line-height: 34px;
       border: none;
       padding-left: 5px;
       margin-left: 5px;
   }
-  #logintype1 .signbtn {
-      width: 285px;
+  #logintype1 .signbtnexit {
+      width: 245px;
       background: url(http://static.ebanhui.com/ebh/tpl/2016/images/lijidenglu.png?v=01) center center no-repeat;
+  	   margin-top: 21px;
   }
   #logintype1 .tuichu {
-    width: 120px;
+    width: 71px;
     float: left;
     display: block;
-    height: 64px;
+    height: 45px;
     text-align: center;
     line-height: 55px;
     color: rgb(0, 111, 173);
     font-size: 20px;
     font-family: 微软雅黑;
-    margin: 25px auto 0px;
+    margin: 0px auto 0px;
     background: url(http://static.ebanhui.com/ebh/tpl/2016/images/tuichu.png?v=01) center center no-repeat;
-  }
+	}
   #logintype1 .masjr {
-    width: 183px;
+    width: 170px;
     float: left;
     display: block;
-    height: 64px;
+    height: 45px;
     text-align: center;
     line-height: 55px;
     color: rgb(0, 111, 173);
     font-size: 20px;
     font-family: 微软雅黑;
-    margin: 25px auto 0px -12px;
+    margin: 0px auto 0px 4px;
     background: url(http://static.ebanhui.com/ebh/tpl/2016/images/mashangjinru.png?v=01) center center no-repeat;
-  }
-	
+	}
 	/*第三方登录*/
 	.thirdlogin{
 		width: 248px;
@@ -1798,7 +1844,9 @@
 		width: 14px;
 		height: 16px;
 	}
-	
+	.setInfo{
+    display: none;
+  }
 	.thirdlogin a.md-qq:hover {
 		background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/md-qq2.png) no-repeat;
 	}
@@ -1847,6 +1895,7 @@
 	.sethomepage a:hover,
 	.collection a:hover{
 		text-decoration: none;
+    cursor: pointer;
 	}
 	/*名师团队*/
 	.theteacherteam{
@@ -1892,8 +1941,9 @@
 		
 	}
 	.theteacherteam .addtheteateam  .team_hbj {
-	    height:170px;
+	    height:169px;
 	    width:100%;
+      padding-top:1px;
 	}
 	.theteacherteam .addtheteateam  .team_hbj img {
 		border-radius:100%;

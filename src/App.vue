@@ -124,7 +124,7 @@
         <div class="lib_ol onlineBox"></div>
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
-        <div class="header">尽请期待。。。</div>
+        <div class="header">敬请期待。。。</div>
       </div>
       <div class="shrink">
         <i class="el-icon-arrow-left"></i>
@@ -339,7 +339,7 @@
         <el-input
           type="textarea"
           autosize
-          placeholder="请输入内容"
+          placeholder="请输入文字"
           v-model="textarea">
         </el-input>
       </el-row>
@@ -359,14 +359,14 @@
       <el-row v-if="linkType == 'online'">
         <el-col :span="3" style="text-align: right">链接地址：</el-col>
         <el-col :span="17">
-          <el-input v-model="inpOnline" placeholder="请输入内容"></el-input>
+          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
         </el-col>
       </el-row>
       <el-row v-if="linkType == 'news'">
         <el-col :span="3" style="text-align: right">链接地址：</el-col>
         <el-col :span="17">
           <el-cascader
-            placeholder="请选择咨讯"
+            placeholder="请选择资讯"
             :options="selectNewsOptions"
             v-model="selectNews"
             @change="selectNewsChange"
@@ -431,14 +431,14 @@
       <el-row v-if="linkType == 'online'">
         <el-col :span="3" style="text-align: right">链接地址：</el-col>
         <el-col :span="17">
-          <el-input v-model="inpOnline" placeholder="请输入内容"></el-input>
+          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
         </el-col>
       </el-row>
       <el-row v-if="linkType == 'news'">
         <el-col :span="3" style="text-align: right">链接地址：</el-col>
         <el-col :span="17">
           <el-cascader
-            placeholder="请选择咨讯"
+            placeholder="请选择资讯"
             :options="selectNewsOptions"
             v-model="selectNews"
             @change="selectNewsChange"
@@ -474,7 +474,7 @@
       </el-row>
       <el-row>
         <el-col :span="3">链接</el-col>
-        <el-col :span="18"><el-input v-model="inputBtnHref"></el-input></el-col>
+        <el-col :span="18"><el-input v-model="inputBtnHref" placeholder="请输入链接，如：http://ss.ebh.net"></el-input></el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">        
         <el-button @click="dialogButton = false">取 消</el-button>
@@ -501,7 +501,7 @@
         <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
       </span>
     </el-dialog>
-     <el-dialog
+    <el-dialog
       title="网校介绍设置"
       :visible.sync="dialogProfile "
       size="nav" class="diaProfile">
@@ -623,7 +623,6 @@
                 <el-radio label="默认"></el-radio>
                 <el-radio label="自定义"></el-radio>
               </el-radio-group>
-              
               <el-input-number v-model="courseHeightL.lengthnum" size="small" :disabled=" courseHeightL.length != '自定义' " :controls=false></el-input-number>
             </el-form-item>
           </el-form>
@@ -715,7 +714,7 @@
                 <el-table-column
                   prop="nickname"
                   label="导航名称"
-                  width="160">
+                  width="130">
                 </el-table-column>
                 <el-table-column                
                   label="分类"
@@ -848,6 +847,7 @@
         <el-tab-pane label="选择样式" name="second">
           <div class="Palettebuttonlist">
             <div type="default" class="csslist logincsslist">
+                <i class="el-icon-circle-check"></i>
                 <div class="csslist-div">
                     <div class="csslist-div-top">
                     </div>
@@ -856,6 +856,7 @@
                 <p class="hovershow">默认</p>
             </div>
             <div type="one" class="csslist logincsslist">
+                <i class="el-icon-circle-check"></i>
                 <div class="csslist-div logintype1">
                 </div>
                 <p class="hovershow">样式一</p>
@@ -905,7 +906,6 @@
       <el-row>
         <el-col >
           <div class="teater_all">
-              
           </div>
         </el-col>
       </el-row>
@@ -1069,23 +1069,24 @@
             @current-change="courseListCurrPageEvent">
           </el-pagination>
           <el-input
-            placeholder="去输入课程名"
+            placeholder="请输入课程名称"
             icon="search"
             v-model="inp_courseName"
             @change="searchCourseEvent"
             :on-icon-click="searchCourseEvent">
           </el-input>
-          <div class="courseList"  v-loading="loading">
-            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid)">
+          <div class="courseList conCourse1"  v-loading="loading">
+            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid, index)">
+              <i class="el-icon-circle-check"></i>
               <div class="imgbox">
                 <img :src="item.img" >
               </div>
-              <span>{{item.iname}} ({{item.coursewarenum||item.cwnum}})</span>
+              <span><b>{{item.iname}}</b><b v-if="item.coursewarenum > -1">({{item.coursewarenum}})</b><b v-else>({{item.cwnum}})</b></span>
             </div>
             <div class="nodata" v-if="courseListData.length == 0"></div>
           </div>        
         </el-col>
-        <el-col :span="12" class="courseware"> 
+        <el-col :span="12" class="courseware">
           <el-pagination
             layout="prev, pager, next"
             :total="cwListTotal"
@@ -1095,7 +1096,7 @@
             @current-change="CoursewareListCurrPageEvent">
           </el-pagination>
           <el-input
-            placeholder="去输入课件名"
+            placeholder="请输入课件名称"
             icon="search"
             v-model="inp_CoursewareName"
             @change="searchCoursewareEvent">
@@ -1111,7 +1112,7 @@
           </div>
         </el-col>
       </el-row>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogAudition = false">取 消</el-button>
         <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
       </span>
@@ -1126,7 +1127,6 @@
             <el-radio-button label="self">本校课程</el-radio-button>
             <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
           </el-radio-group>
-
         </el-col>  
       </el-row>
       <el-row>
@@ -1156,7 +1156,7 @@
             @current-change="courseListCurrPageEvent">
           </el-pagination>
           <el-input
-            placeholder="去输入课程名"
+            placeholder="请输入课程名称"
             icon="search"
             v-model="inp_courseName"
             @change="searchCourseEvent"
@@ -1219,7 +1219,7 @@
           label: '外部链接'
         }, {
           value: 'news',
-          label: '咨讯链接'
+          label: '资讯链接'
         }, {
           value: 'coruse',
           label: '课程链接'
@@ -1290,17 +1290,14 @@
         activeName: 'first',
         activeNav: 'first',
         carouselData: [{
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
-          clickurl: 'https://www.baidu.com1'
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
+          clickurl: ''
         }, {
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
-          clickurl: 'https://www.baidu.com2'
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg',
+          clickurl: ''
         }, {
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
-          clickurl: 'https://www.baidu.com3'
-        }, {
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg',
-          clickurl: 'https://www.baidu.com4'
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg',
+          clickurl: ''
         }],
         showTime: 5,
         transitionTime: 0.6,
@@ -1344,6 +1341,7 @@
           return year + '-' + month + '-' + date
         },
         getnews: function (pagesize) {
+          console.log(pagesize)
           let self = this
           self.$http.get(window.host + '/aroomv3/news.html', {
             params: {
@@ -1360,8 +1358,50 @@
             if (datas.length) {
               for (let i = 0; i < datas.length; i++) {
                 let time = self.getTime(datas[i].dateline)
-                let newli = '<div class="news_li"><div class="news_li_left"><img src="' + datas[i].thumb + '"></div><div class="news_li_right"><h3><a href="/dyinformation/' + datas[i].itemid + '.html" target="_blank" title="' + datas[i].subject + '"><span class="news_title">' + datas[i].subject + '</span></a><span class="times">' + time + '</span></h3><p class="news_cont">' + datas[i].note + '</p></div></div>'
+                let newli = '<div class="news_li"><div class="news_li_left"><img src="' + (datas[i].thumb ? datas[i].thumb : 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg') + '"></div><div class="news_li_right"><h3><a href="/dyinformation/' + datas[i].itemid + '.html" target="_blank" title="' + datas[i].subject + '"><span class="news_title">' + datas[i].subject + '</span></a><span class="times">' + time + '</span></h3><p class="news_cont">' + datas[i].note + '</p></div></div>'
                 $('.on_module .newsList').append(newli)
+                let newsDetailed = self.newsDetailed
+                if (!newsDetailed.ontitle) {
+                  $('.news .mod-title').hide()
+                  $('.news .newsList').css('padding-top', '0px')
+                } else {
+                  $('.news .mod-title').show()
+                  $('.news .newsList').css('padding-top', '50px')
+                }
+                if (!newsDetailed.onimg) {
+                  $('.news .news_li .news_li_left').hide()
+                } else {
+                  $('.news .news_li .news_li_left').show()
+                }
+                if (!newsDetailed.ontitle) {
+                  $('.news .mod-title').hide()
+                  $('.news .newsList').css('padding-top', '0px')
+                } else {
+                  $('.news .mod-title').show()
+                  $('.news .newsList').css('padding-top', '50px')
+                }
+                if (!newsDetailed.onimg) {
+                  $('.news .news_li .news_li_left').hide()
+                } else {
+                  $('.news .news_li .news_li_left').show()
+                }
+                if (!newsDetailed.oncont) {
+                  $('.news .news_li .news_cont').hide()
+                } else {
+                  $('.news .news_li .news_cont').show()
+                }
+                if (!newsDetailed.ontime) {
+                  $('.news .news_li .times').hide()
+                } else {
+                  $('.news .news_li .times').show()
+                }
+                if (newsDetailed.onrow === 2) {
+                  $('.news .news_li').css('float', 'left')
+                  $('.news .news_li').css('width', '50%')
+                } else {
+                  $('.news .news_li').css('float', 'none')
+                  $('.news .news_li').css('width', '100%')
+                }
               }
             }
           }, function (response) {
@@ -1583,7 +1623,14 @@
             params: param,
             fun: function (response) {
               let data = response.body.data
-              self.courseListData = data.courselist
+              let celist = data.courselist
+              for (let i = 0, len = celist.length; i < len; i++) {
+                let item = celist[i]
+                if (!item.img) {
+                  celist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
+              self.courseListData = celist
               self.courseListTotal = parseInt(data.coursecount)
               self.loading = false
             }
@@ -2390,10 +2437,31 @@
           switchModuleEvent: function (type, onthis, self) {
             let w
             let getParam
+            let oa
             switch (type) {
               case 'text':
+                self.linkType = 'none'
+                self.inpOnline = ''
+                self.selectNews = []
+                self.selectCoruse = []
                 self.dialogText = true
-                self.textarea = onthis.find('a').text()
+                oa = onthis.find('a')
+                self.textarea = oa.text()
+                self.linkType = oa.attr('linkType') || 'none'
+                switch (self.linkType) {
+                  case 'online':
+                    self.getNewsCategorysData()
+                    self.inpOnline = oa.attr('href')
+                    break
+                  case 'news':
+                    self.getNewsCategorysData()
+                    self.selectNews = oa.attr('selectNews').split(',')
+                    break
+                  case 'coruse':
+                     self.courseSortData()
+                    self.selectCoruse = oa.attr('selectCoruse').split(',')
+                    break
+                }
                 break
               case 'editor':
                 self.dialogEditor = true
@@ -2410,8 +2478,28 @@
                 })
                 break
               case 'picture':
+                self.linkType = 'none'
+                self.inpOnline = ''
+                self.selectNews = []
+                self.selectCoruse = []
                 self.pictureUrl = self.moduleElement.find('img').attr('src')
                 self.dialogPicture = true
+                oa = self.moduleElement.find('.picBox')
+                self.linkType = oa.attr('linkType') || 'none'
+                switch (self.linkType) {
+                  case 'online':
+                    self.getNewsCategorysData()
+                    self.inpOnline = oa.attr('href')
+                    break
+                  case 'news':
+                    self.getNewsCategorysData()
+                    self.selectNews = oa.attr('selectNews').split(',')
+                    break
+                  case 'coruse':
+                     self.courseSortData()
+                    self.selectCoruse = oa.attr('selectCoruse').split(',')
+                    break
+                }
                 break
               case 'button':
                 self.dialogButton = true
@@ -2450,8 +2538,6 @@
                 break
               case 'schoolProfile':
                 self.dialogProfile = true
-                let htmlProfile = '<img id="badge" src=' + self.roominfo.cface + '>' + self.roominfo.summary + '...'
-                self.moduleElement.find('.profile').html(htmlProfile)
                 break
               case 'carousel':
                 self.dialogCarousel = true
@@ -2470,7 +2556,15 @@
                 }
                 break
               case 'audition':
+                $('.courseOn').removeClass('courseOn')
                 self.dialogAudition = true
+                self.radioSource = 'self'
+                self.radioCourseware = ''
+                self.courseListPage = 1
+                self.cwListPage = 1
+                self.cwlistData = []
+                self.radioMainClass = ''
+                self.radioNextClass = ''
                 getParam = {
                   url: '/aroomv3/schsource.html',
                   params: {},
@@ -2494,7 +2588,12 @@
                 self.httpget(getParam)
                 break
               case 'course':
+                $('.courseOn').removeClass('courseOn')
                 self.dialogCoruse = true
+                self.radioSource = 'self'
+                self.courseListPage = 1
+                self.radioMainClass = ''
+                self.radioNextClass = ''
                 getParam = {
                   url: '/aroomv3/schsource.html',
                   params: {},
@@ -2517,11 +2616,10 @@
                 }
                 self.httpget(getParam)
                 break
-              case 'WeChat':
-                break
               case 'addcoursetype':
                 self.dialogAddcoursetype = true
-                // todo
+                let carouseldata = JSON.parse(self.moduleElement.attr('carouseldata'))
+                self.courseHeightL.lengthnum = carouseldata.lengthnum
                 break
               case 'news':
                 self.getNewsCategorys()
@@ -2576,8 +2674,8 @@
           self.inp_height = parseInt(pp.height)
           space.css('background', self.bgColorVal)
           canvas.css('background', self.prospectColorVal)
-          canvas.css('width', self.inp_width)
-          canvas.css('height', self.inp_height)
+          canvas.css('width', pp.width)
+          canvas.css('height', pp.height)
           head.css('height', pp.top)
           foot.css('height', pp.foot)
           canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
@@ -2595,7 +2693,7 @@
             params: {},
             fun: function (response) {
               let crid = response.body.data.crid
-              self.roominfo = response.body.data
+              window.roominfo = response.body.data
               let getParams = {
                 url: '/room/design/getdesign.html',
                 params: {crid: crid},
@@ -2619,6 +2717,7 @@
                   head.html(headHtml)
                   middle.html(bodyHtml)
                   foot.html(footHtml)
+                  self.moduleElement = $('.on_module')
                   self.tool.getLayerElement(self, head)
                   self.tool.getLayerElement(self, middle)
                   self.tool.getLayerElement(self, foot)
@@ -2673,8 +2772,8 @@
           page: {
             pg: self.prospectColorVal,
             bg: self.bgColorVal,
-            width: self.inp_width,
-            height: self.inp_height,
+            width: self.inp_width + 'px',
+            height: self.inp_height + 'px',
             top: $('.c_top').css('height'),
             body: $('.c_body').css('height'),
             foot: $('.c_foot').css('height')
@@ -2718,11 +2817,11 @@
         let auditions = ''
         for (let i = 0, len = audition.length; i < len; i++) {
           let item = audition.eq(i)
-          auditions += item.attr('auditionid')
-          if (i < len - 1) {
-            auditions += ','
+          if (item.attr('auditionid')){
+            auditions += item.attr('auditionid') + ','
           }
         }
+        auditions = auditions.substring(0, auditions.length - 1)
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -2970,24 +3069,41 @@
         let self = this
         let a = self.moduleElement.find('a')
         a.text(self.textarea)
+        a.attr('linkType', self.linkType)
         switch (self.linkType) {
           case 'none':
             a.removeAttr('href')
             break
           case 'online':
-            a.attr('href', self.inpOnline)
+            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+            if (reg.test(self.inpOnline)) {
+              a.attr('href', self.inpOnline)
+            } else {
+              self.$notify({
+                title: '警告',
+                message: '请输入正确完整的跳转链接',
+                type: 'warning'
+              })
+              return
+            }
             break
-          case 'news':
+          case 'news':            
             let itemid = self.selectNews[2]
             a.attr('href', '/dyinformation/' + itemid + '.html')
+            a.attr('selectNews', self.selectNews)
             break
           case 'coruse':
             let folderid = self.selectCoruse[2]
             a.attr('href', '/courseinfo/' + folderid + '.html')
+            a.attr('selectCoruse', self.selectCoruse)
             break
           case 'login':
-            a.attr('loginEvent', 'true')
+            a.removeAttr('href')
+            self.moduleElement.addClass('loginEvent')
             break
+        }
+        if (self.linkType !== 'login') {
+          self.moduleElement.removeClass('loginEvent')
         }
         self.dialogText = false
       },
@@ -3004,7 +3120,7 @@
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
           self.$notify({
             title: '警告',
-            message: '上传的页头只能是jpg、png或gif格式。',
+            message: '上传的图片只能是jpg、png或gif格式。',
             type: 'warning',
             offset: 50,
             duration: 4000
@@ -3020,7 +3136,7 @@
         } else {
           self.$notify({
             title: '警告',
-            message: '上传图片失败',
+            message: res.msg,
             type: 'warning',
             offset: 50,
             duration: 4000
@@ -3060,7 +3176,7 @@
         } else {
           self.$notify({
             title: '警告',
-            message: '上传图片失败',
+            message: res.msg,
             type: 'warning',
             offset: 50,
             duration: 4000
@@ -3091,7 +3207,7 @@
         } else {
           self.$notify({
             title: '警告',
-            message: '上传图片失败',
+            message: res.msg,
             type: 'warning',
             offset: 50,
             duration: 4000
@@ -3102,24 +3218,42 @@
         let self = this
         self.dialogPicture = false
         self.moduleElement.find('img').attr('src', self.pictureUrl)
+        let a = self.moduleElement.find('.picBox')
+        a.attr('linkType', self.linkType)
         switch (self.linkType) {
           case 'none':
             self.moduleElement.find('.picBox').removeAttr('href')
             break
           case 'online':
-            self.moduleElement.find('.picBox').attr('href', self.inpOnline)
+            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+            if (reg.test(self.inpOnline)) {
+              self.moduleElement.find('.picBox').attr('href', self.inpOnline)
+            } else {
+              self.$notify({
+                title: '警告',
+                message: '请输入正确完整的跳转链接',
+                type: 'warning'
+              })
+              return
+            }
             break
           case 'news':
             let itemid = self.selectNews[2]
-            self.moduleElement.find('.picBox').attr('href', '/dyinformation/' + itemid + '.html')
+            a.attr('href', '/dyinformation/' + itemid + '.html')
+            a.attr('selectNews', self.selectNews)
             break
           case 'coruse':
             let folderid = self.selectCoruse[2]
-            self.moduleElement.find('.picBox').attr('href', '/courseinfo/' + folderid + '.html')
+            a.attr('href', '/courseinfo/' + folderid + '.html')
+            a.attr('selectCoruse', self.selectCoruse)
             break
           case 'login':
-            self.moduleElement.find('.picBox').attr('loginEvent', 'true')
+            self.moduleElement.addClass('loginEvent')
+            a.removeAttr('href')
             break
+        }
+        if (self.linkType !== 'login') {
+          self.moduleElement.removeClass('loginEvent')
         }
       },
       linkTypeChangeEvent: function (value) {
@@ -3237,6 +3371,7 @@
           },
           fun: function (response) {
             let courselist = response.body.data.courselist
+            console.log(courselist, 11)
             for (let i = 0, len = self.selectCoruseOptions.length; i < len; i++) {
               let item = self.selectCoruseOptions[i]
               if (item.pid === pid) {
@@ -3249,12 +3384,12 @@
                       if (sid === '' && zitem.sid < 1) {
                         arrFolder.push({
                           label: zitem.foldername,
-                          value: zitem.folderid
+                          value: zitem.itemid
                         })
                       } else if (sid !== '') {
                         arrFolder.push({
                           label: zitem.foldername,
-                          value: zitem.folderid
+                          value: zitem.itemid
                         })
                       }
                     }
@@ -3265,6 +3400,7 @@
                 break
               }
             }
+            console.log(self.selectCoruseOptions)
           }
         }
         self.httpget(param)
@@ -3320,29 +3456,52 @@
     // ------------- 导航设置 ----------------
       dialogButtonEvent: function () { // 按钮设置
         let self = this
-        self.dialogButton = false
-        self.moduleElement.find('a').text(self.inputBtnText)
-        self.moduleElement.find('a').attr('href', self.inputBtnHref)
+        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+        if (reg.test(self.inputBtnText)) {
+          self.dialogButton = false
+          self.moduleElement.find('a').text(self.inputBtnText)
+          self.moduleElement.find('a').attr('href', self.inputBtnHref)
+        } else {
+          self.$notify({
+            title: '警告',
+            message: '请输入正确完整的跳转链接',
+            type: 'warning'
+          })
+        }
       },
       dialogNavigationEvent: function () { // 导航条设置
         let self = this
         let search = self.moduleElement.find('.search_box')
         let login = self.moduleElement.find('.log')
         let register = self.moduleElement.find('.reg')
+        let navaBox = self.moduleElement.find('.navaBox')
+        let loginBox = self.moduleElement.find('.login_box')
+        let widthT = 0
         if (self.searchBtn === '1') {
           search.show()
         } else {
           search.hide()
+          widthT += 142
         }
         if (self.loginBtn === '1') {
           login.show()
         } else {
           login.hide()
+          widthT += 62
         }
         if (self.registerBtn === '1') {
           register.show()
         } else {
           register.hide()
+          widthT += 62
+        }
+        if (widthT >= 266) {
+          navaBox.css('maxWidth','none')
+        } else {
+          navaBox.css('maxWidth', 920 + widthT + 'px')
+        }
+        if (widthT == 62 || widthT == 204){
+          loginBox.css('width','64px')
         }
         self.dialogNavigation = false
         for (let i = 0, len = self.navData.length; i < len; i++) {
@@ -3371,7 +3530,11 @@
                 if (item.available === '1') {
                   switch (item.navtype) {
                     case '0':
-                      navHtml += '<a href="/' + item.code + '.html">' + item.nickname + '</a>'
+                      if (item.code == 'news') {
+                        navHtml += '<a href="/dyinformation.html">' + item.nickname + '</a>'
+                      } else {
+                        navHtml += '<a href="/' + item.code + '.html">' + item.nickname + '</a>'
+                      }
                       break
                     case '1':
                       navHtml += '<a href="/navcm/' + item.code.split('')[1] + '.html"><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
@@ -3558,6 +3721,12 @@
             fun: function (response) {
               let data = response.body.data
               self.pClassData = data.splist
+              for (let i = 0, len = data.itemlist.length; i < len; i++) {
+                let item = data.itemlist[i]
+                if (!item.img) {
+                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
               self.courseListData = data.itemlist
               self.courseListTotal = data.itemlist.length
             }
@@ -3622,6 +3791,12 @@
             fun: function (response) {
               let data = response.body.data
               // self.pClassData = data.splist
+              for (let i = 0, len = data.itemlist.length; i < len; i++) {
+                let item = data.itemlist[i]
+                if (!item.img) {
+                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
               self.courseListData = data.itemlist
               self.courseListTotal = data.itemlist.length
             }
@@ -3653,6 +3828,12 @@
             fun: function (response) {
               let data = response.body.data
               // self.pClassData = data.splist
+              for (let i = 0, len = data.itemlist.length; i < len; i++) {
+                let item = data.itemlist[i]
+                if (!item.img) {
+                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
               self.courseListData = data.itemlist
               self.courseListTotal = data.itemlist.length
             }
@@ -3663,38 +3844,95 @@
       },
       courseListCurrPageEvent: function (value) { // 课程列表分页
         let self = this
-        let param = {
-          q: self.inp_courseName,
-          pagesize: 30,
-          page: value,
-          issimple: 1,
-          pid: self.radioMainClass,
-          sid: self.radioNextClass
+        let param
+        if (self.radioSource === 'self') {
+          param = {
+            q: self.inp_courseName,
+            pagesize: 30,
+            page: value,
+            issimple: 1,
+            pid: self.radioMainClass,
+            sid: self.radioNextClass
+          }
+          self.courselist(param)
+          self.courseListPage = value
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: self.inp_courseName,
+              sourceid: self.radioSource,
+              pid: self.radioMainClass,
+              sid: self.radioNextClass
+            },
+            fun: function (response) {
+              let data = response.body.data
+              for (let i = 0, len = data.itemlist.length; i < len; i++) {
+                let item = data.itemlist[i]
+                if (!item.img) {
+                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
         }
-        self.courselist(param)
       },
       searchCourseEvent: function (value) { // 搜索课程
         let self = this
-        let param = {
-          q: value,
-          pagesize: 30,
-          page: 1,
-          issimple: 1,
-          pid: self.radioMainClass,
-          sid: self.radioNextClass
+        let param
+        if (self.radioSource === 'self') {
+          param = {
+            q: self.inp_courseName,
+            pagesize: 30,
+            page: 1,
+            issimple: 1,
+            pid: self.radioMainClass,
+            sid: self.radioNextClass
+          }
+          self.courseListPage = 1
+          self.courselist(param)
+        } else {
+          param = {
+            url: '/aroomv3/schsource/itemlist.html',
+            params: {
+              q: self.inp_courseName,
+              sourceid: self.radioSource,
+              pid: self.radioMainClass,
+              sid: self.radioNextClass
+            },
+            fun: function (response) {
+              let data = response.body.data
+              for (let i = 0, len = data.itemlist.length; i < len; i++) {
+                let item = data.itemlist[i]
+                if (!item.img) {
+                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
+              self.courseListData = data.itemlist
+              self.courseListTotal = data.itemlist.length
+            }
+          }
+          self.httpget(param)
         }
-        self.courseListPage = 1
-        self.courselist(param)
       },
-      viewCoursewareEvent: function (value) { // 查看课件
+      viewCoursewareEvent: function (value, index) { // 查看课件 todolist:
         let self = this
         let param = {
           folderid: value,
           page: 1,
           pagesize: 30
         }
+        if (self.radioSource !== 'self') {
+          param.sourceid = self.radioSource
+        }
         self.folderid = value
         self.radioCourseware = ''
+        let courselists = $('.conCourse1').find('.courseLi')
+        $('.courseOn').removeClass('courseOn')
+        courselists.eq(index).addClass('courseOn')
         self.cwlist(param)
       },
       CoursewareListCurrPageEvent: function (value) { // 课件列表分页
@@ -3745,6 +3983,10 @@
           if (!cwData.logo) {
             cwData.logo = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg'
           }
+
+          if (cwData.islive == '1') {
+            cwData.logo = 'http://static.ebanhui.com/ebh/tpl/2014/images/livelogo.jpg'
+          }
           module.attr('auditionId', cwData.cwid)
           module.find('img').attr('src', cwData.logo)
           module.find('.audiTit').text(cwData.title)
@@ -3775,7 +4017,7 @@
           self.moduleElement.find('.animateBox').text(self.courseitem.iname)
           self.moduleElement.find('img').attr('src', self.courseitem.img)
           let studynum = parseInt(self.courseitem.studynum) > 10000 ? parseFloat(parseInt(self.courseitem.studynum) / 10000).toFixed(1) + '万' : self.courseitem.studynum
-          self.moduleElement.find('.number').text(studynum)
+          self.moduleElement.find('.number').text(studynum || 0)
           let viewnum = parseInt(self.courseitem.viewnum) > 10000 ? parseFloat(parseInt(self.courseitem.viewnum) / 10000).toFixed(1) + '万' : self.courseitem.viewnum
           self.moduleElement.find('.popularity').text(viewnum)
         }
@@ -3894,7 +4136,7 @@
         let self = this
         let newsDetailed = self.newsDetailed
         let col
-        if (newsDetailed.oncol === '0') {
+        if (newsDetailed.oncol === 0) {
           col = newsDetailed.col
         } else {
           col = newsDetailed.oncol
@@ -3912,47 +4154,6 @@
           oncol: newsDetailed.oncol,
           col: col
         }
-        if (!newsDetailed.ontitle) {
-          $('.news .mod-title').hide()
-          $('.news .newsList').css('padding-top', '0px')
-        } else {
-          $('.news .mod-title').show()
-          $('.news .newsList').css('padding-top', '50px')
-        }
-        if (!newsDetailed.onimg) {
-          $('.news .news_li .news_li_left').hide()
-        } else {
-          $('.news .news_li .news_li_left').show()
-        }
-        if (!newsDetailed.ontitle) {
-          $('.news .mod-title').hide()
-          $('.news .newsList').css('padding-top', '0px')
-        } else {
-          $('.news .mod-title').show()
-          $('.news .newsList').css('padding-top', '50px')
-        }
-        if (!newsDetailed.onimg) {
-          $('.news .news_li .news_li_left').hide()
-        } else {
-          $('.news .news_li .news_li_left').show()
-        }
-        if (!newsDetailed.oncont) {
-          $('.news .news_li .news_cont').hide()
-        } else {
-          $('.news .news_li .news_cont').show()
-        }
-        if (!newsDetailed.ontime) {
-          $('.news .news_li .times').hide()
-        } else {
-          $('.news .news_li .times').show()
-        }
-        if (newsDetailed.onrow === 2) {
-          $('.news .news_li').css('float', 'left')
-          $('.news .news_li').css('width', '50%')
-        } else {
-          $('.news .news_li').css('float', 'none')
-          $('.news .news_li').css('width', '100%')
-        }
         let str = JSON.stringify(obj)
         self.dialognews = false
         $('.on_module').attr('carouselData', str)
@@ -3964,6 +4165,8 @@
         if (activelogin === 'second') {
           let logincsslist = $('.Palettebuttonlist .logincsslist')
           logincsslist.on('click', function () {
+            $('.logincsslist').removeClass('courseOn')
+            $(this).addClass('courseOn')
             let type = $(this).attr('type')
             if (type === 'one') {
               self.loginDetailed.logintype = 'logintype1'
@@ -3976,6 +4179,9 @@
       dialogloginEvent: function () {
         let self = this
         let loginDetailed = self.loginDetailed
+        let w
+        let h
+        let mod
         let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtnexit" value="" name="Submit" type="submit">'
         let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" id="signbtnsubmit" value="立即登录" name="Submit" type="submit">'
         if (loginDetailed.logintype === 'logintype1') {
@@ -3985,6 +4191,11 @@
           $('.login .denser').empty().append(typedefault)
           $('.login .denser').attr('id', loginDetailed.logintype)
         }
+        mod = self.moduleElement.find('.denser')
+        w = (parseInt(mod.css('width')) + 40) + 'px'
+        h = (parseInt(mod.css('height')) + 20) + 'px'
+        self.moduleElement.css({'width':w,'height':h})
+        
         if (loginDetailed.ontext) {
           $('#username').attr('placeholder', '请输入用户名/手机号/邮箱')
           $('#password').attr('placeholder', '请输入密码')
@@ -3997,6 +4208,7 @@
           $('#passwordeye').hide()
         }
         let obj = {
+          logintype: loginDetailed.logintype
         }
         let str = JSON.stringify(obj)
         self.dialoglogin = false
@@ -4036,21 +4248,23 @@
       dialogaddteaEvent: function () {
         let self = this
         let unlocka = $('.teater_all .onlock')
-        let realname = unlocka.attr('urealname')
-        let tid = unlocka.attr('tid')
-        let face = unlocka.attr('uface')
-        let profile = unlocka.attr('uprofile')
-        let professionaltitle = unlocka.attr('uprofessionaltitle') || '暂无职称'
-        let teamBk = '<div class="team_bk" tid="' + tid + '"><a class="team_mask" href="/master/' + tid + '.html" target="_blank">' + profile + '</a><a href="/master/12166.html" target="_blank"><div class="team_hbj"><img src="' + face + '"><h3 class="team_h3">' + realname + '</h3><p class="team_p1">' + professionaltitle + '</p></div><p class="team_p2">' + profile + '</p></a></div>'
-        $('.on_module .addtheteateam .team_bk').remove()
-        $('.on_module .addtheteateam').append(teamBk)
-        $('.on_module .addtea-icon').hide()
+        if (unlocka.length) {
+          let realname = unlocka.attr('urealname') === 'undefined' || unlocka.attr('urealname') === 'null' ? '未填写姓名' : unlocka.attr('urealname')
+          let tid = unlocka.attr('tid')
+          let face = unlocka.attr('uface')
+          let profile = unlocka.attr('uprofile') === 'undefined' || unlocka.attr('uprofile') === 'null' ? '暂无简介' : unlocka.attr('uprofile')
+          let professionaltitle = unlocka.attr('uprofessionaltitle') === 'undefined' || unlocka.attr('uprofessionaltitle') === 'null' ? '暂无职称' : unlocka.attr('uprofessionaltitle')
+          let teamBk = '<div class="team_bk" tid="' + tid + '"><a class="team_mask" href="/master/' + tid + '.html" target="_blank">' + profile + '</a><a href="/master/12166.html" target="_blank"><div class="team_hbj"><img src="' + face + '"><h3 class="team_h3">' + realname + '</h3><p class="team_p1">' + professionaltitle + '</p></div><p class="team_p2">' + profile + '</p></a></div>'
+          $('.on_module .addtheteateam .team_bk').remove()
+          $('.on_module .addtheteateam').append(teamBk)
+          $('.on_module .addtea-icon').hide()
+        }
         self.dialogaddtea = false
       },
     // ------------- 网校介绍 ----------------
       dialogProfileEvent: function () { // 保存网校设置
         let self = this
-        let html = '<img id="badge" src=' + self.roominfo.cface + '>' + self.roominfo.summary.substring(0, self.textNum) + '...'
+        let html = '<img id="badge" src=' + window.roominfo.cface + '>' + window.roominfo.summary.substring(0, self.textNum) + '...'
         self.moduleElement.find('.profile').html(html)
         if (parseInt(self.logoBtn)) {
           self.moduleElement.find('img').show()
@@ -4545,7 +4759,7 @@
     height: 1800px;
     background-color: #fff;
     background-size:10px 10px;
-    outline:1px solid #d9d9d9;
+    box-shadow: 0 0 0 1px #d9d9d9;
     box-sizing: border-box;
     /*overflow: hidden;*/
     cursor: default;
@@ -4650,14 +4864,18 @@
   #app .module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
   }
+  #app .editBox .on_module:hover{
+    box-shadow: 0 0 0 1px #f55d54;
+  }
   .editBox .on_module{
     border-color: #46a8fb;
-    outline:1px solid #f55d54;
+    box-shadow: 0 0 0 1px #f55d54;
+    /*outline:1px solid #f55d54;*/
     box-sizing: border-box;
     cursor: move;
   }
   .editBox .touch_module {
-    outline: 1px solid #f55d54;
+    box-shadow: 0 0 0 1px #f55d54;
   }
   .resize{
     position: absolute;
@@ -4867,7 +5085,7 @@
   }
   .handleList{
     margin-top: 24px;
-    width: 690px;
+    width: 660px;
     float: right;
   }
   .handleList .el-col{
@@ -5049,12 +5267,13 @@
   }
   .auditiondia .courseLi{
     float: left;
-    width: 150px;
+    width: 146px;
     height: 120px;
     overflow: hidden;
     padding: 0 4px; 
     cursor: pointer;
     position: relative;
+    text-align: center;
   }
   .auditiondia .courseLi i {
     position: absolute;
@@ -5076,12 +5295,25 @@
     height: 100%;
   }
   .auditiondia .courseLi span{
-    display: block;
+    display: inline-block;
     height: 30px;
     line-height: 30px;
     text-align: center;
     font-size: 14px;
     color: #999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  .auditiondia .courseLi span b{ /*todolist*/
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight:500;
+    font-size: 14px;
+    display: inline-block;
   }
   .conCourse  .el-input {    
     float: right;
@@ -5215,6 +5447,17 @@
     float: left;
     margin: 10px;
   }
+  .csslist .el-icon-circle-check{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #13CE66;
+    font-size: 18px;
+    display: none;
+  }
+  .Palettebuttonlist .courseOn .el-icon-circle-check{
+    display: block;
+  }
   .Palettebuttonlist .csslist .hovershow{
     height: 28px;
     display: none;
@@ -5339,7 +5582,7 @@
   }
   .diaProfile .el-col{
     height: 36px;
-    line-height: 36px;
+    line-height: 34px;
   }
   .diaProfile .el-row{
     margin-bottom: 15px;

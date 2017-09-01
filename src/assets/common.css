@@ -67,3 +67,13 @@
   li{
     list-style-type: none;
   }
+  .content{
+    min-height: 1800px;
+    margin-bottom: 100px;
+  }  
+  .wrap_login{
+    float: right;
+  }
+  .hoverbar{
+    display: none;
+  }

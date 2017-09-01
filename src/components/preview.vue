@@ -45,7 +45,7 @@
           if (C.attr('carouseldata')) {
             D = $.parseJSON(C.attr('carouseldata'))
           } else {
-            let ds = '{"changeStyle":false,"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com1"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com2"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com3"},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/enterprise_banner_3.jpg","clickurl":"https://www.baidu.com4"}]}'
+            let ds = '{"changeStyle":false,"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg","clickurl":""}]}'
             D = $.parseJSON(ds)
           }
           let bloo = D.changeStyle
@@ -205,66 +205,21 @@
           })
         },
         userlogin: function () {
-          var signbtn = $('#signbtnsubmit')
-          var onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="exitbtn fl">退出</a><input class="signbtnexit" value="马上进入" id="enter" name="Submit" type="submit"></div></div>'
-          // var logintype1 =  '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
+          let signbtn = $('#signbtnsubmit')
+          let carouseldata = $('.login').attr('carouseldata') || ''
+          let logincarouseldata
+          if (carouseldata) {
+            logincarouseldata = $.parseJSON(carouseldata)
+          }
+          let onlogin = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="exitbtn fl">退出</a><input class="signbtnexit" value="马上进入" id="enter" name="Submit" type="submit"></div></div>'
+          let logintype1 = '<div class="risfgr"><img width="100" height="100" src="http://img.ebanhui.com/avatar/2017/08/04/1501818990_120_120.jpg" style="border-radius:50px;"></div><div class="erseasd"><h2 class="waisrd">超级管理...</h2><p class="mdistr">上次登录时间：</p><p class="mdistr">2017-08-22 17:21</p></div><div style="clear: both;"></div><div class="entryandexit"><a href="/logout.html" class="tuichu fl"></a><a href="/troomv2.html" class="masjr fr"></a></div>'
           signbtn.on('click', function () {
-            $('.login .denser').empty().append(onlogin)
-          })
-        },
-        courseList: function () {
-          let course = $('.course')
-          let courses = ''
-          for (let i = 0, len = course.length; i < len; i++) {
-            let item = course.eq(i)
-            courses += item.attr('datacoruse')
-            if (i < len - 1) {
-              courses += ','
+            if (logincarouseldata.logintype === 'logintype1') {
+              $('.login .denser').empty().append(logintype1)
+            } else {
+              $('.login .denser').empty().append(onlogin)
             }
-          }
-          if (course.length > 0) {
-            $.ajax({
-              type: 'post',
-              url: window.host + '/room/design/getselectedourse.html',
-              data: {
-                itemid: courses
-              },
-              dataType: 'json',
-              success: function (data) {
-                let jData = data.data
-                for (let i = 0, len = course.length; i < len; i++) {
-                  let item = course.eq(i)
-                  let itemid = item.attr('datacoruse')
-                  let itemData = jData[itemid]
-                  item.find('.speak').text(itemData.speaker)
-                  let openState = item.find('.openState')
-                  if (itemData.cannotpay) {
-                    openState.attr('class', 'openState openState_canpay1') // 不能报名
-                  } else {
-                    item.find('.animateBox').attr('href', '/courseinfo/' + itemid + '.html')
-                    if (itemData.isschoolfree) {
-                      if (itemData.haspower) {
-                        openState.attr('class', 'openState openState_free') // 免费课程
-                        openState.attr('href', '/courseinfo/' + itemid + '.html')
-                      } else {
-                        openState.attr('class', 'openState openState_djbmbg1') // 点击报名
-                        openState.attr('href', '/courseinfo/' + itemid + '.html')
-                      }
-                    } else {
-                      if (itemData.haspower) {
-                        openState.attr('class', 'openState openState_jrxx') // 进入学习
-                        openState.attr('href', '/myroom/college/study/cwlist/' + itemData.folderid + '.html')
-                      } else {
-                        openState.attr('class', 'openState openState_djkt') // 点击开通
-                        openState.attr('href', '/ibuy.html?itemid=' + itemid)
-                      }
-                    }
-                  }
-                  console.log(jData[itemid])
-                }
-              }
-            })
-          }
+          })
         }
       }
     },
@@ -294,11 +249,10 @@
         for (let i = 0, len = carousel.length; i < len; i++) {
           self.carouselEvent(self, carousel.eq(i), i)
         }
-        let newscarouseldata = $('.news').attr('carouseldata') || ''
-        self.getnews(newscarouseldata)
+        // let newscarouseldata = $('.news').attr('carouseldata') || ''
+        // self.getnews(newscarouseldata)
         self.switchPwd()
         self.userlogin()
-        self.courseList()
       })
     },
     methods: {
