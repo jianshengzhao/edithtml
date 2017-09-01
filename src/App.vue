@@ -1769,7 +1769,17 @@
                 break
             }
           },
-          getAlignmentElement: function (self) { // 触碰
+          changeMoveEvents:function (warp) { // 计算参考线位置
+            let rowT = $('.row-t')
+            let rowB = $('.row-b')
+            let colL = $('.col-l')
+            let colR = $('.col-r')
+            rowT.css('top', self.inp_y + warp + self.postop - 1)
+            rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
+            colL.css('left', self.inp_x + self.posleft - 1)
+            colR.css('left', self.inp_x + self.posleft + self.inp_w)
+          },
+          getAlignmentElement: function (self, warp) { // 触碰
             let parent = self.moduleElement.parent()
             let arrEle
             let item = {
@@ -1778,6 +1788,8 @@
               y: parseInt(self.moduleElement.css('top')),
               y1: parseInt(self.moduleElement.css('top')) + parseInt(self.moduleElement.css('height'))
             }
+            let w = parseInt(self.moduleElement.css('width'))
+            let h = parseInt(self.moduleElement.css('height'))
             switch (parent.attr('class')) {
               case 'c_top':
                 arrEle = self.elementHead
@@ -1790,9 +1802,51 @@
                 break
             }
             $('.touch_module').removeClass('touch_module')
-            for (let i = 0, len = arrEle.length; i < len; i++) {
+            let mohubloo = true
+            let line = $('.line')
+            line.hide()
+            for (let i = 0, len = arrEle.length; i < len; i++) { // todo:校准
               let ele = arrEle[i]
               if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
+                ele.ele.addClass('touch_module')
+              }
+              if (mohubloo) { // 模糊校准
+                self.tool.changeMoveEvents(warp)
+                if (Math.abs(ele.x - item.x) < 10){
+                  self.moduleElement.css('left', Math.abs(ele.x) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.x - item.x1) < 10){
+                  self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.x1 - item.x) < 10){
+                  self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.x1 - item.x1) < 10){
+                  self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.y - item.y) < 10){
+                  self.moduleElement.css('top', Math.abs(ele.y) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.y - item.y1) < 10){
+                  self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.y1 - item.y) < 10){
+                  self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
+                  mohubloo = false
+                  line.show()
+                } else if (Math.abs(ele.y1 - item.y1) < 10){
+                  self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
+                  mohubloo = false
+                  line.show()
+                }
+              }
+              if(!mohubloo){
                 ele.ele.addClass('touch_module')
               }
             }
@@ -2094,7 +2148,7 @@
                   }
                   self[key[3]] = moveXY
                   module.css(key[1], moveXY)
-                  self.tool.getAlignmentElement(self) // todo:
+                  self.tool.getAlignmentElement(self,warp) // todo:
                   if (new Date() - self.preHandleTime > 1000) {
                     self.preHandleTime = new Date()
                     self.tool.getLayerElement(self, module.parent())
@@ -2117,7 +2171,7 @@
               rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
               colL.css('left', self.inp_x + self.posleft - 1)
               colR.css('left', self.inp_x + self.posleft + self.inp_w)
-              self.tool.getAlignmentElement(self)
+              self.tool.getAlignmentElement(self, warp)
             }
             function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
               editBox.mouseup(function () {
@@ -2913,6 +2967,9 @@
       changeInpSize: function (val) { // font-size 字体大小
         var self = this
         self.moduleElement.css('fontSize', val + 'px')
+        if(self.inp_line < val){
+          self.moduleElement.css('lineHeight', val + 'px')
+        }
       },
       changeInpLine: function (val) { // line-height 行高
         var self = this
@@ -4247,14 +4304,15 @@
       },
       dialogaddteaEvent: function () {
         let self = this
-        let unlocka = $('.teater_all .onlock')
+        let unlocka = $('.teater_all .onlock').eq(0)
         if (unlocka.length) {
           let realname = unlocka.attr('urealname') === 'undefined' || unlocka.attr('urealname') === 'null' ? '未填写姓名' : unlocka.attr('urealname')
           let tid = unlocka.attr('tid')
           let face = unlocka.attr('uface')
-          let profile = unlocka.attr('uprofile') === 'undefined' || unlocka.attr('uprofile') === 'null' ? '暂无简介' : unlocka.attr('uprofile')
+          console.log(unlocka.attr('uprofile'))
+          let profile = unlocka.attr('uprofile') === 'undefined' || unlocka.attr('uprofile') === 'null' || unlocka.attr('uprofile') === '' ? '暂无简介' : unlocka.attr('uprofile')
           let professionaltitle = unlocka.attr('uprofessionaltitle') === 'undefined' || unlocka.attr('uprofessionaltitle') === 'null' ? '暂无职称' : unlocka.attr('uprofessionaltitle')
-          let teamBk = '<div class="team_bk" tid="' + tid + '"><a class="team_mask" href="/master/' + tid + '.html" target="_blank">' + profile + '</a><a href="/master/12166.html" target="_blank"><div class="team_hbj"><img src="' + face + '"><h3 class="team_h3">' + realname + '</h3><p class="team_p1">' + professionaltitle + '</p></div><p class="team_p2">' + profile + '</p></a></div>'
+          let teamBk = '<div class="team_bk" tid="' + tid + '"><a class="team_mask" href="/master/' + tid + '.html" target="_blank">' + profile + '</a><a href="/master/' + tid + '.html" target="_blank"><div class="team_hbj"><img src="' + face + '"><h3 class="team_h3">' + realname + '</h3><p class="team_p1">' + professionaltitle + '</p></div><p class="team_p2">' + profile + '</p></a></div>'
           $('.on_module .addtheteateam .team_bk').remove()
           $('.on_module .addtheteateam').append(teamBk)
           $('.on_module .addtea-icon').hide()
@@ -4798,11 +4856,11 @@
     bottom: -30px;
     width: 100%;
     height:30px; 
-    background-color: rgba(245, 93, 84, 0.2);
+    background-color: rgba(245, 93, 84, 0.9);
     font-size: 14px;
     line-height: 30px;
     text-align: center;
-    color: #777;
+    color: #fff;
     cursor: ns-resize;  
     z-index: 99; 
   }
