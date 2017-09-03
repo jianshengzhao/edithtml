@@ -1194,10 +1194,12 @@
   // import '@/assets/iconfont/iconfont.css'
   import '@/assets/iconfont/maodaofont.css'
   import datahtml from '@/data/datahtml.js'
+  import tool from '@/data/tool.js'
   import Vue from 'vue'
   import Element from 'element-ui'
   import 'element-ui/lib/theme-default/index.css'
   Vue.use(Element)
+  // console.log(tool)
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -1564,6 +1566,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
+        datahtml: datahtml.datahtml,
       // ------------ common -------------------------
         editorConfig: {
           zIndex: 3000,
@@ -1680,60 +1683,6 @@
               colR.css('left', e.pageX + sLeft - self.paddingleft + w)
             })
           },
-          initialize: function (self, ele) { // 选中模块的执行的操作
-            let rowT = $('.row-t')
-            let rowB = $('.row-b')
-            let colL = $('.col-l')
-            let colR = $('.col-r')
-            let resize = '<div class="resize nw"></div>' +
-                         '<div class="resize sw"></div>' +
-                         '<div class="resize ne"></div>' +
-                         '<div class="resize se"></div>' +
-                         '<div class="resize e"></div>' +
-                         '<div class="resize n"></div>' +
-                         '<div class="resize w"></div>' +
-                         '<div class="resize s"></div>'
-            self.moduleElement = ele
-            self.moduleParentElementHeight = parseInt(ele.parent().css('height'))
-            $('.module').removeClass('on_module')
-            $('.resize').remove()
-            ele.addClass('on_module')
-            ele.append(resize)
-            self.inp_z = parseInt(ele.css('zIndex')) || 0
-            self.inp_x = parseInt(ele.css('left'))
-            self.inp_y = parseInt(ele.css('top'))
-            self.inp_w = parseInt(ele.css('width'))
-            self.inp_h = parseInt(ele.css('height'))
-            self.inp_size = parseInt(ele.css('fontSize'))
-            self.inp_line = parseInt(ele.css('lineHeight'))
-            self.color_font = ele.css('color')
-            self.color_bg = ele.css('backgroundColor')
-            rowT.css('top', self.inp_y + self.postop)
-            rowB.css('top', self.inp_y + self.postop + self.inp_h)
-            colL.css('left', self.inp_x + self.posleft)
-            colR.css('left', self.inp_x + self.posleft + self.inp_w)
-            self.disabled = false
-            $('.tl_mod').removeClass('tl_li_Disable')
-          },
-          missSeletedEvents: function (self) { // 初始化
-            $('.line').hide()
-            $('.resize').remove()
-            $('.module').removeClass('on_module')
-            $('.module').parent().unbind('mousemove')
-            $('.module').unbind('mouseup')
-            $('.touch_module').removeClass('touch_module')
-            self.inp_z = ''
-            self.inp_x = ''
-            self.inp_y = ''
-            self.inp_w = ''
-            self.inp_h = ''
-            self.inp_size = ''
-            self.inp_line = ''
-            self.color_font = '#333'
-            self.color_bg = '#fff'
-            self.disabled = true
-            $('.tl_mod').addClass('tl_li_Disable')
-          },
           scrollHeight: function () { // 获得内容高度
             let colL = $('.col-l')
             let colR = $('.col-r')
@@ -1769,17 +1718,7 @@
                 break
             }
           },
-          changeMoveEvents:function (warp) { // 计算参考线位置
-            let rowT = $('.row-t')
-            let rowB = $('.row-b')
-            let colL = $('.col-l')
-            let colR = $('.col-r')
-            rowT.css('top', self.inp_y + warp + self.postop - 1)
-            rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
-            colL.css('left', self.inp_x + self.posleft - 1)
-            colR.css('left', self.inp_x + self.posleft + self.inp_w)
-          },
-          getAlignmentElement: function (self, warp) { // 触碰
+          getAlignmentElement: function (self) { // 触碰
             let parent = self.moduleElement.parent()
             let arrEle
             let item = {
@@ -1804,51 +1743,51 @@
             $('.touch_module').removeClass('touch_module')
             let mohubloo = true
             let line = $('.line')
-            line.hide()
+            // line.hide()
             for (let i = 0, len = arrEle.length; i < len; i++) { // todo:校准
               let ele = arrEle[i]
               if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
                 ele.ele.addClass('touch_module')
               }
-              if (mohubloo) { // 模糊校准
-                self.tool.changeMoveEvents(warp)
-                if (Math.abs(ele.x - item.x) < 10){
-                  self.moduleElement.css('left', Math.abs(ele.x) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.x - item.x1) < 10){
-                  self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.x1 - item.x) < 10){
-                  self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.x1 - item.x1) < 10){
-                  self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.y - item.y) < 10){
-                  self.moduleElement.css('top', Math.abs(ele.y) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.y - item.y1) < 10){
-                  self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.y1 - item.y) < 10){
-                  self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
-                  mohubloo = false
-                  line.show()
-                } else if (Math.abs(ele.y1 - item.y1) < 10){
-                  self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
-                  mohubloo = false
-                  line.show()
-                }
-              }
-              if(!mohubloo){
-                ele.ele.addClass('touch_module')
-              }
+              // if (mohubloo) { // 模糊校准
+              //   self.tool.changeMoveEvents(warp)
+              //   if (Math.abs(ele.x - item.x) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x - item.x1) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x1 - item.x) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x1 - item.x1) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y - item.y) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y - item.y1) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y1 - item.y) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y1 - item.y1) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   }
+              // }
+              // if(!mohubloo){
+              //   ele.ele.addClass('touch_module')
+              // }
             }
           },
           bindLibraryMenu: function (self) { // 左侧菜单栏
@@ -1939,538 +1878,17 @@
             $('.elementHead').on('click', '.ele_li', function (e) {
               let index = $(this).attr('dataIndex')
               let ele = self.elementHead[index].ele
-              self.tool.initialize(self, ele)
+              tool.tool.carrySignEvent(self, ele)
             })
             $('.elementMain').on('click', '.ele_li', function (e) {
               let index = $(this).attr('dataIndex')
               let ele = self.elementMain[index].ele
-              self.tool.initialize(self, ele)
+              tool.tool.carrySignEvent(self, ele)
             })
             $('.elementTail').on('click', '.ele_li', function (e) {
               let index = $(this).attr('dataIndex')
               let ele = self.elementTail[index].ele
-              self.tool.initialize(self, ele)
-            })
-          },
-          bindMouseEvent: function (self) { // top,foot大小调整事件;添加模块到画布的鼠标事件
-            var toolself = this
-            let canvas = $('.canvas')
-            let cTop = $('.c_top')
-            let cBody = $('.c_body')
-            let cFoot = $('.c_foot')
-            let editBox = $('.editBox')
-            let copyBox = $('.copyBox')
-            let copyCon = $('.copyCon')
-            let h // 容器高度
-            let hs // 计算得到的高度
-            let y // 鼠标Y轴
-            let topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop // top选区范围
-            let bodyRangeY = parseInt(cBody.css('height')) + topRangeY // body选区范围
-            let line = $('.line')
-            $('.c_top').on('mousedown', '.hoverbar', function (e) { // top容器调整
-              y = e.pageY
-              h = parseInt(cTop.css('height'))
-              canvas.mousemove(function (e) {
-                hs = h + (e.pageY - y)
-                cTop.css('height', hs)
-                canvas.css('paddingTop', hs)
-                topRangeY = hs + self.paddingtop + self.postop
-                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
-              })
-              canvasMouseup()
-            })
-            $('.c_foot').on('mousedown', '.hoverbar', function (e) { // foot容器调整
-              y = e.pageY
-              h = parseInt(cFoot.css('height'))
-              canvas.mousemove(function (e) {
-                hs = h + (y - e.pageY)
-                cFoot.css('height', hs)
-                canvas.css('paddingBottom', hs)
-                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
-              })
-              canvasMouseup()
-            })
-            $('.lib_li').mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
-              let modType = $(this).attr('dataHtml')
-              let dataCon = datahtml.datahtml[modType]
-              copyBox.attr('style', dataCon.style)
-              copyCon.html(dataCon.html)
-              copyBox.show().css({'top': e.pageY, 'left': self.paddingleft})
-              editBox.unbind('mouseup')
-              editBox.mousemove(function (e) {
-                copyBox.css({'top': e.pageY, 'left': e.pageX})
-              })
-              toolself.linePosition(editBox, copyBox, self, e)
-              editMouseup()
-              return false
-            })
-            function canvasMouseup () { // canvas解绑鼠标移动事件
-              canvas.mouseup(function () {
-                canvas.unbind('mousemove mouseup')
-              })
-            }
-            function editMouseup () { // editBox解除模块拖动事件,并添加模块到canvas上
-              editBox.mouseup(function (e) {
-                editBox.unbind('mousemove mouseup')
-                let box
-                let x
-                let y
-                let sTop = parseInt($('.space').scrollTop())
-                let sLeft = parseInt($('.space').scrollLeft())
-                x = e.pageX - self.paddingleft - self.posleft + sLeft
-                topRangeY = parseInt(cTop.css('height')) + self.paddingtop + self.postop
-                bodyRangeY = parseInt(cBody.css('height')) + topRangeY
-                if (e.pageY + sTop < topRangeY) {
-                  box = cTop
-                  y = e.pageY + sTop - self.paddingtop - self.postop
-                } else if (e.pageY + sTop < bodyRangeY) {
-                  box = cBody
-                  y = e.pageY + sTop - topRangeY
-                } else {
-                  box = cFoot
-                  y = e.pageY + sTop - bodyRangeY
-                }
-                if (self.config.moveLimit) {
-                  if (x < 0) {
-                    x = 0
-                  }
-                  let boxLeft = self.inp_width - parseInt(copyBox.css('width'))
-                  if (x > boxLeft) {
-                    x = boxLeft
-                  }
-                  if (y < 0) {
-                    y = 0
-                  }
-                  let boxTop = parseInt(box.css('height')) - parseInt(copyBox.css('height'))
-                  if (y > boxTop) {
-                    y = boxTop
-                  }
-                }
-                copyBox.hide()
-                line.hide()
-                box.append(copyCon.html())
-                let bChild = box.children('.module')
-                bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
-                self.tool.getLayerElement(self, box)
-              })
-            }
-          },
-          bindClickEvent: function (self) { // 画布内选中模块一系列操作事件
-            let toolself = this
-            let editBox = $('.editBox')
-            let rowT = $('.row-t')
-            let rowB = $('.row-b')
-            let colL = $('.col-l')
-            let colR = $('.col-r')
-            let line = $('.line')
-            editBox.on('click', '.module', function (e) { // 选中模块
-              let ele = $(this)
-              toolself.initialize(self, ele)
-              return false
-            })
-            editBox.on('mousedown', '.on_module', function (e) { // 选中模块移动位置
-              let x
-              let y
-              let xs
-              let ys
-              let warp // 校正参考线
-              let areaB
-              let areaR = self.inp_width
-              let ele = $(this)
-              let sTop = parseInt($('.space').scrollTop())
-              line.show()
-              x = e.pageX
-              y = e.pageY
-              xs = self.inp_x
-              ys = self.inp_y
-              switch (ele.parent().attr('class')) {
-                case 'c_top':
-                  warp = 0
-                  areaB = $('.c_top').css('height')
-                  break
-                case 'c_body':
-                  warp = parseInt($('.c_top').css('height'))
-                  areaB = $('.c_body').css('height')
-                  break
-                case 'c_foot':
-                  warp = parseInt($('.c_top').css('height')) + parseInt($('.c_body').css('height'))
-                  areaB = $('.c_foot').css('height')
-                  break
-              }
-              changeMoveEvents(xs, ys, x, y, sTop, warp)
-              editBox.mousemove(function (e) {
-                let left = xs + e.pageX - x
-                let top = ys + e.pageY - y
-                if (self.config.moveLimit) {
-                  if (left < 0) {
-                    left = 0
-                  }
-                  if (left > (areaR - self.inp_w)) {
-                    left = areaR - self.inp_w
-                  }
-                  if (top < 0) {
-                    top = 0
-                  }
-                  if (top > (parseInt(areaB) - self.inp_h)) {
-                    top = parseInt(areaB) - self.inp_h
-                  }
-                }
-                self.inp_x = left
-                self.inp_y = top
-                ele.css('left', left)
-                ele.css('top', top)
-                changeMoveEvents(xs, ys, x, y, sTop, warp)
-                return false
-              })
-              changeMoveMouseup(ele, ele.parent())
-              return false
-            })
-            $(document).unbind('keydown')
-            $(document).keydown(function (e) { // 键盘方向键微调移动模块事件
-              let module = $('.on_module')
-              let len = module.length
-              let keyObj = {
-                'ArrowUp': [true, 'top', -1, 'inp_y'],
-                'ArrowDown': [true, 'top', 1, 'inp_y'],
-                'ArrowLeft': [true, 'left', -1, 'inp_x'],
-                'ArrowRight': [true, 'left', 1, 'inp_x']
-              }
-              if (len > 0) {
-                let key = keyObj[e.key]
-                if (key) {
-                  let moveXY = parseInt(module.css(key[1])) + key[2]
-                  if (self.config.moveLimit && moveXY < 0) {
-                    moveXY = 0
-                  }
-                  let maxMoveXY = key[1] === 'top' ? parseInt(module.parent().css('height')) - self.inp_h : self.inp_width - self.inp_w
-                  if (self.config.moveLimit && moveXY > maxMoveXY) {
-                    moveXY = maxMoveXY
-                  }
-                  self[key[3]] = moveXY
-                  module.css(key[1], moveXY)
-                  self.tool.getAlignmentElement(self,warp) // todo:
-                  if (new Date() - self.preHandleTime > 1000) {
-                    self.preHandleTime = new Date()
-                    self.tool.getLayerElement(self, module.parent())
-                  }
-                  return false
-                }
-                if (e.key === 'Delete') {
-                  let original = module.parent()
-                  module.remove()
-                  self.tool.getLayerElement(self, original)
-                }
-              }
-            })
-            editBox.click(function (e) { // 失去焦点取消选中
-              // 失去焦点取消选中
-              toolself.missSeletedEvents(self)
-            })
-            function changeMoveEvents (xs, ys, x, y, sTop, warp) { // 计算参考线位置
-              rowT.css('top', self.inp_y + warp + self.postop - 1)
-              rowB.css('top', self.inp_y + warp + self.postop + self.inp_h)
-              colL.css('left', self.inp_x + self.posleft - 1)
-              colR.css('left', self.inp_x + self.posleft + self.inp_w)
-              self.tool.getAlignmentElement(self, warp)
-            }
-            function changeMoveMouseup (ele, parent) { // on_module解绑鼠标移动事件
-              editBox.mouseup(function () {
-                editBox.unbind('mousemove mouseup')
-                line.hide()
-                $('.touch_module').removeClass('touch_module')
-                self.tool.getLayerElement(self, parent)
-                return false
-              })
-            }
-            editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器
-              let $this = $(this)
-              let x = e.pageX
-              let y = e.pageY
-              let xs = self.inp_x
-              let ys = self.inp_y
-              let ws = self.inp_w
-              let hs = self.inp_h
-              let rowT = $('.row-t')
-              let rowB = $('.row-b')
-              let colL = $('.col-l')
-              let colR = $('.col-r')
-              let line = $('.line')
-              let warp // 校正参考线
-              let areaB
-              let areaR = parseInt(self.inp_width)
-              switch ($this.parent().parent().attr('class')) {
-                case 'c_top':
-                  warp = 0
-                  areaB = parseInt($('.c_top').css('height'))
-                  break
-                case 'c_body':
-                  warp = parseInt($('.c_top').css('height'))
-                  areaB = parseInt($('.c_body').css('height'))
-                  break
-                case 'c_foot':
-                  warp = parseInt($('.c_top').css('height')) + parseInt($('.c_body').css('height'))
-                  areaB = parseInt($('.c_foot').css('height'))
-                  break
-              }
-              line.show()
-              rowT.css('top', self.inp_y + self.postop + warp)
-              rowB.css('top', self.inp_y + self.postop + self.inp_h + warp)
-              colL.css('left', self.inp_x + self.posleft)
-              colR.css('left', self.inp_x + self.posleft + self.inp_w)
-              let part
-              switch ($this.attr('class')) {
-                case 'resize e':
-                  part = function (e) {
-                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
-                    self.inp_w = ws + e.pageX - x
-                    if (self.config.stretchLimit) {
-                      if (xx > areaR + self.posleft) {
-                        xx = areaR + self.posleft
-                        self.inp_w = areaR - xs
-                      }
-                    }
-                    if (xx < xs + self.posleft) {
-                      xx = xs + self.posleft
-                      self.inp_w = 0
-                    }
-                    $this.parent().css('width', self.inp_w)
-                    colR.css('left', xx)
-                  }
-                  break
-                case 'resize s':
-                  part = function (e) {
-                    let yy = ys + self.postop + warp + hs + e.pageY - y
-                    self.inp_h = hs + e.pageY - y
-                    if (self.config.stretchLimit) {
-                      if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + self.postop
-                        self.inp_h = areaB - self.inp_y
-                      }
-                    }
-                    if (yy < ys + self.postop + warp) {
-                      yy = ys + self.postop + warp
-                      self.inp_h = 0
-                    }
-                    $this.parent().css('height', self.inp_h)
-                    rowB.css('top', yy)
-                  }
-                  break
-                case 'resize w':
-                  part = function (e) {
-                    let xx = xs - x + e.pageX + self.posleft
-                    self.inp_x = xs - x + e.pageX
-                    self.inp_w = ws + x - e.pageX
-                    if (self.config.stretchLimit) {
-                      if (xx < self.posleft) {
-                        xx = self.posleft
-                        self.inp_w = ws + xs
-                        self.inp_x = 0
-                      }
-                    }
-                    if (xx > (xs + ws + self.posleft)) {
-                      xx = xs + ws + self.posleft
-                      self.inp_w = 0
-                      self.inp_x = xs + ws
-                    }
-                    $this.parent().css({'width': self.inp_w, 'left': self.inp_x})
-                    colL.css('left', xx)
-                  }
-                  break
-                case 'resize n':
-                  part = function (e) {
-                    let yy = ys - y + e.pageY + warp + self.postop
-                    self.inp_y = ys - y + e.pageY
-                    self.inp_h = hs + y - e.pageY
-                    if (self.config.stretchLimit) {
-                      if (yy < self.postop + warp) {
-                        yy = self.postop + warp
-                        self.inp_y = 0
-                        self.inp_h = hs + ys
-                      }
-                    }
-                    if (yy > ys + hs + self.postop + warp) {
-                      yy = ys + hs + self.postop + warp
-                      self.inp_y = ys + hs
-                      self.inp_h = 0
-                    }
-                    $this.parent().css({'height': self.inp_h, 'top': self.inp_y})
-                    rowT.css('top', yy)
-                  }
-                  break
-                case 'resize ne':
-                  part = function (e) {
-                    let yy = ys - y + e.pageY + warp + self.postop
-                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
-                    self.inp_y = ys - y + e.pageY
-                    self.inp_w = ws + e.pageX - x
-                    self.inp_h = hs + y - e.pageY
-                    if (self.config.stretchLimit) {
-                      if (yy < self.postop + warp) {
-                        yy = self.postop + warp
-                        self.inp_y = 0
-                        self.inp_h = hs + ys
-                      }
-                      if (xx > areaR + self.posleft) {
-                        xx = areaR + self.posleft
-                        self.inp_w = areaR - self.inp_x
-                      }
-                    }
-                    if (xx < xs + self.posleft) {
-                      xx = xs + self.posleft
-                      self.inp_w = 0
-                    }
-                    if (yy > ys + hs + self.postop + warp) {
-                      yy = ys + hs + self.postop + warp
-                      self.inp_y = ys + hs
-                      self.inp_h = 0
-                    }
-                    $this.parent().css({'height': self.inp_h, 'width': self.inp_w, 'top': self.inp_y})
-                    rowT.css('top', yy)
-                    colR.css('left', xx)
-                  }
-                  break
-                case 'resize nw':
-                  part = function (e) {
-                    let yy = ys - y + e.pageY + warp + self.postop
-                    let xx = xs - x + e.pageX + self.posleft
-                    self.inp_y = ys - y + e.pageY
-                    self.inp_x = xs - x + e.pageX
-                    self.inp_h = hs + y - e.pageY
-                    self.inp_w = ws + x - e.pageX
-                    if (self.config.stretchLimit) {
-                      if (yy < self.postop + warp) {
-                        yy = self.postop + warp
-                        self.inp_y = 0
-                        self.inp_h = hs + ys
-                      }
-                      if (xx < self.posleft) {
-                        xx = self.posleft
-                        self.inp_w = ws + xs
-                        self.inp_x = 0
-                      }
-                    }
-                    if (yy > ys + hs + self.postop + warp) {
-                      yy = ys + hs + self.postop + warp
-                      self.inp_y = ys + hs
-                      self.inp_h = 0
-                    }
-                    if (xx > (xs + ws + self.posleft)) {
-                      xx = xs + ws + self.posleft
-                      self.inp_w = 0
-                      self.inp_x = xs + ws
-                    }
-                    $this.parent().css({'height': self.inp_h, 'top': self.inp_y, 'width': self.inp_w, 'left': self.inp_x})
-                    rowT.css('top', yy)
-                    colL.css('left', xx)
-                  }
-                  break
-                case 'resize se':
-                  part = function (e) {
-                    let yy = self.inp_y + self.postop + warp + hs + e.pageY - y
-                    let xx = self.inp_x + self.posleft + ws + e.pageX - x
-                    self.inp_w = ws + e.pageX - x
-                    self.inp_h = hs + e.pageY - y
-                    if (self.config.stretchLimit) {
-                      if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + self.postop
-                        self.inp_h = areaB - self.inp_y
-                      }
-                      if (xx > areaR + self.posleft) {
-                        xx = areaR + self.posleft
-                        self.inp_w = areaR - self.inp_x
-                      }
-                    }
-                    if (yy < ys + self.postop + warp) {
-                      yy = ys + self.postop + warp
-                      self.inp_h = 0
-                    }
-                    if (xx < self.inp_x + self.posleft) {
-                      xx = self.inp_x + self.posleft
-                      self.inp_w = 0
-                    }
-                    $this.parent().css({'width': self.inp_w, 'height': self.inp_h})
-                    rowB.css('top', yy)
-                    colR.css('left', xx)
-                  }
-                  break
-                case 'resize sw':
-                  part = function (e) {
-                    let yy = self.inp_y + self.postop + hs + e.pageY - y + warp
-                    let xx = xs - x + e.pageX + self.posleft
-                    self.inp_x = xs - x + e.pageX
-                    self.inp_h = hs + e.pageY - y
-                    self.inp_w = ws + x - e.pageX
-                    if (self.config.stretchLimit) {
-                      if ((self.inp_h + self.inp_y) > areaB) {
-                        yy = areaB + warp + self.postop
-                        self.inp_h = areaB - ys
-                      }
-                      if (xx < self.posleft) {
-                        xx = self.posleft
-                        self.inp_w = ws + xs
-                        self.inp_x = 0
-                      }
-                    }
-                    if (yy < ys + self.postop + warp) {
-                      yy = ys + self.postop + warp
-                      self.inp_h = 0
-                    }
-                    if (xx > (xs + ws + self.posleft)) {
-                      xx = xs + ws + self.posleft
-                      self.inp_w = 0
-                      self.inp_x = xs + ws
-                    }
-                    $this.parent().css({'width': self.inp_w, 'height': self.inp_h, 'left': self.inp_x})
-                    rowB.css('top', yy)
-                    colL.css('left', xx)
-                  }
-                  break
-              }
-              // todo: 拉伸某容器固定显示内容
-              editBox.mousemove(function (e) {
-                part(e)
-                return false
-              })
-              editBox.mouseup(function (e) {
-                editBox.unbind('mousemove mouseup')
-                line.hide()
-              })
-              return false
-            })
-          },
-          bindRightClickEvent: function (self) { // 右键唤出菜单功能
-            let toolself = this
-            let canvas = $('.canvas')
-            let contextmenu = $('.contextmenu')
-            contextmenu.hide()
-            canvas.bind('contextmenu', function () {
-              return false
-            })
-            contextmenu.bind('contextmenu click', function () {
-              return false
-            })
-            canvas.mousedown(function (e) {
-              contextmenu.hide()
-              if (e.which === 3) {
-                let module
-                if ($(e.target).hasClass('module')) {
-                  module = $(e.target)
-                } else {
-                  module = $(e.target).parents('.module')
-                }
-                if (module.length > 0) {
-                  if (!module.hasClass('on_module')) {
-                    toolself.initialize(self, module)
-                    module.addClass('on_module')
-                  }
-                  self.rightButton = true
-                } else {
-                  self.rightButton = false
-                }
-                contextmenu.css({'top': e.pageY, left: e.pageX})
-                contextmenu.show()
-                return false
-              }
+              tool.tool.carrySignEvent(self, ele)
             })
           },
         // --------------- todo: ---------------------
@@ -2709,10 +2127,12 @@
         self.inp_height = parseInt(canvas.css('height'))
         self.tool.bindLibraryMenu(self)
         self.tool.bindLayerElement(self)
-        self.tool.bindMouseEvent(self)
-        self.tool.bindClickEvent(self)
+        // self.tool.bindMouseEvent(self)
+        // self.tool.bindClickEvent(self)
+        console.log(tool)
+        tool.tool.init(self, $)
         self.tool.bindDblclickEvent(self)
-        self.tool.bindRightClickEvent(self)
+        // self.tool.bindRightClickEvent(self)
         self.tool.scrollHeight()
         self.moduleEvent()
         space.scrollLeft(900)
@@ -2780,7 +2200,7 @@
               self.httppost(getParams)
             }
           }
-          self.httpget(getParam)
+          // self.httpget(getParam)
         }
       })
     },
@@ -2815,7 +2235,7 @@
       },
       previewEvent: function () { // 预览
         let self = this
-        self.tool.missSeletedEvents(self)
+        tool.tool.cleanSignEvent(self)
         $('.setInfo').remove()
         self.$router.push('preview')
         let params = {}
@@ -3096,7 +2516,7 @@
               break
           }
           self.original.append(self.clipboard)
-          self.tool.missSeletedEvents(self)
+          tool.tool.cleanSignEvent(self)
           let bChild = self.original.children()
           if (self.config.moveLimit) {
             if (y < 0) {
