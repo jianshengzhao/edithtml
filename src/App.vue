@@ -1332,6 +1332,239 @@
         dialognews: false,
         activenews: 'first',
         navcode: 'news',
+        newsDetailed: {
+          newssource: [],
+          newsvalue: 'news',
+          ontitle: 1,
+          title: '新闻资讯',
+          onimg: 1,
+          oncont: 1,
+          ontime: 1,
+          onrow: 2,
+          oncol: 3,
+          col: 1
+        },
+      // ------------ 登录框设置 ---------------------
+        activelogin: 'first',
+        dialoglogin: false,
+        loginDetailed: {
+          ontext: 1,
+          onpassword: 1,
+          logintype: ''
+        },
+      // ------------ 第三方登录设置 -----------------
+        dialogthirdlogin: false,
+        activethirdlogin: 'first',
+        thirdloginDetailed: {
+          third: ['1', '2', '3']
+        },
+      // ------------ 名师团队 -----------------------
+        dialogaddtea: false,
+        teavalue: '',
+        teainput: '',
+        teauid: '',
+      // ------------ 工具栏+全局设置+右侧元素图层 ---
+        attachmentPgValue: 'scroll',
+        attachmentBgValue: 'scroll',
+        attachmentOptions: [{
+          value: 'scroll',
+          label: '滚动'
+        },
+        {
+          value: 'fixed',
+          label: '固定'
+        }],
+        repeatPgValue: 'no-repeat',
+        repeatBgValue: 'no-repeat',
+        repeatOptions: [{
+          value: 'no-repeat',
+          label: '不平铺'
+        },
+        {
+          value: 'repeat-y',
+          label: 'Y轴平铺'
+        },
+        {
+          value: 'repeat-x',
+          label: 'X轴平铺'
+        },
+        {
+          value: 'repeat',
+          label: '平铺'
+        }],
+        activeSetting: 'first',
+        prospectColorVal: '#fff',
+        bgColorVal: '#F5F5F5',
+        inp_width: 1200,
+        inp_height: 1600,
+        disabled: true,
+        rightButton: false,
+        inp_z: '',
+        inp_x: '',
+        inp_y: '',
+        inp_w: '',
+        inp_h: '',
+        inp_size: '',
+        inp_line: '',
+        color_font: '#333',
+        color_bg: '#fff',
+        moduleElement: '', // 选中的模块全局引用
+        moduleParentElementHeight: '',
+        clipboard: '',
+        original: '',
+        config: {
+          stretchLimit: true, // 是否开启module拉伸限制
+          moveLimit: true // 是否开启module移动限制
+        },
+        paddingtop: 62, // top栏高度
+        paddingleft: 181, // left栏高度
+        postop: 50, // editbox  top值
+        posleft: 1000, // editbox  left值
+        preHandleTime: 0,
+        elementHead: [],
+        elementMain: [],
+        elementTail: [],
+        datahtml: datahtml.datahtml,      
+        editorConfig: {
+          zIndex: 3000,
+          toolbars: [[
+            'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
+          ]]
+        },
+      // ------------ common -------------------------
+        httpget: function (getParam) { // 封装的异步请求数据
+          let self = this
+          self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
+            if (getParam.fun !== undefined) {
+              getParam.fun(response)
+            }
+          }).catch(function (response) {
+          })
+        },
+        httppost: function (getParam) { // 封装的异步请求数据
+          let self = this
+          self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
+            if (getParam.fun !== undefined) {
+              getParam.fun(response)
+            }
+          }).catch(function (response) {
+          })
+        },
+        moduleEvent: function () { // 特殊二级导航设置绑定事件
+          let self = this
+          let editBox = $('.editBox')
+          editBox.on('click', '.setInfo', function (e) {
+            self.dialogSecNavigation = true
+            self.navIndex = $(this).attr('dataIndex')
+            let getParam = {
+              url: '/aroomv3/roominfo/navigator.html',
+              params: {},
+              fun: function (response) {
+                let data = response.body.data
+                let navigatorlist = data.navigatorlist
+                self.navData = navigatorlist
+                self.secNavData = self.navData[self.navIndex].subnav
+                for (let i = 0, len = self.secNavData.length; i < len; i++) {
+                  let item = self.secNavData[i]
+                  if (item.subavailable === '1') {
+                    item.subavailable = true
+                  } else {
+                    item.subavailable = false
+                  }
+                }
+              }
+            }
+            self.httpget(getParam)
+          })
+        },
+        courselist: function (param) { // 课程列表
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/courselist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              let celist = data.courselist
+              for (let i = 0, len = celist.length; i < len; i++) {
+                let item = celist[i]
+                if (!item.img) {
+                  celist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
+                }
+              }
+              self.courseListData = celist
+              self.courseListTotal = parseInt(data.coursecount)
+              self.loading = false
+            }
+          }
+          self.loading = true
+          self.httpget(getParam)
+        },
+        cwlist: function (param) {  // 课件获取
+          let self = this
+          let getParam = {
+            url: '/aroomv3/course/cwlist.html',
+            params: param,
+            fun: function (response) {
+              let data = response.body.data
+              self.cwlistData = data.cwlist
+              self.cwListTotal = parseInt(data.cwcount)
+              self.loadingcw = false
+            }
+          }
+          self.loadingcw = true
+          self.httpget(getParam)
+        },
+      // ------------- 刘壮 -----------------
+        getealist: function () { // 名师团队获取
+          let self = this
+          self.$http.get(window.host + '/aroomv3/teacher/lists.html', {
+            params: {
+              q: self.teainput,
+              pagenum: 1,
+              pagesize: 1000
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            let list = response.data.data.list
+            let tids = []
+            $('.addtheteateam .team_bk').each(function () {
+              tids.push($(this).attr('tid'))
+            })
+            $('.teater_all').empty()
+            if (list.length) {
+              for (var i = 0; i < list.length; i++) {
+                let face = list[i].face
+                if (face === '') {
+                  if (list[i].sex === '0') {
+                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
+                  } else {
+                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
+                  }
+                }
+                let teas = '<a href="javascript:;" class="lisnres" tid="' + list[i].teacherid + '" urealname="' + list[i].realname + '" uname="' + list[i].username + '" uface="' + face + '" uprofile="' + list[i].profile + '" uprofessionaltitle="' + list[i].professionaltitle + '">' + list[i].realname + '(' + list[i].username + ')<span class="selectico"></span></a>'
+                $('.teater_all').append(teas)
+              }
+            }
+            self.$nextTick(function () {
+              for (var i = 0; i < tids.length; i++) {
+                $(".teater_all a[tid='" + tids[i] + "']").addClass('unonlock')
+              }
+              let teamBktid = $('.on_module .team_bk').attr('tid') || ''
+              if (teamBktid !== '') {
+                $(".teater_all a[tid='" + teamBktid + "']").removeClass('unonlock').addClass('onlock')
+              }
+              $('.teater_all a').on('click', function () {
+                if ($(this).hasClass('unonlock')) {
+                  return false
+                } else {
+                  $('.teater_all a').removeClass('onlock')
+                  $(this).addClass('onlock')
+                }
+              })
+            })
+          }, function (response) {
+            console.log(response)
+          })
+        },
         getTime: function (value) {   // 换日期格式不包括时分
           let d = new Date(parseInt(value) * 1000)
           let year = d.getFullYear()
@@ -1423,238 +1656,6 @@
           }, function (response) {
             console.log(response)
           })
-        },
-        newsDetailed: {
-          newssource: [],
-          newsvalue: 'news',
-          ontitle: 1,
-          title: '新闻资讯',
-          onimg: 1,
-          oncont: 1,
-          ontime: 1,
-          onrow: 2,
-          oncol: 3,
-          col: 1
-        },
-      // ------------ 登录框设置 ---------------------
-        activelogin: 'first',
-        dialoglogin: false,
-        loginDetailed: {
-          ontext: 1,
-          onpassword: 1,
-          logintype: ''
-        },
-      // ------------ 第三方登录设置 -----------------
-        dialogthirdlogin: false,
-        activethirdlogin: 'first',
-        thirdloginDetailed: {
-          third: ['1', '2', '3']
-        },
-      // ------------ 名师团队 -----------------------
-        dialogaddtea: false,
-        teavalue: '',
-        teainput: '',
-        teauid: '',
-        getealist: function () {
-          let self = this
-          self.$http.get(window.host + '/aroomv3/teacher/lists.html', {
-            params: {
-              q: self.teainput,
-              pagenum: 1,
-              pagesize: 1000
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.list
-            let tids = []
-            $('.addtheteateam .team_bk').each(function () {
-              tids.push($(this).attr('tid'))
-            })
-            $('.teater_all').empty()
-            if (list.length) {
-              for (var i = 0; i < list.length; i++) {
-                let face = list[i].face
-                if (face === '') {
-                  if (list[i].sex === '0') {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
-                  } else {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
-                  }
-                }
-                let teas = '<a href="javascript:;" class="lisnres" tid="' + list[i].teacherid + '" urealname="' + list[i].realname + '" uname="' + list[i].username + '" uface="' + face + '" uprofile="' + list[i].profile + '" uprofessionaltitle="' + list[i].professionaltitle + '">' + list[i].realname + '(' + list[i].username + ')<span class="selectico"></span></a>'
-                $('.teater_all').append(teas)
-              }
-            }
-            self.$nextTick(function () {
-              for (var i = 0; i < tids.length; i++) {
-                $(".teater_all a[tid='" + tids[i] + "']").addClass('unonlock')
-              }
-              let teamBktid = $('.on_module .team_bk').attr('tid') || ''
-              if (teamBktid !== '') {
-                $(".teater_all a[tid='" + teamBktid + "']").removeClass('unonlock').addClass('onlock')
-              }
-              $('.teater_all a').on('click', function () {
-                if ($(this).hasClass('unonlock')) {
-                  return false
-                } else {
-                  $('.teater_all a').removeClass('onlock')
-                  $(this).addClass('onlock')
-                }
-              })
-            })
-          }, function (response) {
-            console.log(response)
-          })
-        },
-      // ------------ 工具栏+全局设置+右侧元素图层 ---
-        attachmentPgValue: 'scroll',
-        attachmentBgValue: 'scroll',
-        attachmentOptions: [{
-          value: 'scroll',
-          label: '滚动'
-        },
-        {
-          value: 'fixed',
-          label: '固定'
-        }],
-        repeatPgValue: 'no-repeat',
-        repeatBgValue: 'no-repeat',
-        repeatOptions: [{
-          value: 'no-repeat',
-          label: '不平铺'
-        },
-        {
-          value: 'repeat-y',
-          label: 'Y轴平铺'
-        },
-        {
-          value: 'repeat-x',
-          label: 'X轴平铺'
-        },
-        {
-          value: 'repeat',
-          label: '平铺'
-        }],
-        activeSetting: 'first',
-        prospectColorVal: '#fff',
-        bgColorVal: '#F5F5F5',
-        inp_width: 1200,
-        inp_height: 1600,
-        disabled: true,
-        rightButton: false,
-        inp_z: '',
-        inp_x: '',
-        inp_y: '',
-        inp_w: '',
-        inp_h: '',
-        inp_size: '',
-        inp_line: '',
-        color_font: '#333',
-        color_bg: '#fff',
-        moduleElement: '', // 选中的模块全局引用
-        moduleParentElementHeight: '',
-        clipboard: '',
-        original: '',
-        config: {
-          stretchLimit: true, // 是否开启module拉伸限制
-          moveLimit: true // 是否开启module移动限制
-        },
-        paddingtop: 62, // top栏高度
-        paddingleft: 181, // left栏高度
-        postop: 50, // editbox  top值
-        posleft: 1000, // editbox  left值
-        preHandleTime: 0,
-        elementHead: [],
-        elementMain: [],
-        elementTail: [],
-        datahtml: datahtml.datahtml,
-      // ------------ common -------------------------
-        editorConfig: {
-          zIndex: 3000,
-          toolbars: [[
-            'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
-          ]]
-        },
-        httpget: function (getParam) { // 封装的异步请求数据
-          let self = this
-          self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
-            if (getParam.fun !== undefined) {
-              getParam.fun(response)
-            }
-          }).catch(function (response) {
-          })
-        },
-        httppost: function (getParam) { // 封装的异步请求数据
-          let self = this
-          self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
-            if (getParam.fun !== undefined) {
-              getParam.fun(response)
-            }
-          }).catch(function (response) {
-          })
-        },
-        moduleEvent: function () { // 特殊二级导航设置绑定事件
-          let self = this
-          let editBox = $('.editBox')
-          editBox.on('click', '.setInfo', function (e) {
-            self.dialogSecNavigation = true
-            self.navIndex = $(this).attr('dataIndex')
-            let getParam = {
-              url: '/aroomv3/roominfo/navigator.html',
-              params: {},
-              fun: function (response) {
-                let data = response.body.data
-                let navigatorlist = data.navigatorlist
-                self.navData = navigatorlist
-                self.secNavData = self.navData[self.navIndex].subnav
-                for (let i = 0, len = self.secNavData.length; i < len; i++) {
-                  let item = self.secNavData[i]
-                  if (item.subavailable === '1') {
-                    item.subavailable = true
-                  } else {
-                    item.subavailable = false
-                  }
-                }
-              }
-            }
-            self.httpget(getParam)
-          })
-        },
-        courselist: function (param) { // 课程列表
-          let self = this
-          let getParam = {
-            url: '/aroomv3/course/courselist.html',
-            params: param,
-            fun: function (response) {
-              let data = response.body.data
-              let celist = data.courselist
-              for (let i = 0, len = celist.length; i < len; i++) {
-                let item = celist[i]
-                if (!item.img) {
-                  celist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = celist
-              self.courseListTotal = parseInt(data.coursecount)
-              self.loading = false
-            }
-          }
-          self.loading = true
-          self.httpget(getParam)
-        },
-        cwlist: function (param) {
-          let self = this
-          let getParam = {
-            url: '/aroomv3/course/cwlist.html',
-            params: param,
-            fun: function (response) {
-              let data = response.body.data
-              self.cwlistData = data.cwlist
-              self.cwListTotal = parseInt(data.cwcount)
-              self.loadingcw = false
-            }
-          }
-          self.loadingcw = true
-          self.httpget(getParam)
         },
       // ---------------------------------------------
         tool: { /* 工具箱事件 */
