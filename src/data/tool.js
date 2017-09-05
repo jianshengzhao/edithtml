@@ -379,10 +379,10 @@ var tool = {
         'ArrowLeft': [true, 'left', -1, 'inp_x'],
         'ArrowRight': [true, 'left', 1, 'inp_x']
       }
-      e.preventDefault()
       if (len > 0) {
         let key = keyObj[e.key]
         if (key) {
+          e.preventDefault()
           let moveXY = parseInt(module.css(key[1])) + key[2]
           if (self.config.moveLimit && moveXY < 0) {
             moveXY = 0
