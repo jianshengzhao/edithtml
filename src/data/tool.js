@@ -17,13 +17,52 @@ var tool = {
     me.canvas = me.$('.canvas')
     me.contextmenu = me.$('.contextmenu')
     me.contextmenu.hide()
-    me.libLi = me.$('.lib_li')
+    me.library = me.$('.library')
+    me.lHeader = me.library.find('.header')
+    me.lShrink = me.library.find('.shrink')
     me.editBox = me.$('.editBox')
     me.copyBox = me.$('.copyBox')
     me.copyCon = me.$('.copyCon')
     me.topRangeY = parseInt(me.top.css('height')) + self.paddingtop + self.postop // top选区范围
     me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY // body选区范围
+    me.layer = me.$('.layer')
+    me.rShrink = me.layer.find('.shrink')
+    me.rHeader = me.layer.find('.header')
+    me.elementHead = me.$('.elementHead')
+    me.elementMain = me.$('.elementMain')
+    me.elementTail = me.$('.elementTail')
+    me.basicBox = me.$('.basicBox')
+    me.onlineBox = me.$('.onlineBox')
+    me.todoBox = me.$('.todoBox')
+    me.carryMenuEvent(self)
+    me.carryLineHeightEvent()
+    me.libLi = me.$('.lib_li')
     me.bindEvent(self)
+  },
+  carryLineHeightEvent: function () { // 计算竖向参考线高度
+    let me = this
+    let scrollHeight = me.space[0].scrollHeight
+    me.colL.css('height', scrollHeight)
+    me.colR.css('height', scrollHeight)
+  },
+  carryOutsideLineEvent: function (self, e) { // 画布之外的参考线
+    let me = this
+    let sTop = parseInt(me.space.scrollTop()) // 当前滚动条高度
+    let sLeft = parseInt(me.space.scrollLeft())
+    let w = parseInt(me.copyBox.css('width'))
+    let h = parseInt(me.copyBox.css('height'))
+    me.rowT.css('top', e.pageY + sTop - self.paddingtop)
+    me.rowB.css('top', e.pageY + sTop - self.paddingtop + h)
+    me.colL.css('left', 0 + sLeft)
+    me.colR.css('left', w + sLeft)
+    me.line.show()
+    me.editBox.mousemove(function (e) {
+      sTop = parseInt(me.space.scrollTop())
+      me.rowT.css('top', e.pageY + sTop - self.paddingtop)
+      me.rowB.css('top', e.pageY + sTop - self.paddingtop + h)
+      me.colL.css('left', e.pageX + sLeft - self.paddingleft)
+      me.colR.css('left', e.pageX + sLeft - self.paddingleft + w)
+    })
   },
   carryLineEvent: function (self, show) { // 计算参考线函数
     let me = this
@@ -88,9 +127,59 @@ var tool = {
     self.disabled = true
     me.mod.addClass('tl_li_Disable')
   },
+  carryMenuEvent: function (self) { // 渲染模块菜单
+    let me = this
+    let group = self.datahtml.toallGroup
+    let bhtm = ''
+    let ohtm = ''
+    let thtm = ''
+    for (let i = 0, len = group.basic.length; i < len; i++) {
+      let item = group.basic[i]
+      bhtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    for (let i = 0, len = group.online.length; i < len; i++) {
+      let item = group.online[i]
+      ohtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    for (let i = 0, len = group.todo.length; i < len; i++) {
+      let item = group.todo[i]
+      thtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    me.basicBox.html(bhtm)
+    me.onlineBox.html(ohtm)
+    me.todoBox.html(thtm)
+  },
+  carryLayerEvent: function (self, parent) { // 更新元素图层
+    let ele = parent.find('.module')
+    let arr = []
+    for (let i = 0, len = ele.length; i < len; i++) {
+      let item = ele.eq(i)
+      let text = item.attr('datatext')
+      let obj = {
+        x: parseInt(item.css('left')),
+        y: parseInt(item.css('top')),
+        x1: parseInt(item.css('left')) + parseInt(item.css('width')),
+        y1: parseInt(item.css('top')) + parseInt(item.css('height')),
+        ele: item,
+        text: text
+      }
+      arr.push(obj)
+    }
+    switch (parent.attr('class')) {
+      case 'c_top':
+        self.elementHead = arr
+        break
+      case 'c_body':
+        self.elementMain = arr
+        break
+      case 'c_foot':
+        self.elementTail = arr
+        break
+    }
+  },
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
-
+  // ------------- 操作模块事件 ----------------
     me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件
       let $this = me.$(this)
       let parent = $this.parent()
@@ -358,7 +447,7 @@ var tool = {
         me.editBox.unbind('mousemove mouseup')
         me.line.hide()
         me.$('.touch_module').removeClass('touch_module')
-        self.tool.getLayerElement(self, $this.parent())
+        me.carryLayerEvent(self, $this.parent())
         return false
       })
     })
@@ -367,7 +456,7 @@ var tool = {
 
       me.cleanSignEvent(self)      
     })
-
+  // ------------- 键盘按下事件 ----------------
     me.doc.unbind('keydown')
     me.doc.keydown(function (e) { // 键盘方向键微调移动模块事件
       if (!self.moduleElement) return false
@@ -396,18 +485,18 @@ var tool = {
           self.tool.getAlignmentElement(self) // todo:
           if (new Date() - self.preHandleTime > 1000) {
             self.preHandleTime = new Date()
-            self.tool.getLayerElement(self, module.parent())
+            me.carryLayerEvent(self, module.parent())
           }
           return false
         }
         if (e.key === 'Delete') {
           let original = module.parent()
           module.remove()
-          self.tool.getLayerElement(self, original)
+          me.carryLayerEvent(self, original)
         }
       }             
     })
-
+  // ------------- 右键菜单栏 ------------------
     me.canvas.bind('contextmenu', function () { // 清除canvas原有的contextmenu事件
 
       return false
@@ -439,7 +528,7 @@ var tool = {
         return false
       }
     })
-
+  // ------------- 页头页尾调整 ----------------
     me.top.on('mousedown', '.hoverbar', function (e) { // top容器调整
       let y = e.pageY
       let h = parseInt(me.top.css('height'))
@@ -468,7 +557,7 @@ var tool = {
         me.canvas.unbind('mousemove mouseup')
       })
     })
-
+  // ------------- 左边模块库 ------------------
     me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
@@ -479,7 +568,7 @@ var tool = {
       me.editBox.mousemove(function (e) {
         me.copyBox.css({'top': e.pageY, 'left': e.pageX})
       })
-      self.tool.linePosition(me.editBox, me.copyBox, self, e)
+      me.carryOutsideLineEvent(self, e)
       me.editBox.mouseup(function (e) {
         me.editBox.unbind('mousemove mouseup')
         let box
@@ -521,9 +610,87 @@ var tool = {
         box.append(me.copyCon.html())
         let bChild = box.children('.module')
         bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
-        self.tool.getLayerElement(self, box)
+        me.carryLayerEvent(self, box)
       })
       return false
+    })
+    me.lHeader.on('click', function () {
+      let $next = me.$(this).next()
+      let len = $next.children().length
+      let num = parseInt(len / 2) + len % 2
+      let h = 66 * num
+      if ($next.css('height') === '0px') {
+        $next.css('height', h + 'px')
+      } else {
+        $next.css('height', h + 'px')
+        setTimeout(function () {
+          $next.css('height', '0px')
+        }, 0)
+      }
+    })
+    me.lShrink.on('click', function () {
+      if (me.lShrink.hasClass('shrinkout')) {
+        me.lShrink.removeClass('shrinkout')
+        me.library.removeClass('basic')
+        me.editBox.css('paddingLeft', '')
+        self.paddingleft = 181
+      } else {
+        me.lShrink.addClass('shrinkout')
+        me.library.addClass('basic')
+        me.editBox.css('paddingLeft', '62px')
+        self.paddingleft = 62
+      }
+    })
+  // ------------- 右侧图层栏 ------------------
+    me.rHeader.on('click', function () { // 收缩header栏
+      let $next = me.$(this).next()
+      let len = $next.children().length
+      let h = 25 * len
+      if ($next.css('height') === '1px') {
+        $next.css('height', h + 'px')
+      } else {
+        $next.css('height', h + 'px')
+        setTimeout(function () {
+          $next.css('height', '0px')
+        }, 0)
+      }
+    })
+    me.rShrink.on('click', function () { // 隐藏右边栏
+      if (me.rShrink.hasClass('shrinkout')) {
+        me.rShrink.removeClass('shrinkout')
+        me.layer.addClass('layerHide')
+        me.editBox.css('paddingRight', '')
+      } else {
+        me.rShrink.addClass('shrinkout')
+        me.layer.removeClass('layerHide')
+        me.editBox.css('paddingRight', '181px')
+      }
+    })
+    me.elementHead.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementHead[index].ele
+      me.carrySignEvent(self, ele)
+    })
+    me.elementMain.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementMain[index].ele
+      me.carrySignEvent(self, ele)
+    })
+    me.elementTail.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementTail[index].ele
+      me.carrySignEvent(self, ele)
+    })
+  // ------------- 模块双击设置 ----------------
+    me.editBox.on('dblclick', '.on_module', function (e) { // 模块双击操作
+      let onthis = self.moduleElement
+      let type = onthis.attr('class').split(' ')[0]
+      self.tool.switchModuleEvent(type, onthis, self)
+    })
+    me.editBox.on('click', '.promptBox', function (e) { // 设置按钮事件
+      let onthis = me.$(this).parent()
+      let type = onthis.attr('class').split(' ')[0]
+      self.tool.switchModuleEvent(type, onthis, self)
     })
   }
 }
