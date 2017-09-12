@@ -10,12 +10,12 @@ var datahtml = {
         name: 'radius',
         icon: 'imgicon icon-radius',
         text: '圆角'
-      },
-      {
-        name: 'text',
-        icon: 'imgicon icon-text',
-        text: '文字'
-      },
+       },
+      // {
+      //   name: 'text',
+      //   icon: 'imgicon icon-text',
+      //   text: '文字'
+      // },
       {
         name: 'editor',
         icon: 'imgicon icon-editor',
@@ -43,61 +43,61 @@ var datahtml = {
       }
     ],
     online: [
-      {
-        name: 'pageHeader',
-        icon: 'imgicon icon-pageHeader',
-        text: '页头'
-      },
-      {
-        name: 'navigation',
-        icon: 'imgicon icon-navigation',
-        text: '导航栏'
-      },
-      {
-        name: 'carousel',
-        icon: 'imgicon icon-carousel',
-        text: '轮播图'
-      },
-      {
-        name: 'addcoursetype',
-        icon: 'imgicon icon-addcoursetype',
-        text: '课程分类'
-      },
-      {
-        name: 'audition',
-        icon: 'imgicon icon-audition',
-        text: '免费试听'
-      },
-      {
-        name: 'news',
-        icon: 'imgicon icon-news',
-        text: '新闻资讯'
-      },
-      {
-        name: 'course',
-        icon: 'imgicon icon-course',
-        text: '课程'
-      },
-      {
-        name: 'login',
-        icon: 'imgicon icon-login',
-        text: '用户登录'
-      },
-      {
-        name: 'thirdlogin',
-        icon: 'imgicon icon-thirdlogin',
-        text: '第三方登录'
-      },
-      {
-        name: 'userregistration',
-        icon: 'imgicon icon-userregistration',
-        text: '用户注册'
-      },
-      {
-        name: 'forgotpassword',
-        icon: 'imgicon icon-forgotpassword',
-        text: '忘记密码'
-      },
+      // {
+      //   name: 'pageHeader',
+      //   icon: 'imgicon icon-pageHeader',
+      //   text: '页头'
+      // },
+      // {
+      //   name: 'navigation',
+      //   icon: 'imgicon icon-navigation',
+      //   text: '导航栏'
+      // },
+      // {
+      //   name: 'carousel',
+      //   icon: 'imgicon icon-carousel',
+      //   text: '轮播图'
+      // },
+      // {
+      //   name: 'addcoursetype',
+      //   icon: 'imgicon icon-addcoursetype',
+      //   text: '课程分类'
+      // },
+      // {
+      //   name: 'audition',
+      //   icon: 'imgicon icon-audition',
+      //   text: '免费试听'
+      // },
+      // {
+      //   name: 'news',
+      //   icon: 'imgicon icon-news',
+      //   text: '新闻资讯'
+      // },
+      // {
+      //   name: 'course',
+      //   icon: 'imgicon icon-course',
+      //   text: '课程'
+      // },
+      // {
+      //   name: 'login',
+      //   icon: 'imgicon icon-login',
+      //   text: '用户登录'
+      // },
+      // {
+      //   name: 'thirdlogin',
+      //   icon: 'imgicon icon-thirdlogin',
+      //   text: '第三方登录'
+      // },
+      // {
+      //   name: 'userregistration',
+      //   icon: 'imgicon icon-userregistration',
+      //   text: '用户注册'
+      // },
+      // {
+      //   name: 'forgotpassword',
+      //   icon: 'imgicon icon-forgotpassword',
+      //   text: '忘记密码'
+      // },
       // {
       //   name: 'sethomepage',
       //   icon: 'imgicon icon-sethomepage',
@@ -108,21 +108,21 @@ var datahtml = {
       //   icon: 'imgicon icon-collection',
       //   text: '收藏'
       // },
-      {
-        name: 'theteacherteam',
-        icon: 'imgicon icon-theteacherteam',
-        text: '名师团队'
-      },
-      {
-        name: 'contactway',
-        icon: 'imgicon icon-contactway',
-        text: '联系方式'
-      },
-      {
-        name: 'schoolProfile',
-        icon: 'imgicon icon-schoolProfile',
-        text: '网校介绍'
-      }
+      // {
+      //   name: 'theteacherteam',
+      //   icon: 'imgicon icon-theteacherteam',
+      //   text: '名师团队'
+      // },
+      // {
+      //   name: 'contactway',
+      //   icon: 'imgicon icon-contactway',
+      //   text: '联系方式'
+      // },
+      // {
+      //   name: 'schoolProfile',
+      //   icon: 'imgicon icon-schoolProfile',
+      //   text: '网校介绍'
+      // }
     ],
     todo: [],
     expect: []

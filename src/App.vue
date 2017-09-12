@@ -112,11 +112,11 @@
     </div>
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
-      <nav class="lib_nav">
+      <!-- <nav class="lib_nav">
         <ol>
           <li class="on"><i class="iconfont icon-cube"></i><span>组件</span></li>
         </ol>
-      </nav>
+      </nav> -->
       <div class="lib_box">
         <div class="header">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
@@ -125,10 +125,10 @@
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
         <div class="header">敬请期待。。。</div>
-      </div>
-      <div class="shrink">
-        <i class="el-icon-arrow-left"></i>
-      </div>
+      </div>      
+    </div>
+    <div class="shrink libshrink">
+      <i class="el-icon-arrow-left"></i>
     </div>
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
@@ -151,7 +151,7 @@
       </div>
     </div>
   <!-- editBox    -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 181px;">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -1189,17 +1189,9 @@
     }
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
   }
-  import $ from 'jquery'
-  import '@/assets/iconfont/demo.css'
-  // import '@/assets/iconfont/iconfont.css'
-  import '@/assets/iconfont/maodaofont.css'
+  import $ from 'jquery'  
   import datahtml from '@/data/datahtml.js'
-  import tool from '@/data/tool.js'
-  import Vue from 'vue'
-  import Element from 'element-ui'
-  import 'element-ui/lib/theme-default/index.css'
-  Vue.use(Element)
-  // console.log(tool)
+  import tool from '@/data/tool.js' 
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -1417,7 +1409,7 @@
           moveLimit: true // 是否开启module移动限制
         },
         paddingtop: 62, // top栏高度
-        paddingleft: 181, // left栏高度
+        paddingleft: 133, // left栏高度
         postop: 50, // editbox  top值
         posleft: 1000, // editbox  left值
         preHandleTime: 0,
@@ -3781,7 +3773,7 @@
     left: 0;
     top: 0;
     padding-top:62px;
-    width: 181px;
+    width: 133px;
     height:100%;   
     border-right: 1px solid #d9d9d9;
     background-color: #fff;
@@ -3834,7 +3826,7 @@
     width: 100%;
     height: 100%;
     color: #7d8695;
-    padding-left: 48px;
+    /*padding-left: 48px;*/
     overflow: hidden;
     overflow-y:auto;
     box-sizing: border-box;
@@ -3847,6 +3839,7 @@
     height: 30px;
     line-height: 30px;    
     cursor: pointer;
+    text-indent:10px;
   }
   .header i{
     float: right;
@@ -3885,10 +3878,10 @@
   .dataHtml{
     display: none;
   }
-  .library .shrink{
+  .libshrink{
     position: absolute;
-    top:50%;
-    right: -24px;
+    top: 50%;
+    left: 133px;
     width: 22px;
     height: 24px;
     background-color: #fff;
@@ -3899,18 +3892,23 @@
     color: #f55d54;
     text-indent: 1px;
     line-height: 24px;
-    cursor: pointer;   
-  }
-  .library .shrink i {
+    cursor: pointer;
+    z-index: 4;
     transition: all 400ms;
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 
     -o-transition: all 400ms;
   }
-  .library .shrinkout {
+  .libshrink i {
+    transition: all 400ms;
+    -moz-transition: all 400ms; 
+    -webkit-transition: all 400ms; 
+    -o-transition: all 400ms;
+  }
+  .shrinkout {
     text-indent: 4px;
   }
-  .library .shrinkout i{
+  .shrinkout i{
     transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -3918,7 +3916,7 @@
     -o-transform: rotate(180deg); 
   }  
   .basic {
-    width: 62px;
+    width: 5px;
   }
   .basic .lib_nav {
     display: none;
@@ -3932,13 +3930,6 @@
     display: none;
     opacity: 0;
   }
-  .basic .lib_ol:nth-child(2){
-    display: block;
-    width: 62px;
-    height: auto!important;
-    border: 0;
-    opacity: 1;
-  }
 /*layer*/
   .layer{
     position:absolute;
@@ -3950,7 +3941,7 @@
     border-left: 1px solid #d9d9d9;
     background-color: #fff;
     box-sizing: border-box;
-    z-index: 2;
+    z-index: 3;
     transition: all 400ms;
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 
@@ -4025,10 +4016,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 62px 0px 0 181px;
+    padding-top: 62px;
+    margin-left: 133px;
+    margin-right: 181px;
     box-sizing:border-box;    
     background-color: #f5f5f5;
-    z-index: 1;
+    z-index: 2;
     transition: all 400ms;
     -moz-transition: all 400ms; 
     -webkit-transition: all 400ms; 

@@ -19,7 +19,7 @@ var tool = {
     me.contextmenu.hide()
     me.library = me.$('.library')
     me.lHeader = me.library.find('.header')
-    me.lShrink = me.library.find('.shrink')
+    me.lShrink = me.$('.libshrink')
     me.editBox = me.$('.editBox')
     me.copyBox = me.$('.copyBox')
     me.copyCon = me.$('.copyCon')
@@ -559,16 +559,20 @@ var tool = {
     })
   // ------------- 左边模块库 ------------------
     me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
+
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
       me.copyBox.attr('style', dataCon.style)
       me.copyCon.html(dataCon.html)
-      me.copyBox.show().css({'top': e.pageY, 'left': self.paddingleft})
+      me.copyBox.show().css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       me.editBox.unbind('mouseup')
-      me.editBox.mousemove(function (e) {
-        me.copyBox.css({'top': e.pageY, 'left': e.pageX})
+      me.libLi.mousemove(function (e) {
+        me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       })
-      me.carryOutsideLineEvent(self, e)
+      me.editBox.mousemove(function (e) {
+        me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
+      })
+      // me.carryOutsideLineEvent(self, e)
       me.editBox.mouseup(function (e) {
         me.editBox.unbind('mousemove mouseup')
         let box
@@ -614,6 +618,11 @@ var tool = {
       })
       return false
     })
+    me.libLi.mouseup(function (e) { // 解绑移动事件
+      me.editBox.unbind('mousemove mouseup')
+      me.libLi.unbind('mousemove')
+      me.copyBox.hide()
+    })
     me.lHeader.on('click', function () {
       let $next = me.$(this).next()
       let len = $next.children().length
@@ -632,13 +641,15 @@ var tool = {
       if (me.lShrink.hasClass('shrinkout')) {
         me.lShrink.removeClass('shrinkout')
         me.library.removeClass('basic')
-        me.editBox.css('paddingLeft', '')
-        self.paddingleft = 181
+        me.editBox.css('marginLeft', '')
+        self.paddingleft = 133
+        me.lShrink.css('left','133px')
       } else {
         me.lShrink.addClass('shrinkout')
         me.library.addClass('basic')
-        me.editBox.css('paddingLeft', '62px')
-        self.paddingleft = 62
+        me.editBox.css('marginLeft', '5px')
+        me.lShrink.css('left','5px')
+        self.paddingleft = 5
       }
     })
   // ------------- 右侧图层栏 ------------------

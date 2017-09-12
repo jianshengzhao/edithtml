@@ -19,7 +19,6 @@ new Vue({
   el: '#parent',
   router,
   template: '<parent/>',
-
   // components: { App }
   components: { parent }
 })
