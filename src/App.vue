@@ -151,7 +151,7 @@
       </div>
     </div>
   <!-- editBox    -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right:314px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -205,49 +205,111 @@
       <el-tabs v-model="activeSetting" type="card" >
         <el-tab-pane label="页面设置" name="first">
           <el-row>
-            <el-col :span="4" class="tit">前景色</el-col>
-            <el-col :span="7">
-              <el-color-picker v-model="prospectColorVal" ></el-color-picker>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">背景色</el-col>
+            <el-col :span="5" class="tit">背景色</el-col>
             <el-col :span="7">
               <el-color-picker v-model="bgColorVal"></el-color-picker>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="4" class="tit">页宽</el-col>
+            <el-col :span="5" class="tit">前景色</el-col>
+            <el-col :span="7">
+              <el-color-picker v-model="prospectColorVal" ></el-color-picker>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="5" class="tit">文字链接hover</el-col>
+            <el-col :span="7">
+              <el-color-picker v-model="fontHoverColorVal" ></el-color-picker>
+            </el-col>
+          </el-row>         
+          <el-row>
+            <el-col :span="5" class="tit">页宽</el-col>
             <el-col :span="7">
               <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="4" class="tit">页高</el-col>          
+            <el-col :span="5" class="tit">页高</el-col>          
             <el-col :span="7">          
               <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
             </el-col>
           </el-row>
-        </el-tab-pane>
-       <!--  <el-tab-pane label="前景图设置" name="second">
+        </el-tab-pane>        
+        <el-tab-pane label="背景图设置" name="second">
           <el-row>
             <el-col :span="4" class="tit">背景图</el-col>
-            <el-col :span="10">
+            <el-col :span="7">
               <el-upload
                 class="upload-demo"
                 name="upfile"
-                :show-file-list="false"
                 action="/uploadv2/image.html"
-                :on-preview="handleBackImgSuccess"
+                :show-file-list="false"
+                :on-success="handleBackdropSuccess"
                 :before-upload="beforePictureUpload">
-                <el-button size="small" type="primary">点击上传</el-button>
+                <img v-if="bgImageUrl" :src="bgImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+            </el-col>
+            <el-col :span="6">
+              <el-button size="small" @click="cleanBgEvent">清除背景图</el-button>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="4" class="tit">背景图尺寸</el-col>
+            <el-col :span="4" class="tit">显示（%）</el-col>
             <el-col :span="10">
-              <el-input-number v-model="inp_width" :step="2" size="small"></el-input-number> %
+              <el-input-number v-model="inp_percent" :step="2" size="small" :min="0" :max="100"></el-input-number>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">平铺模式</el-col>
+            <el-col :span="10">
+              <el-select v-model="repeatBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in repeatOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">固定背景</el-col>
+            <el-col :span="10">
+              <el-select v-model="attachmentBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in attachmentOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="前景图设置" name="third">
+          <el-row>
+            <el-col :span="4" class="tit">前景图</el-col>
+            <el-col :span="7">
+              <el-upload
+                class="upload-demo"
+                name="upfile"
+                action="/uploadv2/image.html"
+                :show-file-list="false"
+                :on-success="handlePredropSuccess"
+                :before-upload="beforePictureUpload">
+                <img v-if="pgImageUrl" :src="pgImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-col>
+            <el-col :span="6">
+              <el-button size="small" @click="cleanPgEvent">清除前景图</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">显示（%）</el-col>
+            <el-col :span="10">
+              <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
             </el-col>
           </el-row>
           <el-row>
@@ -277,54 +339,6 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="背景图设置" name="third">
-          <el-row>
-            <el-col :span="4" class="tit">背景图</el-col>
-            <el-col :span="10">
-              <el-upload
-                class="upload-demo"
-                name="upfile"
-                :show-file-list="false"
-                action="/uploadv2/image.html"
-                :on-preview="handleBackImgSuccess"
-                :before-upload="beforePictureUpload">
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">背景图尺寸</el-col>
-            <el-col :span="10">
-              <el-input-number v-model="inp_width" :step="2" size="small"></el-input-number>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">平铺模式</el-col>
-            <el-col :span="10">
-              <el-select v-model="repeatBgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in repeatOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">固定背景</el-col>
-            <el-col :span="10">
-              <el-select v-model="attachmentBgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in attachmentOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-        </el-tab-pane> -->
       </el-tabs>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
@@ -463,66 +477,7 @@
         <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="按钮"
-      :visible.sync="dialogButton"
-      size="tiny" 
-      class="dialogbutton">
-      <el-row>
-        <el-col :span="3">文字</el-col>
-        <el-col :span="18"><el-input v-model="inputBtnText"></el-input></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="3">链接</el-col>
-        <el-col :span="18"><el-input v-model="inputBtnHref" placeholder="请输入链接，如：http://ss.ebh.net"></el-input></el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogButton = false">取 消</el-button>
-        <el-button type="primary" @click="dialogButtonEvent">确 定</el-button>
-      </span>
-    </el-dialog>
   <!-- 网校模块   -->
-    <el-dialog
-      title="修改页头 (图片尺寸：1200*140 )"
-      :visible.sync="dialogPageHeader"
-      size="small" class="diaheader">
-      <el-upload
-        class="pageHeader-uploader"
-        name="upfile"
-        action="/uploadv2/image.html"
-        :show-file-list="false"
-        :on-success="handlePageHeaderSuccess"
-        :before-upload="beforePictureUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="pageHeaderImg">
-        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
-      </el-upload>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogPageHeader = false">取 消</el-button>
-        <el-button type="primary" @click="dialogPageHeaderEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="网校介绍设置"
-      :visible.sync="dialogProfile "
-      size="nav" class="diaProfile">
-      <el-row>
-        <el-col :span='4'>网校logo</el-col>
-        <el-col :span='8'>
-          <el-radio class="radio" v-model="logoBtn" label="1">开启</el-radio>
-          <el-radio class="radio" v-model="logoBtn" label="0">关闭</el-radio>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="tit">字数限制</el-col>
-        <el-col :span="7">
-          <el-input-number v-model="textNum" :step="1" size="small"></el-input-number>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogProfile = false">取 消</el-button>
-        <el-button type="primary" @click="dialogProfileEvent">确 定</el-button>
-      </span>
-    </el-dialog>
     <el-dialog
       :title="carouselTit"
       :visible.sync="dialogCarousel"
@@ -597,588 +552,6 @@
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="分类设置"
-      :visible.sync="dialogAddcoursetype"
-      size="dialogAddcoursetype" >
-      <el-tabs v-model="courseactiveName"  @tab-click="handlecourseClick">
-        <el-tab-pane label="基础设置" name="first">
-          <el-form ref="courseHeightL" :model="courseHeightL" label-width="100px">
-            <el-form-item label="主选框高度：">
-              <el-radio-group v-model="courseHeightL.heightone">
-                <el-radio label="默认"></el-radio>
-                <el-radio label="自定义"></el-radio>
-              </el-radio-group>
-              <el-input-number v-model="courseHeightL.heightonenum" size="small" :disabled=" courseHeightL.heightone != '自定义' " :controls=false></el-input-number>
-            </el-form-item>
-            <el-form-item label="主类框高度：">
-              <el-radio-group v-model="courseHeightL.heighttwo">
-                <el-radio label="默认"></el-radio>
-                <el-radio label="自定义"></el-radio>
-              </el-radio-group>
-              <el-input-number v-model="courseHeightL.heighttwonum" size="small" :disabled=" courseHeightL.heighttwo != '自定义' " :controls=false></el-input-number>
-            </el-form-item>
-            <el-form-item label="主类个数：">
-              <el-radio-group v-model="courseHeightL.length">
-                <el-radio label="默认"></el-radio>
-                <el-radio label="自定义"></el-radio>
-              </el-radio-group>
-              <el-input-number v-model="courseHeightL.lengthnum" size="small" :disabled=" courseHeightL.length != '自定义' " :controls=false></el-input-number>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="样式" name="second">
-         <el-form ref="courseHeightL" :model="courseHeightL" label-width="60px">
-            <el-form-item label="颜色：">
-              <div class="togglePaletteOnly">
-                <div class="Paletter Paletter1"><div color="theme_1" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter2"><div color="theme_2" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter3"><div color="theme_3" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter4"><div color="theme_4" class="Paletter-icon active-icon"></div></div>
-                <div class="Paletter Paletter5"><div color="theme_5" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter6"><div color="theme_6" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter7"><div color="theme_7" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter8"><div color="theme_8" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter9"><div color="theme_9" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter10"><div color="theme_10" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter11"><div color="theme_11" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter12"><div color="theme_12" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter13"><div color="theme_13" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter14"><div color="theme_14" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter15"><div color="theme_15" class="Paletter-icon"></div></div>
-                <div class="Paletter Paletter16"><div color="theme_16" class="Paletter-icon"></div></div>
-              </div>
-            </el-form-item>
-            <div class="Palettebuttonlist">
-                <div color="default" class="csslist">
-                    <div class="csslist-div">
-                        <div class="csslist-div-top">
-                        </div>
-                          默认  
-                    </div>
-                    <p class="hovershow">默认</p>
-                </div>
-            </div>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>    
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogAddcoursetype = false">取 消</el-button>
-        <el-button type="primary" @click="dialogAddcoursetypeEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="导航栏设置"
-      :visible.sync="dialogNavigation "
-      size="nav" class="diaheader">
-      <el-tabs v-model="activeNav" >
-        <el-tab-pane label="基础设置" name="first">
-          <div class="navBox">
-            <el-row>
-              <el-col :span='4'>搜索框</el-col>
-              <el-col :span='8'>
-                <el-radio class="radio" v-model="searchBtn" label="1">开启</el-radio>
-                <el-radio class="radio" v-model="searchBtn" label="0">关闭</el-radio>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='4'>登录</el-col>
-              <el-col :span='8'>
-                <el-radio class="radio" v-model="loginBtn" label="1">开启</el-radio>
-                <el-radio class="radio" v-model="loginBtn" label="0">关闭</el-radio>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span='4'>注册</el-col>
-              <el-col :span='8'>
-                <el-radio class="radio" v-model="registerBtn" label="1">开启</el-radio>
-                <el-radio class="radio" v-model="registerBtn" label="0">关闭</el-radio>
-              </el-col>
-            </el-row>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="导航设置" name="second">
-          <div class="navBox">
-            <template>
-              <el-table
-                :data="navData"
-                style="width: 100%"
-                max-height="300">
-                <el-table-column
-                  label="状态"
-                  width="120">
-                  <template scope="scope">
-                    <el-checkbox v-model="scope.row.available" >启用</el-checkbox>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="nickname"
-                  label="导航名称"
-                  width="130">
-                </el-table-column>
-                <el-table-column                
-                  label="分类"
-                  width="100">
-                  <template scope="scope">
-                    {{ scope.row.navtype == '0' ? '系统' : scope.row.navtype == '1' ? '资讯' : '自定义' }}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  label="操作">
-                  <template scope="scope">
-                    <el-button size="small" type="text" @click="handleEidtNavnameEvent(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="small" type="text" @click="handleShiftUpNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
-                    <el-button size="small" type="text" @click="handleShiftDownNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (navData.length - 1)">下移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
-                    <el-button size="small" type="text" @click="handleDeleteNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
-          </div>        
-        </el-tab-pane>       
-      </el-tabs>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" style="float: left;margin-left: 10px;" v-if="activeNav=='second'" @click="addNavName = true">添加导航</el-button>
-        <el-button @click="dialogNavigation = false">取 消</el-button>
-        <el-button type="primary" @click="dialogNavigationEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="新闻资讯设置"
-      :visible.sync="dialognews"
-      size="dialognews" >
-      <el-tabs v-model="activenews"  @tab-click="handlenewsClick">
-        <el-tab-pane label="选择样式" name="first">
-          <div class="Palettebuttonlist">
-            <div color="default" class="csslist" id="newsdefault">
-                <div class="csslist-div">
-                    <div class="csslist-div-top">
-                    </div>
-                      默认  
-                </div>
-                <p class="hovershow">默认</p>
-            </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="样式设置" name="second">
-          <el-form ref="newsDetailed" :model="newsDetailed" label-width="100px">
-            <el-form-item label="资讯来源：">
-              <el-select v-model="newsDetailed.newsvalue" placeholder="新闻资讯">
-                <el-option
-                  v-for="(key,item) in newsDetailed.newssource"
-                  :key="key.code"
-                  :label="key.name" 
-                  :value="key.code">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="模块标题：">
-              <el-radio-group v-model="newsDetailed.ontitle">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="图片显示：">
-              <el-radio-group v-model="newsDetailed.onimg">
-               <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="内容显示：">
-              <el-radio-group v-model="newsDetailed.oncont">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="时间显示：">
-              <el-radio-group v-model="newsDetailed.ontime">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="单行显示：">
-              <el-radio-group v-model="newsDetailed.onrow">
-                <el-radio :label="1">1条</el-radio>
-                <el-radio :label="2">2条</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="行数：">
-              <el-radio-group v-model="newsDetailed.oncol">
-                <el-radio :label="1">1</el-radio>
-                <el-radio :label="2">2</el-radio>
-                <el-radio :label="3">3</el-radio>
-                <el-radio :label="0">自定义</el-radio>
-              </el-radio-group>
-               <el-input-number v-model="newsDetailed.col" size="small" :disabled=" newsDetailed.oncol != '0' " :controls=false></el-input-number> 行
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        
-      </el-tabs>    
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialognews = false">取 消</el-button>
-        <el-button type="primary" @click="dialognewsEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="登录框设置"
-      :visible.sync="dialoglogin"
-      size="dialoglogin" >
-      <el-tabs v-model="activelogin"  @tab-click="handleloginClick">
-        <el-tab-pane label="基础设置" name="first">
-          <el-form ref="loginDetailed" :model="loginDetailed" label-width="100px">
-            <el-form-item label="默认文字：">
-              <el-radio-group v-model="loginDetailed.ontext">
-                <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="密码显示：">
-              <el-radio-group v-model="loginDetailed.onpassword">
-               <el-radio :label="1">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="选择样式" name="second">
-          <div class="Palettebuttonlist">
-            <div type="default" class="csslist logincsslist">
-                <i class="el-icon-circle-check"></i>
-                <div class="csslist-div">
-                    <div class="csslist-div-top">
-                    </div>
-                      默认  
-                </div>
-                <p class="hovershow">默认</p>
-            </div>
-            <div type="one" class="csslist logincsslist">
-                <i class="el-icon-circle-check"></i>
-                <div class="csslist-div logintype1">
-                </div>
-                <p class="hovershow">样式一</p>
-            </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>    
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialoglogin = false">取 消</el-button>
-        <el-button type="primary" @click="dialogloginEvent">确 定</el-button>
-      </span>
-    </el-dialog> 
-    <el-dialog
-      title="第三方登录设置"
-      :visible.sync="dialogthirdlogin"
-      size="dialogthirdlogin" >
-      <el-tabs v-model="activethirdlogin"  @tab-click="handlethirdloginClick">
-        <el-tab-pane label="基础设置" name="first">
-          <el-form ref="thirdloginDetailed" :model="thirdloginDetailed" label-width="100px">
-            <el-form-item label="第三方工具：">
-               <el-checkbox-group v-model="thirdloginDetailed.third">
-                <el-checkbox label="1">QQ</el-checkbox>
-                <el-checkbox label="2">微博</el-checkbox>
-                <el-checkbox label="3">微信</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>    
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogthirdlogin = false">取 消</el-button>
-        <el-button type="primary" @click="dialogthirdloginEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="教师列表"
-      :visible.sync="dialogaddtea"
-      size="dialogaddtea" >
-      <el-row style="position: absolute;top: 16px;right: 40px;width: 280px;">
-        <el-col :span="16">
-          <el-input size="small" v-model="teainput" type="text" placeholder="请输入老师姓名或账号"></el-input>
-        </el-col>
-        <el-col :span="4">
-          <el-button style="margin-left: 10px;" @click="searchtealist" size="small">搜索</el-button>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col >
-          <div class="teater_all">
-          </div>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogaddtea = false">取 消</el-button>
-        <el-button type="primary" @click="dialogaddteaEvent">确 定</el-button>
-      </span>
-    </el-dialog> 
-    <el-dialog
-      title="修改导航"
-      :visible.sync="editNavName "
-      size="edit" >
-      <el-input v-model="inp_editNav" placeholder="请输入导航名称"></el-input>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="editNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleEidtNavnameConfirmEvent">确 定</el-button>
-      </span>      
-    </el-dialog>
-    <el-dialog
-      title="添加导航"
-      :visible.sync="addNavName"
-      size="nav" class="addNavName">
-      <el-row>
-        <el-col :span='4' style="text-align: center;">导航名称</el-col>
-        <el-col :span='16'>
-          <el-input v-model="inp_addNav" placeholder="请输入导航名称"></el-input>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span='4' style="text-align: center;">导航类型</el-col>
-        <el-col :span='16'>
-          <el-radio class="radio" v-model="navType" label="1">资讯</el-radio>
-          <el-radio class="radio" v-model="navType" label="2">自定义链接</el-radio>
-        </el-col>
-      </el-row>
-      <div v-if='navType=="2"'>
-        <el-row>
-          <el-col :span='4' style="text-align: center;">链接地址</el-col>
-          <el-col :span='16'>
-            <el-input v-model="inp_addNavUrl" placeholder="请输入导航跳转链接"></el-input>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span='4' style="text-align: center;">打开方式</el-col>
-          <el-col :span='16' >
-            <el-radio class="radio" v-model="openType" label="1">新窗口</el-radio>
-            <el-radio class="radio" v-model="openType" label="2">当前窗口</el-radio>
-          </el-col>
-        </el-row>
-      </div>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="addNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddNavConfirmEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="二级资讯导航设置"
-      :visible.sync="dialogSecNavigation "
-      size="nav" class="diaheader">
-        <div class="navBox">
-            <template>
-              <el-table
-                :data="secNavData"
-                style="width: 100%"
-                max-height="300">
-                <el-table-column
-                  label="状态"
-                  width="120">
-                  <template scope="scope">
-                    <el-checkbox v-model="scope.row.subavailable" >启用</el-checkbox>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="subnickname"
-                  label="导航名称"
-                  width="200">
-                </el-table-column>
-                <el-table-column
-                  label="操作">
-                  <template scope="scope">
-                    <el-button size="small" type="text" @click="handleEidtSecNavnameEvent(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="small" type="text" @click="handleShiftUpSecNavEvent(scope.$index, scope.row)" v-if="scope.$index != 0">上移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">上移</el-button>
-                    <el-button size="small" type="text" @click="handleShiftDownSecNavEvent(scope.$index, scope.row)"  v-if="scope.$index != (secNavData.length - 1)">下移</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">下移</el-button>
-                    <el-button size="small" type="text" @click="handleDeleteSecNavEvent(scope.$index, scope.row)"  v-if="scope.row.navtype != '0'">删除</el-button>
-                    <el-button size="small" type="text" v-else style="color:#ccc;cursor: not-allowed;">删除</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
-        </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" style="float: left;margin-left: 10px;" @click="addSecNavName = true">添加导航</el-button>
-        <el-button @click="dialogSecNavigation = false">取 消</el-button>
-        <el-button type="primary" @click="dialogSecNavigationEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="修改二级导航"
-      :visible.sync="editSecNavName "
-      size="edit" >
-      <el-input v-model="inp_editSecNav" placeholder="请输入二级导航名称"></el-input>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="editSecNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleEidtSecNavnameConfirmEvent">确 定</el-button>
-      </span>      
-    </el-dialog>
-    <el-dialog
-      title="添加二级导航"
-      :visible.sync="addSecNavName"
-      size="nav" class="addNavName">
-      <el-row>
-        <el-col :span='4' style="text-align: center;">导航名称</el-col>
-        <el-col :span='16'>
-          <el-input v-model="inp_addSecNav" placeholder="请输入导航名称"></el-input>
-        </el-col>
-      </el-row>     
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="addSecNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddSecNavConfirmEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-  <!-- todo       -->
-    <el-dialog
-      title="设置免费试听课件"
-      :visible.sync="dialogAudition"
-      size="audition" class="auditiondia">
-      <el-row>
-        <el-col class='courseSource'>
-          <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
-            <el-radio-button label="self">本校课程</el-radio-button>
-            <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>  
-      <el-row>
-        <el-col>
-          <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
-            <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>
-      <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
-        <el-col>
-          <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
-            <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>
-      <el-row class="conCourse">
-        <el-col :span="12">
-          <el-pagination
-            layout="prev, pager, next"
-            :total="courseListTotal"
-            :current-page="courseListPage"
-            :page-size="30"
-            v-if="courseListTotal > 30"
-            @current-change="courseListCurrPageEvent">
-          </el-pagination>
-          <el-input
-            placeholder="请输入课程名称"
-            icon="search"
-            v-model="inp_courseName"
-            @change="searchCourseEvent"
-            :on-icon-click="searchCourseEvent">
-          </el-input>
-          <div class="courseList conCourse1"  v-loading="loading">
-            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="viewCoursewareEvent(item.folderid, index)">
-              <i class="el-icon-circle-check"></i>
-              <div class="imgbox">
-                <img :src="item.img" >
-              </div>
-              <span><b>{{item.iname}}</b><b v-if="item.coursewarenum > -1">({{item.coursewarenum}})</b><b v-else>({{item.cwnum}})</b></span>
-            </div>
-            <div class="nodata" v-if="courseListData.length == 0"></div>
-          </div>        
-        </el-col>
-        <el-col :span="12" class="courseware">
-          <el-pagination
-            layout="prev, pager, next"
-            :total="cwListTotal"
-            :current-page="cwListPage"
-            :page-size="30"
-            v-if="cwListTotal > 30"
-            @current-change="CoursewareListCurrPageEvent">
-          </el-pagination>
-          <el-input
-            placeholder="请输入课件名称"
-            icon="search"
-            v-model="inp_CoursewareName"
-            @change="searchCoursewareEvent">
-          </el-input>
-          <div class="cwlist" v-loading="loading">
-            <el-radio-group v-model="radioCourseware" @change="radioCoursewareChangeEvent">
-              <div class="cwLi" v-for="(item, index) in cwlistData" :key="item.sid">
-                <div class="chapter">{{item.sname}}</div>
-                <el-radio-button v-for="(itemcw, index) in item.cwlist" :key="itemcw.cwid" :label="itemcw.cwid">{{itemcw.title}}</el-radio-button>
-              </div>
-            </el-radio-group>
-            <div class="nodata" v-if="cwlistData.length == 0"></div>
-          </div>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogAudition = false">取 消</el-button>
-        <el-button type="primary" @click="handleSettingAuditionEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="课程设置"
-      :visible.sync="dialogCoruse"
-      size="coruse" class="auditiondia">
-      <el-row>
-        <el-col class='courseSource'>
-          <el-radio-group v-model="radioSource" @change="radioCourseSourceChangeEvent"> <!-- todo -->
-            <el-radio-button label="self">本校课程</el-radio-button>
-            <el-radio-button v-for="(item, index) in sourceData" :key="item.sourceid" :label="item.sourceid">{{item.name}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>
-      <el-row>
-        <el-col>
-          <el-radio-group v-model="radioMainClass" @change="radioMainClassChangeEvent">
-            <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button v-for="(item, index) in pClassData" :key="item.pid"  :label="item.pid">{{item.pname}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>
-      <el-row v-if="radioMainClass!=''&& sClassData.length > 0">
-        <el-col>
-          <el-radio-group v-model="radioNextClass" @change="radioNextClassChangeEvent">
-            <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button v-for="(item, index) in sClassData" :key="item.sid" :label="item.sid">{{item.sname}}</el-radio-button>
-          </el-radio-group>
-        </el-col>  
-      </el-row>
-      <el-row class="conCourse conCourse2" style="border:0">
-        <el-col>
-          <el-pagination
-            layout="prev, pager, next"
-            :total="courseListTotal"
-            :current-page="courseListPage"
-            :page-size="30"
-            v-if="courseListTotal > 30"
-            @current-change="courseListCurrPageEvent">
-          </el-pagination>
-          <el-input
-            placeholder="请输入课程名称"
-            icon="search"
-            v-model="inp_courseName"
-            @change="searchCourseEvent"
-            :on-icon-click="searchCourseEvent">
-          </el-input>
-          <div class="courseList"  v-loading="loading">
-            <div class="courseLi" v-for="(item, index) in courseListData" :key="item.folderid" :label="item.folderid" @click="chooseCourseEvent(item, index)">
-              <i class="el-icon-circle-check"></i>
-              <div class="imgbox">
-                <img :src="item.img" >
-              </div>
-              <span>{{item.iname}}</span>
-            </div>
-            <div class="nodata" v-if="courseListData.length == 0"></div>
-          </div>        
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="addSecNavName = false">取 消</el-button>
-        <el-button type="primary" @click="handleSettingCourseConfirmEvent">确 定</el-button>
-      </span>
-    </el-dialog>
   <!-- dialog弹框 -->
   </div>
 </template>
@@ -1201,7 +574,6 @@
         dialogEditor: false,
         dialogPicture: false,
         dialogButton: false,
-        dialogPageHeader: false,
         dialogPageSetting: false,
         dialogCarousel: false,
         linkType: 'none',
@@ -1226,55 +598,6 @@
         selectNewsOptions: [],
         selectCoruse: [],
         selectCoruseOptions: [],
-      // ------------ 网校简介设置 -------------------
-        roominfo: '',
-        dialogProfile: false,
-        logoBtn: '1',
-        textNum: 200,
-      // ------------ 免费试听设置 -------------------
-        dialogAudition: false,
-        sourceData: [],
-        radioSource: 'self',
-        pClassData: [],
-        radioMainClass: '',
-        sClassData: [],
-        radioNextClass: '',
-        courseListData: [],
-        courseListTotal: 0,
-        courseListPage: 1,
-        inp_courseName: '',
-        cwlistData: [],
-        cwListTotal: 0,
-        cwListPage: 1,
-        folderid: '',
-        inp_CoursewareName: '',
-        radioCourseware: '',
-        loading: true,
-        loadingcw: true,
-      // ------------ 课程设置 -----------------------
-        dialogCoruse: false,
-        courseitem: {},
-      // ------------ 导航设置 -----------------------
-        dialogNavigation: false,
-        editNavName: false,
-        addNavName: false,
-        navType: '1',
-        openType: '1',
-        searchBtn: '1',
-        loginBtn: '1',
-        registerBtn: '1',
-        inp_editNav: '',
-        inp_addNav: '',
-        inp_addNavUrl: '',
-        navIndex: 0,
-        navData: [],
-        dialogSecNavigation: false,
-        editSecNavName: false,
-        addSecNavName: false,
-        secNavData: [],
-        secNavIndex: 0,
-        inp_editSecNav: '',
-        inp_addSecNav: '',
       // ------------ 轮播设置 -----------------------
         inputBtnText: '',
         inputBtnHref: '',
@@ -1305,56 +628,6 @@
           label: '渐显'
         }],
         changeStyle: false,
-      // ------------ 课程分类设置 -------------------
-        courseactiveName: 'first',
-        dialogAddcoursetype: false,
-        courseHeightL: {
-          heightone: '默认',
-          heighttwo: '默认',
-          length: '默认',
-          heightonenumdefault: 50,
-          heighttwonumdefault: 65,
-          lengthnumdefault: 2,
-          heightonenum: 50,
-          heighttwonum: 65,
-          lengthnum: 2,
-          classs: 'theme_4'
-        },
-      // ------------ 新闻资讯设置 -------------------
-        dialognews: false,
-        activenews: 'first',
-        navcode: 'news',
-        newsDetailed: {
-          newssource: [],
-          newsvalue: 'news',
-          ontitle: 1,
-          title: '新闻资讯',
-          onimg: 1,
-          oncont: 1,
-          ontime: 1,
-          onrow: 2,
-          oncol: 3,
-          col: 1
-        },
-      // ------------ 登录框设置 ---------------------
-        activelogin: 'first',
-        dialoglogin: false,
-        loginDetailed: {
-          ontext: 1,
-          onpassword: 1,
-          logintype: ''
-        },
-      // ------------ 第三方登录设置 -----------------
-        dialogthirdlogin: false,
-        activethirdlogin: 'first',
-        thirdloginDetailed: {
-          third: ['1', '2', '3']
-        },
-      // ------------ 名师团队 -----------------------
-        dialogaddtea: false,
-        teavalue: '',
-        teainput: '',
-        teauid: '',
       // ------------ 工具栏+全局设置+右侧元素图层 ---
         attachmentPgValue: 'scroll',
         attachmentBgValue: 'scroll',
@@ -1374,11 +647,11 @@
         },
         {
           value: 'repeat-y',
-          label: 'Y轴平铺'
+          label: 'Y 轴平铺'
         },
         {
           value: 'repeat-x',
-          label: 'X轴平铺'
+          label: 'X 轴平铺'
         },
         {
           value: 'repeat',
@@ -1387,6 +660,11 @@
         activeSetting: 'first',
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
+        fontHoverColorVal: '',
+        bgImageUrl: '',
+        pgImageUrl: '',
+        inp_percent: '100',
+        inp_pgPercent: '100',
         inp_width: 1200,
         inp_height: 1600,
         disabled: true,
@@ -1440,213 +718,6 @@
               getParam.fun(response)
             }
           }).catch(function (response) {
-          })
-        },
-        moduleEvent: function () { // 特殊二级导航设置绑定事件
-          let self = this
-          let editBox = $('.editBox')
-          editBox.on('click', '.setInfo', function (e) {
-            self.dialogSecNavigation = true
-            self.navIndex = $(this).attr('dataIndex')
-            let getParam = {
-              url: '/aroomv3/roominfo/navigator.html',
-              params: {},
-              fun: function (response) {
-                let data = response.body.data
-                let navigatorlist = data.navigatorlist
-                self.navData = navigatorlist
-                self.secNavData = self.navData[self.navIndex].subnav
-                for (let i = 0, len = self.secNavData.length; i < len; i++) {
-                  let item = self.secNavData[i]
-                  if (item.subavailable === '1') {
-                    item.subavailable = true
-                  } else {
-                    item.subavailable = false
-                  }
-                }
-              }
-            }
-            self.httpget(getParam)
-          })
-        },
-        courselist: function (param) { // 课程列表
-          let self = this
-          let getParam = {
-            url: '/aroomv3/course/courselist.html',
-            params: param,
-            fun: function (response) {
-              let data = response.body.data
-              let celist = data.courselist
-              for (let i = 0, len = celist.length; i < len; i++) {
-                let item = celist[i]
-                if (!item.img) {
-                  celist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = celist
-              self.courseListTotal = parseInt(data.coursecount)
-              self.loading = false
-            }
-          }
-          self.loading = true
-          self.httpget(getParam)
-        },
-        cwlist: function (param) {  // 课件获取
-          let self = this
-          let getParam = {
-            url: '/aroomv3/course/cwlist.html',
-            params: param,
-            fun: function (response) {
-              let data = response.body.data
-              self.cwlistData = data.cwlist
-              self.cwListTotal = parseInt(data.cwcount)
-              self.loadingcw = false
-            }
-          }
-          self.loadingcw = true
-          self.httpget(getParam)
-        },
-      // ------------- 刘壮 -----------------
-        getealist: function () { // 名师团队获取
-          let self = this
-          self.$http.get(window.host + '/aroomv3/teacher/lists.html', {
-            params: {
-              q: self.teainput,
-              pagenum: 1,
-              pagesize: 1000
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.list
-            let tids = []
-            $('.addtheteateam .team_bk').each(function () {
-              tids.push($(this).attr('tid'))
-            })
-            $('.teater_all').empty()
-            if (list.length) {
-              for (var i = 0; i < list.length; i++) {
-                let face = list[i].face
-                if (face === '') {
-                  if (list[i].sex === '0') {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
-                  } else {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
-                  }
-                }
-                let teas = '<a href="javascript:;" class="lisnres" tid="' + list[i].teacherid + '" urealname="' + list[i].realname + '" uname="' + list[i].username + '" uface="' + face + '" uprofile="' + list[i].profile + '" uprofessionaltitle="' + list[i].professionaltitle + '">' + list[i].realname + '(' + list[i].username + ')<span class="selectico"></span></a>'
-                $('.teater_all').append(teas)
-              }
-            }
-            self.$nextTick(function () {
-              for (var i = 0; i < tids.length; i++) {
-                $(".teater_all a[tid='" + tids[i] + "']").addClass('unonlock')
-              }
-              let teamBktid = $('.on_module .team_bk').attr('tid') || ''
-              if (teamBktid !== '') {
-                $(".teater_all a[tid='" + teamBktid + "']").removeClass('unonlock').addClass('onlock')
-              }
-              $('.teater_all a').on('click', function () {
-                if ($(this).hasClass('unonlock')) {
-                  return false
-                } else {
-                  $('.teater_all a').removeClass('onlock')
-                  $(this).addClass('onlock')
-                }
-              })
-            })
-          }, function (response) {
-            console.log(response)
-          })
-        },
-        getTime: function (value) {   // 换日期格式不包括时分
-          let d = new Date(parseInt(value) * 1000)
-          let year = d.getFullYear()
-          let month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : d.getMonth() + 1
-          let date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate()
-          // let hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours()
-          // let minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()
-          // let second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds()
-          return year + '-' + month + '-' + date
-        },
-        getnews: function (pagesize) {
-          console.log(pagesize)
-          let self = this
-          self.$http.get(window.host + '/aroomv3/news.html', {
-            params: {
-              q: '',
-              pagesize: pagesize || 6,
-              pagenum: 1,
-              navcode: self.newsDetailed.newsvalue,
-              starttime: '',
-              endtime: ''
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let datas = response.data.data
-            $('.on_module .newsList').empty()
-            if (datas.length) {
-              for (let i = 0; i < datas.length; i++) {
-                let time = self.getTime(datas[i].dateline)
-                let newli = '<div class="news_li"><div class="news_li_left"><img src="' + (datas[i].thumb ? datas[i].thumb : 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg') + '"></div><div class="news_li_right"><h3><a href="/dyinformation/' + datas[i].itemid + '.html" target="_blank" title="' + datas[i].subject + '"><span class="news_title">' + datas[i].subject + '</span></a><span class="times">' + time + '</span></h3><p class="news_cont">' + datas[i].note + '</p></div></div>'
-                $('.on_module .newsList').append(newli)
-                let newsDetailed = self.newsDetailed
-                if (!newsDetailed.ontitle) {
-                  $('.news .mod-title').hide()
-                  $('.news .newsList').css('padding-top', '0px')
-                } else {
-                  $('.news .mod-title').show()
-                  $('.news .newsList').css('padding-top', '50px')
-                }
-                if (!newsDetailed.onimg) {
-                  $('.news .news_li .news_li_left').hide()
-                } else {
-                  $('.news .news_li .news_li_left').show()
-                }
-                if (!newsDetailed.ontitle) {
-                  $('.news .mod-title').hide()
-                  $('.news .newsList').css('padding-top', '0px')
-                } else {
-                  $('.news .mod-title').show()
-                  $('.news .newsList').css('padding-top', '50px')
-                }
-                if (!newsDetailed.onimg) {
-                  $('.news .news_li .news_li_left').hide()
-                } else {
-                  $('.news .news_li .news_li_left').show()
-                }
-                if (!newsDetailed.oncont) {
-                  $('.news .news_li .news_cont').hide()
-                } else {
-                  $('.news .news_li .news_cont').show()
-                }
-                if (!newsDetailed.ontime) {
-                  $('.news .news_li .times').hide()
-                } else {
-                  $('.news .news_li .times').show()
-                }
-                if (newsDetailed.onrow === 2) {
-                  $('.news .news_li').css('float', 'left')
-                  $('.news .news_li').css('width', '50%')
-                } else {
-                  $('.news .news_li').css('float', 'none')
-                  $('.news .news_li').css('width', '100%')
-                }
-              }
-            }
-          }, function (response) {
-            console.log(response)
-          })
-        },
-        getNewsCategorys: function (pagesize) {
-          var self = this
-          self.$http.get(window.host + '/aroomv3/news/getNewsCategorys.html', {
-            params: {}
-          }, {emulateJSON: true}).then(function (response) {
-            if (response.data.code === 0) {
-              self.newsDetailed.newssource = response.data.data
-            } else {
-              console.log('数据错误')
-            }
-          }, function (response) {
-            console.log(response)
           })
         },
       // ---------------------------------------------
@@ -1730,30 +801,6 @@
             let getParam
             let oa
             switch (type) {
-              case 'text':
-                self.linkType = 'none'
-                self.inpOnline = ''
-                self.selectNews = []
-                self.selectCoruse = []
-                self.dialogText = true
-                oa = onthis.find('a')
-                self.textarea = oa.text()
-                self.linkType = oa.attr('linkType') || 'none'
-                switch (self.linkType) {
-                  case 'online':
-                    self.getNewsCategorysData()
-                    self.inpOnline = oa.attr('href')
-                    break
-                  case 'news':
-                    self.getNewsCategorysData()
-                    self.selectNews = oa.attr('selectNews').split(',')
-                    break
-                  case 'coruse':
-                     self.courseSortData()
-                    self.selectCoruse = oa.attr('selectCoruse').split(',')
-                    break
-                }
-                break
               case 'editor':
                 self.dialogEditor = true
                 w = parseInt(onthis.css('width'))
@@ -1797,39 +844,6 @@
                 self.inputBtnText = onthis.find('a').text()
                 self.inputBtnHref = onthis.find('a').attr('href')
                 break
-              case 'pageHeader':
-                self.dialogPageHeader = true
-                w = parseInt(onthis.css('width'))
-                let imgsrc = onthis.find('img').attr('src')
-                self.$nextTick(function () {
-                  $('.diaheader .el-dialog').css('width', w + 40)
-                  self.imageUrl = imgsrc
-                })
-                break
-              case 'navigation':
-                self.dialogNavigation = true
-                getParam = {
-                  url: '/aroomv3/roominfo/navigator.html',
-                  params: {},
-                  fun: function (response) {
-                    let data = response.body.data
-                    let navigatorlist = data.navigatorlist
-                    self.navData = navigatorlist
-                    for (let i = 0, len = self.navData.length; i < len; i++) {
-                      let item = self.navData[i]
-                      if (item.available === '1') {
-                        item.available = true
-                      } else {
-                        item.available = false
-                      }
-                    }
-                  }
-                }
-                self.httpget(getParam)
-                break
-              case 'schoolProfile':
-                self.dialogProfile = true
-                break
               case 'carousel':
                 self.dialogCarousel = true
                 let carouselData = $('.on_module').attr('carouselData')
@@ -1845,87 +859,6 @@
                   self.transitionTime = data.transitionTime
                   self.changeStyle = data.changeStyle
                 }
-                break
-              case 'audition':
-                $('.courseOn').removeClass('courseOn')
-                self.dialogAudition = true
-                self.radioSource = 'self'
-                self.radioCourseware = ''
-                self.courseListPage = 1
-                self.cwListPage = 1
-                self.cwlistData = []
-                self.radioMainClass = ''
-                self.radioNextClass = ''
-                getParam = {
-                  url: '/aroomv3/schsource.html',
-                  params: {},
-                  fun: function (response) {
-                    let data = response.body.data
-                    self.sourceData = data
-                    let param = {
-                      url: '/aroomv3/course/coursesort.html',
-                      params: {
-                        showbysort: 0
-                      },
-                      fun: function (response) {
-                        let classData = response.body.data
-                        self.pClassData = classData
-                        self.courselist({pagesize: 30, page: 1, issimple: 1})
-                      }
-                    }
-                    self.httpget(param)
-                  }
-                }
-                self.httpget(getParam)
-                break
-              case 'course':
-                $('.courseOn').removeClass('courseOn')
-                self.dialogCoruse = true
-                self.radioSource = 'self'
-                self.courseListPage = 1
-                self.radioMainClass = ''
-                self.radioNextClass = ''
-                getParam = {
-                  url: '/aroomv3/schsource.html',
-                  params: {},
-                  fun: function (response) {
-                    let data = response.body.data
-                    self.sourceData = data
-                    let param = {
-                      url: '/aroomv3/course/coursesort.html',
-                      params: {
-                        showbysort: 0
-                      },
-                      fun: function (response) {
-                        let classData = response.body.data
-                        self.pClassData = classData
-                        self.courselist({pagesize: 30, page: 1})
-                      }
-                    }
-                    self.httpget(param)
-                  }
-                }
-                self.httpget(getParam)
-                break
-              case 'addcoursetype':
-                self.dialogAddcoursetype = true
-                let carouseldata = JSON.parse(onthis.attr('carouseldata'))
-                self.courseHeightL.lengthnum = carouseldata.lengthnum
-                break
-              case 'news':
-                self.getNewsCategorys()
-                self.dialognews = true
-                break
-              case 'login':
-                self.dialoglogin = true
-                break
-              case 'thirdlogin':
-                self.dialogthirdlogin = true
-                break
-              case 'theteacherteam':
-                self.teainput = ''
-                self.getealist()
-                self.dialogaddtea = true
                 break
               default:
                 console.log('module')
@@ -1945,7 +878,7 @@
         self.inp_width = parseInt(canvas.css('width'))
         self.inp_height = parseInt(canvas.css('height'))        
         // self.tool.bindDblclickEvent(self)
-        self.moduleEvent()
+        // self.moduleEvent()
         space.scrollLeft(900)
         let head = $('.c_top')
         let middle = $('.c_body')
@@ -1953,12 +886,23 @@
         if (window.saveParams) {
           let params = window.saveParams
           let pp = params.page
-          self.prospectColorVal = pp.pg
-          self.bgColorVal = pp.bg
+          self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+          self.bgColorVal = pp.bg =='transparent'?null:pp.bg
+          self.fontHoverColorVal = pp.fontHover
           self.inp_width = parseInt(pp.width)
           self.inp_height = parseInt(pp.height)
-          space.css('background', self.bgColorVal)
-          canvas.css('background', self.prospectColorVal)
+          self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+          self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+          self.repeatPgValue = pp.pgImage.backgroundRepeat
+          self.attachmentPgValue = pp.pgImage.backgroundAttachment
+          self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+          self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
+          self.repeatBgValue = pp.bgImage.backgroundRepeat
+          self.attachmentBgValue = pp.bgImage.backgroundAttachment
+          space.css(pp.bgImage)
+          space.css('backgroundColor', pp.bg)
+          canvas.css(pp.pgImage)
+          canvas.css('backgroundColor', pp.pg)
           canvas.css('width', pp.width)
           canvas.css('height', pp.height)
           head.css('height', pp.top)
@@ -1983,18 +927,29 @@
                   let headHtml = saveParams.head.replace(/[\\]/g, '')
                   let bodyHtml = saveParams.body.replace(/[\\]/g, '')
                   let footHtml = saveParams.foot.replace(/[\\]/g, '')
-                  let settings = JSON.parse(saveParams.settings.replace(/[\\]/g, ''))
-                  self.prospectColorVal = settings.pg
-                  self.bgColorVal = settings.bg
-                  self.inp_width = parseInt(settings.width)
-                  self.inp_height = parseInt(settings.height)
-                  space.css('background', self.bgColorVal)
-                  canvas.css('background', self.prospectColorVal)
+                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
+                  self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+                  self.bgColorVal = pp.bg =='transparent'?null:pp.bg
+                  self.fontHoverColorVal = pp.fontHover
+                  self.inp_width = parseInt(pp.width)
+                  self.inp_height = parseInt(pp.height)
+                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+                  self.repeatPgValue = pp.pgImage.backgroundRepeat
+                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                  self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+                  self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
+                  self.repeatBgValue = pp.bgImage.backgroundRepeat
+                  self.attachmentBgValue = pp.bgImage.backgroundAttachment
+                  space.css('backgroundColor', pp.bg)
+                  space.css(pp.bgImage)
+                  canvas.css('backgroundColor', pp.pg)
+                  canvas.css(pp.pgImage)
                   canvas.css('width', self.inp_width)
                   canvas.css('height', self.inp_height)
-                  head.css('height', settings.top)
-                  foot.css('height', settings.foot)
-                  canvas.css({'paddingTop': settings.top, 'paddingBottom': settings.foot})
+                  head.css('height', pp.top)
+                  foot.css('height', pp.foot)
+                  canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
                   head.html(headHtml)
                   middle.html(bodyHtml)
                   foot.html(footHtml)
@@ -2019,9 +974,23 @@
         let self = this
         self.dialogPageSetting = true
       },
-      handleBackImgSuccess: function (res) { // 背景图上传成功后
-        // var self = this
-        console.log(res)
+      handleBackdropSuccess: function (res) {
+        let self = this
+        let showurl = res.data.showurl
+        self.bgImageUrl = showurl
+      },
+      handlePredropSuccess: function (res) {
+        let self = this
+        let showurl = res.data.showurl
+        self.pgImageUrl = showurl
+      },
+      cleanBgEvent: function () {
+        var self = this
+        self.bgImageUrl = ''
+      },
+      cleanPgEvent: function () {
+        var self = this
+        self.pgImageUrl = ''
       },
       dialogPageSettingEvent: function () { // 页面设置弹框保存
         var self = this
@@ -2036,6 +1005,23 @@
           canvas.css('backgroundColor', self.prospectColorVal)
         } else {
           canvas.css('backgroundColor', 'transparent')
+        }
+        if(self.bgImageUrl){
+          let bgJson = {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue}
+          space.css(bgJson)
+        } else {
+          space.css('backgroundImage','none')
+        }
+
+        if(self.pgImageUrl){
+          let pgJson = {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue}
+          canvas.css(pgJson)
+        } else {
+          canvas.css('backgroundImage','none')
+        }      
+        if (self.fontHoverColorVal) {
+          $('#fontHover').remove()
+          $('head').append('<style id="fontHover">body a[href]:hover{color:' + self.fontHoverColorVal + ';}</style>')
         }
         canvas.css('width', self.inp_width)
         canvas.css('height', self.inp_height)
@@ -2053,8 +1039,11 @@
         let footArray = $('.c_foot').html()
         params = {
           page: {
-            pg: self.prospectColorVal,
-            bg: self.bgColorVal,
+            pg: self.prospectColorVal?self.prospectColorVal:'transparent',
+            bg: self.bgColorVal?self.bgColorVal:'transparent',
+            fontHover: self.fontHoverColorVal,
+            pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
+            bgImage: {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue},
             width: self.inp_width + 'px',
             height: self.inp_height + 'px',
             top: $('.c_top').css('height'),
@@ -2084,8 +1073,11 @@
       saveEvent: function () { // 页面保存
         let self = this
         let setting = {
-          pg: self.prospectColorVal,
-          bg: self.bgColorVal,
+          pg: self.prospectColorVal?self.prospectColorVal:'transparent',
+          bg: self.bgColorVal?self.bgColorVal:'transparent',
+          fontHover: self.fontHoverColorVal,
+          pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
+          bgImage: {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue},
           width: self.inp_width + 'px',
           height: self.inp_height + 'px',
           top: $('.c_top').css('height'),
@@ -2095,13 +1087,25 @@
         let strSetting = window.JSON.stringify(setting)
         let headArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
+        if (bodyArray == '') {
+          self.$notify({
+            title: '警告',
+            message: 'body主体内容不能为空',
+            type: 'warning'
+          })
+          return false
+        }
         let footArray = $('.c_foot').html()
         let audition = $('.audition ')
         let auditions = ''
+        let auditionArr = {}
         for (let i = 0, len = audition.length; i < len; i++) {
-          let item = audition.eq(i)
-          if (item.attr('auditionid')){
-            auditions += item.attr('auditionid') + ','
+          let itemid = audition.eq(i).attr('auditionid')
+          if (!auditionArr[itemid]) {
+            if (itemid){
+              auditions += itemid + ','
+              auditionArr[itemid] = true
+            }
           }
         }
         auditions = auditions.substring(0, auditions.length - 1)
@@ -2116,12 +1120,20 @@
             auditions: auditions
           },
           fun: function (response) {
-            let code = response.body.code
+            let body = response.body
+            let code = body.code
+            let msg = body.msg
             if (code === 0) {
               self.$notify({
                 title: '成功',
                 message: '保存成功',
                 type: 'success'
+              })
+            } else {
+              self.$notify({
+                title: '警告',
+                message: msg,
+                type: 'warning'
               })
             }
           }
@@ -2429,11 +1441,6 @@
           })
         }
       },
-      dialogPageHeaderEvent: function () {
-        let self = this
-        self.dialogPageHeader = false
-        self.moduleElement.find('img').attr('src', self.imageUrl)
-      },
       carouselShiftUpEvent: function (index) { // 上移
         let self = this
         let item = self.carouselData.splice(index, 1)
@@ -2738,827 +1745,6 @@
         if (self.selectCoruseOptions.length < 1) {
           self.httpget(param)
         }
-      },
-    // ------------- 导航设置 ----------------
-      dialogButtonEvent: function () { // 按钮设置
-        let self = this
-        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
-        if (reg.test(self.inputBtnText)) {
-          self.dialogButton = false
-          self.moduleElement.find('a').text(self.inputBtnText)
-          self.moduleElement.find('a').attr('href', self.inputBtnHref)
-        } else {
-          self.$notify({
-            title: '警告',
-            message: '请输入正确完整的跳转链接',
-            type: 'warning'
-          })
-        }
-      },
-      dialogNavigationEvent: function () { // 导航条设置
-        let self = this
-        let search = self.moduleElement.find('.search_box')
-        let login = self.moduleElement.find('.log')
-        let register = self.moduleElement.find('.reg')
-        let navaBox = self.moduleElement.find('.navaBox')
-        let loginBox = self.moduleElement.find('.login_box')
-        let widthT = 0
-        if (self.searchBtn === '1') {
-          search.show()
-        } else {
-          search.hide()
-          widthT += 142
-        }
-        if (self.loginBtn === '1') {
-          login.show()
-        } else {
-          login.hide()
-          widthT += 62
-        }
-        if (self.registerBtn === '1') {
-          register.show()
-        } else {
-          register.hide()
-          widthT += 62
-        }
-        if (widthT >= 266) {
-          navaBox.css('maxWidth','none')
-        } else {
-          navaBox.css('maxWidth', 920 + widthT + 'px')
-        }
-        if (widthT == 62 || widthT == 204){
-          loginBox.css('width','64px')
-        }
-        self.dialogNavigation = false
-        for (let i = 0, len = self.navData.length; i < len; i++) {
-          let item = self.navData[i]
-          if (item.available) {
-            item.available = '1'
-          } else {
-            item.available = '0'
-          }
-        }
-        let getParam = {
-          url: '/aroomv3/roominfo/savenavigator.html',
-          params: {navigatorlist: self.navData},
-          fun: function (response) {
-            let code = response.body.code
-            let msg = response.body.msg
-            if (code === 0) {
-              self.$notify({
-                title: '成功',
-                message: '修改成功',
-                type: 'success'
-              })
-              let navHtml = ''
-              for (let i = 0, len = self.navData.length; i < len; i++) {
-                let item = self.navData[i]
-                if (item.available === '1') {
-                  switch (item.navtype) {
-                    case '0':
-                      if (item.code == 'news') {
-                        navHtml += '<a href="/dyinformation.html">' + item.nickname + '</a>'
-                      } else {
-                        navHtml += '<a href="/' + item.code + '.html">' + item.nickname + '</a>'
-                      }
-                      break
-                    case '1':
-                      navHtml += '<a href="/navcm/' + item.code.split('')[1] + '.html"><div class="setInfo" dataIndex=' + i + '>设置</div>' + item.nickname + '</a>'
-                      break
-                    case '2':
-                      navHtml += '<a target="' + item.target + '" href="' + item.url + '">' + item.nickname + '</a>'
-                      break
-                  }
-                }
-              }
-              self.moduleElement.find('.navaBox').html(navHtml)
-            } else {
-              self.$notify.info({
-                title: '消息',
-                message: msg
-              })
-            }
-          }
-        }
-        self.httppost(getParam)
-      },
-      handleEidtNavnameEvent: function (index, value) { // 编辑导航名称
-        let self = this
-        self.editNavName = true
-        self.navIndex = index
-        self.inp_editNav = value.nickname
-      },
-      handleEidtNavnameConfirmEvent: function () { // 确定修改导航名称
-        let self = this
-        self.editNavName = false
-        self.navData[self.navIndex].nickname = self.inp_editNav
-      },
-      handleShiftUpNavEvent: function (index, value) { // 上移
-        let self = this
-        let item = self.navData.splice(index, 1)
-        self.navData.splice(index - 1, 0, item[0])
-      },
-      handleShiftDownNavEvent: function (index, value) { // 下移
-        let self = this
-        let item = self.navData.splice(index, 1)
-        self.navData.splice(index + 1, 0, item[0])
-      },
-      handleDeleteNavEvent: function (index, value) { // 删除
-        let self = this
-        self.navData.splice(index, 1)
-      },
-      handleAddNavConfirmEvent: function (index, value) { // 添加导航确定按钮
-        let self = this
-        let obj = {
-          available: false,
-          code: '',
-          name: self.inp_addNav,
-          navtype: self.navType,
-          nickname: self.inp_addNav,
-          subnav: [],
-          target: '',
-          url: ''
-        }
-        let len = self.navData.length
-        let code = ''
-        for (let i = 0; i < len; i++) {
-          code = 'n' + (i + 1)
-          let bloo = true
-          for (let i = 0; i < len; i++) {
-            let codes = self.navData[i].code
-            if (code === codes) {
-              bloo = false
-            }
-          }
-          if (bloo) {
-            break
-          }
-        }
-        if (self.navType === '2') {
-          obj.target = self.openType === '1' ? '_blank' : '_self'
-          obj.url = self.inp_addNavUrl
-        }
-        obj.code = code
-        self.navData.push(obj)
-        self.addNavName = false
-        self.inp_addNav = ''
-        self.navType = '1'
-      },
-      dialogSecNavigationEvent: function (index, value) { // 二级导航条设置 todo:
-        let self = this
-        self.dialogSecNavigation = false
-        for (let i = 0, len = self.secNavData.length; i < len; i++) {
-          let item = self.secNavData[i]
-          if (item.subavailable) {
-            item.subavailable = '1'
-          } else {
-            item.subavailable = '0'
-          }
-        }
-        self.navData[self.navIndex].subnav = self.secNavData
-        let getParam = {
-          url: '/aroomv3/roominfo/savenavigator.html',
-          params: {navigatorlist: self.navData},
-          fun: function (response) {
-            let code = response.body.code
-            let msg = response.body.msg
-            if (code === 0) {
-              self.$notify({
-                title: '成功',
-                message: '资讯导航设置成功',
-                type: 'success'
-              })
-            } else {
-              self.$notify.info({
-                title: '消息',
-                message: msg
-              })
-            }
-          }
-        }
-        self.httppost(getParam)
-      },
-      handleEidtSecNavnameEvent: function (index, value) { // 编辑二级导航名称
-        let self = this
-        self.editSecNavName = true
-        self.secNavIndex = index
-        self.inp_editSecNav = value.subnickname
-      },
-      handleEidtSecNavnameConfirmEvent: function (index, value) { // 确定修改二级导航名称
-        let self = this
-        self.editSecNavName = false
-        self.secNavData[self.secNavIndex].subnickname = self.inp_editSecNav
-      },
-      handleShiftUpSecNavEvent: function (index, value) { // 二级导航上移
-        let self = this
-        let item = self.secNavData.splice(index, 1)
-        self.secNavData.splice(index - 1, 0, item[0])
-      },
-      handleShiftDownSecNavEvent: function (index, value) { // 二级导航下移
-        let self = this
-        let item = self.secNavData.splice(index, 1)
-        self.secNavData.splice(index + 1, 0, item[0])
-      },
-      handleDeleteSecNavEvent: function (index, value) { // 二级导航删除
-        let self = this
-        self.secNavData.splice(index, 1)
-      },
-      handleAddSecNavConfirmEvent: function (index, value) {  // 二级导航添加
-        let self = this
-        let obj = {
-          subavailable: false,
-          subcode: '',
-          subnickname: self.inp_addSecNav
-        }
-        let len = self.secNavData.length
-        let code = ''
-        for (let i = 0; i < len; i++) {
-          code = self.navData[self.navIndex].code + 's' + (i + 1)
-          let bloo = true
-          for (let i = 0; i < len; i++) {
-            let codes = self.secNavData[i].subcode
-            if (code === codes) {
-              bloo = false
-              if (i === len - 1) {
-                code = self.navData[self.navIndex].code + 's' + (i + 2)
-              }
-            }
-          }
-          if (bloo) {
-            break
-          }
-        }
-        obj.subcode = code
-        self.secNavData.push(obj)
-        self.addSecNavName = false
-      },
-    // ------------- 免费试听 ----------------
-      radioCourseSourceChangeEvent: function (value) { // 课程来源
-        let self = this
-        if (value !== 'self') {
-          let param = {
-            url: '/aroomv3/schsource/itemlist.html',
-            params: {
-              q: '',
-              sourceid: value,
-              pid: '',
-              sid: ''
-            },
-            fun: function (response) {
-              let data = response.body.data
-              self.pClassData = data.splist
-              for (let i = 0, len = data.itemlist.length; i < len; i++) {
-                let item = data.itemlist[i]
-                if (!item.img) {
-                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = data.itemlist
-              self.courseListTotal = data.itemlist.length
-            }
-          }
-          self.httpget(param)
-        } else {
-          let getParam = {
-            url: '/aroomv3/schsource.html',
-            params: {},
-            fun: function (response) {
-              let data = response.body.data
-              self.sourceData = data
-              let param = {
-                url: '/aroomv3/course/coursesort.html',
-                params: {
-                  showbysort: 0
-                },
-                fun: function (response) {
-                  let classData = response.body.data
-                  self.pClassData = classData
-                  self.courselist({pagesize: 30, page: 1})
-                }
-              }
-              self.httpget(param)
-            }
-          }
-          self.httpget(getParam)
-        }
-        self.radioMainClass = ''
-        self.radioNextClass = ''
-      },
-      radioMainClassChangeEvent: function (value) { // 选择主类按钮
-        let self = this
-        let param
-        for (let i = 0, len = self.pClassData.length; i < len; i++) {
-          let item = self.pClassData[i]
-          if (item.pid === value) {
-            if (item.sorts) {
-              self.sClassData = item.sorts
-            } else {
-              self.sClassData = []
-            }
-            break
-          }
-        }
-        if (self.radioSource === 'self') {
-          param = {
-            pagesize: 30,
-            page: 1,
-            pid: value
-          }
-          self.courselist(param)
-        } else {
-          param = {
-            url: '/aroomv3/schsource/itemlist.html',
-            params: {
-              q: '',
-              sourceid: self.radioSource,
-              pid: value,
-              sid: ''
-            },
-            fun: function (response) {
-              let data = response.body.data
-              // self.pClassData = data.splist
-              for (let i = 0, len = data.itemlist.length; i < len; i++) {
-                let item = data.itemlist[i]
-                if (!item.img) {
-                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = data.itemlist
-              self.courseListTotal = data.itemlist.length
-            }
-          }
-          self.httpget(param)
-        }
-        self.inp_courseName = ''
-      },
-      radioNextClassChangeEvent: function (value) { // 选择次类按钮
-        let self = this
-        let param
-        if (self.radioSource === 'self') {
-          param = {
-            pagesize: 30,
-            page: 1,
-            pid: self.radioMainClass,
-            sid: value
-          }
-          self.courselist(param)
-        } else {
-          param = {
-            url: '/aroomv3/schsource/itemlist.html',
-            params: {
-              q: '',
-              sourceid: self.radioSource,
-              pid: self.radioMainClass,
-              sid: value
-            },
-            fun: function (response) {
-              let data = response.body.data
-              // self.pClassData = data.splist
-              for (let i = 0, len = data.itemlist.length; i < len; i++) {
-                let item = data.itemlist[i]
-                if (!item.img) {
-                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = data.itemlist
-              self.courseListTotal = data.itemlist.length
-            }
-          }
-          self.httpget(param)
-        }
-        self.inp_courseName = ''
-      },
-      courseListCurrPageEvent: function (value) { // 课程列表分页
-        let self = this
-        let param
-        if (self.radioSource === 'self') {
-          param = {
-            q: self.inp_courseName,
-            pagesize: 30,
-            page: value,
-            issimple: 1,
-            pid: self.radioMainClass,
-            sid: self.radioNextClass
-          }
-          self.courselist(param)
-          self.courseListPage = value
-        } else {
-          param = {
-            url: '/aroomv3/schsource/itemlist.html',
-            params: {
-              q: self.inp_courseName,
-              sourceid: self.radioSource,
-              pid: self.radioMainClass,
-              sid: self.radioNextClass
-            },
-            fun: function (response) {
-              let data = response.body.data
-              for (let i = 0, len = data.itemlist.length; i < len; i++) {
-                let item = data.itemlist[i]
-                if (!item.img) {
-                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = data.itemlist
-              self.courseListTotal = data.itemlist.length
-            }
-          }
-          self.httpget(param)
-        }
-      },
-      searchCourseEvent: function (value) { // 搜索课程
-        let self = this
-        let param
-        if (self.radioSource === 'self') {
-          param = {
-            q: self.inp_courseName,
-            pagesize: 30,
-            page: 1,
-            issimple: 1,
-            pid: self.radioMainClass,
-            sid: self.radioNextClass
-          }
-          self.courseListPage = 1
-          self.courselist(param)
-        } else {
-          param = {
-            url: '/aroomv3/schsource/itemlist.html',
-            params: {
-              q: self.inp_courseName,
-              sourceid: self.radioSource,
-              pid: self.radioMainClass,
-              sid: self.radioNextClass
-            },
-            fun: function (response) {
-              let data = response.body.data
-              for (let i = 0, len = data.itemlist.length; i < len; i++) {
-                let item = data.itemlist[i]
-                if (!item.img) {
-                  data.itemlist[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg'
-                }
-              }
-              self.courseListData = data.itemlist
-              self.courseListTotal = data.itemlist.length
-            }
-          }
-          self.httpget(param)
-        }
-      },
-      viewCoursewareEvent: function (value, index) { // 查看课件 todolist:
-        let self = this
-        let param = {
-          folderid: value,
-          page: 1,
-          pagesize: 30
-        }
-        if (self.radioSource !== 'self') {
-          param.sourceid = self.radioSource
-        }
-        self.folderid = value
-        self.radioCourseware = ''
-        let courselists = $('.conCourse1').find('.courseLi')
-        $('.courseOn').removeClass('courseOn')
-        courselists.eq(index).addClass('courseOn')
-        self.cwlist(param)
-      },
-      CoursewareListCurrPageEvent: function (value) { // 课件列表分页
-        let self = this
-        let param = {
-          folderid: self.folderid,
-          s: self.inp_CoursewareName,
-          pagesize: 30,
-          page: value
-        }
-        self.radioCourseware = ''
-        self.cwlist(param)
-      },
-      searchCoursewareEvent: function (value) { // 课件列表搜索
-        let self = this
-        let param = {
-          folderid: self.folderid,
-          s: self.inp_CoursewareName,
-          pagesize: 30,
-          page: 1
-        }
-        self.cwListPage = 1
-        self.radioCourseware = ''
-        self.cwlist(param)
-      },
-      radioCoursewareChangeEvent: function () {},
-      handleSettingAuditionEvent: function () {
-        let self = this
-        let cwData
-        if (!self.radioCourseware) {
-          self.$notify({
-            title: '警告',
-            message: '你还未选择要添加的课件',
-            type: 'warning'
-          })
-        } else {
-          for (let i = 0, len = self.cwlistData.length; i < len; i++) {
-            let item = self.cwlistData[i].cwlist
-            for (let j = 0, jen = item.length; j < jen; j++) {
-              let jtem = item[j]
-              if (jtem.cwid === self.radioCourseware) {
-                cwData = jtem
-                break
-              }
-            }
-          }
-          let module = $('.on_module')
-          if (!cwData.logo) {
-            cwData.logo = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg'
-          }
-
-          if (cwData.islive == '1') {
-            cwData.logo = 'http://static.ebanhui.com/ebh/tpl/2014/images/livelogo.jpg'
-          }
-          module.attr('auditionId', cwData.cwid)
-          module.find('img').attr('src', cwData.logo)
-          module.find('.audiTit').text(cwData.title)
-          module.find('a').attr('href', '/course/' + cwData.cwid + '.html')
-          self.dialogAudition = false
-        }
-      },
-    // ------------- 课程选择 ----------------
-      chooseCourseEvent: function (item, index) { // 选择课程
-        let self = this
-        let courselists = $('.conCourse2').find('.courseLi')
-        self.courseitem = item
-        $('.courseOn').removeClass('courseOn')
-        courselists.eq(index).addClass('courseOn')
-      },
-      handleSettingCourseConfirmEvent: function () {
-        let self = this
-        if ($('.courseOn').length < 1) {
-          self.$notify({
-            title: '警告',
-            message: '你还未选择课程',
-            type: 'warning'
-          })
-        } else {
-          self.dialogCoruse = false
-          self.moduleElement.attr('dataCoruse', self.courseitem.itemid)
-          self.moduleElement.find('.courseTit').text(self.courseitem.iname)
-          self.moduleElement.find('.animateBox').text(self.courseitem.iname)
-          self.moduleElement.find('img').attr('src', self.courseitem.img)
-          let studynum = parseInt(self.courseitem.studynum) > 10000 ? parseFloat(parseInt(self.courseitem.studynum) / 10000).toFixed(1) + '万' : self.courseitem.studynum
-          self.moduleElement.find('.number').text(studynum || 0)
-          let viewnum = parseInt(self.courseitem.viewnum) > 10000 ? parseFloat(parseInt(self.courseitem.viewnum) / 10000).toFixed(1) + '万' : self.courseitem.viewnum
-          self.moduleElement.find('.popularity').text(viewnum)
-        }
-      },
-    // ------------- 课程分类设置 ------------
-      handlecourseClick: function () {
-        let self = this
-        let courseactiveName = self.courseactiveName
-        if (courseactiveName === 'second') {
-          let Paletters = $('.togglePaletteOnly .Paletter')
-          Paletters.on('click', function () {
-            $('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
-            $(this).find('.Paletter-icon').addClass('active-icon')
-            self.courseHeightL.classs = $('.togglePaletteOnly .Paletter .active-icon').attr('color')
-          })
-          $('.Palettebuttonlist .csslist').on('click', function () {
-            $('.togglePaletteOnly .Paletter .active-icon').removeClass('active-icon')
-            $('.togglePaletteOnly .Paletter4').find('.Paletter-icon').addClass('active-icon')
-            self.courseHeightL.classs = 'theme_4'
-          })
-        }
-      },
-      dialogAddcoursetypeEvent: function () { // 分类设置配置数据 todo
-        let self = this
-        let heightoneisdefault = self.courseHeightL.heightone
-        let heighttwoisdefault = self.courseHeightL.heighttwo
-        let lengthisdefault = self.courseHeightL.length
-        var lengthnum
-        var heightonenum
-        var heighttwonum
-        if (lengthisdefault === '默认') {
-          lengthnum = 2
-        } else {
-          lengthnum = self.courseHeightL.lengthnum
-        }
-        if (heightoneisdefault === '默认') {
-          heightonenum = 50
-        } else {
-          heightonenum = self.courseHeightL.heightonenum
-        }
-        if (heighttwoisdefault === '默认') {
-          heighttwonum = 65
-        } else {
-          heighttwonum = self.courseHeightL.heighttwonum
-        }
-        let obj = {
-          classs: self.courseHeightL.classs,
-          lengthnum: lengthnum
-        }
-        $('.courseclassification .first_li').css('height', heightonenum + 'px')
-        $('.courseclassification .first_li').css('line-height', heightonenum + 'px')
-        $('.courseclassification .second_mune_ul').css('top', heightonenum + 'px')
-        $('.courseclassification .second_mune_ul li').css('height', heighttwonum + 'px')
-        $('.addcoursetype #coursenav_ul').attr('class', self.courseHeightL.classs)
-        let str = JSON.stringify(obj)
-        self.dialogAddcoursetype = false
-        $('.on_module').attr('carouselData', str)
-        let param = {
-          url: '/aroomv3/course/coursesort.html',
-          params: {
-            showbysort: 0
-          },
-          fun: function (res) {
-            let data = res.body.data
-            let html = ''
-            for (let i = 0, len = data.length < lengthnum ? data.length : lengthnum; i < len; i++) {
-              let item = data[i]
-              let secNav1 = ''
-              let secNav = ''
-              if (item.sorts) {
-                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + item.sorts[0].sid + '" title="' + item.sorts[0].sname + '">' + item.sorts[0].sname + '</a>'
-                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
-                  let jtem = item.sorts[j]
-                  secNav += '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
-                }
-              } else {
-                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
-                secNav = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
-              }
-              html += '<li>' +
-                   '<h3 class="nav-first">' +
-                   '<a class="first-link" href="/platform-1-0-0.html?pid=' + item.pid + '" title="' + item.pname + '">' + item.pname + '</a></h3>' +
-                   secNav1 +
-                   '<div class="first_li_three_mune">' +
-                   '<h2 class="nav-second">' +
-                   '<a class="second-link" href="/platform-1-0-0.html?pid=2143" title="' + item.pname + '">' + item.pname + '</a>' +
-                   '</h2>' +
-                   secNav +
-                   '</div>' +
-                   '</li>'
-            }
-            html += '<li class="morey" style="height: 65px;"><div class="fosnte"><a href="/platform.html">更多</a></div></li>'
-            self.moduleElement.find('.second_mune_ul').html(html)
-          }
-        }
-        self.httpget(param)
-      },
-    // ------------- 新闻资讯设置 ------------
-      handlenewsClick: function () {
-        let self = this
-        let activenews = self.activenews
-        if (activenews === 'first') {
-          $('.Palettebuttonlist #newsdefault').on('click', function () {
-            self.newsDetailed.newsvalue = 'news'
-            self.newsDetailed.ontitle = 1
-            self.newsDetailed.onimg = 1
-            self.newsDetailed.oncont = 1
-            self.newsDetailed.ontime = 1
-            self.newsDetailed.onrow = 2
-            self.newsDetailed.oncol = 3
-            self.newsDetailed.col = 3
-          })
-        }
-      },
-      dialognewsEvent: function () {
-        let self = this
-        let newsDetailed = self.newsDetailed
-        let col
-        if (newsDetailed.oncol === 0) {
-          col = newsDetailed.col
-        } else {
-          col = newsDetailed.oncol
-        }
-        let pagesize = col * newsDetailed.onrow
-        self.getnews(pagesize)
-        // let newli = '<div class="news_li"><div class="news_li_left"><img src=""></div><div class="news_li_right"><h3><span class="news_title"></span><span class="times"></span></h3><p class="news_cont"></p></div></div>'
-        let obj = {
-          newssource: newsDetailed.newsvalue,
-          ontitle: newsDetailed.ontitle,
-          onimg: newsDetailed.onimg,
-          oncont: newsDetailed.oncont,
-          ontime: newsDetailed.ontime,
-          onrow: newsDetailed.onrow,
-          oncol: newsDetailed.oncol,
-          col: col
-        }
-        let str = JSON.stringify(obj)
-        self.dialognews = false
-        $('.on_module').attr('carouselData', str)
-      },
-    // ------------- 登录框设置 --------------
-      handleloginClick: function () {
-        let self = this
-        let activelogin = self.activelogin
-        if (activelogin === 'second') {
-          let logincsslist = $('.Palettebuttonlist .logincsslist')
-          logincsslist.on('click', function () {
-            $('.logincsslist').removeClass('courseOn')
-            $(this).addClass('courseOn')
-            let type = $(this).attr('type')
-            if (type === 'one') {
-              self.loginDetailed.logintype = 'logintype1'
-            } else if (type === 'default') {
-              self.loginDetailed.logintype = ''
-            }
-          })
-        }
-      },
-      dialogloginEvent: function () {
-        let self = this
-        let loginDetailed = self.loginDetailed
-        let w
-        let h
-        let mod
-        let typeone = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx">账号  </span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><span class="chorejrx">密码  </span><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input id="signbtnsubmit" class="signbtnexit" value="" name="Submit" type="submit">'
-        let typedefault = '<input type="hidden" name="loginsubmit" value="1"><div class="chorejrxtxtarea"><span class="chorejrx"></span><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="chorejrxtxtpass"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"><a href="javascript:void(0)" id="passwordeye" class="invisible bgImg"></a></div><input class="signbtn" id="signbtnsubmit" value="立即登录" name="Submit" type="submit">'
-        if (loginDetailed.logintype === 'logintype1') {
-          $('.login .denser').empty().append(typeone)
-          $('.login .denser').attr('id', loginDetailed.logintype)
-        } else if (loginDetailed.logintype === '') {
-          $('.login .denser').empty().append(typedefault)
-          $('.login .denser').attr('id', loginDetailed.logintype)
-        }
-        mod = self.moduleElement.find('.denser')
-        w = (parseInt(mod.css('width')) + 40) + 'px'
-        h = (parseInt(mod.css('height')) + 20) + 'px'
-        self.moduleElement.css({'width':w,'height':h})
-        
-        if (loginDetailed.ontext) {
-          $('#username').attr('placeholder', '请输入用户名/手机号/邮箱')
-          $('#password').attr('placeholder', '请输入密码')
-        } else {
-          $('#username,#password').attr('placeholder', '')
-        }
-        if (loginDetailed.onpassword) {
-          $('#passwordeye').show()
-        } else {
-          $('#passwordeye').hide()
-        }
-        let obj = {
-          logintype: loginDetailed.logintype
-        }
-        let str = JSON.stringify(obj)
-        self.dialoglogin = false
-        $('.on_module').attr('carouselData', str)
-      },
-    // ------------- 第三方登录设置 ----------
-      handlethirdloginClick: function () {
-      },
-      dialogthirdloginEvent: function () {
-        let self = this
-        let third = self.thirdloginDetailed.third
-        if (!third.length) {
-          $('.md-qq,.md-sina,.md-weixin').hide()
-        } else {
-          $('.md-qq,.md-sina,.md-weixin').hide()
-          for (var i = 0; i < third.length; i++) {
-            if (third[i] === '1') {
-              $('.md-qq').show()
-            } else if (third[i] === '2') {
-              $('.md-sina').show()
-            } else if (third[i] === '3') {
-              $('.md-weixin').show()
-            }
-          }
-        }
-        let obj = {
-        }
-        let str = JSON.stringify(obj)
-        self.dialogthirdlogin = false
-        $('.on_module').attr('carouselData', str)
-      },
-    // ------------- 名师团队 ----------------
-      searchtealist: function () {
-        let self = this
-        self.getealist()
-      },
-      dialogaddteaEvent: function () {
-        let self = this
-        let unlocka = $('.teater_all .onlock').eq(0)
-        if (unlocka.length) {
-          let realname = unlocka.attr('urealname') === 'undefined' || unlocka.attr('urealname') === 'null' ? '未填写姓名' : unlocka.attr('urealname')
-          let tid = unlocka.attr('tid')
-          let face = unlocka.attr('uface')
-          console.log(unlocka.attr('uprofile'))
-          let profile = unlocka.attr('uprofile') === 'undefined' || unlocka.attr('uprofile') === 'null' || unlocka.attr('uprofile') === '' ? '暂无简介' : unlocka.attr('uprofile')
-          let professionaltitle = unlocka.attr('uprofessionaltitle') === 'undefined' || unlocka.attr('uprofessionaltitle') === 'null' ? '暂无职称' : unlocka.attr('uprofessionaltitle')
-          let teamBk = '<div class="team_bk" tid="' + tid + '"><a class="team_mask" href="/master/' + tid + '.html" target="_blank">' + profile + '</a><a href="/master/' + tid + '.html" target="_blank"><div class="team_hbj"><img src="' + face + '"><h3 class="team_h3">' + realname + '</h3><p class="team_p1">' + professionaltitle + '</p></div><p class="team_p2">' + profile + '</p></a></div>'
-          $('.on_module .addtheteateam .team_bk').remove()
-          $('.on_module .addtheteateam').append(teamBk)
-          $('.on_module .addtea-icon').hide()
-        }
-        self.dialogaddtea = false
-      },
-    // ------------- 网校介绍 ----------------
-      dialogProfileEvent: function () { // 保存网校设置
-        let self = this
-        let html = '<img id="badge" src=' + window.roominfo.cface + '>' + window.roominfo.summary.substring(0, self.textNum) + '...'
-        self.moduleElement.find('.profile').html(html)
-        if (parseInt(self.logoBtn)) {
-          self.moduleElement.find('img').show()
-        } else {
-          self.moduleElement.find('img').hide()
-        }
-        self.dialogProfile = false
       }
     }
   }
@@ -3717,6 +1903,21 @@
     text-align: right;
   }
 /*tool*/
+  #app .upload-demo{
+    height: 105px;
+    width: 120px;
+  }
+  #app .upload-demo .el-upload {
+    width: 100%;
+    height: 100%;
+    line-height: 105px;
+    border: 1px solid #bfcbd9;
+    border-radius: 4px;
+  }
+  #app .upload-demo .el-upload img{
+    width: 100%;
+    height: 100%;
+  } 
   .tool{
     padding-top: 2px;
     position: relative;
@@ -4149,40 +2350,51 @@
     border-left-width: 1px;
   }
 /*module*/
-  #app .module:hover{
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
-  }
-  #app .editBox .on_module:hover{
-    box-shadow: 0 0 0 1px #f55d54;
-  }
   .editBox .on_module{
-    border-color: #46a8fb;
-    box-shadow: 0 0 0 1px #f55d54;
-    /*outline:1px solid #f55d54;*/
+    /*border-color: transparent;*/
     box-sizing: border-box;
     cursor: move;
   }
   .editBox .touch_module {
     box-shadow: 0 0 0 1px #f55d54;
   }
+  .supendTools{
+    position: absolute;
+    top:-50px;
+    left: 0px;
+    height: 45px;
+    width: 200px;
+    
+    box-sizing: border-box;
+    border:1px solid #E4E4E4;
+  }
+  .resizeBox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #f55d54;
+    width: 100%;
+    height: 100%;
+    box-sizing:border-box;
+  }
   .resize{
     position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 6px;
+    height: 6px;
     background-color:#fff;
     border:1px solid #f55d54;
     pointer-events: auto;
+    box-sizing: border-box;
     z-index: 100;
   }
   .nw{
-    top: -10px;
-    left: -10px;
+    top: -3px;
+    left: -3px;
     cursor: nw-resize;
   }
   .w{
     top:50%;
-    left: -12px;
+    left: -3px;
     transform:translateY(-50%);
     -ms-transform:translateY(-50%);   /* IE 9 */
     -moz-transform:translateY(-50%);  /* Firefox */
@@ -4191,12 +2403,12 @@
     cursor: w-resize;
   }
   .sw{
-    bottom: -10px;
-    left:-10px;
+    bottom: -3px;
+    left:-3px;
     cursor: sw-resize;
   }
   .n{
-    top: -12px;
+    top: -3px;
     left: 50%;
     transform:translateX(-50%);
     -ms-transform:translateX(-50%);   /* IE 9 */
@@ -4206,13 +2418,13 @@
     cursor: n-resize;
   }
   .ne{
-    top: -10px;
-    right: -10px;
+    top: -3px;
+    right: -3px;
     cursor: ne-resize;
   }
   .e{
     top:50%;
-    right:-12px;
+    right:-3px;
     transform:translateY(-50%);
     -ms-transform:translateY(-50%);   /* IE 9 */
     -moz-transform:translateY(-50%);  /* Firefox */
@@ -4221,12 +2433,12 @@
     cursor: e-resize; 
   }
   .se{
-    bottom: -10px;
-    right:-10px;
+    bottom: -3px;
+    right:-3px;
     cursor: se-resize;
   }
   .s{
-    bottom: -12px;
+    bottom: -3px;
     left:50%;
     transform:translateX(-50%);
     -ms-transform:translateX(-50%);   /* IE 9 */
@@ -4470,409 +2682,5 @@
     height: 36px;
     text-align: right;
     line-height: 36px;
-  }
-/*Navigation*/
-  .el-dialog__body{
-    padding: 10px 20px;
-  }
-  .el-dialog--nav{
-    width: 600px;
-  }
-  .el-dialog--edit{
-    width: 400px;
-  }
-  .navBox{   
-    width:100%;
-    height: 300px;
-  }
-  .navBox .el-row{
-    margin-bottom: 15px;
-  }
-  .navBox .el-col{
-    text-align: center;
-    height: 30px;
-    line-height: 30px;
-  }
-  .addNavName .el-row{
-    margin-bottom: 15px;
-  }
-  .addNavName .el-col{
-    font-size: 14px;
-    line-height: 36px;
-  }
-  .navaBox a{
-    position:relative;
-  }
-  .navaBox .setInfo{
-    display: none;
-    position:absolute;
-    top:0;
-    right:0;
-    font-size: 12px;
-    background-color: #f55d54;
-    height: 20px;
-    line-height: 20px;
-    padding:0 5px;
-    color: #fff;    
-  }
-  .navaBox a:hover .setInfo{
-    display: block;
-  }
-/*免费试听*/
-  .el-dialog--audition{
-    width: 1000px;
-  }
-  .auditiondia .el-col{
-    max-height:100px;
-    overflow-y:auto;
-  }
-  .auditiondia .el-radio-button .el-radio-button__inner{
-    border:0;
-    border-radius: 2px;
-  }
-  .auditiondia .el-radio-button:first-child .el-radio-button__inner{
-    border:0;
-  }
-  .auditiondia .el-row{
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #d1dbe5;
-  }
-  .auditiondia .conCourse .el-col{
-    height: 480px;
-    max-height:480px;
-    border-right: 1px solid #d1dbe5;
-  }
-  .auditiondia .conCourse2 .el-col{
-    border:0;
-  }
-  .auditiondia .courseList{
-    float: left;
-    width: 100%;
-    overflow-y:auto;
-    height: 443px;
-    margin-top: 5px; 
-  }
-  .auditiondia .courseLi{
-    float: left;
-    width: 146px;
-    height: 120px;
-    overflow: hidden;
-    padding: 0 4px; 
-    cursor: pointer;
-    position: relative;
-    text-align: center;
-  }
-  .auditiondia .courseLi i {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    color: #13CE66;
-    font-size: 18px;
-    display: none;
-  }
-  .auditiondia .courseOn i {
-    display:block;
-  }
-  .auditiondia .imgbox {
-    width: 150px;
-    height: 90px;
-  }
-  .imgbox img{
-    width: 100%;
-    height: 100%;
-  }
-  .auditiondia .courseLi span{
-    display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 14px;
-    color: #999;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-  }
-  .auditiondia .courseLi span b{ /*todolist*/
-    max-width: 110px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight:500;
-    font-size: 14px;
-    display: inline-block;
-  }
-  .conCourse  .el-input {    
-    float: right;
-    width: 180px;
-    margin-right: 5px;
-  } 
-  .conCourse .el-input__inner{
-    margin: 2px 2px 0 0;
-    height: 28px;
-    line-height: 28px;
-  }
-  .conCourse .el-pagination{
-    float: left;
-  }
-  .conCourse .cwlist{
-    float: left;
-    width: 100%;
-    overflow-y:auto;
-    height: 443px;
-    margin-top: 5px; 
-  }
-  .conCourse .cwLi{
-    margin-left: 20px;
-
-  }
-  .courseware .chapter{
-    height: 36px;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 36px;
-  }
-  .courseware .el-radio-button{
-    display: block;
-  }
-/*课程*/
-  .el-dialog--coruse{
-    width: 840px;
-  }
-/*设置*/
-  .promptBox{
-    display: none;
-    position: absolute;
-    top: -20px;
-    left: 0;
-    height: 20px;
-    line-height: 20px;
-    padding:0 10px;
-    background-color: rgba(245,93,84,0.9);
-    color: #fff;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .on_module .promptBox{
-    display: block;
-  }
-/*课程分类设置*/
-  .el-dialog--dialogAddcoursetype{
-    width: 680px;
-  }
-  .togglePaletteOnly .Paletter{
-    width: 16px;
-    height: 16px;
-    float: left;
-    background: #000;
-    margin-right: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  .togglePaletteOnly .Paletter1{
-    background: #9b28ae;
-  }
-  .togglePaletteOnly .Paletter2{
-    background: #663db5;
-  }
-  .togglePaletteOnly .Paletter3{
-    background: #4052b4;
-  }
-  .togglePaletteOnly .Paletter4{
-    background: #1f96f2;
-  }
-  .togglePaletteOnly .Paletter5{
-    background: #ff753f;
-  }
-  .togglePaletteOnly .Paletter6{
-    background: #00bcd2;
-  }
-  .togglePaletteOnly .Paletter7{
-    background: #fea000;
-  }
-  .togglePaletteOnly .Paletter8{
-    background: #f2c300;
-  }
-  .togglePaletteOnly .Paletter9{
-    background: #b7c500;
-  }
-  .togglePaletteOnly .Paletter10{
-    background: #89c34a;
-  }
-  .togglePaletteOnly .Paletter11{
-    background: #4daf51;
-  }
-  .togglePaletteOnly .Paletter12{
-    background: #009687;
-  }
-  .togglePaletteOnly .Paletter13{
-    background: #f47d00;
-  }
-  .togglePaletteOnly .Paletter14{
-    background: #f34637;
-  }
-  .togglePaletteOnly .Paletter15{
-    background: #e71e62;
-  }
-  .togglePaletteOnly .Paletter16{
-    background: #c11759;
-  }
-  .togglePaletteOnly .Paletter .Paletter-icon{
-    width: 16px;
-    height: 16px;
-  }
-  .togglePaletteOnly .Paletter .active-icon{
-    background: url(assets/icon/xuanzhong.png) no-repeat;
-    background-size: 16px;
-  }
-  .Palettebuttonlist .csslist{
-    width: 178px;
-    height: 134px;
-    border: 1px solid #cccccc;
-    position: relative;
-    cursor: pointer;
-    float: left;
-    margin: 10px;
-  }
-  .csslist .el-icon-circle-check{
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    color: #13CE66;
-    font-size: 18px;
-    display: none;
-  }
-  .Palettebuttonlist .courseOn .el-icon-circle-check{
-    display: block;
-  }
-  .Palettebuttonlist .csslist .hovershow{
-    height: 28px;
-    display: none;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: #666666;
-    color: #fff;
-    text-align: center;
-    line-height: 28px;
-  }
-  .Palettebuttonlist .csslist:hover  .hovershow{
-    display: block;
-  }
-  .Palettebuttonlist .csslist .csslist-div{
-    width: 134px;
-    height: 80px;
-    margin: 0 auto;
-    text-align: center;
-    border: 1px solid #cccccc;
-    position: absolute;
-    top: 27px;
-    left: 22px;
-    line-height: 80px;
-    
-  }
-  .Palettebuttonlist .csslist .logintype1{
-    border: none;
-    background: url(assets/icon/logintype1.png)center center no-repeat;
-  }
-  .Palettebuttonlist .csslist .csslist-div .csslist-div-top{
-    width: 100%;
-    height: 20px;
-    background: #338bff;
-  }
-  
-  /*新闻资讯设置*/
-  .el-dialog--dialognews{
-    width: 680px;
-    
-  }
-  .el-dialog--dialognews .el-dialog__body{
-    height: 464px;
-  }
-  /*登录框设置*/
-  .el-dialog--dialoglogin{
-    width: 680px;
-  }
-  .el-dialog--dialoglogin  .el-dialog__body{
-    height: 464px;
-  }
-  /*第三方登录设置*/
-  .el-dialog--dialogthirdlogin{
-    width: 680px;
-  }
-  .el-dialog--dialogthirdlogin  .el-dialog__body{
-    height: 464px;
-  }
-  /*名师团队 教师列表*/
-  .el-dialog--dialogaddtea{
-    width: 680px;
-  }
-  .el-dialog--dialogaddtea  .el-dialog__body{
-    height: 464px;
-  }
-  .el-dialog--dialogaddtea .el-radio-group .el-radio{
-    width: 30%;
-    margin: 0 8px 0 5px;
-    height: 23px;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    float: left;
-  }
-  .el-dialog--dialogaddtea .teater_all {
-    float: left;
-    height: 464px;
-    width: 640px;
-    overflow-y: auto;
-  }
-
-  .el-dialog--dialogaddtea .teater_all a:visited {
-    color: #3D3D3D;
-    text-decoration: none;
-  }
-  .el-dialog--dialogaddtea .teater_all a:hover{
-    text-decoration: none;
-  }
-  .el-dialog--dialogaddtea .teater_all .lisnres {
-    border: solid 1px #eee;
-    height: 28px;
-    line-height: 28px;
-    color: #999;
-    font-size: 14px;
-    display: block;
-    float: left;
-    padding: 0 8px;
-    margin: 10px 0 2px 10px;
-    position: relative;
-    border-radius: 3px;
-  }
-  .el-dialog--dialogaddtea .teater_all .onlock .selectico {
-    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/selectico.png) no-repeat;
-    height: 13px;
-    width: 13px;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-  }
-  .el-dialog--dialogaddtea .teater_all .onlock {
-    border: solid 1px #f4c96c;
-    background: #fff7e5;
-    color: #ffae00;
-  }
-  .el-dialog--dialogaddtea .teater_all .unonlock{
-    color: #f3f3f3;
-    cursor: inherit;
-  }
-  .diaProfile .el-dialog__body{
-    margin-top: 20px;
-  }
-  .diaProfile .el-col{
-    height: 36px;
-    line-height: 34px;
-  }
-  .diaProfile .el-row{
-    margin-bottom: 15px;
   }
 </style>

@@ -36,7 +36,8 @@ var tool = {
     me.todoBox = me.$('.todoBox')
     me.carryMenuEvent(self)
     me.carryLineHeightEvent()
-    me.libLi = me.$('.lib_li')
+    me.libBox = me.$('.lib_box')
+    me.libLi = me.libBox.find('.lib_li')
     me.bindEvent(self)
   },
   carryLineHeightEvent: function () { // 计算竖向参考线高度
@@ -67,21 +68,38 @@ var tool = {
   carryLineEvent: function (self, show) { // 计算参考线函数
     let me = this
     me.rowT.css('top', self.inp_y + self.postop + me.warp)
-    me.rowB.css('top', self.inp_y + self.postop + self.inp_h + me.warp)
+    me.rowB.css('top', self.inp_y + self.postop + self.inp_h + me.warp - 1)
     me.colL.css('left', self.inp_x + self.posleft)
-    me.colR.css('left', self.inp_x + self.posleft + self.inp_w)
+    me.colR.css('left', self.inp_x + self.posleft + self.inp_w - 1)
     if (!show) {
       me.line.show()
     }
   }, 
   carrySignEvent: function (self, element){ // 标记模块并属性初始化
     let me = this
-    let resize = '<div class="resize nw"></div><div class="resize sw"></div><div class="resize ne"></div><div class="resize se"></div>' +
-                  '<div class="resize e"></div><div class="resize n"></div><div class="resize w"></div><div class="resize s"></div>'
+    let w = element.css('width')
+    let h = element.css('height')
+    let b = element.css('borderWidth')
+    let cName = element.attr('class').split(' ')[0]
+    let thtml = ''
+    let tool = self.datahtml[cName].tool
+    console.log(tool) // todolist
+    let resizeBox = '<div class="supendTools">' + thtml + '</div>' +
+                    '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
+                      '<div class="resize nw"></div>' +
+                      '<div class="resize sw"></div>' +
+                      '<div class="resize ne"></div>' +
+                      '<div class="resize se"></div>' +
+                      '<div class="resize e"></div>' +
+                      '<div class="resize n"></div>' +
+                      '<div class="resize w"></div>' +
+                      '<div class="resize s"></div>' +
+                    '</div>'
     me.$('.on_module').removeClass('on_module')
-    me.$('.resize').remove()
+    me.$('.resizeBox').remove()
+    me.$('.supendTools').remove()
     element.addClass('on_module')
-    element.append(resize)
+    element.append(resizeBox)
     self.moduleElement = element
     self.moduleParentElementHeight = parseInt(element.parent().css('height'))
     self.inp_z = parseInt(element.css('zIndex')) || 0
@@ -109,7 +127,8 @@ var tool = {
   },
   cleanSignEvent: function (self) { // 标记模块并属性还原默认值
     let me = this
-    me.$('.resize').remove()
+    me.$('.resizeBox').remove()
+    me.$('.supendTools').remove()
     me.$('.on_module').removeClass('on_module')
     me.$('.module').parent().unbind('mousemove') // 待定
     // me.$('.module').unbind('mouseup')
@@ -182,7 +201,8 @@ var tool = {
   // ------------- 操作模块事件 ----------------
     me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件
       let $this = me.$(this)
-      let parent = $this.parent()
+      let resizeBox = me.$('.resizeBox')
+      let parent = self.moduleElement
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
@@ -192,7 +212,7 @@ var tool = {
       let warp = me.warp
       let areaB = self.moduleParentElementHeight
       let areaR = parseInt(self.inp_width)
-      me.carryLineEvent(self)
+     // me.carryLineEvent(self)
       let part
       switch ($this.attr('class')) {
         case 'resize e':
@@ -393,7 +413,8 @@ var tool = {
       // todo: 拉伸某容器固定显示内容
       me.editBox.mousemove(function (e) {
         part(e)
-        me.carryLineEvent(self)
+        resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+        // me.carryLineEvent(self)
         return false
       })
       me.editBox.mouseup(function (e) {
@@ -418,7 +439,7 @@ var tool = {
       let areaR = self.inp_width
       let $this = me.$(this)
       let sTop = parseInt(me.space.scrollTop())
-      me.carryLineEvent(self)
+      // me.carryLineEvent(self)
       me.editBox.mousemove(function (e) {
         let left = xs + e.pageX - x
         let top = ys + e.pageY - y
@@ -440,7 +461,7 @@ var tool = {
         self.inp_y = top
         $this.css('left', left)
         $this.css('top', top)
-        me.carryLineEvent(self, true)
+        // me.carryLineEvent(self, true)
         return false
       })
       me.editBox.mouseup(function () {
@@ -559,27 +580,40 @@ var tool = {
     })
   // ------------- 左边模块库 ------------------
     me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
-
+      me.lShrink.hide()
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
       me.copyBox.attr('style', dataCon.style)
       me.copyCon.html(dataCon.html)
       me.copyBox.show().css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
-      me.editBox.unbind('mouseup')
-      me.libLi.mousemove(function (e) {
+      me.editBox.unbind('mouseup') // editBox解除mouseup事件
+      me.editBox.mousemove(function (e) { // editBox鼠标移动事件
         me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       })
-      me.editBox.mousemove(function (e) {
+      me.libBox.mousemove(function (e) { // libLi鼠标移动事件
         me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       })
-      // me.carryOutsideLineEvent(self, e)
-      me.editBox.mouseup(function (e) {
+      me.libBox.mouseup(function (e) { // libLi鼠标解除mouseup事件
+        me.libLi.unbind(' mouseup')
+        me.libBox.unbind('mousemove ')
         me.editBox.unbind('mousemove mouseup')
+        me.copyBox.hide()
+        me.lShrink.show()
+      })
+      // me.carryOutsideLineEvent(self, e) // 辅助线
+      me.editBox.mouseup(function (e) {
+        me.lShrink.show()
+        me.editBox.unbind('mousemove mouseup')
+        me.libLi.unbind('mousemove mouseup')
+        me.copyBox.hide()
+        if (e.pageX < self.paddingleft) { // 判断是否在绘制区域以外的
+          return false
+        }
         let box
         let x
         let y
-        let sTop = parseInt(me.space.scrollTop())
-        let sLeft = parseInt(me.space.scrollLeft())
+        let sTop = parseInt(me.space.scrollTop()) // 滚动条距顶部高度
+        let sLeft = parseInt(me.space.scrollLeft()) // 滚动条距右边
         x = e.pageX - self.paddingleft - self.posleft + sLeft
         me.topRangeY = parseInt(me.top.css('height')) + self.paddingtop + self.postop
         me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
@@ -609,20 +643,13 @@ var tool = {
             y = boxTop
           }
         }
-        me.copyBox.hide()
-        me.line.hide()
         box.append(me.copyCon.html())
         let bChild = box.children('.module')
         bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
         me.carryLayerEvent(self, box)
       })
       return false
-    })
-    me.libLi.mouseup(function (e) { // 解绑移动事件
-      me.editBox.unbind('mousemove mouseup')
-      me.libLi.unbind('mousemove')
-      me.copyBox.hide()
-    })
+    })  
     me.lHeader.on('click', function () {
       let $next = me.$(this).next()
       let len = $next.children().length
@@ -670,11 +697,11 @@ var tool = {
       if (me.rShrink.hasClass('shrinkout')) {
         me.rShrink.removeClass('shrinkout')
         me.layer.addClass('layerHide')
-        me.editBox.css('paddingRight', '')
+        me.editBox.css('paddingRight', '133px')
       } else {
         me.rShrink.addClass('shrinkout')
         me.layer.removeClass('layerHide')
-        me.editBox.css('paddingRight', '181px')
+        me.editBox.css('paddingRight', '314px')
       }
     })
     me.elementHead.on('click', '.ele_li', function (e) {
