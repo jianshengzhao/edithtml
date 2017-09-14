@@ -27,8 +27,7 @@ var datahtml = {
         text: '按钮'
       }
     ],
-    online: [
-    ],
+    online: [],
     todo: [],
     expect: []
   },
@@ -36,15 +35,15 @@ var datahtml = {
     a: 'st-prospect', // 前景特效
     b: 'st-effects', // 悬浮特效
     c: 'st-shape', // 图片形状
-    d: 'st-animate', // 动画按钮
+    d: 'st-animate', // 动画效果
     e: 'st-link' // 链接
   },
   // 模块配置项
   rectangle: {
     style: 'width: 200px; height: 50px',
     tool: {
-      private: '',
-      public: ['a', 'b', 'c', 'd', 'e']
+      private: '', // 私有工具
+      public: ['a', 'b', 'c', 'd', 'e'] // 公有工具
     },
     html: '<div class="rectangle module" datatext="矩形"></div>'
   },

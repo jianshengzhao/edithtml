@@ -4,6 +4,7 @@ var tool = {
     me.$ = $
     me.doc = me.$(document)
     me.mod = me.$('.tl_mod')
+    me.brmod = me.$('.br-mod')
     me.top = me.$('.c_top')
     me.body = me.$('.c_body')
     me.foot = me.$('.c_foot')
@@ -83,7 +84,14 @@ var tool = {
     let cName = element.attr('class').split(' ')[0]
     let thtml = ''
     let tool = self.datahtml[cName].tool
-    console.log(tool) // todolist
+    let toolClass = self.datahtml['supendTools']
+    if (tool.private !=='') {
+      thtml += '<li class="st-text">' + tool.private + '</li>'
+    }
+    for (let i = 0, len = tool.public.length; i < len; i ++) {
+      thtml += '<li class="' + toolClass[tool.public[i]] + '"></li>'
+    }
+    console.log(thtml)
     let resizeBox = '<div class="supendTools">' + thtml + '</div>' +
                     '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
                       '<div class="resize nw"></div>' +
@@ -113,6 +121,7 @@ var tool = {
     self.color_bg = element.css('backgroundColor')
     self.disabled = false
     me.mod.removeClass('tl_li_Disable')
+    me.brmod.removeClass('br-disable')   
     switch (self.moduleElement.parent().attr('class')) {
       case 'c_top':
         me.warp = 0

@@ -6,7 +6,8 @@
 <script>
   import '@/assets/common.css'
   import '@/assets/module.css'  
-  import '@/assets/iconfont/demo.css'  
+  import '@/assets/iconfont/demo.css'
+  import '@/assets/border/iconfont.css' 
   import '@/assets/iconfont/maodaofont.css'
   import Vue from 'vue'
   import Element from 'element-ui'

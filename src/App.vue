@@ -60,17 +60,7 @@
           </ul>
         </div>
       </div>
-      <div class="t_right">
-      <a href="/">
-        <div class="tl_li">
-          <i class="iconfont icon-exits"></i>
-          <span>退出</span>
-        </div>
-      </a>
-      </div> 
-    </div>
-  <!-- attribute tool -->
-    <div class="tool" unselectable="on" onselectstart="return false;">
+      <!-- module attribute -->
       <div class="toolBox">
         <div class="property" >
           <label for="">Z :</label>
@@ -92,8 +82,11 @@
           <label for="">高 :</label>
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
         </div>
+      </div>
+      <!-- module font -->
+      <div class="toolBox">
         <div class="property">
-          <label for="">文字 :</label>
+          <label for="">字号 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
         <div class="property">
@@ -104,12 +97,72 @@
           <label for="">字色 :</label>
           <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
         </div>
+      </div>
+      <!-- module background -->
+      <div class="toolBox">
         <div class="property">
           <label for="">背景 :</label>
           <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
         </div>
       </div>
+      <!-- module border -->
+      <div class="toolBox">
+        <div class="property">
+          <label for="">边框 :</label>
+          <div class="border br-mod br-disable">
+            <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
+            <div class="doll"></div>
+            <ul class="toolbar">
+              <el-radio-group v-model="br_width">
+              <li v-for="(item, index) in br_widths">
+                <el-radio-button :key="item.value" :label="item.label" >
+                  <span class="borderWidth" :style="'border-bottom-width:' + item.label + ';border-style: solid;border-color: #333;'"></span>
+                </el-radio-button>
+              </li>
+              </el-radio-group>
+            </ul>
+          </div>
+          <div class="border b-style">
+            <i class="iconfont2 icon-biankuangyangshi"></i>
+            <div class="doll"></div>
+          </div>
+          <div class="border b-color">
+            <i class="iconfont2 icon-biankuangyanse"></i>
+            <div class="doll"></div>
+          </div>
+        </div>
+      </div>
+      <!-- module opacity -->
+      <div class="toolBox">
+        <div class="property">
+          <label for="">透明度 :</label>
+          <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>%
+        </div>
+      </div>
+      <!-- module shadow -->
+      <div class="toolBox">
+        <div class="property">
+          <label for="">阴影 :</label>
+          <div class="shadow b-shadow">
+            <i class="iconfont2 icon-yinying"></i>
+            <div class="doll"></div>
+          </div>
+        </div>
+      </div>
+      <!-- module exit -->
+      <div class="t_right">
+      <a href="/">
+        <div class="tl_li">
+          <i class="iconfont icon-exits"></i>
+          <span>退出</span>
+        </div>
+      </a>
+      </div> 
     </div>
+  <!-- attribute tool -->
+   <!--  <div class="tool" unselectable="on" onselectstart="return false;">
+      
+    </div> -->
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
       <!-- <nav class="lib_nav">
@@ -569,6 +622,24 @@
     name: 'app',
     data: function () {
       return {
+      // ------------ 工具栏add ----------------------
+        br_width: '1px',
+        br_widths: [{
+          value: '1',
+          label: '1px'
+        },{
+          value: '2',
+          label: '2px'
+        },{
+          value: '3',
+          label: '3px'
+        },{
+          value: '4',
+          label: '4px'
+        },{
+          value: '5',
+          label: '5px'
+        }],
       // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
@@ -686,9 +757,9 @@
           stretchLimit: true, // 是否开启module拉伸限制
           moveLimit: true // 是否开启module移动限制
         },
-        paddingtop: 62, // top栏高度
+        paddingtop: 35, // top栏高度
         paddingleft: 133, // left栏高度
-        postop: 50, // editbox  top值
+        postop: 80, // editbox  top值
         posleft: 1000, // editbox  left值
         preHandleTime: 0,
         elementHead: [],
@@ -1767,14 +1838,30 @@
     height: 400px;
   }
 /*top*/
+  #app .upload-demo{
+    height: 105px;
+    width: 120px;
+  }
+  #app .upload-demo .el-upload {
+    width: 100%;
+    height: 100%;
+    line-height: 105px;
+    border: 1px solid #bfcbd9;
+    border-radius: 4px;
+  }
+  #app .upload-demo .el-upload img{
+    width: 100%;
+    height: 100%;
+  }
   .top{
-    padding-top: 4px;
+    padding-top: 3px;
     position: relative;
-    height: 30px;
+    height: 31px;
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
     background-color: #fff;
+    letter-spacing: 0;
   }
   .top>div{
     height: 28px;
@@ -1785,7 +1872,7 @@
   }
   .t_left{
     float: left;
-    width: 600px;  
+    width: 380px;  
     height: 28px;
   }
   .tl_li{
@@ -1902,22 +1989,50 @@
   .dialogSetting .tit{
     text-align: right;
   }
-/*tool*/
-  #app .upload-demo{
-    height: 105px;
-    width: 120px;
+/*边框*/
+  .border, .shadow{
+    position: relative;
+    display: inline-block;
+    width: 38px;     
+    cursor:pointer;
+    margin-left: 5px; 
+    font-size: 14px;
   }
-  #app .upload-demo .el-upload {
-    width: 100%;
-    height: 100%;
-    line-height: 105px;
-    border: 1px solid #bfcbd9;
-    border-radius: 4px;
+  .border .doll, .shadow .doll{
+    right: 8px;
+    border-bottom-color: inherit;
+    border-left-color:inherit;
   }
-  #app .upload-demo .el-upload img{
-    width: 100%;
-    height: 100%;
-  } 
+  .border:hover .toolbar{
+    display: block;
+  }
+  .br-disable{    
+    cursor: not-allowed;
+    border-color: #ccc;
+  }
+  .br-disable i{
+    color: #ccc;
+  }  
+  .br-disable:hover .toolbar{
+    display: none;
+  }
+  .border .toolbar{
+    padding: 10px 2px 4px 2px;
+  }
+  .border .toolbar li{
+    padding: 8px;
+    text-indent: 0;
+  }
+  .border .borderWidth{
+    margin: 0 auto;
+    display: block;
+    width: 100px;
+    border: 0;
+  }
+  .border .el-radio-button .el-radio-button__inner{
+    border-radius: 2px;
+  }
+/*tool*/  
   .tool{
     padding-top: 2px;
     position: relative;
@@ -1928,13 +2043,18 @@
     z-index: 3;
     text-align: center;
   }
-  .toolBox{
+  .top .toolBox{
+    margin-left: -2px;
+    margin-top: 4px;
     display: inline-block;
-    height: 22px;
+    height: 20px;
+    border-left: 1px solid #9c9c9c;
+    padding: 0 10px;
+
   }  
   .property{
     float: left;
-    width: auto;
+    width: auto;    
     height: 20px;
     line-height: 20px;
     text-align: left;
@@ -1973,7 +2093,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    padding-top:62px;
+    padding-top:35px;
     width: 133px;
     height:100%;   
     border-right: 1px solid #d9d9d9;
@@ -2136,7 +2256,7 @@
     position:absolute;
     top:0;
     right:0;
-    padding-top:62px;
+    padding-top:35px;
     width: 181px;
     height:100%;
     border-left: 1px solid #d9d9d9;
@@ -2217,7 +2337,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding-top: 62px;
+    padding-top: 35px;
     margin-left: 133px;
     margin-right: 181px;
     box-sizing:border-box;    
@@ -2314,7 +2434,7 @@
     display: block;    
     width: 200px;
     height: 50px;
-    background-color: rgba(21,204,236,0.6);
+    background-color: rgba(245,93,84,0.6);
     z-index: 100;
    /* border: 1px dotted #333;*/
   }
@@ -2356,17 +2476,57 @@
     cursor: move;
   }
   .editBox .touch_module {
-    box-shadow: 0 0 0 1px #f55d54;
+    border-color: #f55d54;
   }
   .supendTools{
     position: absolute;
-    top:-50px;
+    top:-60px;
     left: 0px;
-    height: 45px;
-    width: 200px;
-    
+    height: 46px;       
     box-sizing: border-box;
     border:1px solid #E4E4E4;
+    background-color: #fff;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .supendTools li {
+    display: inline-block;
+    margin-top: 13px;
+    padding:0 12px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    vertical-align:top;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+  }
+  .st-text {
+    border-right: 1px solid #E4E4E4;
+  }
+  .st-prospect {
+    width: 20px;
+    background-image: url(./assets/toolIcon/a.png);
+  }
+  .st-effects {
+    width: 20px;
+    background-image: url(./assets/toolIcon/b.png);
+  }
+  .st-shape {
+    width: 20px;
+    background-image: url(./assets/toolIcon/c.png);
+  }
+  .st-animate {
+    width: 20px;
+    background-image: url(./assets/toolIcon/d.png);
+  }
+  .st-link {
+    width: 20px;
+    border-left: 1px solid #E4E4E4;
+    background-image: url(./assets/toolIcon/e.png);
   }
   .resizeBox{
     position: absolute;
