@@ -2161,6 +2161,7 @@
                   self.tool.getLayerElement(self, original)
                 }
               }
+              e.preventDefault()
             })
             editBox.click(function (e) { // 失去焦点取消选中
               // 失去焦点取消选中
