@@ -58,7 +58,10 @@ var datahtml = {
   editor: {
     style: 'width:400px; height:200px',
     tool: {
-      private: '编辑文本',
+      private: {
+        text: '编辑文本',
+        class: 'st-text'
+      },
       public: ['a', 'b', 'c', 'e']
     },
     html: '<div class="editor module"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
@@ -66,7 +69,10 @@ var datahtml = {
   picture: {
     style: 'width:200px; height:120px',
     tool: {
-      private: '编辑图片',
+      private: {
+        text: '编辑图片',
+        class: 'st-picture'
+      },
       public: ['a', 'b', 'c', 'd', 'e']
     },
     html: '<div class="picture module"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
@@ -74,7 +80,10 @@ var datahtml = {
   button: {
     style: 'width:80px; height:30px',
     tool: {
-      private: '设置样式',
+      private: {
+        text: '设置样式',
+        class: 'st-style'
+      }, 
       public: ['e']
     },
     html: '<div class="button module"  datatext="按钮"><a target="_blank">按钮</a></div>'

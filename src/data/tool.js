@@ -86,7 +86,7 @@ var tool = {
     let tool = self.datahtml[cName].tool
     let toolClass = self.datahtml['supendTools']
     if (tool.private !=='') {
-      thtml += '<li class="st-text">' + tool.private + '</li>'
+      thtml += '<li class="st-left ' + tool['private']['class'] + '">' + tool['private']['text'] + '</li>'
     }
     for (let i = 0, len = tool.public.length; i < len; i ++) {
       thtml += '<li class="' + toolClass[tool.public[i]] + '"></li>'
@@ -121,7 +121,14 @@ var tool = {
     self.br_width = element.css('borderWidth')
     self.br_style = element.css('borderStyle')
     self.br_color = element.css('borderColor')
+    self.inp_opacity = parseInt(element.css('opacity') * 100)
+    self.check_shadow = false // todolist
+    self.inp_weight_x = '1'
+    self.inp_weight_y = '1'
+    self.inp_blur = '1'
+    self.bw_color = '#ccc'
     self.disabled = false
+    console.log(element.css('boxShadow').split(' '))
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')   
     switch (self.moduleElement.parent().attr('class')) {
@@ -155,7 +162,13 @@ var tool = {
     self.color_font = '#333'
     self.color_bg = '#fff'
     self.br_color = ''
+    self.inp_opacity = ''
     self.disabled = true
+    self.check_shadow = false
+    self.inp_weight_x = '1'
+    self.inp_weight_y = '1'
+    self.inp_blur = '1'
+    self.bw_color = '#ccc'
     me.mod.addClass('tl_li_Disable')
     me.brmod.addClass('br-disable') 
   },
@@ -439,6 +452,10 @@ var tool = {
 
     me.editBox.on('click', '.st-link', function (e) {
       self.$refs.hrefdialogp.show()
+    })
+
+    me.editBox.on('click', '.st-picture', function (e) {
+      self.$refs.myimages.show()
     })
     
     me.editBox.on('click', '.module', function (e) { // 点击选中模块事件

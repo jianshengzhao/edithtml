@@ -139,7 +139,7 @@
           <div class="border br-mod br-disable" :style="'border-color:' + br_color + ';'">
             <i class="iconfont2 icon-biankuangyanse" :style="'color:' + br_color + ';'"></i>
             <div class="doll" ></div>          
-            <colorPicker v-model="br_color" @change='changeBorderColor'></colorPicker>
+            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor'></colorPicker>
           </div>
         </div>
       </div>
@@ -147,16 +147,40 @@
       <div class="toolBox">
         <div class="property">
           <label for="">透明度 :</label>
-          <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>%
+          <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
         </div>
       </div>
       <!-- module shadow -->
       <div class="toolBox">
         <div class="property">
           <label for="">阴影 :</label>
-          <div class="shadow b-shadow">
+          <div class="border br-mod br-disable shadow">
             <i class="iconfont2 icon-yinying"></i>
             <div class="doll"></div>
+            <ul class="toolbar">
+              <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
+              <div>
+                <span>厚度：</span>
+                <span>x：</span>
+                <span>
+                  <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
+                </span>
+                <span>y：</span>
+                <span>
+                  <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
+                </span>
+              </div>
+              <div>
+                <span>模糊度：</span>
+                <span>
+                  <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
+                </span>
+                <span>颜色：</span>
+                <span class="colorShadow">
+                  <colorPicker v-model="bw_color" @change='changColorShadow'></colorPicker>
+                </span>
+              </div>
+            </ul>
           </div>
         </div>
       </div>
@@ -614,6 +638,7 @@
     </el-dialog>
   <!-- dialog弹框 -->
     <hrefdialog ref="hrefdialogp"></hrefdialog>
+    <myimages ref="myimages"></myimages>
   </div>
 </template>
 <script>
@@ -628,6 +653,7 @@
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
   import hrefdialog from '@/components/hrefdialog'
+  import myimages from '@/components/myimages'
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -681,6 +707,12 @@
         }
         ],
         br_color: '#ccc',
+        inp_opacity: '',        
+        check_shadow: false,
+        inp_weight_x: '0',
+        inp_weight_y: '0',
+        inp_blur: '0',
+        bw_color: '#ccc',
       // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
@@ -1080,7 +1112,7 @@
         tool.tool.init(self, $)
       })
     },
-    components: {colorPicker, hrefdialog},
+    components: {colorPicker, hrefdialog, myimages},
     methods: {
     // ------------- complete ----------------
       settingEvent: function () { // 页面设置
@@ -1361,6 +1393,46 @@
         if ($('.on_module').length > 0) {
           var self = this         
           self.moduleElement.css('borderColor', val)
+        }
+      },
+      changeOpacity: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this         
+          self.moduleElement.css('opacity', val/100)
+        }        
+      },
+      changeShadow: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this
+          if (!val) {
+            self.moduleElement.css('boxShadow', 'none')
+          } else {
+            self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+          }
+        }
+      },
+      changHShadow: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this
+          self.moduleElement.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+        }
+      },
+      changVShadow: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this         
+          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+        }
+      },
+      changBlurShadow: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this
+          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
+        }
+      },
+      changColorShadow: function (val) {
+        if ($('.on_module').length > 0) {
+          var self = this
+          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
         }
       },
     // ------------- 模块操作 ----------------
@@ -2101,15 +2173,39 @@
     width: 100px;
     height: 5px;
   }
+  .shadow .toolbar{
+    width: 212px;
+    padding: 8px;
+  }
+  .colorShadow{
+    position: relative;
+  }
+  .shadow .toolbar .m-colorPicker {
+    top:5px;
+    left:5px;
+  }
+  .shadow .toolbar span{
+    display: inline-block;
+  }
+  .shadow .toolbar .el-input {
+    width: 50px;
+  }
+  .shadow .toolbar .el-input__inner{
+    width: 50px;
+    text-indent: 0;
+  }
+  .shadow .toolbar input::-webkit-inner-spin-button {
+    display: block;
+  }
   .border .el-radio-button .el-radio-button__inner{
     border-radius: 2px;
   }
-  #app .border .m-colorPicker{
+  #app .border .br_color {
     position: absolute;
     top:0;
     left: 0;
   }
-  #app .border .m-colorPicker .colorBtn{
+  #app .border .br_color .colorBtn{
     width: 38px;
     height: 20px;
     opacity: 0;
@@ -2586,7 +2682,7 @@
     background-repeat: no-repeat;
     background-size: 18px;
   }
-  .st-text {
+  .st-left {
     border-right: 1px solid #E4E4E4;
   }
   .st-prospect {
