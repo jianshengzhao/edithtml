@@ -45,7 +45,7 @@ var datahtml = {
       private: '', // 私有工具
       public: ['a', 'b', 'c', 'd', 'e'] // 公有工具
     },
-    html: '<div class="rectangle module" datatext="矩形"></div>'
+    html: '<div class="rectangle module" datatext="矩形"><a></a></div>'
   },
   radius: {
     style: 'width:100px; height:100px',
@@ -53,7 +53,7 @@ var datahtml = {
       private: '',
       public: ['a', 'b', 'c', 'd', 'e']
     },
-    html: '<div class="radius module"  datatext="圆形"></div>'
+    html: '<div class="radius module"  datatext="圆形"><a></a></div>'
   },
   editor: {
     style: 'width:400px; height:200px',
@@ -61,7 +61,7 @@ var datahtml = {
       private: '编辑文本',
       public: ['a', 'b', 'c', 'e']
     },
-    html: '<div class="editor module"  datatext="富文本"><div class="editorCon"></div></div>'
+    html: '<div class="editor module"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
   picture: {
     style: 'width:200px; height:120px',

@@ -5,7 +5,6 @@ import Vue from 'vue'
 import parent from './parent'
 import router from './router'
 import VueResource from 'vue-resource'
-
 Vue.config.productionTip = false
 window.host = process.env.API_ROOT
 

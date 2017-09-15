@@ -76,7 +76,7 @@ var tool = {
       me.line.show()
     }
   }, 
-  carrySignEvent: function (self, element){ // 标记模块并属性初始化
+  carrySignEvent: function (self, element) { // 标记模块并属性初始化
     let me = this
     let w = element.css('width')
     let h = element.css('height')
@@ -90,8 +90,7 @@ var tool = {
     }
     for (let i = 0, len = tool.public.length; i < len; i ++) {
       thtml += '<li class="' + toolClass[tool.public[i]] + '"></li>'
-    }
-    console.log(thtml)
+    }    
     let resizeBox = '<div class="supendTools">' + thtml + '</div>' +
                     '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
                       '<div class="resize nw"></div>' +
@@ -119,6 +118,9 @@ var tool = {
     self.inp_line = parseInt(element.css('lineHeight'))
     self.color_font = element.css('color')
     self.color_bg = element.css('backgroundColor')
+    self.br_width = element.css('borderWidth')
+    self.br_style = element.css('borderStyle')
+    self.br_color = element.css('borderColor')
     self.disabled = false
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')   
@@ -152,8 +154,10 @@ var tool = {
     self.inp_line = ''
     self.color_font = '#333'
     self.color_bg = '#fff'
+    self.br_color = ''
     self.disabled = true
     me.mod.addClass('tl_li_Disable')
+    me.brmod.addClass('br-disable') 
   },
   carryMenuEvent: function (self) { // 渲染模块菜单
     let me = this
@@ -433,6 +437,10 @@ var tool = {
       return false
     })
 
+    me.editBox.on('click', '.st-link', function (e) {
+      self.$refs.hrefdialogp.show()
+    })
+    
     me.editBox.on('click', '.module', function (e) { // 点击选中模块事件
       let $this = me.$(this)
       me.carrySignEvent(self, $this)

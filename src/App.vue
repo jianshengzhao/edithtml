@@ -111,24 +111,35 @@
           <label for="">边框 :</label>
           <div class="border br-mod br-disable">
             <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
-            <div class="doll"></div>
+            <div class="doll" ></div>
             <ul class="toolbar">
-              <el-radio-group v-model="br_width">
+              <el-radio-group v-model="br_width" @change='changeBorderWidth'>
               <li v-for="(item, index) in br_widths">
-                <el-radio-button :key="item.value" :label="item.label" >
-                  <span class="borderWidth" :style="'border-bottom-width:' + item.label + ';border-style: solid;border-color: #333;'"></span>
+                <el-radio-button :key="item.value" :label="item.label">
+                  <span v-if="item.value == 0" class="borderWidth">none</span>
+                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + ';border-style: ' + br_style + ';border-color: ' + br_color + ';'"></span>
                 </el-radio-button>
               </li>
               </el-radio-group>
             </ul>
           </div>
-          <div class="border b-style">
-            <i class="iconfont2 icon-biankuangyangshi"></i>
-            <div class="doll"></div>
+          <div class="border br-mod br-disable">
+            <i class="iconfont2 icon-biankuangyangshi" ></i>
+            <div class="doll" ></div>
+            <ul class="toolbar">
+              <el-radio-group v-model="br_style" @change='changeBorderStyle'>
+              <li v-for="(item, index) in br_styles">
+                <el-radio-button :key="item.value" :label="item.label">
+                  <span class="borderStyle" :style="'border-width:' + br_width + ';border-style: ' + item.label + ';border-color: ' + br_color + ';'"></span>
+                </el-radio-button>
+              </li>
+              </el-radio-group>
+            </ul>
           </div>
-          <div class="border b-color">
-            <i class="iconfont2 icon-biankuangyanse"></i>
-            <div class="doll"></div>
+          <div class="border br-mod br-disable" :style="'border-color:' + br_color + ';'">
+            <i class="iconfont2 icon-biankuangyanse" :style="'color:' + br_color + ';'"></i>
+            <div class="doll" ></div>          
+            <colorPicker v-model="br_color" @change='changeBorderColor'></colorPicker>
           </div>
         </div>
       </div>
@@ -151,18 +162,14 @@
       </div>
       <!-- module exit -->
       <div class="t_right">
-      <a href="/">
-        <div class="tl_li">
-          <i class="iconfont icon-exits"></i>
-          <span>退出</span>
-        </div>
-      </a>
+        <a href="/">
+          <div class="tl_li">
+            <i class="iconfont icon-exits"></i>
+            <span>退出</span>
+          </div>
+        </a>
       </div> 
-    </div>
-  <!-- attribute tool -->
-   <!--  <div class="tool" unselectable="on" onselectstart="return false;">
-      
-    </div> -->
+    </div> 
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
       <!-- <nav class="lib_nav">
@@ -606,6 +613,7 @@
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
+    <hrefdialog ref="hrefdialogp"></hrefdialog>
   </div>
 </template>
 <script>
@@ -615,9 +623,11 @@
     }
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
   }
-  import $ from 'jquery'  
+  import $ from 'jquery' 
   import datahtml from '@/data/datahtml.js'
-  import tool from '@/data/tool.js' 
+  import tool from '@/data/tool.js'
+  import colorPicker from '@/components/colorPicker'
+  import hrefdialog from '@/components/hrefdialog'
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
@@ -625,6 +635,9 @@
       // ------------ 工具栏add ----------------------
         br_width: '1px',
         br_widths: [{
+          value: '0',
+          label: '0px'
+        },{
           value: '1',
           label: '1px'
         },{
@@ -640,6 +653,34 @@
           value: '5',
           label: '5px'
         }],
+        br_style: 'solid',
+        br_styles: [{
+          value: 'solid',
+          label: 'solid'
+        },{
+          value: 'double',
+          label: 'double'
+        },{
+          value: 'dotted',
+          label: 'dotted'
+        },{
+          value: 'dashed',
+          label: 'dashed'
+        },{
+          value: 'groove',
+          label: 'groove'
+        },{
+          value: 'ridge',
+          label: 'ridge'
+        },{
+          value: 'inset',
+          label: 'inset'
+        },{
+          value: 'outset',
+          label: 'outset'
+        }
+        ],
+        br_color: '#ccc',
       // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
@@ -1039,6 +1080,7 @@
         tool.tool.init(self, $)
       })
     },
+    components: {colorPicker, hrefdialog},
     methods: {
     // ------------- complete ----------------
       settingEvent: function () { // 页面设置
@@ -1300,6 +1342,25 @@
             val = 'transparent'
           }
           self.moduleElement.css('backgroundColor', val)
+        }
+      },
+      changeBorderWidth: function (val) { // 边框宽度（粗细）
+        if ($('.on_module').length > 0) {
+          var self = this         
+          self.moduleElement.css('borderWidth', val)
+          self.moduleElement.find('.resizeBox').css({top: '-' + val, left: '-' + val})
+        }
+      },
+      changeBorderStyle: function (val) { // 边框样式
+        if ($('.on_module').length > 0) {
+          var self = this         
+          self.moduleElement.css('borderStyle', val)
+        }
+      },
+      changeBorderColor: function (val) { // 边框颜色
+        if ($('.on_module').length > 0) {
+          var self = this         
+          self.moduleElement.css('borderColor', val)
         }
       },
     // ------------- 模块操作 ----------------
@@ -1990,6 +2051,11 @@
     text-align: right;
   }
 /*边框*/
+  .pick{
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+  }
   .border, .shadow{
     position: relative;
     display: inline-block;
@@ -2029,8 +2095,24 @@
     width: 100px;
     border: 0;
   }
+  .border .borderStyle{
+    margin: 0 auto;
+    display: block;
+    width: 100px;
+    height: 5px;
+  }
   .border .el-radio-button .el-radio-button__inner{
     border-radius: 2px;
+  }
+  #app .border .m-colorPicker{
+    position: absolute;
+    top:0;
+    left: 0;
+  }
+  #app .border .m-colorPicker .colorBtn{
+    width: 38px;
+    height: 20px;
+    opacity: 0;
   }
 /*tool*/  
   .tool{
