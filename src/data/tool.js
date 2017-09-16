@@ -36,14 +36,14 @@ var tool = {
     me.basicBox = me.$('.basicBox')
     me.onlineBox = me.$('.onlineBox')
     me.todoBox = me.$('.todoBox')
-    me.toolbarEvent(self)
+    me.carrytoolbarEvent(self)
     me.carryMenuEvent(self)
     me.carryLineHeightEvent()
     me.libBox = me.$('.lib_box')
     me.libLi = me.libBox.find('.lib_li')
     me.bindEvent(self)
   },
-  toolbarEvent: function (self) {
+  carrytoolbarEvent: function (self) { // top工具栏排版
     let me = this      
     if(parseInt(me.wtop.css('height')) > 36){
       me.library.css('paddingTop', '68px')
@@ -253,6 +253,10 @@ var tool = {
         self.elementTail = arr
         break
     }
+  },
+  carryRegionChoiceEvent: function (self) { // 区域选中事件
+    let me = this
+    console.log(12121) //todolist
   },
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
@@ -514,6 +518,7 @@ var tool = {
       let $this = me.$(this)
       let sTop = parseInt(me.space.scrollTop())
       // me.carryLineEvent(self)
+     
       me.editBox.mousemove(function (e) {
         let left = xs + e.pageX - x
         let top = ys + e.pageY - y
@@ -530,7 +535,7 @@ var tool = {
           if (top > (parseInt(areaB) - self.inp_h)) {
             top = parseInt(areaB) - self.inp_h
           }
-        }
+        }       
         self.inp_x = left
         self.inp_y = top
         $this.css('left', left)
@@ -618,10 +623,11 @@ var tool = {
         } else {
           self.rightButton = false
         }
-        me.contextmenu.css({'top': e.pageY, left: e.pageX})
+        me.contextmenu.css({'top': e.pageY, left: e.pageX - self.paddingleft})
         me.contextmenu.show()
         return false
       }
+      me.carryRegionChoiceEvent(self)
     })
   // ------------- 页头页尾调整 ----------------
     me.top.on('mousedown', '.hoverbar', function (e) { // top容器调整
