@@ -65,8 +65,8 @@
                         <el-col style="margin-top: 10px;max-height: 393px; overflow-x: hidden;border: 1px solid #CECECE;">
                           <div class="nodata" style="display: none;"></div>
                           <el-radio-group v-model="threenewsradio">
-                            <el-radio  v-for="(item,index) in newslist" :label="item.itemid">
-                              <span style="width: 360px;display: inline-block;">
+                            <el-radio  v-for="(item,index) in newslist" :label="item.itemid" :key="item.itemid">
+                              <span style="width: 360px;display: inline-block;" >
                                 {{item.subject}}
                               </span>
                               {{item.dateline | time}}
@@ -159,9 +159,9 @@
                         <el-input  icon="search" :on-icon-click="handleIconcwClick" style="width: 200px;float: right;" type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
                       </el-col>
                       <div class="nodata" v-if="!cwlist.length"></div>
-                      <el-col v-for="(item,index) in cwlist">
+                      <el-col v-for="(item,index) in cwlist" :key="item.sname">
                         <h3>{{item.sname}}</h3>
-                        <label  class="courselist" v-for="(items,indexs) in item.cwlist">
+                        <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid">
                           <input :cwid="items.cwid"  name="fivecourse" type="radio" value="" />
                           <a class="vc-font2">
                             <img :src="items.face" ><br/>

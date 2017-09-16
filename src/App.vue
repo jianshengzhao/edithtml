@@ -2,7 +2,6 @@
   <div id="app">
   <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">
-      <div class="t_logo"></div>
       <div class="t_left">
         <div class="tl_li" @click="settingEvent">
           <i class="iconfont mb icon-cog " title="设置"></i>
@@ -61,7 +60,7 @@
         </div>
       </div>
       <!-- module attribute -->
-      <div class="toolBox">
+     <!--  <div class="toolBox"> -->
         <div class="property" >
           <label for="">Z :</label>
           <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
@@ -81,10 +80,8 @@
         <div class="property">
           <label for="">高 :</label>
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
-        </div>
-      </div>
-      <!-- module font -->
-      <div class="toolBox">
+        </div>      
+      <!-- module font -->      
         <div class="property">
           <label for="">字号 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
@@ -96,17 +93,13 @@
         <div class="property">
           <label for="">字色 :</label>
           <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
-        </div>
-      </div>
-      <!-- module background -->
-      <div class="toolBox">
+        </div>      
+      <!-- module background -->     
         <div class="property">
           <label for="">背景 :</label>
           <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
-        </div>
-      </div>
-      <!-- module border -->
-      <div class="toolBox">
+        </div>     
+      <!-- module border -->      
         <div class="property">
           <label for="">边框 :</label>
           <div class="border br-mod br-disable">
@@ -141,17 +134,13 @@
             <div class="doll" ></div>          
             <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor'></colorPicker>
           </div>
-        </div>
-      </div>
-      <!-- module opacity -->
-      <div class="toolBox">
+        </div>      
+      <!-- module opacity -->     
         <div class="property">
           <label for="">透明度 :</label>
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
-        </div>
-      </div>
+        </div>      
       <!-- module shadow -->
-      <div class="toolBox">
         <div class="property">
           <label for="">阴影 :</label>
           <div class="border br-mod br-disable shadow">
@@ -183,7 +172,7 @@
             </ul>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
       <!-- module exit -->
       <div class="t_right">
         <a href="/">
@@ -489,7 +478,7 @@
         <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
+   <!--  <el-dialog
       title="富文本"
       :visible.sync="dialogEditor"
       size="small" class="ueditor">
@@ -498,7 +487,7 @@
         <el-button @click="dialogEditor = false">取 消</el-button>
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       title="修改图片 ( 点击添加 )"
       :visible.sync="dialogPicture"
@@ -637,21 +626,17 @@
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
+    <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
   </div>
 </template>
-<script>
-  function guidGenerator () {
-    let S4 = function () {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
-    }
-    return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
-  }
+<script>  
   import $ from 'jquery' 
   import datahtml from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
+  import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
   export default { // todo: 本地操作保存
@@ -713,6 +698,7 @@
         inp_weight_y: '0',
         inp_blur: '0',
         bw_color: '#ccc',
+        editEditor: false,
       // ------------ 基础组件弹框 -------------------
         dialogText: false,
         dialogEditor: false,
@@ -838,13 +824,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-        datahtml: datahtml.datahtml,      
-        editorConfig: {
-          zIndex: 3000,
-          toolbars: [[
-            'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
-          ]]
-        },
+        datahtml: datahtml.datahtml,
       // ------------ common -------------------------
         httpget: function (getParam) { // 封装的异步请求数据
           let self = this
@@ -945,20 +925,20 @@
             let getParam
             let oa
             switch (type) {
-              case 'editor':
-                self.dialogEditor = true
-                w = parseInt(onthis.css('width'))
-                let html = onthis.find('.editorCon').html()
-                self.$nextTick(function () {
-                  self.$refs.ueditor.id = self.ueditorid
-                  $('.ueditor .el-dialog').css('width', w + 40)
-                  $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
-                  self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
-                  self.editor.ready(function () {
-                    self.editor.setContent(html)
-                  })
-                })
-                break
+              // case 'editor':
+              //   self.dialogEditor = true
+              //   w = parseInt(onthis.css('width'))
+              //   let html = onthis.find('.editorCon').html()
+              //   self.$nextTick(function () {
+              //     self.$refs.ueditor.id = self.ueditorid
+              //     $('.ueditor .el-dialog').css('width', w + 40)
+              //     $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
+              //     self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
+              //     self.editor.ready(function () {
+              //       self.editor.setContent(html)
+              //     })
+              //   })
+              //   break
               case 'picture':
                 self.linkType = 'none'
                 self.inpOnline = ''
@@ -1014,15 +994,12 @@
     },
     created: function () {
       var self = this
-      self.ueditorid = guidGenerator()
       self.$nextTick(function () {
         let canvas = $('.canvas')
         let space = $('.space')
         canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
         self.inp_width = parseInt(canvas.css('width'))
-        self.inp_height = parseInt(canvas.css('height'))        
-        // self.tool.bindDblclickEvent(self)
-        // self.moduleEvent()
+        self.inp_height = parseInt(canvas.css('height'))
         space.scrollLeft(900)
         let head = $('.c_top')
         let middle = $('.c_body')
@@ -1112,7 +1089,7 @@
         tool.tool.init(self, $)
       })
     },
-    components: {colorPicker, hrefdialog, myimages},
+    components: {colorPicker, ueditor, hrefdialog, myimages},
     methods: {
     // ------------- complete ----------------
       settingEvent: function () { // 页面设置
@@ -1395,41 +1372,44 @@
           self.moduleElement.css('borderColor', val)
         }
       },
-      changeOpacity: function (val) {
+      changeOpacity: function (val) { // 透明度
         if ($('.on_module').length > 0) {
           var self = this         
           self.moduleElement.css('opacity', val/100)
         }        
       },
-      changeShadow: function (val) {
+      changeShadow: function (val) { // 阴影开关
         if ($('.on_module').length > 0) {
           var self = this
           if (!val) {
             self.moduleElement.css('boxShadow', 'none')
           } else {
+            self.inp_weight_x = 1
+            self.inp_weight_y = 1
+            self.inp_blur = 1
             self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
           }
         }
       },
-      changHShadow: function (val) {
+      changHShadow: function (val) { // 水平偏移阴影
         if ($('.on_module').length > 0) {
           var self = this
           self.moduleElement.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
         }
       },
-      changVShadow: function (val) {
+      changVShadow: function (val) { // 垂直偏移阴影
         if ($('.on_module').length > 0) {
           var self = this         
           self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
         }
       },
-      changBlurShadow: function (val) {
+      changBlurShadow: function (val) { // 阴影模糊
         if ($('.on_module').length > 0) {
           var self = this
           self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
         }
       },
-      changColorShadow: function (val) {
+      changColorShadow: function (val) { // 阴影颜色
         if ($('.on_module').length > 0) {
           var self = this
           self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
@@ -1609,14 +1589,14 @@
         }
         self.dialogText = false
       },
-      dialogEditorEvent: function () { // 富文本窗口
-        let self = this
-        let content = self.editor.getContent()
-        let h = $('.ueditor .edui-editor-iframeholder').css('height')
-        self.dialogEditor = false
-        self.moduleElement.css('height', h)
-        self.moduleElement.find('.editorCon').html(content)
-      },
+      // dialogEditorEvent: function () { // 富文本窗口
+      //   let self = this
+      //   let content = self.editor.getContent()
+      //   let h = $('.ueditor .edui-editor-iframeholder').css('height')
+      //   self.dialogEditor = false
+      //   self.moduleElement.css('height', h)
+      //   self.moduleElement.find('.editorCon').html(content)
+      // },
       beforePictureUpload: function (file) {
         let self = this
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
@@ -1988,13 +1968,17 @@
   }
   .top{
     padding-top: 3px;
-    position: relative;
-    height: 31px;
+    padding-left: 10px;
+    padding-right: 60px;
+    position: relative;    
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
     background-color: #fff;
     letter-spacing: 0;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
   }
   .top>div{
     height: 28px;
@@ -2098,9 +2082,11 @@
     display: none;
   }
   #app .t_right{
-    position: relative;
-    float: right;
+    position: absolute;    
     width: 60px;
+    height: 28px;
+    top: 3px;
+    right: 4px;
     text-align: left;
   } 
   .toolbar .el-col{
@@ -2234,6 +2220,7 @@
     float: left;
     width: auto;    
     height: 20px;
+    margin-top: 4px;
     line-height: 20px;
     text-align: left;
   }

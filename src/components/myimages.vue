@@ -47,7 +47,7 @@
 			     	
 		    <span slot="footer" class="dialog-footer">
 		      	<el-button @click="dialogmyPicture = false">取 消</el-button>
-		        <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
+		        <el-button type="primary" @click="imgconfirm">确 定</el-button>
 		    </span>
 		</el-dialog>
 	</div>
@@ -70,17 +70,17 @@
 		       				var newli = "";
 		        			for(var i=0,len=datas.ablums.length;i<len;i++){
 						      	newli += '<li class="myFiles_li">';
-						     			newli	+= '<img class="flieimg" src="http://static.ebanhui.com/ebh/tpl/default/images/newfile.png" aid="'+datas.ablums[i].aid+'" />';
-						     			newli	+= '<input class="fliename" type="text" value="'+datas.ablums[i].alname+'" readonly />';
-						     			newli += '<span class="delflie"></span>'
-						     		newli	+= '</li>';
+					     			newli	+= '<img class="flieimg" src="http://static.ebanhui.com/ebh/tpl/default/images/newfile.png" aid="'+datas.ablums[i].aid+'" />';
+					     			newli	+= '<input class="fliename noimgfile" type="text" value="'+datas.ablums[i].alname+'" readonly />';
+					     			newli += '<span class="delflie"></span>'
+					     		newli	+= '</li>';
 		        			}
 		        			for(var j=0,len=datas.photos.length;j<len;j++){
 		        				newli += '<li class="myFiles_li">';
 		        					newli+=	'<img class="flieimg" src="'+datas.showpath+datas.photos[j].path+'" aid="'+datas.photos[j].aid+'" pid="'+datas.photos[j].pid+'" />';
 		        					newli	+= '<input class="fliename" type="text" value="'+datas.photos[j].photoname+'" readonly />';
-						     			newli += '<span class="delflie"></span>';
-		        				newli	+= '</li>';
+						     		newli += '<span class="delflie"></span>';
+		        				newli+= '</li>';
 		        			}
 		        			$('.myFiles').append(newli);
 		        			
@@ -111,13 +111,11 @@
 						        }).then(() => {
 						        	self.$http.post(window.host+$url,param,{emulateJSON:true}).then(function(response){
 						        		if(response.data.code == 0){
-						        			$(this).parent().remove();
 				        					self.$message({
-								            type: 'success',
-								            message: '删除成功!'
-								          });
-						        		}else{
-						        			
+									            type: 'success',
+									            message: '删除成功!'
+									          });
+						        			self.getfilelist();
 						        		}
 						        	},function(response){
 						        		console.log(response);
@@ -180,7 +178,7 @@
 						   			nowName = "";
 						   		});
 						   		
-									//点击进入文件夹操作
+							//点击进入文件夹操作
 						   		$('.flieimg').on("click",function(){
 						   			var aid = $(this).attr('aid');
 						   			if( typeof($(this).attr('pid')) == "undefined" ){
@@ -208,8 +206,8 @@
 		       					newli += '<li class="myImgs_li">';
 		        					newli+=	'<img class="flieimg" src="'+datas.showpath+datas.photos[j].path+'" aid="'+datas.photos[j].aid+'" pid="'+datas.photos[j].pid+'" />';
 		        					newli	+= '<input class="fliename" type="text" value="'+datas.photos[j].photoname+'" readonly />';
-						     			newli += '<span class="delflie"></span>';
-		        				newli	+= '</li>';
+						     		newli += '<span class="delflie"></span>';
+		        				newli+= '</li>';
 		       				}
 		       				$('.myImgs').append(newli);
 		       				//鼠标移上显示删除按钮，移除隐藏
@@ -361,20 +359,31 @@
 	      	},
       		newFlies: function(){
       			var self = this;
+      			let $noimgfile = $('.noimgfile');
+      			var arr = [];
+      			for(var i=0,len=$noimgfile.length;i<len;i++){
+      				if($($noimgfile[i]).val().indexOf("新建文件夹") != -1){
+      					var str = $($noimgfile[i]).val();
+      					var len = $($noimgfile[i]).val().length;
+      					var last = str.charAt(len-1);
+      					arr.push(last);
+      				}
+      			}
+      			var alname = "新建文件夹" + (Math.max.apply(null, arr) + 1);
       			self.$http.post(window.host+"/room/albums/addalbums.html",
-	    		{aid:0},{emulateJSON:true}).then(function(response){
+	    		{aid:0,alname:alname},{emulateJSON:true}).then(function(response){
 	    			if(response.data.code == 0){
 	    				self.getfilelist();
 	    			}
 	    		},function(response){
-	    		console.log(response);
+	    			console.log(response);
 	    		});
       		},
 			//---------- 搜索我的图片 -------------
       		searchMypicClick: function(ev){
       			console.log(ev);
       		},
-      		dialogPictureEvent: function () {
+      		imgconfirm: function(){
       			
       		}
 		}

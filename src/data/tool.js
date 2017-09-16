@@ -13,6 +13,7 @@ var tool = {
     me.colL = me.$('.col-l')
     me.colR = me.$('.col-r')
     me.line = me.$('.line')
+    me.wtop = me.$('.top')
     me.editBox = me.$('.editBox')
     me.space = me.$('.space')
     me.canvas = me.$('.canvas')
@@ -35,11 +36,34 @@ var tool = {
     me.basicBox = me.$('.basicBox')
     me.onlineBox = me.$('.onlineBox')
     me.todoBox = me.$('.todoBox')
+    me.toolbarEvent(self)
     me.carryMenuEvent(self)
     me.carryLineHeightEvent()
     me.libBox = me.$('.lib_box')
     me.libLi = me.libBox.find('.lib_li')
     me.bindEvent(self)
+  },
+  toolbarEvent: function (self) {
+    let me = this      
+    if(parseInt(me.wtop.css('height')) > 36){
+      me.library.css('paddingTop', '68px')
+      me.layer.css('paddingTop', '68px')
+      me.editBox.css('paddingTop', '68px')
+      self.paddingtop = 68;
+    }
+    me.$(window).resize(function() {
+      if (parseInt(me.wtop.css('height')) > 36) {
+        me.library.css('paddingTop', '68px')
+        me.layer.css('paddingTop', '68px')        
+        me.editBox.css('paddingTop', '68px')
+        self.paddingtop = 68;
+      } else {
+        me.library.css('paddingTop', '35px')
+        me.layer.css('paddingTop', '35px')        
+        me.editBox.css('paddingTop', '35px')
+        self.paddingtop = 35;
+      }
+    })
   },
   carryLineHeightEvent: function () { // 计算竖向参考线高度
     let me = this
@@ -122,13 +146,21 @@ var tool = {
     self.br_style = element.css('borderStyle')
     self.br_color = element.css('borderColor')
     self.inp_opacity = parseInt(element.css('opacity') * 100)
-    self.check_shadow = false // todolist
-    self.inp_weight_x = '1'
-    self.inp_weight_y = '1'
-    self.inp_blur = '1'
-    self.bw_color = '#ccc'
-    self.disabled = false
-    console.log(element.css('boxShadow').split(' '))
+    if (element.css('boxShadow') == 'none') {
+      self.check_shadow = false
+      self.inp_weight_x = ''
+      self.inp_weight_y = ''
+      self.inp_blur = ''
+      self.bw_color = '#ccc'
+    } else {
+      let shadowArr = element.css('boxShadow').split(' ')
+      self.check_shadow = true
+      self.inp_weight_x = shadowArr[3].split('p')[0]
+      self.inp_weight_y = shadowArr[4].split('p')[0]
+      self.inp_blur = shadowArr[5].split('p')[0]
+      self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
+    }
+    self.disabled = false    
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')   
     switch (self.moduleElement.parent().attr('class')) {
@@ -450,12 +482,20 @@ var tool = {
       return false
     })
 
-    me.editBox.on('click', '.st-link', function (e) {
-      self.$refs.hrefdialogp.show()
-    })
 
-    me.editBox.on('click', '.st-picture', function (e) {
-      self.$refs.myimages.show()
+    me.editBox.on('click', '.supendTools', function (e) {     
+      let classname = me.$(e.target).attr('class')
+      switch (classname) {
+        case 'st-left st-text': 
+          self.$refs.ueditor.show()
+          break
+        case 'st-link': 
+          self.$refs.hrefdialogp.show()
+          break
+        case 'st-left st-picture': 
+          self.$refs.myimages.show()
+          break
+      }
     })
     
     me.editBox.on('click', '.module', function (e) { // 点击选中模块事件
