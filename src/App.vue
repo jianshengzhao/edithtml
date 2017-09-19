@@ -809,7 +809,11 @@
         color_font: '#333',
         color_bg: '#fff',
         moduleElement: '', // 选中的模块全局引用
-        moduleParentElementHeight: '',
+        moduleElementY:'',
+        moduleElementX:'',
+        moduleElementR:'',
+        moduleElementB:'',
+        moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
         config: {
@@ -821,6 +825,11 @@
         postop: 80, // editbox  top值
         posleft: 1000, // editbox  left值
         preHandleTime: 0,
+        elementStorage: {
+          c_top: {},
+          c_body: {},
+          c_foot: {}
+        },
         elementHead: [],
         elementMain: [],
         elementTail: [],
@@ -1265,286 +1274,132 @@
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
-        if (val < 0) {
-          val = 0
-          self.inp_z = 0
-        }
-        if (val > 99) {
-          val = 99
-          self.inp_z = 99
-        }
-        self.moduleElement.css('zIndex', val)
+        tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
       },
       changeInpX: function (val) { // left 定位
         var self = this
-        if (val < 0 && self.config.moveLimit) {
-          val = 0
-          self.inp_x = 0
-        }
-        let x = self.inp_width - self.inp_w
-        if (val > x && self.config.moveLimit) {
-          val = x
-          self.inp_x = x
-        }
-        self.moduleElement.css('left', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'left', val)
       },
-      changeInpY: function (val) { // right 定位
+      changeInpY: function (val) { // top 定位
         var self = this
-        if (val < 0 && self.config.moveLimit) {
-          val = 0
-          self.inp_y = 0
-        }
-        let y = self.moduleParentElementHeight - self.inp_h
-        if (val > y && self.config.moveLimit) {
-          val = y
-          self.inp_y = y
-        }
-        self.moduleElement.css('top', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'top', val)
       },
       changeInpW: function (val) { // width 宽度
         var self = this
-        if (val < 0 && self.config.stretchLimit) {
-          val = 0
-          self.inp_w = 0
-        }
-        let w = self.inp_width - self.inp_x
-        if (val > w && self.config.stretchLimit) {
-          val = w
-          self.inp_w = w
-        }
-        self.moduleElement.css('width', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'width', val)       
       },
       changeInpH: function (val) { // height 高度
         var self = this
-        if (val < 0 && self.config.stretchLimit) {
-          val = 0
-          self.inp_h = 0
-        }
-        let h = self.moduleParentElementHeight - self.inp_y
-        if (val > h && self.config.stretchLimit) {
-          val = h
-          self.inp_h = h
-        }
-        self.moduleElement.css('height', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'height', val)       
       },
       changeInpSize: function (val) { // font-size 字体大小
         var self = this
-        self.moduleElement.css('fontSize', val + 'px')
-        if(self.inp_line < val){
-          self.moduleElement.css('lineHeight', val + 'px')
-        }
+        tool.tool.carryModuleOperationEvent(self, 'fontSize', val) 
       },
       changeInpLine: function (val) { // line-height 行高
         var self = this
-        self.moduleElement.css('lineHeight', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'lineHeight', val)
       },
       changeColorFont: function (val) { // font-color 字体颜色
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('color', val)
-        }
+        var self = this       
+        tool.tool.carryModuleOperationEvent(self, 'color', val)
       },
       changeColorBg: function (val) { // background-color 背景颜色
-        if ($('.on_module').length > 0) {
-          var self = this
-          if (val === null) {
-            val = 'transparent'
-          }
-          self.moduleElement.css('backgroundColor', val)
-        }
+        var self = this 
+        tool.tool.carryModuleOperationEvent(self, 'backgroundColor', val)
       },
       changeBorderWidth: function (val) { // 边框宽度（粗细）
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderWidth', val)
-          self.moduleElement.find('.resizeBox').css({top: '-' + val, left: '-' + val})
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
       },
       changeBorderStyle: function (val) { // 边框样式
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderStyle', val)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
       },
       changeBorderColor: function (val) { // 边框颜色
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderColor', val)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'borderColor', val)
       },
       changeOpacity: function (val) { // 透明度
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('opacity', val/100)
-        }        
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'opacity', val)
       },
       changeShadow: function (val) { // 阴影开关
-        if ($('.on_module').length > 0) {
-          var self = this
-          if (!val) {
-            self.moduleElement.css('boxShadow', 'none')
-          } else {
-            self.inp_weight_x = 1
-            self.inp_weight_y = 1
-            self.inp_blur = 1
-            self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
-          }
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadow', val)        
       },
       changHShadow: function (val) { // 水平偏移阴影
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowX', val)        
       },
       changVShadow: function (val) { // 垂直偏移阴影
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowY', val)        
       },
       changBlurShadow: function (val) { // 阴影模糊
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
       },
       changColorShadow: function (val) { // 阴影颜色
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
     // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
-        let self = this
-        self.moduleElement.css('top', '0px')
-        self.inp_y = 0
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'topAlign')
       },
       bottomAlignEvent: function () { // top 下对齐
         let self = this
-        let x = self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))
-        self.moduleElement.css('top', x)
-        self.inp_y = x
+        tool.tool.carryModuleOperationEvent(self, 'bottomAlign')
       },
       leftAlignEvent: function () { // left 左对齐
         let self = this
-        self.moduleElement.css('left', '0px')
-        self.inp_x = 0
+        tool.tool.carryModuleOperationEvent(self, 'leftAlign')
       },
       rightAlignEvent: function () { // left 右对齐
         let self = this
-        let x = self.inp_width - parseInt(self.moduleElement.css('width'))
-        self.moduleElement.css('left', x)
-        self.inp_x = x
+        tool.tool.carryModuleOperationEvent(self, 'rightAlign')
       },
       centerAlignEvent: function () { // left 水平居中
         let self = this
-        let x = (self.inp_width - parseInt(self.moduleElement.css('width'))) / 2
-        self.moduleElement.css('left', x)
-        self.inp_x = x
+        tool.tool.carryModuleOperationEvent(self, 'centerAlign')
       },
       middleAlignEvent: function () { // top 垂直居中
         let self = this
-        let x = (self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))) / 2
-        self.inp_y = x
-        self.moduleElement.css('top', x)
+        tool.tool.carryModuleOperationEvent(self, 'middleAlign')
       },
       topFloorEvent: function () { // 图层置顶
         let self = this
-        let z = 99
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'topFloor')
       },
       bottomFloorEvent: function () { // 图层置底
         let self = this
-        let z = 0
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'bottomFloor')
       },
       upFloorEvent: function () { // 图层上移一层
         let self = this
-        let z = self.inp_z + 1
-        if (z > 99) {
-          z = 99
-        }
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'bottomFloor')       
       },
       downFloorEvent: function () { // 图层下移一层
         let self = this
-        let z = self.inp_z - 1
-        if (z < 0) {
-          z = 0
-        }
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'downFloor')
       },
       shearEvent: function () { // 剪切
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.clipboard = self.moduleElement[0].outerHTML
-          self.original = self.moduleElement.parent()
-          self.moduleElement.remove()
-          $('.contextmenu').hide()
-          tool.tool.carryLayerEvent(self, self.original)
-        }
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'shear')
       },
       copyEvent: function () { // 复制
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.clipboard = self.moduleElement[0].outerHTML
-          self.original = self.moduleElement.parent()
-        }
-        $('.contextmenu').hide()
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'copy')
       },
       pasteEvent: function () { // 粘贴
         let self = this
-        if (self.clipboard) {
-          let sTop = parseInt($('.space').scrollTop())
-          let sLeft = parseInt($('.space').scrollLeft())
-          let contextmenu = $('.contextmenu')
-          let y = parseInt(contextmenu.css('top'))
-          let x = parseInt(contextmenu.css('left'))
-          switch (self.original.attr('class')) {
-            case 'c_top':
-              y = y - (self.paddingtop + self.postop) + sTop
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-            case 'c_body':
-              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height'))
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-            case 'c_foot':
-              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-          }
-          self.original.append(self.clipboard)
-          tool.tool.cleanSignEvent(self)
-          let bChild = self.original.children()
-          if (self.config.moveLimit) {
-            if (y < 0) {
-              y = 0
-            }
-            let boxTop = parseInt(self.original.css('height')) - parseInt(bChild.eq(bChild.length - 1).css('height'))
-            if (y > boxTop) {
-              y = boxTop
-            }
-          }
-          bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
-          tool.tool.carryLayerEvent(self, self.original)
-        }
-        $('.contextmenu').hide()
+        tool.tool.carryModuleOperationEvent(self, 'paste')
       },
       deleteEvent: function () { // 删除
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.original = self.moduleElement.parent()
-          self.moduleElement.remove()
-          $('.contextmenu').hide()
-          tool.tool.carryLayerEvent(self, self.original)
-        }
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'delete')
       },
     // ------------- 基础模块 ----------------
       dialogTextEvent: function () { // 编辑文本窗口
@@ -2107,6 +1962,11 @@
   }
   .dialogSetting .tit{
     text-align: right;
+  }
+  .getRegion{
+    position: absolute;
+    z-index: 200;
+    background-color: rgba(245, 93, 84, 0.5);
   }
 /*边框*/
   .pick{
@@ -2692,6 +2552,16 @@
     width: 20px;
     border-left: 1px solid #E4E4E4;
     background-image: url(./assets/toolIcon/e.png);
+  }
+  .multiBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #f55d54;
+    width: 100%;
+    height: 100%;
+    box-sizing:border-box;
+    background-color: rgba(245, 93, 84, 0.5);
   }
   .resizeBox{
     position: absolute;
