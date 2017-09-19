@@ -1379,7 +1379,7 @@
       },
       upFloorEvent: function () { // 图层上移一层
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'bottomFloor')       
+        tool.tool.carryModuleOperationEvent(self, 'upFloor')       
       },
       downFloorEvent: function () { // 图层下移一层
         let self = this
