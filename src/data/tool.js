@@ -279,7 +279,6 @@ var tool = {
       let ibottom = parseInt(item.css('height')) + iTop
       let iright = parseInt(item.css('width')) + iLeft
       let ibor = parseInt(item.css('borderWidth'))
-
       
       if (!parentO[regionY]) {
         regionYO = parentO[regionY] = {}
@@ -322,7 +321,7 @@ var tool = {
     self.moduleParentElementHeight = parseInt(me.$('.' + parent).css('height'))
     let getregion = me.$('.getRegion') 
     getregion.css({'top': postY, 'left': postX})
-    me.canvas.on('mousemove', function (e) { // 绘制选区
+    me.editBox.on('mousemove', function (e) { // 绘制选区
       drawY = e.pageY - startY
       drawX = e.pageX - startX
       if (drawY > 0 && drawX > 0) { // 上下左右四种情况的操作
@@ -343,12 +342,12 @@ var tool = {
     let sy
     let ey
     let elements = self.elementStorage[parent]
-    me.canvas.on('mouseup', function (e) {
+    me.editBox.on('mouseup', function (e) {
+      me.editBox.unbind('mousemove mouseup')
       gx = parseInt(getregion.css('left'))
       gy = parseInt(getregion.css('top'))
       gw = parseInt(getregion.css('width'))
-      gh = parseInt(getregion.css('height')) // 获得选区
-      me.canvas.unbind('mousemove mouseup')
+      gh = parseInt(getregion.css('height')) // 获得选区      
       sy = parseInt(gy/300) * 300
       ey = parseInt((gy + gh) /300) * 300
       let obj = {}
@@ -372,8 +371,8 @@ var tool = {
       let getElementB = onModule.eq(0)
       for(let i = 1,len = onModule.length; i < len; i ++) { // 选出特殊用途的元素
         let item = onModule.eq(i)
-        let eleTop = parseInt(getElementY.css('top'))
         let itemTop = parseInt(item.css('top'))
+        let eleTop = parseInt(getElementY.css('top'))        
         if (eleTop >= itemTop) { // 最上边的元素
           if (eleTop == itemTop) {
             if (parseInt(getElementY.css('left')) > parseInt(item.css('left'))) {
@@ -383,17 +382,22 @@ var tool = {
             getElementY = item
           }          
         }
-        let eleBottom = parseInt(getElementB.css('top'))
-        if (itemTop >= eleBottom) { // 最下边的元素
+
+        let itemBottom = parseInt(item.css('top')) + parseInt(item.css('height'))
+        let eleBottom = parseInt(getElementB.css('top')) + parseInt(getElementB.css('height'))
+        if (itemBottom >= eleBottom) { // 最下边的元素
           getElementB = item
         }
-        let eleLeft = parseInt(getElementX.css('left'))
+
         let itemLeft = parseInt(item.css('left'))
+        let eleLeft = parseInt(getElementX.css('left'))
         if (eleLeft >= itemLeft) { // 最左边的元素
           getElementX = item
         }
-        let eleRight = parseInt(getElementR.css('left'))
-        if (itemLeft >= eleRight) { // 最右边的元素
+
+        let itemRight = parseInt(item.css('left')) + parseInt(item.css('width'))
+        let eleRight = parseInt(getElementR.css('left')) + parseInt(getElementR.css('width'))
+        if (itemRight >= eleRight) { // 最右边的元素
           getElementR = item
         }
       }
@@ -454,6 +458,7 @@ var tool = {
       self.original = self.moduleElement.parent()
     }
     switch (type) {
+      // -------------- css属性 -----------------
       case 'zIndex':
         if (val < 0) {
           val = 0
@@ -472,20 +477,25 @@ var tool = {
           val = 0
           self.inp_x = 0
         }
-        if (self.moduleElementX.length){
-          left = parseInt(self.moduleElementX.css('left'))
-        } else {
-          left = parseInt(self.moduleElement.css('left'))
+        let maxX
+        let moveX = val
+        if (onModules.length > 1){
+          maxX = parseInt(onModules.parent().css('width')) - (parseInt(self.moduleElementR.css('left')) + parseInt(self.moduleElementR.css('width')) - parseInt(self.moduleElementX.css('left')))
+        } else {          
+          maxX = parseInt(onModules.parent().css('width')) - self.inp_w
+        }        
+        if (val > maxX) {
+          val = maxX
+        }
+        if (onModules.length > 1){
+          moveX = val - parseInt(self.moduleElementX.css('left')) 
+        } else { 
+          moveX = val - parseInt(self.moduleElement.css('left'))
         }
         self.inp_x = val
-        part = function (ele) {
-          let vleft = val - left + parseInt(ele.css('left'))
-          let x = self.inp_width - parseInt(ele.css('width'))
-          if (vleft > x && self.config.moveLimit) {           
-            ele.css('left', x + 'px')
-          } else {
-            ele.css('left', vleft + 'px') 
-          }
+        part = function (ele) {          
+          let nowX = moveX + parseInt(ele.css('left'))
+          ele.css('left', nowX + 'px')
         }
         break
       case 'top':
@@ -493,20 +503,25 @@ var tool = {
           val = 0
           self.inp_y = 0
         }
-        if (self.moduleElementY.length){
-          top = parseInt(self.moduleElementY.css('top'))          
-        } else {
-          top = parseInt(self.moduleElement.css('top'))
+        let maxY
+        let moveY = val
+        if (onModules.length > 1){
+          maxY = parseInt(onModules.parent().css('height')) - (parseInt(self.moduleElementB.css('top')) + parseInt(self.moduleElementB.css('height')) - parseInt(self.moduleElementY.css('top')))
+        } else {          
+          maxY = parseInt(onModules.parent().css('height')) - self.inp_h
+        }        
+        if (val > maxY) {
+          val = maxY
+        }
+        if (onModules.length > 1){
+          moveY = val - parseInt(self.moduleElementY.css('top')) 
+        } else { 
+          moveY = val - parseInt(self.moduleElement.css('top'))
         }
         self.inp_y = val
         part = function (ele) {          
-          let vtop = val - top + parseInt(ele.css('top'))          
-          let y = self.moduleParentElementHeight - parseInt(ele.css('height'))
-          if (vtop > y && self.config.moveLimit) {
-            ele.css('top', x + 'px')
-          } else {
-            ele.css('top', vtop + 'px')
-          }
+          let nowY = moveY + parseInt(ele.css('top'))
+          ele.css('top', nowY + 'px')
         }
         break
       case 'width':
@@ -753,7 +768,6 @@ var tool = {
           ele.find('.resizeBox').remove()
           ele.find('.supendTools').remove()
           self.clipboard += ele[0].outerHTML
-          ele.find('.on_module').remove()
           ele.remove()
         }
         break
@@ -764,12 +778,12 @@ var tool = {
           ele.find('.resizeBox').remove()
           ele.find('.supendTools').remove()
           self.clipboard += ele[0].outerHTML
-          console.log(self.clipboard)     
-          ele.find('.on_module').remove()
+          ele.removeClass('on_module')
         }
         break
       case 'paste':
         if (self.clipboard) {
+          me.$(".on_module").removeClass('on_module')
           let sTop = parseInt(me.space.scrollTop())
           let sLeft = parseInt(me.space.scrollLeft())           
           let menuY = parseInt(me.contextmenu.css('top'))
@@ -891,10 +905,79 @@ var tool = {
         break
     }
   },
+  carryFuzzyCalibrationEvent: function (self, parentClass, id, left, top, height, width, ele) { // 模糊校准
+    let me = this
+    me.$('.fuzzybox').remove()
+    me.line.hide()
+    let storage = self.elementStorage[parentClass]
+    let obj = {}
+    let yT = top
+    let yB = top + height
+    let xL = left
+    let xR = left + width
+    let sy = parseInt(yT/300) * 300
+    let ey = parseInt((yB) /300) * 300
+    let fv = self.fuzzyVal
+    let fyzzyHtml = '<div class="fuzzybox"></div>'
+    for (let i in storage) {
+      if (i == sy || i == ey) {
+        me.$.extend(obj, storage[i])
+      }
+    }    
+    for (let i in obj) {     
+      if (i != id) {
+        let item = obj[i]    
+        // if (item.xt == xL ||item.xb == xR || item.yt == yT || item.yb == yB) {
+        //   item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
+        // }        
+        if (Math.abs(item.xt - xL) <= fv) {
+          ele.css({'left': item.xt})
+          self.inp_x = item.xt
+        }
+        if (Math.abs(item.xt - xR) <= fv) {
+          let fLeftR = item.xt - width
+          ele.css({'left': fLeftR})
+          self.inp_x = fLeftR
+        }
+        if (Math.abs(item.xb - xR) <= fv) {
+          let fLeft = item.xb - width
+          ele.css({'left': fLeft})
+          self.inp_x = fLeft            
+        }
+        if (Math.abs(item.xb - xL) <= fv) {
+          ele.css({'left': item.xb})
+          self.inp_x = item.xb            
+        }
+        if (Math.abs(item.yt - yT) <= fv) {
+          ele.css({'top': item.yt}) 
+          self.inp_y = item.yt
+        }
+        if (Math.abs(item.yt - yB) <= fv) {
+          let fTopB = item.yt - height
+          ele.css({'top': fTopB})
+          self.inp_y = fTopB            
+        }
+        if (Math.abs(item.yb - yB) <= fv) {
+          let fTop = item.yb - height
+          ele.css({'top': fTop})
+          self.inp_y = fTop            
+        }
+        if (Math.abs(item.yb - yT) <= fv) {
+          ele.css({'top': item.yb})
+          self.inp_y = item.yb            
+        }
+        if (Math.abs(item.xt - xL) <= fv || Math.abs(item.xt - xR) <= fv || Math.abs(item.xb - xR) <= fv || Math.abs(item.xb - xL) <= fv || Math.abs(item.yt - yT) <= fv || Math.abs(item.yt - yB) <= fv || Math.abs(item.yb - yB) <= fv || Math.abs(item.yb - yT) <= fv) {
+          me.carryLineEvent(self)
+          me.carryUpdateElementStorageEvent(self, ele.parent(), ele)
+          item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
+        }
+      }      
+    }
+  },
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
   // ------------- 操作模块事件 ----------------
-    me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件
+    me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件 // todolist:更新模块信息
       let $this = me.$(this)
       let resizeBox = me.$('.resizeBox')
       let parent = me.$('.on_module')
@@ -1109,6 +1192,7 @@ var tool = {
       me.editBox.mousemove(function (e) {
         part(e)
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+        me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
         // me.carryLineEvent(self)
         return false
       })
@@ -1116,10 +1200,10 @@ var tool = {
         me.editBox.unbind('mousemove mouseup')
         me.line.hide()
       })
-      return false
+      return false 
     })
 
-    me.editBox.on('click', '.supendTools', function (e) { // 模块工具栏
+    me.editBox.on('mousedown', '.supendTools', function (e) { // 模块工具栏
       let classname = me.$(e.target).attr('class')
       switch (classname) {
         case 'st-left st-text': 
@@ -1131,10 +1215,14 @@ var tool = {
         case 'st-left st-picture': 
           self.$refs.myimages.show()
           break
+        case 'st-animate': 
+          self.dialoganim()
+          break
       }
+      return false
     })
     
-    me.editBox.on('click', '.module', function (e) { // 点击选中模块事件
+    me.editBox.on('mousedown', '.module', function (e) { // 点击选中模块事件
       let $this = me.$(this)
       me.carrySignEvent(self, $this)
       return false
@@ -1145,49 +1233,82 @@ var tool = {
       let y = e.pageY
       let xs = self.inp_x
       let ys = self.inp_y
-      let areaB = self.moduleParentElementHeight
-      let areaR = self.inp_width
-      let $this = me.$(this)
-      let sTop = parseInt(me.space.scrollTop())
+      // let areaB = self.moduleParentElementHeight
+      // let areaR = self.inp_width
+      // let $this = me.$(this)
+      // let sTop = parseInt(me.space.scrollTop())
       // me.carryLineEvent(self)
-     
+      let parentClass = self.moduleElement.parent().attr('class')
+      let id = self.moduleElement.attr('id')
+      let height = self.inp_h
+      let width = self.inp_w
+      let supendTools = me.$('.supendTools')
+      supendTools.hide()
       me.editBox.mousemove(function (e) {
         let left = xs + e.pageX - x
         let top = ys + e.pageY - y
-        if (self.config.moveLimit) {
-          if (left < 0) {
-            left = 0
-          }
-          if (left > (areaR - self.inp_w)) {
-            left = areaR - self.inp_w
-          }
-          if (top < 0) {
-            top = 0
-          }
-          if (top > (parseInt(areaB) - self.inp_h)) {
-            top = parseInt(areaB) - self.inp_h
-          }
-        }       
-        self.inp_x = left
-        self.inp_y = top
-        $this.css('left', left)
-        $this.css('top', top)
+        me.carryModuleOperationEvent(self, 'left', left)
+        me.carryModuleOperationEvent(self, 'top', top)
+        me.carryFuzzyCalibrationEvent(self, parentClass, id, left, top, height, width, self.moduleElement)
+        // if (self.config.moveLimit) {
+        //   if (left < 0) {
+        //     left = 0
+        //   }
+        //   if (left > (areaR - self.inp_w)) {
+        //     left = areaR - self.inp_w
+        //   }
+        //   if (top < 0) {
+        //     top = 0
+        //   }
+        //   if (top > (parseInt(areaB) - self.inp_h)) {
+        //     top = parseInt(areaB) - self.inp_h
+        //   }
+        // }       
+        // self.inp_x = left
+        // self.inp_y = top
+        // $this.css('left', left)
+        // $this.css('top', top)
         // me.carryLineEvent(self, true)
         return false
       })
       me.editBox.mouseup(function () {
         me.editBox.unbind('mousemove mouseup')
+        me.$('.fuzzybox').remove()
         me.line.hide()
-        me.$('.touch_module').removeClass('touch_module')
-        me.carryLayerEvent(self, $this.parent())
+        supendTools.show()
+        // me.line.hide()
+        // me.$('.touch_module').removeClass('touch_module')
+        // me.carryLayerEvent(self, $this.parent())
+        return false
+      })
+      return false 
+    })
+
+    me.editBox.on('mousedown', function (e) { // 点击模块之外时，还原默认值     
+      me.cleanSignEvent(self) // 清除属性栏的值
+      me.carryRegionChoiceEvent(self, e)  // 添加选区绘制原点
+    })
+  // ------------- 多选事件 --------------------
+    me.editBox.on('mousedown', '.multiBox', function (e) {
+      let x = e.pageX
+      let y = e.pageY
+      let xs = self.inp_x
+      let ys = self.inp_y
+      me.editBox.mousemove(function (e) {
+        let left = xs + e.pageX - x
+        let top = ys + e.pageY - y
+        me.carryModuleOperationEvent(self, 'left', left)
+        me.carryModuleOperationEvent(self, 'top', top)
+        return false
+      })
+      me.editBox.mouseup(function () {
+        me.editBox.unbind('mousemove mouseup')
+        // me.line.hide()
+        // me.$('.touch_module').removeClass('touch_module')
+        // me.carryLayerEvent(self, $this.parent())
         return false
       })
       return false
-    })
-
-    me.editBox.on('mousedown', function (e) { // 点击模块之外时，还原默认值
-     
-      me.cleanSignEvent(self)      
     })
   // ------------- 键盘按下事件 ----------------
     me.doc.unbind('keydown')
@@ -1249,7 +1370,6 @@ var tool = {
       }
       let target = me.$(e.target)
       if (!target.hasClass('resizeBox') && !target.hasClass('resize')) { // 已单选模块不能框选
-        me.carryRegionChoiceEvent(self, e)
       }      
     })
   // ------------- 页头页尾调整 ----------------

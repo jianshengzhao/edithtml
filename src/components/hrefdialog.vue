@@ -265,7 +265,7 @@
         </div>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button>取 消</el-button>
+        <el-button @click="visdialog = false">取 消</el-button>
         <el-button type="primary" @click="dialogEvent" >确 定</el-button>
       </span>
     </el-dialog>
@@ -564,10 +564,26 @@
         let self = this;
         self.visdialog = true;
         self.$nextTick( () => {
+          let linktype = $('.on_module a').attr('linktype');
+          let linkobj =  $('.on_module a').attr('linkobj');
           $('ul.tabsul li a').removeClass('tab-active')
-          $('ul.tabsul li a[data-index=0]').addClass('tab-active')
-          $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
-          $('.tabs-content-placeholder .tab-content').eq(0).addClass('tab-content-active')
+           $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
+          if(linktype == 'news'){
+            $('ul.tabsul li a[data-index=1]').addClass('tab-active')
+            $('.tabs-content-placeholder .tab-content').eq(1).addClass('tab-content-active')
+          }else if(linktype == 'course'){
+            $('ul.tabsul li a[data-index=2]').addClass('tab-active')
+            $('.tabs-content-placeholder .tab-content').eq(2).addClass('tab-content-active')
+          }else if(linktype == 'teacher'){
+            $('ul.tabsul li a[data-index=3]').addClass('tab-active')
+            $('.tabs-content-placeholder .tab-content').eq(3).addClass('tab-content-active')
+          }else if(linktype == 'onlineschool'){
+            $('ul.tabsul li a[data-index=4]').addClass('tab-active')
+            $('.tabs-content-placeholder .tab-content').eq(4).addClass('tab-content-active')
+          }else{
+            $('ul.tabsul li a[data-index=0]').addClass('tab-active')
+            $('.tabs-content-placeholder .tab-content').eq(0).addClass('tab-content-active')
+          }
           let widget = $('#tabs-vertical');
           let tabs = widget.find('ul.tabsul a'),
           content = widget.find('.tabs-content-placeholder > div');
@@ -808,7 +824,12 @@
           case 'online':
             let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
             if (reg.test(self.edithref)) {
+              let obj = {
+                href : self.edithref,
+                opentype : self.showtype
+              }
               a.attr('href', self.edithref)
+              a.attr('linkobj', obj)   
             } else {
               self.$notify({
                 title: '警告',
@@ -866,7 +887,13 @@
             }else if(num == 3){
               url = '/dyinformation/' + news + '.html'
             }
-            a.attr('href', url)       
+            
+            let obj = {
+              active : num,
+              news : news
+            }
+            a.attr('linkobj', obj) 
+            a.attr('href', url)   
           break
           case 'onlineschool':
             let oneinlineschool;
@@ -921,6 +948,13 @@
                 a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)    
               break
             }
+
+            /*let obj = {
+              active : num,
+              news : news
+            }
+            a.attr('linkobj', obj) */
+            a.attr('href', url)   
           break
           case 'teacher':
             let teauid = $("input[name='teacher']:checked").attr('code');

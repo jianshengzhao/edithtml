@@ -48,6 +48,7 @@ export default {
     },
     show: function () {
       let self = this 
+      let html = $('.on_module').find('.editorCon').html()
       self.dialogEditor = true
       self.$nextTick(function () {      
       self.$refs.ueditor.id = self.ueditorid
@@ -62,7 +63,6 @@ export default {
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
 

@@ -89,6 +89,15 @@
     word-wrap:break-word;
     border:1px solid #ccc;
   }
+  .editor * {
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+
+  }
+  .editor a:hover {
+    text-decoration:none;
+  }
   .editor p {
     margin:5px 0;
   }
