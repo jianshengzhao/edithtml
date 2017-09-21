@@ -55,7 +55,9 @@
             v-on:click="updataValue(color)"
           ></li>
         </ul>
-        <h3 v-on:click="triggerHtml5Color">更多颜色...</h3>
+        <h3>输入色值（例：#ff1e02）</h3>
+        <input type="text" class="entry" v-model="entryColor" v-bind:value="entryColor"> <button class="colorEnsure" v-on:click="entryValue()">确定</button>
+       <!--  <h3 v-on:click="triggerHtml5Color">更多颜色...</h3> -->
       </div>
     </div>
   </div>
@@ -104,6 +106,7 @@ export default {
       ],
       // 标准颜色
       bColor: ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be', '#00215f', '#72349d'],
+      entryColor: this.value,
       html5Color: this.value
     }
   },
@@ -118,7 +121,13 @@ export default {
     },
     // 显示颜色
     showColor () {
-      if (this.value) {
+      if (this.value) {       
+        if(this.value.indexOf('rgb') > -1) {
+          let color = this.value.split('(')[1].split(')')[0].split(',')
+          this.entryColor = this.rgbToHex(color[0], color[1], color[2])
+        } else {
+          this.entryColor = this.value
+        }
         return this.value
       } else {
         return this.defaultColor
@@ -142,6 +151,19 @@ export default {
       this.$emit('input', value)
       this.$emit('change', value)
       this.openStatus = false
+    },
+    entryValue () {      
+      let bloo = /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(this.entryColor)      
+      if (bloo) {
+        this.$emit('input', this.entryColor)
+        this.$emit('change', this.entryColor)
+        this.openStatus = false
+      } else {
+        this.$message({
+          message: '请输入正确的 HEX 颜色值, 例：#ff1e02',
+          type: 'warning'
+        });
+      }
     },
     // 设置默认颜色
     handleDefaultColor () {
@@ -186,13 +208,18 @@ export default {
         gradientColorArr.push(this.rgbToHex(parseInt(rStep * i + sColor[0]), parseInt(gStep * i + sColor[1]), parseInt(bStep * i + sColor[2])))
       }
       return gradientColorArr
+    },
+    // 关闭弹窗
+    closeEvent () {
+      this.openStatus = false
     }
   },
   mounted () {
     // 点击页面上其他地方，关闭弹窗
-    document.onclick = (e) => {
-      this.openStatus = false
-    }
+    let self = this
+    document.addEventListener('click', function(){ 
+      self.openStatus = false
+    })
   }
 }
 </script>
@@ -202,6 +229,8 @@ export default {
   position: relative; text-align: left; font-size: 14px; display: inline-block;
   ul,li,ol{ list-style: none; margin: 0; padding: 0; }
   input{ display: none; }
+  .entry{ display: inline-block; text-align:left; width: 90px;}
+  .colorEnsure{ width: 50px;height: 24px; line-height: 20px; background-color: #fff;border: 1px solid #ddd;border-radius: 2px; color: #1f2d3d;cursor: pointer;}
   .colorBtn{ width: 15px; height: 15px; }
   .colorBtn.disabled{ cursor: no-drop; }
   .box{
@@ -212,7 +241,7 @@ export default {
   .hd{
     overflow: hidden; line-height: 29px;
     .colorView{ width: 100px; height: 30px; float: left; transition: background-color .3s ease; }
-    .defaultColor{ width: 80px; float: right; text-align: center; border: 1px solid #ddd; cursor: pointer; }
+    .defaultColor{ width: 80px; float: right; text-align: center; border: 1px solid #ddd; cursor: pointer; border-radius: 2px;}
   }
   .tColor{
     li{ width: 15px; height: 15px; display: inline-block; margin: 0 2px; transition: all .3s ease; }

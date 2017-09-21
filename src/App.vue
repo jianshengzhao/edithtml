@@ -92,12 +92,13 @@
         </div>
         <div class="property">
           <label for="">字色 :</label>
-          <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
+          <!-- <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker> -->
+          <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
         </div>      
       <!-- module background -->     
         <div class="property">
           <label for="">背景 :</label>
-          <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
+          <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' @change='changeColorBg'></colorPicker>
         </div>     
       <!-- module border -->      
         <div class="property">
@@ -141,7 +142,7 @@
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
         </div>      
       <!-- module shadow -->
-        <div class="property">
+        <div class="property" style="margin-left:4px;">
           <label for="">阴影 :</label>
           <div class="border br-mod br-disable shadow">
             <i class="iconfont2 icon-yinying"></i>
@@ -276,23 +277,26 @@
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
       <el-tabs v-model="activeSetting" type="card" >
-        <el-tab-pane label="页面设置" name="first">
+        <el-tab-pane label="页面设置" name="first" >
           <el-row>
             <el-col :span="5" class="tit">背景色</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="bgColorVal"></el-color-picker>
+              <!-- <el-color-picker v-model="bgColorVal"></el-color-picker> -->
+              <colorPicker v-model="bgColorVal" ></colorPicker>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="5" class="tit">前景色</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="prospectColorVal" ></el-color-picker>
+             <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
+              <colorPicker v-model="prospectColorVal" ></colorPicker>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="5" class="tit">文字链接hover</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="fontHoverColorVal" ></el-color-picker>
+              <!-- <el-color-picker v-model="fontHoverColorVal" ></el-color-picker> -->
+              <colorPicker v-model="fontHoverColorVal" ></colorPicker>
             </el-col>
           </el-row>         
           <el-row>
@@ -818,7 +822,7 @@
         activeSetting: 'first',
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
-        fontHoverColorVal: '',
+        fontHoverColorVal: '#333',
         bgImageUrl: '',
         pgImageUrl: '',
         inp_percent: '100',
@@ -834,7 +838,7 @@
         inp_h: '',
         inp_size: '',
         inp_line: '',
-        color_font: '#333',
+        color_font: '#fff',
         color_bg: '#fff',
         moduleElement: '', // 选中的模块全局引用
         moduleElementY:'',
@@ -969,7 +973,8 @@
                 self.selectNews = []
                 self.selectCoruse = []
                 self.pictureUrl = onthis.find('img').attr('src')
-                self.dialogPicture = true
+//              self.dialogPicture = true
+		            self.$refs.myimages.show();
                 oa = onthis.find('.picBox')
                 self.linkType = oa.attr('linkType') || 'none'
                 switch (self.linkType) {
@@ -1075,7 +1080,7 @@
                   let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
                   self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
                   self.bgColorVal = pp.bg =='transparent'?null:pp.bg
-                  self.fontHoverColorVal = pp.fontHover
+                  self.fontHoverColorVal = pp.fontHover||'#333'
                   self.inp_width = parseInt(pp.width)
                   self.inp_height = parseInt(pp.height)
                   self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
@@ -1114,7 +1119,7 @@
       })
     },
     components: {colorPicker, ueditor, hrefdialog, myimages},
-    methods: {
+    methods: {     
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -1133,7 +1138,6 @@
           a.removeClass(anim);
           a.removeClass('animated');
         }, 1000);
-
       },
       editanimate(){
         let self = this;
@@ -1346,7 +1350,7 @@
         tool.tool.carryModuleOperationEvent(self, 'color', val)
       },
       changeColorBg: function (val) { // background-color 背景颜色
-        var self = this 
+        var self = this
         tool.tool.carryModuleOperationEvent(self, 'backgroundColor', val)
       },
       changeBorderWidth: function (val) { // 边框宽度（粗细）
@@ -1367,7 +1371,7 @@
       },
       changeShadow: function (val) { // 阴影开关
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadow', val)        
+        tool.tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)        
       },
       changHShadow: function (val) { // 水平偏移阴影
         var self = this
@@ -1382,7 +1386,7 @@
         tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
       },
       changColorShadow: function (val) { // 阴影颜色
-        var self = this
+        var self = this        
         tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
     // ------------- 模块操作 ----------------
@@ -1823,6 +1827,21 @@
 </script>
 
 <style>
+    .propertycolor{
+      width: 22px;
+      height: 15px;
+    }
+    .propertycolor .colorBtn{  
+      position: absolute; 
+      top:2px;
+      left: 0;    
+      border:1px solid #666;
+      cursor: pointer;
+      /*margin:2px;*/
+    }
+    .propertycolor .disabled{
+      border-color: #ccc;
+    }
   /*app*/
     #app {
       position: relative;
@@ -2119,7 +2138,7 @@
     }
     .property .el-input{
       display: inline-block;
-      width: 60px;    
+      width: 50px;    
     }
     .property input{
       padding: 0;
@@ -2773,6 +2792,17 @@
     }
     .el-dialog--pageSet{
       width: 500px;
+    }
+    .el-dialog--pageSet .el-tabs__content{
+      overflow: visible;
+    }
+    .el-dialog--pageSet .m-colorPicker .box{
+      z-index: 99;
+    }
+    #app .el-dialog--pageSet .m-colorPicker .colorBtn{
+      width: 30px;
+      height: 30px;
+      border:1px solid #c4c4c4;
     }
     .pageHeader-uploader .el-upload {
       width: 100%;

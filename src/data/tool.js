@@ -197,7 +197,7 @@ var tool = {
     self.inp_h = ''
     self.inp_size = ''
     self.inp_line = ''
-    self.color_font = '#333'
+    self.color_font = '#fff'
     self.color_bg = '#fff'
     self.br_color = ''
     self.inp_opacity = ''
@@ -285,7 +285,13 @@ var tool = {
       } else {
         regionYO = parentO[regionY]
       }
-      regionYO[id] = {
+      for(let j in parentO) { // 清除因为移动而产生跨区的重复的元素
+        let jtem = parentO[j]
+        if (jtem[id]) {
+          delete jtem[id]
+        }
+      }
+      regionYO[id] = { // 更新存储的数据
         xt: iLeft,
         yt: iTop,
         xb: iright,
@@ -294,6 +300,7 @@ var tool = {
         ele: item
       }   
     }
+    // console.log(self.elementStorage[cname])
   },
   carryRegionChoiceEvent: function (self, e) { // 区域选中事件(多选)
     let me = this
@@ -609,11 +616,13 @@ var tool = {
           ele.css('opacity', val/100)
         }
         break
-      case 'boxShadow':
-        part = function (ele) {
-          if (!val) {
+      case 'boxShadow':     
+        if (!val) {
+          part = function (ele) {
             ele.css('boxShadow', 'none')
-          } else {
+          }
+        } else {
+          part = function (ele) {
             self.inp_weight_x = 1
             self.inp_weight_y = 1
             self.inp_blur = 1
@@ -636,7 +645,7 @@ var tool = {
           ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
         }
         break
-      case 'boxShadowY':
+      case 'boxShadowColor':
         part = function (ele) {
           ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
         }
@@ -920,7 +929,7 @@ var tool = {
     let fv = self.fuzzyVal
     let fyzzyHtml = '<div class="fuzzybox"></div>'
     for (let i in storage) {
-      if (i == sy || i == ey) {
+      if (i >= sy || i <= ey) {
         me.$.extend(obj, storage[i])
       }
     }    
