@@ -14,7 +14,7 @@ var datahtml = {
       {
         name: 'editor',
         icon: 'imgicon icon-editor',
-        text: '富文本'
+        text: '文本'
       },
       {
         name: 'picture',
@@ -43,7 +43,7 @@ var datahtml = {
     style: 'width: 200px; height: 50px',
     tool: {
       private: '', // 私有工具
-      public: ['a', 'b', 'c', 'd', 'e'] // 公有工具
+      public: [ 'd', 'e'] // 公有工具
     },
     html: '<div class="rectangle module" datatext="矩形"><a></a></div>'
   },
@@ -51,7 +51,7 @@ var datahtml = {
     style: 'width:100px; height:100px',
     tool: {
       private: '',
-      public: ['a', 'b', 'c', 'd', 'e']
+      public: [ 'd', 'e']
     },
     html: '<div class="radius module"  datatext="圆形"><a></a></div>'
   },
@@ -62,7 +62,7 @@ var datahtml = {
         text: '编辑文本',
         class: 'st-text'
       },
-      public: ['a', 'b', 'c', 'e']
+      public: [ 'e']
     },
     html: '<div class="editor module"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
@@ -73,7 +73,7 @@ var datahtml = {
         text: '编辑图片',
         class: 'st-picture'
       },
-      public: ['a', 'b', 'c', 'd', 'e']
+      public: ['b', 'c', 'd', 'e']
     },
     html: '<div class="picture module"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
   },

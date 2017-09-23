@@ -148,7 +148,7 @@ var tool = {
     self.inp_line = parseInt(element.css('lineHeight'))
     self.color_font = element.css('color')
     self.color_bg = element.css('backgroundColor')
-    self.br_width = element.css('borderWidth')
+    self.br_width = parseInt(element.css('borderWidth'))
     self.br_style = element.css('borderStyle')
     self.br_color = element.css('borderColor')
     self.inp_opacity = parseInt(element.css('opacity') * 100)
@@ -990,6 +990,9 @@ var tool = {
       let $this = me.$(this)
       let resizeBox = me.$('.resizeBox')
       let parent = me.$('.on_module')
+      let picBox = parent.find('.picBox')
+      // let round = parent.find('.round')
+      // let square = parent.find('.square')
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
@@ -1202,7 +1205,11 @@ var tool = {
         part(e)
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
-        // me.carryLineEvent(self)
+        if (picBox.length > 0){
+          if (picBox.hasClass('round')||picBox.hasClass('square')) {
+            picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+          }
+        }        
         return false
       })
       me.editBox.mouseup(function (e) {
@@ -1218,6 +1225,9 @@ var tool = {
         case 'st-left st-text': 
           self.$refs.ueditor.show()
           break
+        case 'st-left st-style': 
+          self.$refs.editbutton.show()
+          break
         case 'st-link': 
           self.$refs.hrefdialogp.show()
           break
@@ -1226,6 +1236,12 @@ var tool = {
           break
         case 'st-animate': 
           self.dialoganim()
+          break
+        case 'st-shape':
+          self.$refs.shape.show()
+          break
+        case 'st-effects':
+          self.$refs.suspend.show()
           break
       }
       return false
@@ -1340,9 +1356,11 @@ var tool = {
           return false
         }
         if (e.key === 'Delete') {
-          let original = module.parent()
-          module.remove()
-          me.carryLayerEvent(self, original)
+          if (me.$(e.target).get(0).tagName == 'BODY') {
+            let original = module.parent()
+            module.remove()
+            me.carryLayerEvent(self, original)
+          }
         }
       }             
     })
@@ -1385,6 +1403,9 @@ var tool = {
     me.top.on('mousedown', '.hoverbar', function (e) { // top容器调整
       let y = e.pageY
       let h = parseInt(me.top.css('height'))
+      let tar = me.$(e.target)
+      tar.attr('style','display:block')
+      me.cleanSignEvent(self)
       me.canvas.mousemove(function (e) {
         let hs = h + (e.pageY - y)
         me.top.css('height', hs)
@@ -1393,8 +1414,10 @@ var tool = {
         me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
       })
       me.canvas.mouseup(function () {
+        tar.removeAttr('style')
         me.canvas.unbind('mousemove mouseup')
       })
+      return false
     })
 
     me.foot.on('mousedown', '.hoverbar', function (e) { // foot容器调整
@@ -1508,12 +1531,14 @@ var tool = {
         me.lShrink.removeClass('shrinkout')
         me.library.removeClass('basic')
         me.editBox.css('marginLeft', '')
+        me.editBox.css('paddingRight', '314px')
         self.paddingleft = 133
         me.lShrink.css('left','133px')
       } else {
         me.lShrink.addClass('shrinkout')
         me.library.addClass('basic')
         me.editBox.css('marginLeft', '5px')
+        me.editBox.css('paddingRight', '186px')
         me.lShrink.css('left','5px')
         self.paddingleft = 5
       }

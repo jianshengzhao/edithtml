@@ -715,6 +715,7 @@
   }
   .picture img{
     width: 100%;
+    height: 100%;
   }
 /*-------------button-----------------*/
   .button{
@@ -732,6 +733,9 @@
     width: 100%;
     height: 100%;
     text-decoration: none;
+    font-size: inherit;
+    line-height: inherit;
+    overflow: hidden;
   }
 /*-------------line-----------------*/
   .hline{
@@ -2056,3 +2060,184 @@
     overflow: hidden;
   }
 
+/*悬浮特效*/
+  .enlarge img{
+    transition: transform 0.3s;
+    -ms-transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .enlarge img:hover{
+    transform:scale(1.2,1.2);
+    -ms-transform:scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:scale(1.2,1.2);   
+  }  
+  .left img{
+    transform:scale(1.1,1.1);
+    -ms-transform:scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:scale(1.1,1.1);
+    transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .left img:hover{
+    transform:translateX(-5%) scale(1.1,1.1);
+    -ms-transform:translateX(-5%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translateX(-5%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translateX(-5%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translateX(-5%) scale(1.1,1.1);
+  }
+  .right img{
+    transform:scale(1.1,1.1);
+    -ms-transform:scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:scale(1.1,1.1);
+    transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .right img:hover{
+    transform:translateX(5%) scale(1.1,1.1);
+    -ms-transform:translateX(5%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translateX(5%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translateX(5%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translateX(5%) scale(1.1,1.1);
+  }
+  .moveup{ 
+     transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; /* Opera */
+  }
+  .moveup:hover{
+    transform:translateY(-5%);
+    -ms-transform:translateY(-5%);   /* IE 9 */
+    -moz-transform:translateY(-5%);  /* Firefox */
+    -webkit-transform:translateY(-5%); /* Safari 和 Chrome */
+    -o-transform:translateY(-5%);
+  }
+  #app .on_module:hover{
+    transform:translateY(0%);
+    -ms-transform:translateY(0%);   /* IE 9 */
+    -moz-transform:translateY(0%);  /* Firefox */
+    -webkit-transform:translateY(0%); /* Safari 和 Chrome */
+    -o-transform:translateY(0%);
+  }
+  /*图片形状*/
+  .square{
+    margin: 0 auto;
+    width: 118px;
+    height: 118px;
+    overflow: hidden;
+  }
+  .square img{
+    width: auto;
+    height: 100%;
+    margin-left: 50%;
+    transform:translateX(-50%) ;
+    -ms-transform:translateX(-50%);   /* IE 9 */
+    -moz-transform:translateX(-50%);  /* Firefox */
+    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%);
+  }
+  .right .square img:hover{   
+    transform:translateX(-45%) ;
+    -ms-transform:translateX(-45%);   /* IE 9 */
+    -moz-transform:translateX(-45%);  /* Firefox */
+    -webkit-transform:translateX(-45%); /* Safari 和 Chrome */
+    -o-transform:translateX(-45%);
+  }
+  .left .square img:hover{   
+    transform:translateX(-55%) ;
+    -ms-transform:translateX(-55%);   /* IE 9 */
+    -moz-transform:translateX(-55%);  /* Firefox */
+    -webkit-transform:translateX(-55%); /* Safari 和 Chrome */
+    -o-transform:translateX(-55%);
+  }
+  .enlarge .square img:hover{
+    transform:translateX(-50%) scale(1.2,1.2);
+    -ms-transform:translateX(-50%) scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:translateX(-50%) scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:translateX(-50%) scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%) scale(1.2,1.2);
+  }  
+  .fillet{
+    border-radius: 15%;
+  }
+  .round{
+    margin: 0 auto;
+    border-radius: 50%;   
+    width: 118px;
+    height: 118px;
+    overflow: hidden;
+  }
+  .round img{
+    width: auto;
+    height: 100%;
+    margin-left: 50%;
+    transform:translateX(-50%) ;
+    -ms-transform:translateX(-50%);   /* IE 9 */
+    -moz-transform:translateX(-50%);  /* Firefox */
+    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%);
+  }
+  .right .round img:hover{   
+    transform:translateX(-45%) ;
+    -ms-transform:translateX(-45%);   /* IE 9 */
+    -moz-transform:translateX(-45%);  /* Firefox */
+    -webkit-transform:translateX(-45%); /* Safari 和 Chrome */
+    -o-transform:translateX(-45%);
+  }
+  .left .round img:hover{   
+    transform:translateX(-55%) ;
+    -ms-transform:translateX(-55%);   /* IE 9 */
+    -moz-transform:translateX(-55%);  /* Firefox */
+    -webkit-transform:translateX(-55%); /* Safari 和 Chrome */
+    -o-transform:translateX(-55%);
+  }
+   .enlarge .round img:hover{
+    transform:translateX(-50%) scale(1.2,1.2);
+    -ms-transform:translateX(-50%) scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:translateX(-50%) scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:translateX(-50%) scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:translateX(-50%) scale(1.2,1.2);
+  }  
+  /* editbutton */
+  .button_radius{
+    background: #4AB344;
+    border-radius: 3px;
+    border:none;
+  }
+  .button_rightangle{
+    background: #4AB344;
+    border:none;
+    border-radius: 0px;
+  }
+  .button_border{
+    border:1px solid #4AB344;
+  }
+  .button_gradients{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
+    border:none;
+  }
+  .button_gradients_border{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 3px;
+    border:1px solid #4AB344;
+  }

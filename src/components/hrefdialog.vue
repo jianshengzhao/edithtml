@@ -66,10 +66,13 @@
                           <div class="nodata" style="display: none;"></div>
                           <el-radio-group v-model="threenewsradio">
                             <el-radio  v-for="(item,index) in newslist" :label="item.itemid" :key="item.itemid">
-                              <span style="width: 360px;display: inline-block;" >
+                              <div :title="item.subject" style="width: 360px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;float: left;" >
                                 {{item.subject}}
-                              </span>
-                              {{item.dateline | time}}
+                              </div>
+                              <div style="display: inline-block;" >
+                                {{item.dateline | time}}
+                              </div>
+                              
                             </el-radio>
                           </el-radio-group>
                         </el-col>
@@ -98,29 +101,29 @@
                   <div class="coursecont" style="max-height: 393px; overflow-x: hidden;">
                     <form class="oneselcourse">
                      <div class="courseradio">
-                        <input sourceid="0"  name="onecourse" type="radio" value="" />
+                        <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" />
                         <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div class="courseradio" v-for="(item,index) in schsourcelist">
-                        <input :sourceid="item.sourceid"  name="onecourse" type="radio" value="" />
+                        <input :sourceid="item.sourceid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
                         <a @click="getsoncourse(item.sourceid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
                     </form>
                     <form class="twoselcourse" style="display: none;">
                       <div class="courseradio" v-for="(item,index) in coursesort">
-                        <input :pid="item.pid"  name="twocourse" type="radio" value="" />
+                        <input :pid="item.pid" :pname="item.pname" :checked="inpid == item.pid?true:false"  name="twocourse" type="radio" value="" />
                         <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
                     </form>
                     <form class="threeselcourse" style="display: none;">
-                      <div class="courseradio">
-                        <input sid="0"  name="threecourse" type="radio" value="" />
-                        <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                      </div>
+                      <!-- <div class="courseradio">
+                        <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
+                        <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
+                      </div> -->
                       <div class="courseradio" v-for="(item,index) in sidlist">
-                        <input :sid="item.sid"  name="threecourse" type="radio" value="" />
+                        <input :sid="item.sid" :sname="item.sname" :checked="insid == item.sid?true:false"  name="threecourse" type="radio" value="" />
                         <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
@@ -134,13 +137,14 @@
                         <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
                         <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                       </div> -->
-                      <div  class="courselist" v-for="(item,index) in courselist">
-                        <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
-                        <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2">
-                          <img :src="item.face" ><br/>
+                      <label  class="courselist" v-for="(item,index) in courselist">
+                        <input :folderid="item.folderid" :itemid="item.itemid"  :checked="initemid == item.itemid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
+                        <a  class="vc-font2">
+                          <img :src="item.img" ><br/>
                           <h3>{{item.foldername}}</h3>
                         </a>
-                      </div> 
+                      </label> 
+                     <!--  @click="getcwlistall(item.folderid,item.foldername)" -->
                       <div style="clear: both;"></div>
                       <el-col v-if="foldercount > folderpagesize" style="text-align: right;margin-top: 10px;">
                           <el-pagination
@@ -162,7 +166,7 @@
                       <el-col v-for="(item,index) in cwlist" :key="item.sname">
                         <h3>{{item.sname}}</h3>
                         <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid">
-                          <input :cwid="items.cwid"  name="fivecourse" type="radio" value="" />
+                          <input :cwid="items.cwid" :cwname="items.title"  name="fivecourse" type="radio" value="" />
                           <a class="vc-font2">
                             <img :src="items.face" ><br/>
                             <h3>{{items.title}}</h3>
@@ -291,6 +295,15 @@
         newscount : 0,
         newslist : [],
         navcode : '',
+        newsobj:{
+          code : '',
+          son : '',
+          label : '',
+          len : '',
+          code1 : '',
+          son1 : '',
+          label1 : ''
+        },
         threenewsradio:'',
         hrefteaq :'',
         tealist : [],
@@ -315,10 +328,16 @@
         cwcount:0,
         cwpagesize : 30,
         cwpage:1,
+        inpid : '',
+        insid : '',
+        infolderid : '',
         init: function () {
           let self = this;
           self.showtype = '1';
           self.edithref = '';
+          self.newsq = '';
+          self.folderq = '';
+          self.hrefteaq = '';
           $('.threeselnews').hide();
           $('.twoselnews').hide();
           $('.oneselnews').show();
@@ -330,6 +349,7 @@
           $('.twoselinlineschool').hide()
           $('.oneselcourse').show();
           $('.twoselcourse,.coursetwombx,.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide();
+          self.hrefgetealist() 
           /*let onenews =  $("input[name=onenews]");
           let twonews =  $("input[name=twonews]");
           let lenone =  onenews.length;
@@ -357,12 +377,11 @@
             let list = response.data.data.list
             if (list.length) {
               for (var i = 0; i < list.length; i++) {
-                let face = list[i].face
-                if (face === '') {
+                if (list[i].face == '' || !list[i].face) {
                   if (list[i].sex === '0') {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
+                    list[i].face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_man_120_120.jpg'
                   } else {
-                    face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
+                    list[i].face = 'http://static.ebanhui.com/ebh/tpl/default/images/t_woman_120_120.jpg'
                   }
                 }
               }
@@ -384,7 +403,7 @@
             console.log(response)
           })
         },
-        getcoursesort:function(){
+        getcoursesort:function(linkobj){
           let self = this
           self.$http.get(window.host + '/aroomv3/course/coursesort.html', {
             params: {
@@ -393,11 +412,19 @@
           }, {emulateJSON: true}).then(function (response) {
             let list = response.data.data
             self.coursesort = list;
+            self.$nextTick( () => {
+              if(linkobj){
+                if(linkobj.course > 2){
+                  self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
+                  self.insid = linkobj.sid;
+                } 
+              }
+             })
           }, function (response) {
             console.log(response)
           })
         },
-        getitemlist:function(sourceid,pid,sid){
+        getitemlist:function(sourceid,pid,sid,linkobj){
           let self = this
           self.$http.get(window.host + '/aroomv3/schsource/itemlist.html', {
             params: {
@@ -410,6 +437,14 @@
             let list = response.data.data.splist;
             self.coursesort = list;
             self.itemlist = response.data.data.itemlist;
+            self.$nextTick( () => {
+              if(linkobj){
+                if(linkobj.course > 2){
+                  self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
+                  self.insid = linkobj.sid;
+                } 
+              }
+             })
           }, function (response) {
             console.log(response)
           })
@@ -427,6 +462,14 @@
             }
           }, {emulateJSON: true}).then(function (response) {
             let list = response.data.data.courselist;
+            if(list.length){
+              for(var i=0;i<list.length;i++){
+                if(!list[i].img || list[i].img == undefined || list[i].img =='undefined'){
+                  list[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg';
+                }
+              }
+            }
+            
             self.courselist = list;
             self.foldercount   =  parseInt(response.data.data.coursecount)
           }, function (response) {
@@ -445,10 +488,17 @@
             }
           }, {emulateJSON: true}).then(function (response) {
             let list = response.data.data.itemlist;
-            for(var i=0;i<list.length;i++){
-              list[i].foldername = list[i].iname
+            if(list.length){
+              for(var i=0;i<list.length;i++){
+                list[i].foldername = list[i].iname
+                if(!list[i].img || list[i].img == undefined || list[i].img =='undefined'){
+                  list[i].img = 'http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_247_147.jpg';
+                }
+              }
             }
+
             self.courselist = list;
+
           }, function (response) {
             console.log(response)
           })
@@ -523,6 +573,9 @@
         }, {emulateJSON: true}).then(function (response) {
           if (response.data.code === 0) {        
             self.newslist = response.data.data
+            if(self.newslist.length){
+              self.threenewsradio = self.newscode;
+            }
             if(!self.newslist.length){
               $('.threeselnews .nodata').show()
             }else{
@@ -566,23 +619,73 @@
         self.$nextTick( () => {
           let linktype = $('.on_module a').attr('linktype');
           let linkobj =  $('.on_module a').attr('linkobj');
+          linkobj = linkobj?$.parseJSON(linkobj):'';
           $('ul.tabsul li a').removeClass('tab-active')
            $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
           if(linktype == 'news'){
             $('ul.tabsul li a[data-index=1]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(1).addClass('tab-content-active')
+            if(linkobj.active == 3){
+              if(linkobj.news.len){
+                self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
+                setTimeout(function(){
+                  self.newsq = linkobj.q;
+                  self.newspagesize =  linkobj.pagesize;
+                  self.newspage = linkobj.page;
+                  self.newscode = linkobj.newscode;
+                  self.getsonNews(linkobj.news.code1,linkobj.news.son1,linkobj.news.label1)
+                },0)
+              }else{
+                self.newsq = linkobj.q;
+                self.newspagesize =  linkobj.pagesize;
+                self.newspage = linkobj.page;
+                self.newscode = linkobj.newscode;
+                self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
+              }
+            }else if(linkobj.active == 2){
+              self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
+              setTimeout(function(){
+                  $("input[code='"+linkobj.newscode+"']").attr('checked','true');
+              },0)        
+            }else{
+              $("input[code='"+linkobj.newscode+"']").attr('checked','true');
+            }
           }else if(linktype == 'course'){
             $('ul.tabsul li a[data-index=2]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(2).addClass('tab-content-active')
+            if(linkobj.course == 1){
+              $("input[sourceid='"+linkobj.sourceid+"']").attr('checked','true');
+            }
+            if(linkobj.course == 2 || linkobj.course == 3 || linkobj.course == 4 || linkobj.course == 5){
+              if(linkobj.sourceid == 0){
+                self.getsoncourse(0,'',linkobj)
+              }else{
+                self.getsoncourse(linkobj.sourceid,linkobj.name,linkobj)
+              }
+              if(linkobj.course == 2){
+                self.$nextTick( () => {
+                  self.inpid = linkobj.pid;
+                })
+              }
+            }
           }else if(linktype == 'teacher'){
+
             $('ul.tabsul li a[data-index=3]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(3).addClass('tab-content-active')
+            self.hrefteaq = linkobj.q;
+            this.hrefgetealist();
+            $("input[code='"+linkobj.teauid+"']").attr('checked','true');
           }else if(linktype == 'onlineschool'){
             $('ul.tabsul li a[data-index=4]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(4).addClass('tab-content-active')
+            if(linkobj.oneinlineschool == 'QQ' || linkobj.oneinlineschool == 'WeChat' || linkobj.oneinlineschool == 'weibo'){ 
+                self.getmorelogin()       
+            }
+            $("input[code='"+linkobj.oneinlineschool+"']").attr('checked','true');
           }else{
             $('ul.tabsul li a[data-index=0]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(0).addClass('tab-content-active')
+            self.edithref = linkobj.href;
           }
           let widget = $('#tabs-vertical');
           let tabs = widget.find('ul.tabsul a'),
@@ -610,6 +713,9 @@
           $('.newsthreembx a').text(label);
           $('.newsthreembx a').attr('code',code)
           $('.newsthreembx').show()
+          self.newsobj.code1 = code;
+          self.newsobj.son1 = son;
+          self.newsobj.label1 = label; 
         }else{
           for(var i=0;i<self.NewsOptions.length;i++){
             if(code == self.NewsOptions[i].value){
@@ -618,18 +724,23 @@
                       $('.oneselnews').hide();
                       $('.threeselnews').hide();
                       $('.twoselnews').show();
+                      self.newsobj.len = 1;
                 }else{
                     self.handleNewsItemChange(code)
                     self.getCount(code)
                     $('.oneselnews').hide();
                     $('.twoselnews').hide();
                     $('.threeselnews').show();
+                    self.newsobj.len = '';
                 }
                 $('.newstwombx a').text(label);
                 $('.newsthreembx a').attr('code',code)
                 $('.newstwombx').show()
             }
           }
+          self.newsobj.code = code;
+          self.newsobj.son = son;
+          self.newsobj.label = label;
         }
         
       },
@@ -706,7 +817,6 @@
         if(!threembx){
           mbxnum ++
         }
-        console.log(mbxnum)
         if(mbxnum == 3){
           $('.newsthreembx').hide();
           $('.oneselnews').hide();
@@ -726,13 +836,13 @@
         $('.oneselinlineschool').hide();
         $('.twoselinlineschool,.inlineschooltwombx').show();
       },
-      getsoncourse(sourceid,name){
+      getsoncourse(sourceid,name,linkobj){
         let self = this;
         let id = sourceid;
         if(id == 0){
-          self.getcoursesort()
+          self.getcoursesort(linkobj)
         }else{
-          self.getitemlist(id)
+          self.getitemlist(id,'','',linkobj)
         }
         $('.oneselcourse').hide();
         $('.twoselcourse').show();
@@ -744,9 +854,11 @@
             self.sourceid = '';
         }
         $('.coursetwombx').show()
+        
       },
-      getsidcourse(pid,name){
+      getsidcourse(pid,name,linkobj){
          let self = this;
+         
          let list = self.coursesort;
          let item = self.itemlist;
          let sidlist  = [];
@@ -772,6 +884,17 @@
          $('.coursethreembx').show()
          $('.oneselcourse,.twoselcourse').hide();
          $('.threeselcourse').show();
+         self.$nextTick( () => {
+          if(linkobj){
+            if(linkobj.course > 3){
+              self.folderpage = linkobj.folderpage;
+              self.folderpagesize = linkobj.folderpagesize;
+              self.folderq = linkobj.folderq;
+              self.infolderid = linkobj.folderid;
+              self.getcourseall(linkobj.sid,linkobj.sname)
+            }
+          }
+         })
       },
       getcourseall(sid,name){
         let self = this;
@@ -786,6 +909,7 @@
         $('.oneselcourse,.twoselcourse,.threeselcourse').hide();
         $('.fourselcourse').show();
         self.sid = sids;
+        
       },
       coursebxinit(num){
         let self = this;
@@ -810,7 +934,8 @@
         self.folderid = folderid;
       },
       dialogEvent: function () { // 编辑文本窗口
-        let self = this
+        let self = this;
+        let obj;
         let a = $('.on_module').find('a');
         let linkType = $('a.tab-active').attr('type')
         let origin = window.location.origin
@@ -824,12 +949,12 @@
           case 'online':
             let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
             if (reg.test(self.edithref)) {
-              let obj = {
+              obj = {
                 href : self.edithref,
                 opentype : self.showtype
               }
               a.attr('href', self.edithref)
-              a.attr('linkobj', obj)   
+              a.attr('linkobj', JSON.stringify(obj))   
             } else {
               self.$notify({
                 title: '警告',
@@ -886,13 +1011,25 @@
               }
             }else if(num == 3){
               url = '/dyinformation/' + news + '.html'
+              
             }
-            
-            let obj = {
-              active : num,
-              news : news
+            if(num == 3){
+              obj = {
+                active : num,
+                newscode : news,
+                news : self.newsobj,
+                pagesize : self.newspagesize,
+                page: self.newspage,
+                q : self.newsq
+              }
+            }else{
+              obj = {
+                active : num,
+                newscode : news,
+                news : self.newsobj
+              }
             }
-            a.attr('linkobj', obj) 
+            a.attr('linkobj', JSON.stringify(obj)) 
             a.attr('href', url)   
           break
           case 'onlineschool':
@@ -949,11 +1086,11 @@
               break
             }
 
-            /*let obj = {
-              active : num,
-              news : news
+            obj = {
+              oneinlineschool : oneinlineschool
+
             }
-            a.attr('linkobj', obj) */
+            a.attr('linkobj', JSON.stringify(obj))
             a.attr('href', url)   
           break
           case 'teacher':
@@ -966,9 +1103,15 @@
               })
               return false
             }
+            obj = {
+              teauid : teauid,
+              q :self.hrefteaq
+            }
+            a.attr('linkobj', JSON.stringify(obj))
             a.attr('href', '/master/'+teauid+'.html')
           break  
           case 'course':
+            let courseactive;
             let onecourse = $('.oneselcourse').is(':hidden');
             let twocourse = $('.twoselcourse').is(':hidden');
             let threecourse = $('.threeselcourse').is(':hidden');
@@ -976,6 +1119,7 @@
             let fivecourse = $('.fiveselcourse').is(':hidden');
             if(!onecourse){
               let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');
+              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');
               if(onecourseradio == undefined || onecourseradio == '' || onecourseradio == 'undefined'){
                 this.$notify({
                   title: '警告',
@@ -984,9 +1128,18 @@
                 })
                 return false
               }
+              courseactive = 1;
+              obj = {
+                course : 1,
+                sourceid: onecourseradio,
+                name : sourcename
+
+              }
+              a.attr('linkobj', JSON.stringify(obj))
               a.attr('href','/platform.html')
             }else if(!twocourse){
               let twocourseradio = $("input[name='twocourse']:checked").attr('pid');
+              let pname = $("input[name='twocourse']:checked").attr('pname');
               if(twocourseradio == undefined ||twocourseradio == 'undefined' || twocourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -995,9 +1148,19 @@
                 })
                 return false
               }
+              courseactive = 2;
+              obj = {
+                course : 2,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+self.sourceid+"']").attr('sourcename'),
+                pid: twocourseradio,
+                pname : pname
+              }
+              a.attr('linkobj', JSON.stringify(obj))
               a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio)              
             }else if(!threecourse){
               let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
+              let sname = $("input[name='threecourse']:checked").attr('sname');
               if(threecourseradio == undefined ||threecourseradio == 'undefined' || threecourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -1006,6 +1169,18 @@
                 })
                 return false
               }
+              courseactive = 3;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              obj = {
+                course : 3,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                sid: threecourseradio,
+                sname : sname,
+                pid : self.pid,
+                pname : $("input[pid='"+self.pid+"']").attr('pname')
+              }
+              a.attr('linkobj', JSON.stringify(obj))
               if(threecourseradio == 0){
                 a.attr('href','/platform-1-0-0.html?pid='+ self.pid)
               }else{
@@ -1014,6 +1189,8 @@
               
             }else if(!fourcourse){
               let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
+              let itemid = $("input[name='fourcourse']:checked").attr('itemid');
+              
               if(fourcourseradio == undefined ||fourcourseradio == 'undefined' || fourcourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -1022,7 +1199,26 @@
                 })
                 return false
               }
-              a.attr('href','/courseinfo/' + fourcourseradio + '.html')
+              courseactive = 4;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              let sid = self.sid?self.sid:'0';
+              obj = {
+                course : 4,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                sid: self.sid || '0',
+                sname : $("input[sid='"+sid+"']").attr('sname'),
+                pid : self.pid,
+                pname : $("input[pid='"+self.pid+"']").attr('pname'),
+                folderid : fourcourseradio,
+                itemid : itemid,
+                foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
+                folderq : self.folderq,
+                folderpage : self.folderpage,
+                folderpagesize: self.folderpagesize
+              }
+              a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href','/courseinfo/' + itemid + '.html')
             }else if(!fivecourse){
               let fivecourseradio = $("input[name='fivecourse']:checked").attr('cwid');
               if(fivecourseradio == undefined ||fivecourseradio == 'undefined' || fivecourseradio == ''){
@@ -1033,11 +1229,37 @@
                 })
                 return false
               }
+              courseactive = 5;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              let sid = self.sid?self.sid:'0';
+              obj = {
+                course : 5,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                sid: self.sid || '0',
+                sname : $("input[sid='"+sid+"']").attr('sname'),
+                pid : self.pid,
+                pname : $("input[pid='"+self.pid+"']").attr('pname'),
+                folderid : self.folderid,
+                foldername : $("input[folderid='"+self.folderid+"']").attr('foldername'),
+                folderq : self.folderq,
+                folderpage : self.folderpage,
+                folderpagesize: self.folderpagesize,
+                cwid :fivecourseradio,
+                cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
+                cwq : self.cwq,
+                cwpage : self.cwpage,
+                cwpagesize : self.cwpagesize
+
+              }
+
+              a.attr('linkobj', JSON.stringify(obj))
               a.attr('href','/platform.html')
             }
           break  
       }
       a.attr('linktype',linkType)
+      a.attr('target','_blank')
       self.visdialog = false
     }
   }
@@ -1065,15 +1287,32 @@
     color: #333333;
  }
  .hrefdialog .tabs-vertical .mbx{
-    width: 100%;
+    width: 97%;
     height: 41px;
     border-bottom: 1px solid #CECECE;
     text-align: left;
     line-height: 41px;
-    padding-left: 15px
+    padding-left: 15px;
+    display:block;
+    white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
   }
   .hrefdialog .tabs-vertical .mbx a{
     cursor: pointer;
+    display: inline-block;
+    max-width: 200px;
+    white-space:nowrap;
+    overflow:hidden; 
+    text-overflow:ellipsis;    
+    float: left;
+  }
+  .hrefdialog .tabs-vertical .coursembx a{
+    max-width: 160px;
+  } 
+  .hrefdialog .tabs-vertical .mbx span{
+    display: inline-block;
+    float: left;
   }
   .hrefdialog .tabs-vertical .newscont,.hrefdialog .tabs-vertical .inlineschoolcont,.hrefdialog .tabs-vertical .teacont,.hrefdialog .tabs-vertical .coursecont{
     padding: 20px 15px;
@@ -1107,7 +1346,7 @@
   }
   .hrefdialog .threeselnews .el-radio-group .el-radio{
     margin-left: 0px;
-    width: 557px;
+    width: 575px;
     height: 48px;
     line-height: 48px;
     border-bottom:1px solid #d9d9d9;
@@ -1115,6 +1354,12 @@
   }
   .hrefdialog .threeselnews .el-radio-group .el-radio:last-child{
     border-bottom: none ;
+  }
+  .hrefdialog .threeselnews .el-radio-group .el-radio .el-radio__input{
+    display: inline-flex;
+    float: left;
+    margin-top: 15px;
+    margin-left: 10px;
   }
   .hrefdialog .vc-font2 .vc-fix{display:inline-block;width:0;height:100%;line-height:100%;vertical-align:middle;visibility: hidden;}
   .hrefdialog .teacherlist{
@@ -1254,4 +1499,5 @@
 .hrefdialog .el-dialog__body{
   padding: 5px 10px
 }
+
 </style>

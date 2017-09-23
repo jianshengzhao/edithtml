@@ -11,7 +11,7 @@
 		      
 			<ul class="pic_ul">
 			    <li class="pic_li borderBnone">我的文件</li>
-			    <li class="pic_li">图片库</li>
+			    <!-- <li class="pic_li">图片库</li> -->
 			    <div class="rectangularBlock"></div>
 			    <div class="tabs_extendedLine"></div>
 			</ul>
@@ -110,20 +110,24 @@
 		        			}
 		        			
 		        			if(self.fileaid == 0){
-		        				if(datas.ablums.length && datas.photos.length){
-		        					$('.myFiles').show();
-			        				$('.myImgs').hide();
+		        				$('.myFiles').show();
+			        			$('.myImgs').hide();
+		        				if(datas.ablums.length || datas.photos.length){
 			        				$('.myFiles').append(newli);
 		        				}else{
 		        					//缺省图	
+		        					var noli = '<div class="nofile"></div>';
+		        					$('.myFiles').append(noli);
 		        				}
 		        			}else{
+		        				$('.myFiles').hide();
+			        			$('.myImgs').show();
 		        				if(datas.photos.length){
-		        					$('.myFiles').hide();
-			        				$('.myImgs').show();
 			        				$('.myImgs').append(newli);
 		        				}else{
 		        					//缺省图	
+		        					var noli = '<div class="nofile"></div>';
+		        					$('.myImgs').append(noli);
 		        				}
 		        			}
 		        			
@@ -659,5 +663,10 @@
 		z-index: 5;
 		cursor: pointer;
 		background: url(http://static.ebanhui.com/ebh/tpl/default/images/checkfile.png);
+	}
+	.nofile{
+		width: 100%;
+		height: 100%;
+		background: url(http://static.ebanhui.com/ebh/tpl/default/images/nofile.png) center center no-repeat;
 	}
 </style>

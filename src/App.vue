@@ -23,7 +23,7 @@
           <i class="iconfont icon-gridlines"></i>
           <span>格线</span>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="对齐">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-align-left"></i>
           <div class="doll"></div>
           <!-- <span>对齐</span> -->
@@ -36,7 +36,7 @@
             <li @click="middleAlignEvent"><i class="iconfont icon-align-middle"></i>垂直居中</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="图层">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-layer"></i>
           <div class="doll"></div>
           <!-- <span>图层</span> -->
@@ -47,7 +47,7 @@
             <li @click="downFloorEvent"><i class="iconfont icon-layer-down"></i>下移一层</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="操作">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-copy"></i>
           <div class="doll"></div>
           <!-- <span>操作</span> -->
@@ -111,20 +111,20 @@
               <li v-for="(item, index) in br_widths">
                 <el-radio-button :key="item.value" :label="item.label">
                   <span v-if="item.value == 0" class="borderWidth">none</span>
-                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + ';border-style: ' + br_style + ';border-color: ' + br_color + ';'"></span>
+                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color: ' + br_color + ';'"></span>
                 </el-radio-button>
               </li>
               </el-radio-group>
             </ul>
           </div>
-          <div class="border br-mod br-disable">
+          <div class="border br-mod br-disable" :style="br_width=='0'?'cursor:not-allowed':''">
             <i class="iconfont2 icon-biankuangyangshi" ></i>
             <div class="doll" ></div>
-            <ul class="toolbar">
+            <ul class="toolbar" v-if="br_width!='0'">
               <el-radio-group v-model="br_style" @change='changeBorderStyle'>
               <li v-for="(item, index) in br_styles">
                 <el-radio-button :key="item.value" :label="item.label">
-                  <span class="borderStyle" :style="'border-width:' + br_width + ';border-style: ' + item.label + ';border-color: ' + br_color + ';'"></span>
+                  <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color: ' + br_color + ';'"></span>
                 </el-radio-button>
               </li>
               </el-radio-group>
@@ -132,8 +132,8 @@
           </div>
           <div class="border br-mod br-disable" :style="'border-color:' + br_color + ';'">
             <i class="iconfont2 icon-biankuangyanse" :style="'color:' + br_color + ';'"></i>
-            <div class="doll" ></div>          
-            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor'></colorPicker>
+            <div class="doll" ></div>       
+            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width=='0'"></colorPicker>
           </div>
         </div>      
       <!-- module opacity -->     
@@ -172,7 +172,7 @@
               </div>
             </ul>
           </div>
-        </div>
+        </div>      
       <!-- </div> -->
       <!-- module exit -->
       <div class="t_right">
@@ -636,15 +636,33 @@
       <el-row>
         <el-col>
           <div @click="editanim()" class="animlist active"><div :class="animtype==''?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>无效果</p></div>
-          <div @click="editanim('fadeIn')" class="animlist"><div :class="animtype=='fadeIn'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>淡入</p></div>
-          <div @click="editanim('slideInRight')" class="animlist"><div :class="animtype=='slideInRight'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>飞入</p></div>
-          <div @click="editanim('zoomIn')" class="animlist"><div :class="animtype=='zoomIn'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>放大</p></div>
-          <div @click="editanim('bounceInRight')" class="animlist"><div :class="animtype=='bounceInRight'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>跳入</p></div><br>
-          <div @click="editanim('flash')" class="animlist"><div :class="animtype=='flash'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>闪现</p></div>
-          <div @click="editanim('rotateIn')" class="animlist"><div :class="animtype=='rotateIn'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>滚入</p></div>
-          <div @click="editanim('flipInY')" class="animlist"><div :class="animtype=='flipInY'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>翻转</p></div>
-          <div @click="editanim('bounceIn')" class="animlist"><div :class="animtype=='bounceIn'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>弹性放大</p></div>
-          <div @click="editanim('bounceOut')" class="animlist"><div :class="animtype=='bounceOut'?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>弹性缩小</p></div>
+          <div @click="editanim('fadeIn')" class="animlist"><div :class="animtype=='fadeIn'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/fadeIn_icon.png">
+          <div class="animtip">✔</div></div><p>淡入</p></div>
+          <div @click="editanim('slideInRight')" class="animlist"><div :class="animtype=='slideInRight'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/slideInRight_icon.png">
+          <div class="animtip">✔</div></div><p>飞入</p></div>
+          <div @click="editanim('zoomIn')" class="animlist"><div :class="animtype=='zoomIn'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/zoomIn_icon.png">
+          <div class="animtip">✔</div></div><p>放大</p></div>
+          <div @click="editanim('bounceInRight')" class="animlist"><div :class="animtype=='bounceInRight'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/bounceInRight_icon.png">
+          <div class="animtip">✔</div></div><p>跳入</p></div><br>
+          <div @click="editanim('flash')" class="animlist"><div :class="animtype=='flash'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/flash_icon.png">
+          <div class="animtip">✔</div></div><p>闪现</p></div>
+          <div @click="editanim('rotateIn')" class="animlist"><div :class="animtype=='rotateIn'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/rotateIn_icon.png">
+          <div class="animtip">✔</div></div><p>滚入</p></div>
+          <div @click="editanim('flipInY')" class="animlist"><div :class="animtype=='flipInY'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/flipInY_icon.png">
+          <div class="animtip">✔</div></div><p>翻转</p></div>
+          <div @click="editanim('bounceIn')" class="animlist"><div :class="animtype=='bounceIn'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/bounceIn_icon.png">
+          <div class="animtip">✔</div></div><p>弹性放大</p></div>
+          <div @click="editanim('bounceOut')" class="animlist"><div :class="animtype=='bounceOut'?'animimg active':'animimg'">
+            <img style="margin-top:14px; " src="./assets/img/bounceOut_icon.png">
+          <div class="animtip">✔</div></div><p>弹性缩小</p></div>
         </el-col>
         
       </el-row>
@@ -657,6 +675,9 @@
     <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
+    <suspend ref="suspend"></suspend>
+    <shape ref="shape"></shape>
+    <editbutton ref="editbutton"></editbutton>
   </div>
 </template>
 <script>  
@@ -667,6 +688,9 @@
   import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
+  import suspend from '@/components/suspend'
+  import shape from '@/components/shape'
+  import editbutton from '@/components/editbutton'
   import '@/assets/animate.min.css'
   export default { // todo: 本地操作保存
     name: 'app',
@@ -676,22 +700,22 @@
         br_width: '1px',
         br_widths: [{
           value: '0',
-          label: '0px'
+          label: '0'
         },{
           value: '1',
-          label: '1px'
+          label: '1'
         },{
           value: '2',
-          label: '2px'
+          label: '2'
         },{
           value: '3',
-          label: '3px'
+          label: '3'
         },{
           value: '4',
-          label: '4px'
+          label: '4'
         },{
           value: '5',
-          label: '5px'
+          label: '5'
         }],
         br_style: 'solid',
         br_styles: [{
@@ -973,7 +997,7 @@
                 self.selectNews = []
                 self.selectCoruse = []
                 self.pictureUrl = onthis.find('img').attr('src')
-//              self.dialogPicture = true
+                // self.dialogPicture = true
 		            self.$refs.myimages.show();
                 oa = onthis.find('.picBox')
                 self.linkType = oa.attr('linkType') || 'none'
@@ -1118,8 +1142,8 @@
         tool.tool.init(self, $)
       })
     },
-    components: {colorPicker, ueditor, hrefdialog, myimages},
-    methods: {     
+    components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape,editbutton},
+    methods: {
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -1827,6 +1851,11 @@
 </script>
 
 <style>
+    .picture{
+      border-width: 0; 
+      border-style: solid;
+      border-color: #000;
+    }
     .propertycolor{
       width: 22px;
       height: 15px;
@@ -2404,7 +2433,7 @@
     .layer .lib_ol .ele_li:hover{
       background-color: #eee;
     }
-  /*editBox*/
+  /*editBox*/    
     #app .module:hover .promptBox{
       display: block;
     }

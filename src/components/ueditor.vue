@@ -1,7 +1,7 @@
 <template>
   <div class="ueditor">
     <el-dialog
-      title="富文本"
+      title="文本"
       :visible.sync="dialogEditor"
       size="small" class="ueditor">
       <div ref="ueditor" class='editorC'></div>    
