@@ -137,6 +137,10 @@ var tool = {
     me.$('.supendTools').remove()
     element.addClass('on_module')
     element.append(resizeBox)
+    if (element.hasClass('picture')){ // 禁止图片拉伸
+      element.find('.resize').hide()
+    }
+
     self.moduleElement = element
     self.moduleParentElementHeight = parseInt(element.parent().css('height'))
     self.inp_z = parseInt(element.css('zIndex')) || 0
@@ -147,10 +151,10 @@ var tool = {
     self.inp_size = parseInt(element.css('fontSize'))
     self.inp_line = parseInt(element.css('lineHeight'))
     self.color_font = element.css('color')
-    self.color_bg = element.css('backgroundColor')
-    self.br_width = parseInt(element.css('borderWidth'))
-    self.br_style = element.css('borderStyle')
-    self.br_color = element.css('borderColor')
+    self.color_bg = element.css('backgroundColor')   
+    self.br_width = parseInt(element.css('border-left-width'))   
+    self.br_style = element.css('border-left-style')    
+    self.br_color = element.css('border-left-color')
     self.inp_opacity = parseInt(element.css('opacity') * 100)
     if (element.css('boxShadow') == 'none') {
       self.check_shadow = false
@@ -180,8 +184,9 @@ var tool = {
         me.warp = parseInt(me.top.css('height')) + parseInt(me.body.css('height'))
         break
     } 
+    me.carryUpdateElementStorageEvent(self, element.parent(), element)
   },
-  cleanSignEvent: function (self) { // 标记模块并属性还原默认值
+  cleanSignEvent: function (self) { // 标记模块并属性还原默认值 注：禁止了图片拉伸
     let me = this
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
@@ -454,7 +459,7 @@ var tool = {
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')  
   },
-  carryModuleOperationEvent: function (self, type, val) { // 属性栏模块操作事件集合
+  carryModuleOperationEvent: function (self, type, val) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
     let me = this
     let onModules = me.$(".on_module")
     let $this
@@ -537,17 +542,19 @@ var tool = {
           self.inp_w = 0
         }
         part = function (ele) {
-          let tw = self.inp_width - parseInt(ele.css('left'))          
-          if (val > tw && self.config.stretchLimit) {
-            ele.css('width', tw + 'px')
-            ele.find('.multiBox').css('width',tw + 'px')
-            ele.find('.resizeBox').css('width',tw + 'px')
-          } else {
-            ele.css('width', val + 'px')
-            ele.find('.multiBox').css('width',val + 'px')
-            ele.find('.resizeBox').css('width',val + 'px')
-          } 
-        }        
+          let tw = self.inp_width - parseInt(ele.css('left')) 
+          if (!ele.hasClass('picture')) { // 禁止图片拉伸
+            if (val > tw && self.config.stretchLimit) {
+              ele.css('width', tw + 'px')
+              ele.find('.multiBox').css('width',tw + 'px')
+              ele.find('.resizeBox').css('width',tw + 'px')
+            } else {
+              ele.css('width', val + 'px')
+              ele.find('.multiBox').css('width',val + 'px')
+              ele.find('.resizeBox').css('width',val + 'px')
+            } 
+          }
+        }         
         break
       case 'height':
         if (val < 0 && self.config.stretchLimit) {
@@ -556,14 +563,16 @@ var tool = {
         }
         part = function (ele) {
           let th = self.moduleParentElementHeight - parseInt(ele.css('top'))
-          if (val > th && self.config.stretchLimit) {
-            ele.css('height', th + 'px')
-            ele.find('.multiBox').css('height',th + 'px')
-            ele.find('.resizeBox').css('height',th + 'px')
-          } else {
-            ele.css('height', val + 'px')
-            ele.find('.multiBox').css('height',val + 'px')
-            ele.find('.resizeBox').css('height',val + 'px')
+          if (!ele.hasClass('picture')) {
+            if (val > th && self.config.stretchLimit) {
+              ele.css('height', th + 'px')
+              ele.find('.multiBox').css('height',th + 'px')
+              ele.find('.resizeBox').css('height',th + 'px')
+            } else {
+              ele.css('height', val + 'px')
+              ele.find('.multiBox').css('height',val + 'px')
+              ele.find('.resizeBox').css('height',val + 'px')
+            }
           }
         }
         break
@@ -597,8 +606,8 @@ var tool = {
       case 'borderWidth':
         part = function (ele) {
           ele.css('borderWidth', val)
-          ele.find('.multiBox').css({top: '-' + val, left: '-' + val})
-          ele.find('.resizeBox').css({top: '-' + val, left: '-' + val})
+          ele.find('.multiBox').css({top: '-' + val + 'px', left: '-' + val + 'px'})
+          ele.find('.resizeBox').css({top: '-' + val + 'px', left: '-' + val + 'px'})
         }
         break
       case 'borderStyle':
@@ -986,13 +995,11 @@ var tool = {
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
   // ------------- 操作模块事件 ----------------
-    me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件 // todolist:更新模块信息
+    me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件
       let $this = me.$(this)
       let resizeBox = me.$('.resizeBox')
       let parent = me.$('.on_module')
-      let picBox = parent.find('.picBox')
-      // let round = parent.find('.round')
-      // let square = parent.find('.square')
+      // let picBox = parent.find('.picBox')    
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
@@ -1205,11 +1212,11 @@ var tool = {
         part(e)
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
-        if (picBox.length > 0){
-          if (picBox.hasClass('round')||picBox.hasClass('square')) {
-            picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
-          }
-        }        
+        // if (picBox.length > 0) {// 图片形状改变而做的拉伸
+        //   if (picBox.hasClass('round')||picBox.hasClass('square')) {
+        //     picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+        //   }
+        // }        
         return false
       })
       me.editBox.mouseup(function (e) {

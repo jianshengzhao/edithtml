@@ -118,10 +118,11 @@
                       <div style="clear: both;"></div>
                     </form>
                     <form class="threeselcourse" style="display: none;">
-                      <!-- <div class="courseradio">
+                      <div class="courseradio" v-if="sourceid">
                         <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
                         <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
-                      </div> -->
+                      </div>
+
                       <div class="courseradio" v-for="(item,index) in sidlist">
                         <input :sid="item.sid" :sname="item.sname" :checked="insid == item.sid?true:false"  name="threecourse" type="radio" value="" />
                         <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
@@ -138,7 +139,7 @@
                         <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                       </div> -->
                       <label  class="courselist" v-for="(item,index) in courselist">
-                        <input :folderid="item.folderid" :itemid="item.itemid"  :checked="initemid == item.itemid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
+                        <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
                         <a  class="vc-font2">
                           <img :src="item.img" ><br/>
                           <h3>{{item.foldername}}</h3>
@@ -331,6 +332,7 @@
         inpid : '',
         insid : '',
         infolderid : '',
+        initemid : '',
         init: function () {
           let self = this;
           self.showtype = '1';

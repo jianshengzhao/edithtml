@@ -24,10 +24,10 @@
 	     			<el-upload
 	     			  class="uploadMypic"
 	     			  name="upimg"
-					  action="http://ss.ebh.net/room/albums/addphotos.html"
+					  action="/room/albums/addphotos.html"
 					  :data="data_img"
 					  :show-file-list="false"
-					  :with-credentials="true"	
+					  :with-credentials="true"
 					  :before-upload="beforeMypic"
 					  :on-success="successMypic">
 					  <el-button><i class="el-icon-upload el-icon--right"></i>直接上传</el-button>
@@ -419,9 +419,11 @@
 	      				aid:self.fileaid
 	      			};
 	      			self.getfilelist(param);
-	      			console.log(1);
+	      		}else{
+	      			self.httpStart = 0;
 	      		}
 	      	},
+	      	
 	      	//新建文件夹
       		newFlies: function(){
       			var self = this;
@@ -464,7 +466,16 @@
       					checkimg = $($checked_img[i]).siblings('img').attr('src');
       				}
       			}
-      			$('.on_module').find('img').attr('src',checkimg);
+      			let mod = $('.on_module')
+      			let img = mod.find('img')
+      			img.attr('src',checkimg);
+      			setTimeout(function() {
+      				let imgW = img.css('width')
+  					let imgH = img.css('hegiht')
+  					mod.css({'width': imgW, 'hegiht': imgH})
+  					mod.find('.resizeBox').css({'width': imgW, 'hegiht': imgH})
+      			},300)      			
+			  	
 				self.dialogmyPicture = false;
       		}
 		}

@@ -85,6 +85,9 @@ export default {
       a.attr('buttontype',self.buttontype)
       self.dialogeditbutton = false
       a.find('a').text(self.inpBtnText)
+    },
+    handleClick(){
+    
     }
   }
 }

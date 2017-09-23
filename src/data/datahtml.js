@@ -25,6 +25,16 @@ var datahtml = {
         name: 'button',
         icon: 'imgicon icon-button',
         text: '按钮'
+      },
+      {
+        name: 'hline',
+        icon: 'imgicon icon-hline',
+        text: '横线'
+      },
+      {
+        name: 'sline',
+        icon: 'imgicon icon-sline',
+        text: '竖线'
       }
     ],
     online: [],
@@ -67,7 +77,7 @@ var datahtml = {
     html: '<div class="editor module"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
   picture: {
-    style: 'width:200px; height:120px',
+    style: 'width:243px; height:144px',
     tool: {
       private: {
         text: '编辑图片',
@@ -91,6 +101,28 @@ var datahtml = {
   carousel: {
     style: 'width:1200px; height:320px',
     html: '<div class="carousel module" datatext="轮播图"><div class="promptBox">轮播图设置</div><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+  },
+  hline: {
+    style: 'width:200px; height:1px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      }, 
+      public: ['']
+    },
+    html: '<div class="hline module"  datatext="横线"></div>'
+  },
+  sline: {
+    style: 'width:1px; height:200px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      }, 
+      public: []
+    },
+    html: '<div class="sline module"  datatext="竖线"></div>'
   }
 }
 exports.datahtml = datahtml

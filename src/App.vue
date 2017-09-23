@@ -1132,6 +1132,9 @@
                   tool.tool.carryLayerEvent(self, middle)
                   tool.tool.carryLayerEvent(self, foot)
                   tool.tool.carryLineHeightEvent()
+                  tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
                 }
               }
               self.httppost(getParams)
