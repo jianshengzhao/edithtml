@@ -6,20 +6,32 @@
       size="tiny">
       <ul class="selectLi" >
         <li @click="selectLiEvent('artwork')" :class="addClassVal=='artwork'?'on':''">
-          <span>原图:</span>
-          <img src="../assets/shape/artwork.png" alt="">
+          <div class="imgbox">          
+            <img src="../assets/shape/artwork.png" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>原图</span>
         </li>
-        <li @click="selectLiEvent('square')" :class="addClassVal=='square'?'on':''">
-          <span>正方形:</span>
-          <img src="../assets/shape/square.png" alt="">
+        <li @click="selectLiEvent('square')" :class="addClassVal=='square'?'on':''">          
+          <div class="imgbox"> 
+            <img src="../assets/shape/square.png" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>正方形</span>
         </li>
         <li @click="selectLiEvent('fillet')" :class="addClassVal=='fillet'?'on':''">
-          <span>圆角:</span>
-          <img src="../assets/shape/fillet.png" alt="">
+          <div class="imgbox"> 
+            <img src="../assets/shape/fillet.png" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>圆角</span>
         </li>
         <li @click="selectLiEvent('round')" :class="addClassVal=='round'?'on':''">
-          <span>圆形:</span> 
-          <img src="../assets/shape/round.png" alt="">
+          <div class="imgbox"> 
+            <img src="../assets/shape/round.png" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>圆形</span> 
         </li>
       </ul>        
       <span slot="footer" class="dialog-footer">
@@ -58,8 +70,13 @@ export default {
       mod.removeClass(dataShape)
       mod.attr('dataShape', self.addClassVal)     
       if (self.addClassVal != 'fillet' && self.addClassVal != 'artwork') {
-        let w = picBox.css('height')
-        picBox.css({'width': w ,'height': w})
+        let h = parseInt(picBox.css('height'))
+        let w = parseInt(picBox.css('width'))
+        if(h > w){
+          picBox.css({'width': w ,'height': w})
+        } else{
+          picBox.css({'width': h ,'height': h})
+        }        
       } else {
         mod.addClass(self.addClassVal)
         picBox.removeAttr('style')
@@ -98,20 +115,36 @@ export default {
   }
   .m-shape .selectLi li{
     float: left;
+    position: relative;
     margin: 10px;
     width: 150px;
-    height: 115px;
-    cursor: pointer;
-    border:1px solid #eaeefb;
+    height: 120px;
+    cursor: pointer;   
     border-radius: 4px;
+    text-align: center;
   }
-  .m-shape .selectLi li.on{
-    border-color:#20a0ff;
-    color:#20a0ff;
+  .m-shape .selectLi li .imgbox{
+    width: 150px;
+    padding:10px 0;
+    border: 2px solid #eaeefb;
+    position: relative;
   }
-  .m-shape .selectLi li.on span{
-    color:#20a0ff;
+  .m-shape .imgbox .animtip{
+    position: absolute;
+    right:-2px;
+    bottom: -2px;
+    display: none;
+    width: 18px;
+    background-color: #7fcc78;
+    color: #fff;
   }
+  .m-shape .selectLi li.on .imgbox {    
+    border-color: #7fcc78;
+  }
+  .m-shape .selectLi li.on .imgbox .animtip {
+    display:block;    
+  }
+
   .m-shape .selectLi li span{
     display: inline-block;
     margin-top: 6px;
@@ -123,10 +156,7 @@ export default {
     height: 118px;
     border: 1px solid #c4c4c4;   
     overflow: hidden;
-  }
-  .m-shape .selectLi li img{
-    margin-left: 15px;
-  }  
+  }   
   .imgHover.round{
     margin: 0 auto;
     border-radius: 50%;
@@ -141,6 +171,7 @@ export default {
     overflow: hidden;
   }
   .imgHover.square img{
+    display: block;
     width: auto;
     height: 100%;
     margin-left: 50%;

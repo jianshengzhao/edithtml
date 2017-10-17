@@ -1,4 +1,14 @@
-var datahtml = {
+var configHtml = {
+  config:{
+    stretchLimit: true, // 是否开启module拉伸限制
+    moveLimit: true, // 是否开启module移动限制
+    paddingtop: 35, // top栏高度
+    paddingleft: 133, // left栏高度
+    postop: 80, // editbox  top值
+    posleft: 1000, // editbox  left值
+    fuzzyVal: 6,// 模糊度
+    choiceCon: true // 多选模块： ture 模糊选择，false为全部选中
+  },
   toallGroup: { // 左侧菜单配置
     basic: [
       {
@@ -42,11 +52,11 @@ var datahtml = {
     expect: []
   },
   supendTools: { // 悬浮工具栏 样式class集合
-    a: 'st-prospect', // 前景特效
-    b: 'st-effects', // 悬浮特效
-    c: 'st-shape', // 图片形状
-    d: 'st-animate', // 动画效果
-    e: 'st-link' // 链接
+    a: ['st-prospect','前景特效'], // 前景特效
+    b: ['st-effects','悬浮特效'], // 悬浮特效
+    c: ['st-shape', '图片形状'],// 图片形状
+    d: ['st-animate', '动画效果'],// 动画效果
+    e: ['st-link', '链接'],// 链接
   },
   // 模块配置项
   rectangle: {
@@ -109,9 +119,9 @@ var datahtml = {
         text: '',
         class: ''
       }, 
-      public: ['']
+      public: []
     },
-    html: '<div class="hline module"  datatext="横线"></div>'
+    html: '<div class="hline module"  datatext="横线"><div class="click-hline"></div></div>'
   },
   sline: {
     style: 'width:1px; height:200px',
@@ -122,7 +132,7 @@ var datahtml = {
       }, 
       public: []
     },
-    html: '<div class="sline module"  datatext="竖线"></div>'
+    html: '<div class="sline module"  datatext="竖线"><div class="click-sline"></div></div>'
   }
 }
-exports.datahtml = datahtml
+exports.config = configHtml

@@ -3,28 +3,33 @@
     <el-dialog
       title="设置链接"
       :visible.sync="visdialog"
+      :close-on-click-modal="false"
       size="hrefs">
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
             <li>
-              <a class="tab-active" type="online" data-index="0" href="javascript:void(0)">链接</a>
+              <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
             <li>
-              <a data-index="1"  type="news" href="javascript:void(0)">资讯</a>
+              <a data-index="1"  type="news" >资讯</a>
             </li>
             <li>
-              <a data-index="2"  type="course" href="javascript:void(0)">课程</a>
+              <a data-index="2"  type="course">课程</a>
             </li>
             <li>
-              <a data-index="3"  type="teacher" href="javascript:void(0)">教师</a>
+              <a data-index="3"  type="teacher">教师</a>
             </li>
             <li>
-              <a data-index="4"  type="onlineschool" href="javascript:void(0)">网校</a>
+              <a data-index="4"  type="onlineschool" >网校</a>
             </li>
           </ul>
           <div class="tabs-content-placeholder">
-            <div class="tab-content-active tab-content tab-content-href"> 
+            <div class="tab-content-active tab-content">
+              <div class="hrefmbx mbx">
+                <span class="hreonembx"><a @click="indexinit()">链接</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+              </div>
+              <div class="hrefcont">
                 <el-col style="text-align: left;font-size: 14px;margin-bottom: 10px ">链接地址：
                 </el-col>     
                 <el-col>
@@ -34,39 +39,42 @@
                   显示方式：
                   <el-radio class="radio" v-model="showtype" label="1">新窗口</el-radio>
                   <!-- <el-radio class="radio" v-model="showtype" label="2">弹出层</el-radio> -->
-                </el-col>         
+                </el-col>       
+              </div> 
+                
             </div>
             <div class="tab-content"> 
                   <div class="newsmbx mbx">
-                      <span class="newsonembx"><a @click="indexinit()">首页</a> ></span>
-                      <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> ></span>
-                      <span class="newsthreembx"  style="display: none;"><a></a> ></span>
+                      <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="newsthreembx"  style="display: none;"><a></a></span>
+                      <el-input icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
                   </div>
                   <div class="newscont">
                     <form class="oneselnews">
                       <div class="newsradio" v-for="(item,index) in NewsOptions">
                         <input :code="item.value"  name="onenews" type="radio" value="" />
-                        <a @click="getsonNews(item.value,0,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <a @click="getsonNews(item.value,0,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
+
                       <div style="clear: both;"></div>
+                       <input type="reset" class="newsradioreset" style="display: none;" value="Reset">
                     </form>
                     <div class="nodata" v-if="!NewsOptions.length"></div>
                     <form class="twoselnews">
                       <div class="newsradio" v-for="(item,index) in sonNewsOptions">
                         <input :code="item.value" name="twonews" type="radio" value="" />
-                        <a @click="getsonNews(item.value,1,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <a @click="getsonNews(item.value,1,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
+                      <input type="reset" class="newsradiotworeset" style="display: none;" value="Reset">
                     </form>
                     <el-col class="threeselnews" >
-                        <el-col>
-                          <el-input icon="search" style="width: 200px;float: right;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
-                        </el-col>
                         <el-col style="margin-top: 10px;max-height: 393px; overflow-x: hidden;border: 1px solid #CECECE;">
                           <div class="nodata" style="display: none;"></div>
                           <el-radio-group v-model="threenewsradio">
                             <el-radio  v-for="(item,index) in newslist" :label="item.itemid" :key="item.itemid">
-                              <div :title="item.subject" style="width: 360px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;float: left;" >
+                              <div :title="item.subject" style="width: 660px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;float: left;" >
                                 {{item.subject}}
                               </div>
                               <div style="display: inline-block;" >
@@ -92,61 +100,70 @@
             </div>
             <div  class="tab-content">
                 <div class="coursembx mbx">
-                      <span class="courseonembx"><a @click="indexinit()">首页</a> ></span>
-                      <span class="coursetwombx" style="display: none;"><a  @click="coursebxinit(2)"></a> ></span>
-                      <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> ></span>
-                      <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> ></span>
-                      <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a> ></span>
+                      <span class="courseonembx"><a @click="indexinit()">课程</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="coursetwombx" style="display: none;"><a  @click="coursebxinit(2)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                      <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
+                      <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
+
+                      <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
                   </div>
-                  <div class="coursecont" style="max-height: 393px; overflow-x: hidden;">
+                  <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
                     <form class="oneselcourse">
                      <div class="courseradio">
                         <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" />
-                        <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程 (<span style="color: red;"> {{mecoursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div class="courseradio" v-for="(item,index) in schsourcelist">
-                        <input :sourceid="item.sourceid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
-                        <a @click="getsoncourse(item.sourceid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <input :sourceid="item.sourcecrid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
+                        <a @click="getsoncourse(item.sourcecrid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
+                      <input type="reset" class="courseradioreset" style="display: none;" value="Reset">
                     </form>
                     <form class="twoselcourse" style="display: none;">
                       <div class="courseradio" v-for="(item,index) in coursesort">
                         <input :pid="item.pid" :pname="item.pname" :checked="inpid == item.pid?true:false"  name="twocourse" type="radio" value="" />
-                        <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
+                      <input type="reset" class="courseradiotworeset" style="display: none;" value="Reset">
                     </form>
                     <form class="threeselcourse" style="display: none;">
-                      <div class="courseradio" v-if="sourceid">
-                        <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
-                        <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
-                      </div>
-
+                     <!--  <div class="courseradio" v-if="sourceid">
+                       <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
+                       <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
+                     </div>
+                      -->
                       <div class="courseradio" v-for="(item,index) in sidlist">
                         <input :sid="item.sid" :sname="item.sname" :checked="insid == item.sid?true:false"  name="threecourse" type="radio" value="" />
-                        <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}}</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                        <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
+                      <div class="nodata" v-if="!sidlist.length && !sourceid"></div>
                       <div style="clear: both;"></div>
+                      <input type="reset" class="courseradiothreereset" style="display: none;" value="Reset">
                     </form>
                     <form class="fourselcourse" style="display: none;">
-                      <el-col>
-                        <el-input  icon="search" :on-icon-click="handleIconfolderClick" style="width: 200px;float: right;" type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
-                      </el-col>
+                     
                       <div class="nodata" v-if="!courselist.length"></div>
                       <!-- <div class="courseradio" v-for="(item,index) in courselist">
                         <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
                         <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                       </div> -->
-                      <label  class="courselist" v-for="(item,index) in courselist">
+                      <div  class="courselist" v-for="(item,index) in courselist">
                         <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
-                        <a  class="vc-font2">
+                        <a @click="getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                           <img :src="item.img" ><br/>
-                          <h3>{{item.foldername}}</h3>
+                          <div style="text-align: center;width: 121px;">
+                            <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
+                            <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
+                          </div>
                         </a>
-                      </label> 
+                      </div> 
                      <!--  @click="getcwlistall(item.folderid,item.foldername)" -->
                       <div style="clear: both;"></div>
+                      <input type="reset" class="courseradiofourreset" style="display: none;" value="Reset">
                       <el-col v-if="foldercount > folderpagesize" style="text-align: right;margin-top: 10px;">
                           <el-pagination
                             @size-change="handlefolderSizeChange"
@@ -160,17 +177,15 @@
                         </el-col>
                     </form>
                     <form class="fiveselcourse" style="display: none;">
-                      <el-col>
-                        <el-input  icon="search" :on-icon-click="handleIconcwClick" style="width: 200px;float: right;" type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
-                      </el-col>
+                    
                       <div class="nodata" v-if="!cwlist.length"></div>
                       <el-col v-for="(item,index) in cwlist" :key="item.sname">
                         <h3>{{item.sname}}</h3>
                         <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid">
-                          <input :cwid="items.cwid" :cwname="items.title"  name="fivecourse" type="radio" value="" />
+                          <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" value="" />
                           <a class="vc-font2">
-                            <img :src="items.face" ><br/>
-                            <h3>{{items.title}}</h3>
+                            <img :src="items.logo" ><br/>
+                            <h3 :title="items.title">{{items.title}}</h3>
                           </a>
                         </label> 
                         <!-- <div class="courseradio" v-for="(items,indexs) in item.cwlist">
@@ -194,26 +209,30 @@
                     </form>
                   </div>
             </div>
-            <div class="tab-content teacont">
-              <el-col>
-                <el-input  icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;" type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
-              </el-col>
-              <el-col style="height: 415px;overflow-x: hidden;">
-                <form >
-                  <label  class="teacherlist" v-for="(item,index) in tealist">
-                    <input :code="item.uid"  name="teacher" type="radio" value="" />
-                    <a class="vc-font2">
-                      <img :src="item.face" ><br/>
-                      <h3>{{item.realname}}</h3>
-                    </a>
-                  </label> 
-                </form>
-              </el-col>
+            <div class="tab-content">
+              <div class="teambx mbx">
+                <span class="teaonembx"><a @click="indexinit()">教师</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                <el-input  icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
+              </div>
+              <div class="teacont">
+                <el-col class="teaflowx" style="height: 450px;overflow-x: hidden;">
+                  <form >
+                    <label  class="teacherlist" v-for="(item,index) in tealist">
+                      <input :code="item.uid"  name="teacher" type="radio" value="" />
+                      <a class="vc-font2">
+                        <img :src="item.face" ><br/>
+                        <h3 :title="item.realname">{{item.realname}}</h3>
+                      </a>
+                    </label>
+                    <input type="reset" class="teacherradioreset" style="display: none;" value="Reset"> 
+                  </form>
+                </el-col>
+              </div>
             </div>
             <div class="tab-content">
               <div class="inlineschool mbx">
-                  <span class="inlineschoolonembx"><a @click="indexinit()">首页</a> ></span>
-                  <span class="inlineschooltwombx" style="display: none;"><a>登录</a> ></span>
+                  <span class="inlineschoolonembx"><a @click="indexinit()">网校</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                  <span class="inlineschooltwombx" style="display: none;"><a>登录</a></span>
               </div>
               <div class="inlineschoolcont">
                   <form class="oneselinlineschool">
@@ -243,12 +262,13 @@
                     </label>
                     <div class="inlineschoolradio">
                       <input code="login"  name="oneinlineschool" type="radio" value="" />
-                      <a @click="getmorelogin()" class="vc-font2"><span class="vc-inner">登录</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                      <a @click="getmorelogin()" class="vc-font2"><span class="vc-inner">登录(<span style="color: red;"> 4 </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                     </div>
+                    <input type="reset" class="oneselinlineschoolReset" style="display: none;" value="Reset">
                   </form>
                   <form class="twoselinlineschool" style="display: none;">
                     <label class="inlineschoolradio">
-                      <input code="login"  name="logintype" type="radio" value="" />
+                      <input code="login1"  name="logintype" type="radio" value="" />
                       <a class="vc-font2"><span class="vc-inner">普通登录</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                     </label>
                     <label class="inlineschoolradio">
@@ -263,6 +283,7 @@
                       <input code="weibo"  name="logintype" type="radio" value="" />
                       <a class="vc-font2"><span class="vc-inner">微博登录</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                     </label>
+                    <input type="reset" class="twoselinlineschoolReset" style="display: none;" value="Reset">
                   </form>
               </div>
             </div>
@@ -270,7 +291,7 @@
         </div>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="visdialog = false">取 消</el-button>
+        <el-button @click="indexinit(1)">重 置</el-button>
         <el-button type="primary" @click="dialogEvent" >确 定</el-button>
       </span>
     </el-dialog>
@@ -285,6 +306,7 @@
     data: function () {
       return {
         visdialog:false,
+        mecoursenum : 0,
         edithref:'',
         showtype:'1',
         newsradio:'',
@@ -323,7 +345,7 @@
         cwlistpagesize:30,
         folderq :'',
         folderpagesize : 30,
-        folderpage:1,
+        folderpage:1, 
         foldercount : 0,
         cwq : '',
         cwcount:0,
@@ -333,6 +355,10 @@
         insid : '',
         infolderid : '',
         initemid : '',
+        incwid : '',
+        fprice : '',
+        itemid : '',
+        seaqshow : 0,
         init: function () {
           let self = this;
           self.showtype = '1';
@@ -341,8 +367,30 @@
           self.folderq = '';
           self.hrefteaq = '';
           $('.threeselnews').hide();
+          $('.newsseaq').hide();
           $('.twoselnews').hide();
           $('.oneselnews').show();
+          self.seaqshow = 0;
+          self.$nextTick( () => {
+              $("input[name='oneinlineschool']").removeAttr('checked');
+              $("input[name='onecourse']").removeAttr('checked');
+              $("input[name='twocourse']").removeAttr('checked');
+              $("input[name='threecourse']").removeAttr('checked');
+              $("input[name='teacher']").removeAttr('checked');
+              $('.courseradioreset').click()
+              $('.courseradiotworeset').click()
+              $('.courseradiothreereset').click()
+              $('.courseradiofourreset').click()
+              $('.newsradioreset').click()
+              $('.teacherradioreset').click()
+              $('.newsradiotworeset').click()
+              $('.twoselinlineschoolReset').click()
+              $('.oneselinlineschoolReset').click()
+              self.inpid = 'eeeee'; 
+              self.insid = 'eeeee';
+              self.infolderid = 'eeeee';
+              self.incwid = 'eeeee';              
+          })
           $('.newstwombx a,.newsthreembx a').text('');
           $('.newsthreembx a,.newsthreembx a').attr('code','')
           $('.newstwombx,.newsthreembx').hide()
@@ -351,21 +399,8 @@
           $('.twoselinlineschool').hide()
           $('.oneselcourse').show();
           $('.twoselcourse,.coursetwombx,.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide();
-          self.hrefgetealist() 
-          /*let onenews =  $("input[name=onenews]");
-          let twonews =  $("input[name=twonews]");
-          let lenone =  onenews.length;
-          let lentwo =  twonews.length;
-          let i = 0; 
-          let j = 0;   
-          for(; i < lenone; i++){ 
-            onenews[i].checked = false; 
-            onenews[i].removeAttribute("checked"); 
-          } 
-          for(; j < lentwo; j++){ 
-            twonews[i].checked = false; 
-            twonews[i].removeAttribute("checked"); 
-          }*/
+          
+          
         },
         hrefgetealist: function () {
           let self = this
@@ -395,25 +430,38 @@
         },
         geschsource: function () {
           let self = this
-          self.$http.get(window.host + '/aroomv3/schsource.html', {
+          self.$http.get(window.host + '/aroomv3/course/courseCategory.html', {
             params: {
             }
           }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data
+            let list = response.data.data[1]
+            let list1 = response.data.data[0]
+            self.mecoursenum = 0;
+              if(list1.length){
+                for(var i=0;i<list1.length;i++){
+                  self.mecoursenum = self.mecoursenum + list1[i].coursenum
+                }
+              }
             self.schsourcelist = list;
           }, function (response) {
             console.log(response)
           })
         },
         getcoursesort:function(linkobj){
+
           let self = this
-          self.$http.get(window.host + '/aroomv3/course/coursesort.html', {
+          self.$http.get(window.host + '/aroomv3/course/courseCategory.html', {
             params: {
-              showbysort : 0
             }
           }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data
+            let list = response.data.data[0]
             self.coursesort = list;
+            self.mecoursenum = 0;
+            if(list.length){
+              for(var i=0;i<list.length;i++){
+                self.mecoursenum = self.mecoursenum + list[i].coursenum
+              }
+            }
             self.$nextTick( () => {
               if(linkobj){
                 if(linkobj.course > 2){
@@ -428,7 +476,22 @@
         },
         getitemlist:function(sourceid,pid,sid,linkobj){
           let self = this
-          self.$http.get(window.host + '/aroomv3/schsource/itemlist.html', {
+          console.log(self.schsourcelist)
+          for(var i=0;i<self.schsourcelist.length;i++){
+            if(self.schsourcelist[i].sourcecrid == sourceid){
+              self.coursesort = self.schsourcelist[i].packages;
+              
+            }
+          }
+          self.$nextTick( () => {
+            if(linkobj){
+              if(linkobj.course > 2){
+                self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
+                self.insid = linkobj.sid;
+              } 
+            }
+           })
+          /*self.$http.get(window.host + '/aroomv3/schsource/itemlist.html', {
             params: {
               q : '',
               sourceid: sourceid,
@@ -449,15 +512,15 @@
              })
           }, function (response) {
             console.log(response)
-          })
+          })*/
 
         },
-        getcourselist:function(pid,sid){
+        getcourselist:function(pid,sid,linkobj){
           let self = this
           self.$http.get(window.host + '/aroomv3/course/courselist.html', {
             params: {
               pid : pid || '',
-              sid : sid || '',
+              sid : sid || 0,
               pagesize : self.folderpagesize,
               page : self.folderpage,
               q: self.folderq
@@ -474,22 +537,39 @@
             
             self.courselist = list;
             self.foldercount   =  parseInt(response.data.data.coursecount)
+            setTimeout(function(){
+              $('.courseradiothreereset').click()
+            },0)
+            self.$nextTick( () => {
+              if(linkobj){
+                if(linkobj.course > 4){
+                 self.cwpage = linkobj.cwpage;
+                 self.cwpagesize= linkobj.cwpagesize;
+                 self.cwq= linkobj.cwq;
+                 self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid)
+                 self.incwid = linkobj.cwid;
+                 $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
+                } 
+              }
+             })
           }, function (response) {
             console.log(response)
           })
 
         },
-        getitemcourselist:function(sourceid,pid,sid){
+        getitemcourselist:function(sourceid,pid,sid,linkobj){
           let self = this
-          self.$http.get(window.host + '/aroomv3/schsource/itemlist.html', {
+          self.$http.get(window.host + '/aroomv3/course/schCourse.html', {
             params: {
-              q:'',
-              sourceid : sourceid,
+              s:self.folderq,
+              sourcecrid : sourceid || 0,
               pid : pid || '',
-              sid : sid || ''
+              sid : sid || 0,
+              pagesize : self.folderpagesize,
+              page : self.folderpage
             }
           }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.itemlist;
+            let list = response.data.data.list;
             if(list.length){
               for(var i=0;i<list.length;i++){
                 list[i].foldername = list[i].iname
@@ -500,7 +580,24 @@
             }
 
             self.courselist = list;
+            self.foldercount   =  parseInt(response.data.data.count)
+            
+            setTimeout(function(){
+              $('.courseradiothreereset').click()
+            },0)
+            self.$nextTick( () => {
+              if(linkobj){
+                if(linkobj.course > 4){
+                 self.cwpage = linkobj.cwpage;
+                 self.cwpagesize= linkobj.cwpagesize;
+                 self.cwq= linkobj.cwq;
+                 self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid)
+                 self.incwid = linkobj.cwid;
+                 $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
 
+                } 
+              }
+             })
           }, function (response) {
             console.log(response)
           })
@@ -514,19 +611,43 @@
               page:self.cwpage,
               pagesize:self.cwpagesize,
               s : self.cwq,
-              sourceid: sourceid || ''
+              crid: sourceid || 0
             }
           }, {emulateJSON: true}).then(function (response) {
             let list = response.data.data.cwlist;
+          
+            for(var i=0;i<list.length;i++){
+              if(list[i].cwlist){
+                for(var j=0;j<list[i].cwlist.length;j++){
+                  if(list[i].cwlist[j].logo == null || list[i].cwlist[j].logo  == ""){
+                    if(list[i].cwlist[j].type == "flv"  || list[i].cwlist[j].type == "jar" || list[i].cwlist[j].type == "mp3"){
+                    list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/attach.png"
+                    }else if(list[i].cwlist[j].islive == '1'){
+                      list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/livelogo.jpg"
+                    }else if(list[i].cwlist[j].type == "ppt"){
+                      list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/ppt.png"
+                    }else if(list[i].cwlist[j].type == "doc"){
+                      list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/doc.png"
+                    }else{
+                      list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/defaultcwimggray.png?v=20160504001"
+                    }
+                  }
+                }
+              }
+            }
             self.cwlist = list;
-            self.cwcount = response.data.data.cwcount;
+            self.cwcount = parseInt(response.data.data.cwcount);
+            setTimeout(function(){
+              $('.courseradiofourreset').click()
+              $('.courseradiothreereset').click()
+            },0)
           }, function (response) {
             console.log(response)
           })
         },
         getNewsData: function () {
           var self = this
-          self.$http.get(window.host + '/aroomv3/news/getNewsCategorys.html', {
+          self.$http.get(window.host + '/aroomv3/news/newsCategory.html', {
             params: {}
           }, {emulateJSON: true}).then(function (response) {
             if (response.data.code === 0) {
@@ -539,6 +660,7 @@
                   let items = {
                     label: item.name,
                     value: item.code,
+                    newsCount : item.newsCount,
                     children: []
                   }
                   if (item.subnav) {
@@ -547,6 +669,7 @@
                       let jtems = {
                         label: jtem.name,
                         value: jtem.code,
+                        newsCount : jtem.newsCount,
                         children: []
                       }
                       items.children.push(jtems)
@@ -570,7 +693,7 @@
             q : self.newsq,
             navcode: code,
             pagesize: self.newspagesize,
-            page: self.newspage
+            pagenum: self.newspage
           }
         }, {emulateJSON: true}).then(function (response) {
           if (response.data.code === 0) {        
@@ -692,6 +815,8 @@
           let widget = $('#tabs-vertical');
           let tabs = widget.find('ul.tabsul a'),
           content = widget.find('.tabs-content-placeholder > div');
+          $('.teaflowx').scrollTop(0);
+          console.log('111')
           tabs.on('click', function (e) {
             e.preventDefault();
             let index = $(this).data('index');
@@ -712,6 +837,7 @@
           $('.oneselnews').hide();
           $('.twoselnews').hide();
           $('.threeselnews').show();
+          $('.newsseaq').show();
           $('.newsthreembx a').text(label);
           $('.newsthreembx a').attr('code',code)
           $('.newsthreembx').show()
@@ -725,6 +851,7 @@
                       self.sonNewsOptions = self.NewsOptions[i].children;
                       $('.oneselnews').hide();
                       $('.threeselnews').hide();
+                      $('.newsseaq').hide();
                       $('.twoselnews').show();
                       self.newsobj.len = 1;
                 }else{
@@ -733,6 +860,7 @@
                     $('.oneselnews').hide();
                     $('.twoselnews').hide();
                     $('.threeselnews').show();
+                    $('.newsseaq').show();
                     self.newsobj.len = '';
                 }
                 $('.newstwombx a').text(label);
@@ -758,7 +886,12 @@
       handleIconfolderClick(){
         let self = this;
         self.folderpage = 1;
-        self.getcourselist(self.pid,self.sid)
+        console.log(self.sourceid)
+        if(!self.sourceid){
+          self.getcourselist(self.pid,self.sid)
+        }else{
+          self.getitemcourselist(self.sourceid,self.pid,self.sid)
+        } 
       },
       handleIconcwClick(){
         let self = this;
@@ -782,12 +915,20 @@
         let self = this;
         self.folderpagesize = val;
         self.folderpage = 1;
-        self.getcourselist(self.pid,self.sid)
+        if(!self.sourceid){
+          self.getcourselist(self.pid,self.sid)
+        }else{
+          self.getitemcourselist(self.sourceid,self.pid,self.sid)
+        }
       },
       handlefolderCurrentChange(val){
         let self = this;
         self.folderpage = val;
-        self.getcourselist(self.pid,self.sid)
+        if(!self.sourceid){
+          self.getcourselist(self.pid,self.sid)
+        }else{
+          self.getitemcourselist(self.sourceid,self.pid,self.sid)
+        }
       },
       handlecwSizeChange(val){
         let self = this;
@@ -800,9 +941,19 @@
         self.cwpage = val;
         self.getcwlist(self.folderid,self.sourceid)
       },
-      indexinit(){
+      indexinit(resetting){
         let self = this;
+        let a = $('.on_module a')
         self.init();
+        if(resetting){
+          a.removeAttr('linkobj');
+          a.removeAttr('linktype');
+          a.removeAttr('href');
+          a.removeAttr('target');
+          a.removeClass('registerEvent')
+          a.removeClass('getUserNameEvent')
+          a.removeClass('loginEvent')         
+        }
       },
       newsmbxinit(num){
         let self = this;
@@ -823,11 +974,13 @@
           $('.newsthreembx').hide();
           $('.oneselnews').hide();
           $('.threeselnews').hide();
+          $('.newsseaq').hide();
           $('.twoselnews').show();
         }else{
           $('.newsthreembx').hide();
           $('.oneselnews').hide();
           $('.threeselnews').show();
+          $('.newsseaq').show();
           $('.twoselnews').hide();
         }
         $('.newsthreembx a').text('');
@@ -844,7 +997,7 @@
         if(id == 0){
           self.getcoursesort(linkobj)
         }else{
-          self.getitemlist(id,'','',linkobj)
+          self.getitemlist(id,'','',linkobj) 
         }
         $('.oneselcourse').hide();
         $('.twoselcourse').show();
@@ -862,24 +1015,15 @@
          let self = this;
          
          let list = self.coursesort;
-         let item = self.itemlist;
+         //let item = self.itemlist;
          let sidlist  = [];
          let pidcourse = [];
          let names =  $('.coursetwombx a').text();
-         if(names == '本校课程'){
-            for(var i=0;i<list.length;i++){
-              if(pid == list[i].pid){
-                sidlist = list[i].sorts
-              }
-            }
-         }else{
-            for(var i=0;i<item.length;i++){
-              if(pid == item[i].pid){
-                sidlist = item[i].sorts
-              }
-            }
+         for(var i=0;i<list.length;i++){
+          if(pid == list[i].pid){
+            sidlist = list[i].sorts || []
+          }
          }
-
          self.pid = pid;
          self.sidlist = sidlist
          $('.coursethreembx a').text(name)
@@ -893,47 +1037,62 @@
               self.folderpagesize = linkobj.folderpagesize;
               self.folderq = linkobj.folderq;
               self.infolderid = linkobj.folderid;
-              self.getcourseall(linkobj.sid,linkobj.sname)
+              self.getcourseall(linkobj.sid,linkobj.sname,linkobj)
             }
           }
          })
       },
-      getcourseall(sid,name){
+      getcourseall(sid,name,linkobj){
         let self = this;
+        if(!linkobj){
+          self.folderpage = 1;
+        }
         let sids = sid || '';
         if(self.sourceid){
-          self.getitemcourselist(self.sourceid,self.pid,sids)
+          self.getitemcourselist(self.sourceid,self.pid,sids,linkobj)
         }else{
-          self.getcourselist(self.pid,sids)
+          self.getcourselist(self.pid,sids,linkobj)
         }
         $('.coursefourmbx a').text(name)
         $('.coursefourmbx').show()
         $('.oneselcourse,.twoselcourse,.threeselcourse').hide();
         $('.fourselcourse').show();
+        self.seaqshow = 1;
         self.sid = sids;
+
         
       },
       coursebxinit(num){
         let self = this;
         if(num == 2){
             $('.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide()
-            $('.twoselcourse').show()
+            $('.twoselcourse').show();
+            self.seaqshow = 0;
         }else if(num == 3){
             $('.coursefourmbx,.coursefivembx,.fourselcourse,.fiveselcourse').hide()
             $('.threeselcourse').show()
+            self.seaqshow = 0;
         }else if(num == 4){
             $('.coursefivembx,.fiveselcourse').hide()
             $('.fourselcourse').show()
+            self.seaqshow = 1;
         }
       },
-      getcwlistall(folderid,name){
+      getcwlistall(folderid,name,fprice,itemid,page){
         let self = this;
+        if(page){
+          self.cwpage = 1;
+        }
+        self.folderid = folderid;
+        self.fprice = fprice;
+        self.itemid = itemid;
         self.getcwlist(folderid,self.sourceid)
         $('.coursefivembx a').text(name)
         $('.coursefivembx').show()
         $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
         $('.fiveselcourse').show();
-        self.folderid = folderid;
+        self.seaqshow = 2;
+        
       },
       dialogEvent: function () { // 编辑文本窗口
         let self = this;
@@ -1074,6 +1233,10 @@
                 a.addClass('getUserNameEvent')
               break
               case 'login':
+                a.removeAttr('href')
+                a.addClass('loginEvent')
+              break
+              case 'login1':
                 a.removeAttr('href')
                 a.addClass('loginEvent')
               break
@@ -1223,6 +1386,7 @@
               a.attr('href','/courseinfo/' + itemid + '.html')
             }else if(!fivecourse){
               let fivecourseradio = $("input[name='fivecourse']:checked").attr('cwid');
+              let cwpay = $("input[name='fivecourse']:checked").attr('cwpay');
               if(fivecourseradio == undefined ||fivecourseradio == 'undefined' || fivecourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -1243,8 +1407,10 @@
                 pid : self.pid,
                 pname : $("input[pid='"+self.pid+"']").attr('pname'),
                 folderid : self.folderid,
+                itemid : self.itemid,
                 foldername : $("input[folderid='"+self.folderid+"']").attr('foldername'),
                 folderq : self.folderq,
+                fprice : self.fprice,
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize,
                 cwid :fivecourseradio,
@@ -1254,9 +1420,13 @@
                 cwpagesize : self.cwpagesize
 
               }
-
               a.attr('linkobj', JSON.stringify(obj))
-              a.attr('href','/platform.html')
+              if(cwpay == '1'){
+                  a.attr('href','/ibuy.html?cwid='+fivecourseradio)
+              }else{
+                  a.attr('href','/courseinfo/' + self.itemid + '.html')
+              }
+              
             }
           break  
       }
@@ -1276,20 +1446,25 @@
     font-size: 14px;
   }
   .hrefdialog .el-dialog--hrefs{
-    width: 720px;
+    width: 1000px;
     /*height: 720px;*/
+  }
+  .hrefdialog .el-dialog--hrefs .el-dialog__body{
+    padding: 5px 0px; 
   }
  .hrefdialog .tabs-vertical{
     background-color: #fff;
     /* box-shadow: 0 0 22px #E2E2E2 inset, 2px 2px 3px #E8E8E8; */
     border: 1px solid #CECECE;
+    border-right:none;
+    border-left:none;
     margin: 20px auto 10px;
     border-radius: 2px;
     height: 552px;
     color: #333333;
  }
  .hrefdialog .tabs-vertical .mbx{
-    width: 97%;
+    width: 100%;
     height: 41px;
     border-bottom: 1px solid #CECECE;
     text-align: left;
@@ -1299,15 +1474,21 @@
     white-space:nowrap; 
     overflow:hidden; 
     text-overflow:ellipsis;
+    box-sizing:border-box;
   }
   .hrefdialog .tabs-vertical .mbx a{
     cursor: pointer;
     display: inline-block;
-    max-width: 200px;
+    max-width: 160px;
     white-space:nowrap;
     overflow:hidden; 
     text-overflow:ellipsis;    
     float: left;
+
+  }
+  .hrefdialog .tabs-vertical .mbx a:hover{
+    text-decoration: none;
+    color: #20a0ff;
   }
   .hrefdialog .tabs-vertical .coursembx a{
     max-width: 160px;
@@ -1316,11 +1497,12 @@
     display: inline-block;
     float: left;
   }
-  .hrefdialog .tabs-vertical .newscont,.hrefdialog .tabs-vertical .inlineschoolcont,.hrefdialog .tabs-vertical .teacont,.hrefdialog .tabs-vertical .coursecont{
+
+  .hrefdialog .tabs-vertical .newscont,.hrefdialog .tabs-vertical .inlineschoolcont,.hrefdialog .tabs-vertical .teacont,.hrefdialog .tabs-vertical .coursecont,.hrefdialog .tabs-vertical .hrefcont{
     padding: 20px 15px;
   }
   .hrefdialog .tabs-vertical .newscont .newsradio,.hrefdialog .tabs-vertical .inlineschoolcont .inlineschoolradio,.hrefdialog .tabs-vertical .coursecont .courseradio{
-    width: 33.3%;
+    width: 20%;
     float: left;
     margin-top: 5px;
     position: relative;
@@ -1348,7 +1530,7 @@
   }
   .hrefdialog .threeselnews .el-radio-group .el-radio{
     margin-left: 0px;
-    width: 575px;
+    width: 880px;
     height: 48px;
     line-height: 48px;
     border-bottom:1px solid #d9d9d9;
@@ -1365,7 +1547,7 @@
   }
   .hrefdialog .vc-font2 .vc-fix{display:inline-block;width:0;height:100%;line-height:100%;vertical-align:middle;visibility: hidden;}
   .hrefdialog .teacherlist{
-    width: 33.3%;
+    width: 16.5%;
     float: left;
     margin-top: 5px;
     position: relative;
@@ -1375,17 +1557,17 @@
     top: 36%;
   }
   .hrefdialog .teacherlist a{
-    width: 120px;
-    height: 127px;
+    width: 100px;
+    height: 100px;
     text-align: center;
     overflow: hidden;
     display: inline-block;
-    margin-left: 28px;
+    margin-left: 20px;
     cursor: pointer;
   }
   .hrefdialog .teacherlist a img{
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%
   }
   .hrefdialog .teacherlist a h3{
@@ -1395,35 +1577,47 @@
     text-overflow:ellipsis;
   }
   .hrefdialog .courselist{
-    width: 33.3%;
+    width: 20%;
     float: left;
     margin-top: 5px;
     position: relative;
   }
   .hrefdialog  .courselist input{
     position: absolute;
-    left: 34px;
+    left: 20px;
     top: 28%;
   }
   .hrefdialog  .courselist a{
-    width: 170px;
+    width: 120px;
     height: 100px;
     text-align: center;
     overflow: hidden;
     display: inline-block;
-    margin-left: 28px;
+    margin-left: 40px;
     cursor: pointer;
+    /* border:1px solid #fff; */
+  }
+  .hrefdialog  .courselist a:hover{
+    text-decoration: none;
   }
   .hrefdialog  .courselist a img{
     width: 110px;
     height: 65px;
   }
   .hrefdialog  .courselist a h3{
-    display:block;
+    display:inline-block;
     white-space:nowrap;
     overflow:hidden;
-    text-overflow:ellipsis;
+    text-overflow:ellipsis;  
   }
+  .hrefdialog .courselist a h3{
+    max-width: 120px;
+  }
+  .hrefdialog  .courselist a h3.coursetitle{
+    max-width: 84px;
+  }
+  
+  
 /* The tabs */
 
 .hrefdialog .tabs-vertical ul.tabsul{
@@ -1497,9 +1691,18 @@
 
 .hrefdialog .tabs-vertical .tabs-content-placeholder div img{
     max-width: 100%;
+    margin-top:5px; 
 }
 .hrefdialog .el-dialog__body{
   padding: 5px 10px
 }
-
+.hrefdialog .vc-font2:hover{
+  border:1px solid red;
+  box-sizing: border-box;
+}
+.hrefdialog .teacherlist .vc-font2{
+  padding-top: 5px;
+  box-sizing: border-box;
+  height: 100px;
+}
 </style>

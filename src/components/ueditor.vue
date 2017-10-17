@@ -62,6 +62,31 @@ export default {
     }
   }
 }
+
+var toallp = 548800 // 初始金额
+var toall = 548800; // 现有金额
+var years = 10 // 年份
+var rate = 1.04 // 年回报率
+function marriageFund(toallp, years, rate) {
+  var toall = toallp
+  for(let i = 0; i < years; i++){ 
+    toall = toall*rate;
+  }
+  console.log(toall,'总金额')
+  console.log(toall - toallp,'利润')
+}
+
+function marriageFund(toallp, years, rate) { // 入参:投资金额， 年份 ，回报率
+  var toall = toallp
+  for(let i = 0; i < years; i++){ 
+    toall = toall*rate;
+  }
+  console.log('年回报率' + rate)
+  console.log(toall, years + '年总金额')
+  console.log(toall - toallp, years +'年利润')
+}
+
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
@@ -74,6 +99,9 @@ export default {
     padding: 10px 10px 15px;
   }
   .el-dialog--small{
-    width: 600px;
+    width: 1000px;
+  }
+  .ueditor .el-dialog__body{
+    padding: 5px 10px;
   }
 </style>

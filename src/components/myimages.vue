@@ -2,7 +2,7 @@
 	<div class="myimages">
 		<!--我的图片库弹窗-->
 		<el-dialog
-		    title="添加图片 ( 只能添加 jpg，jpeg，gif，png，图片大小不超过1MB )"
+		    title="添加图片"
 		    :visible.sync="dialogmyPicture"
 		    size="mypicture"
 		    :close-on-click-modal="false"
@@ -30,7 +30,7 @@
 					  :with-credentials="true"
 					  :before-upload="beforeMypic"
 					  :on-success="successMypic">
-					  <el-button><i class="el-icon-upload el-icon--right"></i>直接上传</el-button>
+					  <el-button title="只能添加 jpg，jpeg，gif，png，图片大小不超过1MB"><i class="el-icon-upload el-icon--right"></i>直接上传</el-button>
 					</el-upload>
 					
 		     		<el-input
@@ -51,8 +51,8 @@
 			</div>
 			     	
 		    <span slot="footer">
-		        <el-button :disabled="hasimg" type="primary" @click="imgconfirm" size="large">确 定</el-button>
 		      	<el-button @click="dialogmyPicture = false" size="large">取 消</el-button>
+		        <el-button :disabled="hasimg" type="primary" @click="imgconfirm" size="large">确 定</el-button>
 		    </span>
 		</el-dialog>
 	</div>
@@ -311,7 +311,20 @@
 		       		$('.myFiles').hide();
 		       		$('.fileOfimg').show();
 		       		self.getfilelist(param);
-		       }
+		       },
+		       getImageWidth:function(url,callback){
+					var img = new Image();
+					img.src = url;
+					if(img.complete){
+					    callback(img.width, img.height);
+					}else{
+				            // 完全加载完毕的事件
+				    	img.onload = function(){
+							callback(img.width, img.height);
+				    	}
+			        }
+					
+				}
 			}
 		},
 		created:function(){
@@ -415,13 +428,13 @@
 	      		if(res.code == 0){
 	      			self.httpStart = 0;
 	      			self.searchMypic = "";
-	      			var param = {
-	      				aid:self.fileaid
-	      			};
-	      			self.getfilelist(param);
 	      		}else{
 	      			self.httpStart = 0;
 	      		}
+	      		var param = {
+      				aid:self.fileaid
+      			};
+      			self.getfilelist(param);
 	      	},
 	      	
 	      	//新建文件夹
@@ -468,14 +481,21 @@
       			}
       			let mod = $('.on_module')
       			let img = mod.find('img')
+      			img.removeAttr('style')
+      			let picBox = mod.find('.picBox')
       			img.attr('src',checkimg);
-      			setTimeout(function() {
-      				let imgW = img.css('width')
-  					let imgH = img.css('hegiht')
-  					mod.css({'width': imgW, 'hegiht': imgH})
-  					mod.find('.resizeBox').css({'width': imgW, 'hegiht': imgH})
-      			},300)      			
-			  	
+      			let imgSrc = img.attr("src");      			
+				self.getImageWidth(imgSrc,function(w,h){
+					mod.css({'width': w, 'height': h})
+					mod.find('.resizeBox').css({'width': w, 'height': h})
+					if(picBox.hasClass('round') || picBox.hasClass('square')){						
+						if (parseInt(w) > parseInt(h)) {
+							picBox.css({'width': h, 'height': h})
+						} else {
+							picBox.css({'width': w, 'height': w})
+						}
+					}					
+				});
 				self.dialogmyPicture = false;
       		}
 		}
@@ -491,9 +511,6 @@
 		padding: 0;
 		margin: 20px 0 10px 0;
 		position: relative;
-	}
-	.el-dialog--mypicture .el-dialog__footer{
-		text-align: center;
 	}
 	.el-dialog--mypicture .pic_ul{
 		width:140px;

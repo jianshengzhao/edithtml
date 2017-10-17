@@ -6,24 +6,39 @@
       size="tiny">
       <ul class="selectLi" >
         <li @click="selectLiEvent('enlarge')" :class="addClassVal=='enlarge'?'on':''">
-          <span>放大:</span>
-          <img src="../assets/supend/enlarge.gif" alt="">
+          <div class="imgbox">
+            <img src="../assets/supend/enlarge.gif" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>放大</span>
         </li>
-        <li @click="selectLiEvent('moveup')" :class="addClassVal=='moveup'?'on':''">
-          <span>上移:</span>
-          <img src="../assets/supend/moveup.gif" alt="">
+        <li @click="selectLiEvent('moveup')" :class="addClassVal=='moveup'?'on':''">  
+          <div class="imgbox">
+            <img src="../assets/supend/moveup.gif" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>上移</span>
         </li>
-        <li @click="selectLiEvent('left')" :class="addClassVal=='left'?'on':''">
-          <span>左移:</span>
-          <img src="../assets/supend/left.gif" alt="">
+        <li @click="selectLiEvent('left')" :class="addClassVal=='left'?'on':''"> 
+          <div class="imgbox">         
+            <img src="../assets/supend/left.gif" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>左移</span>
         </li>
-        <li @click="selectLiEvent('right')" :class="addClassVal=='right'?'on':''">
-          <span>右移:</span> 
-          <img src="../assets/supend/right.gif" alt="">
+        <li @click="selectLiEvent('right')" :class="addClassVal=='right'?'on':''"> 
+          <div class="imgbox">         
+            <img src="../assets/supend/right.gif" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>右移</span> 
         </li>        
-        <li @click="selectLiEvent('none')" :class="addClassVal=='none'?'on':''">
-          <span>无效果:</span> 
-          <img src="../assets/supend/none.png" alt="">
+        <li @click="selectLiEvent('none')" :class="addClassVal=='none'?'on':''"> 
+          <div class="imgbox">         
+            <img src="../assets/supend/none.png" alt="">
+            <div class="animtip">✔</div>
+          </div>
+          <span>无效果</span> 
         </li>
       </ul>        
       <span slot="footer" class="dialog-footer">
@@ -96,17 +111,31 @@ export default {
     float: left;
     margin: 10px;
     width: 150px;
-    height: 115px;
-    cursor: pointer;
-    border:1px solid #eaeefb;
+    height: 120px;
+    cursor: pointer;    
     border-radius: 4px;
+    text-align: center;
   }
-  .m-suspend .selectLi li.on{
-    border-color:#20a0ff;
-    color:#20a0ff;
+  .m-suspend .selectLi li .imgbox{
+    width: 150px;
+    padding:10px 0;
+    border: 2px solid #eaeefb;
+    position: relative;
   }
-  .m-suspend .selectLi li.on span{
-    color:#20a0ff;
+  .m-suspend .imgbox .animtip{
+    position: absolute;
+    right:-2px;
+    bottom: -2px;
+    display: none;
+    width: 18px;
+    background-color: #7fcc78;
+    color: #fff;
+  }
+  .m-suspend .selectLi li.on .imgbox {    
+    border-color: #7fcc78;
+  }
+  .m-suspend .selectLi li.on .imgbox .animtip {
+    display:block;    
   }
   .m-suspend .selectLi li span{
     display: inline-block;
@@ -121,9 +150,7 @@ export default {
     border: 1px solid #c4c4c4;   
     overflow: hidden;
   }
-  .m-suspend .selectLi li img{
-    margin-left: 15px;
-  }
+  
   .m-suspend .selectLi .none{   
     height: 30px;
     line-height: 30px;

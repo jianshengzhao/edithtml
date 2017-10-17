@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" unselectable="on" onselectstart="return false;">
   <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">
       <div class="t_left">
@@ -61,8 +61,8 @@
       </div>
       <!-- module attribute -->
      <!--  <div class="toolBox"> -->
-        <div class="property" >
-          <label for="">Z :</label>
+        <div class="property " >
+          <label for="" class="leftBorder">Z :</label>
           <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
         </div>
         <div class="property" >
@@ -83,7 +83,7 @@
         </div>      
       <!-- module font -->      
         <div class="property">
-          <label for="">字号 :</label>
+          <label for="" class="leftBorder">字号 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
         <div class="property">
@@ -97,12 +97,12 @@
         </div>      
       <!-- module background -->     
         <div class="property">
-          <label for="">背景 :</label>
+          <label for="" class="leftBorder">背景 :</label>
           <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' @change='changeColorBg'></colorPicker>
         </div>     
       <!-- module border -->      
         <div class="property">
-          <label for="">边框 :</label>
+          <label for="" class="leftBorder">边框 :</label>
           <div class="border br-mod br-disable">
             <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
             <div class="doll" ></div>
@@ -111,7 +111,7 @@
               <li v-for="(item, index) in br_widths">
                 <el-radio-button :key="item.value" :label="item.label">
                   <span v-if="item.value == 0" class="borderWidth">none</span>
-                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color: ' + br_color + ';'"></span>
+                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color:#333;'">{{item.label}}</span>
                 </el-radio-button>
               </li>
               </el-radio-group>
@@ -124,26 +124,27 @@
               <el-radio-group v-model="br_style" @change='changeBorderStyle'>
               <li v-for="(item, index) in br_styles">
                 <el-radio-button :key="item.value" :label="item.label">
-                  <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color: ' + br_color + ';'"></span>
+                  <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color:#333;'"></span>
                 </el-radio-button>
               </li>
               </el-radio-group>
             </ul>
           </div>
-          <div class="border br-mod br-disable" :style="'border-color:' + br_color + ';'">
-            <i class="iconfont2 icon-biankuangyanse" :style="'color:' + br_color + ';'"></i>
-            <div class="doll" ></div>       
-            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width=='0'"></colorPicker>
+          <div class="border br-mod br-disable" >
+            <i class="iconfont2 icon-biankuangyanse" ></i>
+            <div class="doll" ></div>
+            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width==0">
+            </colorPicker>
           </div>
         </div>      
       <!-- module opacity -->     
         <div class="property">
-          <label for="">透明度 :</label>
+          <label for="" class="leftBorder">透明度 :</label>
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
         </div>      
       <!-- module shadow -->
         <div class="property" style="margin-left:4px;">
-          <label for="">阴影 :</label>
+          <label for="" class="leftBorder">阴影 :</label>
           <div class="border br-mod br-disable shadow">
             <i class="iconfont2 icon-yinying"></i>
             <div class="doll"></div>
@@ -192,10 +193,10 @@
         </ol>
       </nav> -->
       <div class="lib_box">
-        <div class="header">基本组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
-        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol onlineBox"></div>
+      <!--   <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol onlineBox"></div> -->
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
         <div class="header">敬请期待。。。</div>
@@ -207,15 +208,15 @@
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
-        <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead">页头 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>
-        <div class="header">主体 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementMain">
           <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>
-        <div class="header">页尾 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementTail">
           <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>       
@@ -242,34 +243,34 @@
         <div class="row-b line"></div> 
         <div class="col-l line"></div>
         <div class="col-r line"></div>
+          <!-- 自定义右键菜单 -->
+        <ul class="contextmenu">
+          <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
+          <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
+          <div class="divider" v-if="rightButton"></div>       
+          <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
+            <i class="el-icon-caret-bottom"></i>
+            <ol>
+              <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
+              <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
+              <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
+              <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
+              <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
+              <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
+            </ol>
+          </li>
+          <div class="divider" v-if="rightButton"></div>
+          <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
+          <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
+          <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
+          <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
+        </ul>
       </div>
     <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
         </div>
-      </div>
-    <!-- 自定义右键菜单 -->
-      <ul class="contextmenu">
-        <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
-        <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
-        <div class="divider" v-if="rightButton"></div>       
-        <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
-          <i class="el-icon-caret-bottom"></i>
-          <ol>
-            <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
-            <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
-            <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
-            <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
-            <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
-            <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
-          </ol>
-        </li>
-        <div class="divider" v-if="rightButton"></div>
-        <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
-        <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
-        <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
-        <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
-      </ul>
+      </div>  
     </div>
   <!-- dialog弹框 -->
     <el-dialog
@@ -632,36 +633,37 @@
     <el-dialog
       title="模块动画"
       :visible.sync="dialogscrollanim"
+      :close-on-click-modal="false"
       size="scrollanim">
       <el-row>
         <el-col>
           <div @click="editanim()" class="animlist active"><div :class="animtype==''?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>无效果</p></div>
           <div @click="editanim('fadeIn')" class="animlist"><div :class="animtype=='fadeIn'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/fadeIn_icon.png">
+            <img  src="./assets/img/fadeIn_icon.png">
           <div class="animtip">✔</div></div><p>淡入</p></div>
           <div @click="editanim('slideInRight')" class="animlist"><div :class="animtype=='slideInRight'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/slideInRight_icon.png">
+            <img  src="./assets/img/slideInRight_icon.png">
           <div class="animtip">✔</div></div><p>飞入</p></div>
           <div @click="editanim('zoomIn')" class="animlist"><div :class="animtype=='zoomIn'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/zoomIn_icon.png">
+            <img  src="./assets/img/zoomIn_icon.png">
           <div class="animtip">✔</div></div><p>放大</p></div>
           <div @click="editanim('bounceInRight')" class="animlist"><div :class="animtype=='bounceInRight'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/bounceInRight_icon.png">
+            <img  src="./assets/img/bounceInRight_icon.png">
           <div class="animtip">✔</div></div><p>跳入</p></div><br>
           <div @click="editanim('flash')" class="animlist"><div :class="animtype=='flash'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/flash_icon.png">
+            <img  src="./assets/img/flash_icon.png">
           <div class="animtip">✔</div></div><p>闪现</p></div>
           <div @click="editanim('rotateIn')" class="animlist"><div :class="animtype=='rotateIn'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/rotateIn_icon.png">
+            <img src="./assets/img/rotateIn_icon.png">
           <div class="animtip">✔</div></div><p>滚入</p></div>
           <div @click="editanim('flipInY')" class="animlist"><div :class="animtype=='flipInY'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/flipInY_icon.png">
+            <img src="./assets/img/flipInY_icon.png">
           <div class="animtip">✔</div></div><p>翻转</p></div>
           <div @click="editanim('bounceIn')" class="animlist"><div :class="animtype=='bounceIn'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/bounceIn_icon.png">
+            <img src="./assets/img/bounceIn_icon.png">
           <div class="animtip">✔</div></div><p>弹性放大</p></div>
           <div @click="editanim('bounceOut')" class="animlist"><div :class="animtype=='bounceOut'?'animimg active':'animimg'">
-            <img style="margin-top:14px; " src="./assets/img/bounceOut_icon.png">
+            <img src="./assets/img/bounceOut_icon.png">
           <div class="animtip">✔</div></div><p>弹性缩小</p></div>
         </el-col>
         
@@ -682,7 +684,7 @@
 </template>
 <script>  
   import $ from 'jquery' 
-  import datahtml from '@/data/datahtml.js'
+  import configData from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
   import ueditor from '@/components/ueditor'
@@ -692,12 +694,13 @@
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
   import '@/assets/animate.min.css'
+  let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
     data: function () {
       return {
       // ------------ 工具栏add ----------------------
-        br_width: '1px',
+        br_width: '0',
         br_widths: [{
           value: '0',
           label: '0'
@@ -872,15 +875,17 @@
         moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
+      // ---------- config --------------
         config: {
-          stretchLimit: true, // 是否开启module拉伸限制
-          moveLimit: true // 是否开启module移动限制
+          stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
+          moveLimit: config.moveLimit // 是否开启module移动限制
         },
-        paddingtop: 35, // top栏高度
-        paddingleft: 133, // left栏高度
-        postop: 80, // editbox  top值
-        posleft: 1000, // editbox  left值
-        fuzzyVal: 6,// 模糊度
+        paddingtop: config.paddingtop, // top栏高度
+        paddingleft: config.paddingleft, // left栏高度
+        postop: config.postop, // editbox  top值
+        posleft: config.posleft, // editbox  left值
+        fuzzyVal: config.fuzzyVal, // 模糊度
+        choiceCon: config.choiceCon,
         preHandleTime: 0,
         elementStorage: {
           c_top: {},
@@ -890,7 +895,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-        datahtml: datahtml.datahtml,
+        datahtml: configData.config,
       // ------------ common -------------------------
         httpget: function (getParam) { // 封装的异步请求数据
           let self = this
@@ -1086,6 +1091,9 @@
           head.html(module.top)
           middle.html(module.body)
           foot.html(module.foot)
+          tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
         } else {
           let getParam = {
             url: '/aroomv3/roominfo.html',
@@ -1143,6 +1151,33 @@
           self.httpget(getParam)
         }
         tool.tool.init(self, $)
+        let shadow = $('.property .shadow .toolbar')
+        let colorbox = shadow.find('.box')
+        let $top = $('.top')
+        let width
+        let moveShadow
+        positionshadow()
+        $(window).resize(function(event) {
+           positionshadow()
+        })
+        function positionshadow() {
+          width = parseInt($top.css('width'))
+          if(width < 1845){
+            width = parseInt($top.css('width'))   
+            if(width < 1558) {             
+              shadow.css('left', '0px')
+              colorbox.css('left', '0px')
+            } else {
+              moveShadow = width - 1845             
+              if (moveShadow < -212) {
+                shadow.css('left', '-212px')
+                colorbox.css('left', (moveShadow + 212) + 'px')
+              }else{
+                shadow.css('left', moveShadow + 'px')
+              }
+            }     
+          }
+        }
       })
     },
     components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape,editbutton},
@@ -1382,11 +1417,25 @@
       },
       changeBorderWidth: function (val) { // 边框宽度（粗细）
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+        let mods = $('.on_module')
+        if (mods.length > 1){
+          if (parseInt(self.moduleElementY.css('border-left-width'))!== val){
+            tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+          }
+        }else if(mods.length!= 0){
+          tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+        }        
       },
       changeBorderStyle: function (val) { // 边框样式
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+        let mods = $('.on_module')
+        if (mods.length > 1){
+          if (self.moduleElementY.css('border-left-style')!== val){
+            tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+          }
+        }else if(mods.length!= 0){          
+          tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+        }        
       },
       changeBorderColor: function (val) { // 边框颜色
         var self = this
@@ -1854,6 +1903,20 @@
 </script>
 
 <style>
+    .el-dialog{
+
+    }
+    .el-dialog--scrollanim{
+      width: 510px;
+    }
+    .leftBorder{
+      border-left: 1px solid #888;
+      margin-left: 10px;
+      padding-left: 10px;
+      line-height: 20px;
+      height: 20px;
+      display: inline-block;
+    }
     .picture{
       border-width: 0; 
       border-style: solid;
@@ -1871,7 +1934,10 @@
       cursor: pointer;
       /*margin:2px;*/
     }
-    .propertycolor .disabled{
+    #app .propertycolor .box.open{
+      margin-top: 20px;
+    }
+    #app .propertycolor .disabled{
       border-color: #ccc;
     }
   /*app*/
@@ -2114,6 +2180,7 @@
       top:5px;
       left:5px;
     }
+
     .shadow .toolbar span{
       display: inline-block;
     }
@@ -2270,13 +2337,48 @@
       line-height: 30px;    
       cursor: pointer;
       text-indent:10px;
-    }
+    }    
     .header i{
       float: right;
       margin-right:10px;
       margin-top: 10px;
       font-size: 12px;
       color: #7d8695;
+    }
+    .basichead i{
+      width: 13px;
+      height: 13px;
+      margin-left: 15px;
+      margin-top: 8px;
+      margin-right: 0;
+      line-height: 15px;
+      text-indent: 0;
+      float: left;
+    }
+    .layerhead i{
+      width: 13px;
+      height: 13px;
+      margin-right: 15px;
+      margin-top: 8px;     
+      line-height: 15px;
+      text-indent: 0;      
+    }
+    .closei i{
+      transform:rotate(-90deg);
+      -ms-transform:rotate(-90deg);   /* IE 9 */
+      -moz-transform:rotate(-90deg);  /* Firefox */
+      -webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(-90deg); 
+    }
+    .closeiR i{
+      width: 13px;
+      height: 13px;
+      margin-top: 8px;
+      transform:rotate(90deg);
+      -ms-transform:rotate(90deg);   /* IE 9 */
+      -moz-transform:rotate(90deg);  /* Firefox */
+      -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(90deg); 
     }
     .lib_ol{
       width: 132px;
@@ -2589,9 +2691,9 @@
     }
     .supendTools{
       position: absolute;
-      top:-60px;
+      top:-45px;
       left: 0px;
-      height: 46px;       
+      height: 36px;       
       box-sizing: border-box;
       border:1px solid #E4E4E4;
       background-color: #fff;
@@ -2600,7 +2702,7 @@
     }
     .supendTools li {
       display: inline-block;
-      margin-top: 13px;
+      margin-top: 8px;
       padding:0 12px;
       height: 20px;
       line-height: 20px;
@@ -3021,5 +3123,9 @@
   }
   .animlist .active .animtip{
     display: block;
+  }
+  /* 模块动画弹窗 */
+  .animlist img{
+    margin-top: 14px; 
   }
 </style>
