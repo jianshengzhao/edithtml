@@ -840,6 +840,8 @@ svg.icon {
 
 .icon-editor { background-image: url(../img/editor.png); background-size: 28px; }
 
+.icon-editor { background-image: url(../img/editor.png); background-size: 28px; }
+
 .icon-picture { background-image: url(../img/picture.png); background-size: 28px; }
 
 .icon-button { background-image: url(../img/button.png); background-size: 28px; }
@@ -855,6 +857,10 @@ svg.icon {
 .icon-carousel { background-image: url(../img/carousel.png); background-size: 28px; }
 
 .icon-addcoursetype { background-image: url(../img/addcoursetype.png); background-size: 20px; }
+
+.icon-cursetaxonomy { background-image: url(../img/curse_taxonomy.png); background-size: 28px; }
+
+.icon-loginbox { background-image: url(../img/loginbox.png); background-size: 24px; }
 
 .icon-audition { background-image: url(../img/audition.png); background-size: 28px; }
 

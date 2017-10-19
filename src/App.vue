@@ -673,6 +673,22 @@
         <el-button @click="editanimate()" type="primary">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="编辑文本"
+      :visible.sync="dialogedittext"
+      :close-on-click-modal="false"
+      size="edittext">
+      <el-row>
+        <el-col>
+          <el-input v-model="logintext"></el-input>
+        </el-col>
+        
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogedittext = false">取 消</el-button>
+        <el-button @click="editlogintext()" type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
   <!-- dialog弹框 -->
     <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
@@ -680,6 +696,7 @@
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
     <editbutton ref="editbutton"></editbutton>
+<!--     <effect ref="effect"></effect> -->
   </div>
 </template>
 <script>  
@@ -693,6 +710,7 @@
   import suspend from '@/components/suspend'
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
+  /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
   export default { // todo: 本地操作保存
@@ -755,6 +773,9 @@
         inp_blur: '0',
         bw_color: '#ccc',
         editEditor: false,
+      //  ---------------登录框文本----------
+        logintext :'',
+        dialogedittext:false,
       // ------------ 基础组件弹框 -------------------
         dialogscrollanim:false,
         anim:'',
@@ -1047,12 +1068,66 @@
                 break
             }
           }
+        },
+        getcoursecategorys:function(html){
+          let self = this
+          self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
+            params: {
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            let datas = response.data
+            if(datas.code == 0){
+              let packages = datas.data.packages
+              let sorts = datas.data.sorts
+              let packageshtml = ''
+              let sortshtml = ''
+              for(var i=0;i<packages.length;i++){
+                if(packages[i].pid == 0){
+                  packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
+                }else{
+                  if(packages[i].cur){
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
+                  }else{
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
+                  }
+                }
+              }
+              for(var i=0;i<sorts.length;i++){
+                if(sorts[i].sid == -1){
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
+                }else{
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
+                }
+              }
+              html.find('.allson').html(packageshtml)
+              html.find('.allsondouble').html(sortshtml)
+            }
+          }, function (response) {
+            console.log(response)
+          })
+        },
+        getweather:function(){
+          let self = this
+          self.$http.get('http://api.map.baidu.com/telematics/v3/weather', {
+            params: {
+              location:'杭州',
+              output:'json',
+              ak:'BTxWGxLSfvMBoq3mGaEYVdENUECSWtSv'
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            //let datas = response.data
+            console.log(response)
+          }, function (response) {
+            console.log(response)
+          })
         }
+        
       }
     },
     created: function () {
       var self = this
       self.$nextTick(function () {
+        self.getweather()
         let canvas = $('.canvas')
         let space = $('.space')
         canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
@@ -1182,6 +1257,39 @@
     },
     components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape,editbutton},
     methods: {
+      dialogeditlogin(){
+        let self = this
+        self.logintext = ''
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value')
+          break
+        }
+        self.dialogedittext = true
+      },
+      editlogintext(){
+        let self = this
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value',self.logintext)
+          break
+        }
+        self.dialogedittext = false
+      },
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -1903,8 +2011,8 @@
 </script>
 
 <style>
-    .el-dialog{
-
+    .el-dialog__header{
+      cursor: move;
     }
     .el-dialog--scrollanim{
       width: 510px;
@@ -3127,5 +3235,9 @@
   /* 模块动画弹窗 */
   .animlist img{
     margin-top: 14px; 
+  }
+  /* 登录框编辑文本弹窗 */
+  .el-dialog--edittext{
+    width: 500px;
   }
 </style>

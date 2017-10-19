@@ -115,23 +115,26 @@ var tool = {
     let thtml = ''
     let tool = self.datahtml[cName].tool
     let toolClass = self.datahtml['supendTools']
-    if (tool.private !=='') {
-      thtml += '<li class="st-left ' + tool['private']['class'] + '">' + tool['private']['text'] + '</li>'
+    if (tool.private.text !==''|| tool.public.length > 0) {
+      thtml = '<div class="supendTools">'
+      if (tool.private.text !=='') {
+        thtml += '<li class="st-left ' + tool['private']['class'] + '">' + tool['private']['text'] + '</li>'
+      }
+      for (let i = 0, len = tool.public.length; i < len; i ++) {
+        thtml += '<li class="' + toolClass[tool.public[i]][0] + '" title="' + toolClass[tool.public[i]][1] + '"></li>'
+      }
+      thtml += '</div>'
     }
-    for (let i = 0, len = tool.public.length; i < len; i ++) {
-      thtml += '<li class="' + toolClass[tool.public[i]][0] + '" title="' + toolClass[tool.public[i]][1] + '"></li>'
-    }    
-    let resizeBox = '<div class="supendTools">' + thtml + '</div>' +
-                    '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
-                      '<div class="resize nw"></div>' +
-                      '<div class="resize sw"></div>' +
-                      '<div class="resize ne"></div>' +
-                      '<div class="resize se"></div>' +
-                      '<div class="resize e"></div>' +
-                      '<div class="resize n"></div>' +
-                      '<div class="resize w"></div>' +
-                      '<div class="resize s"></div>' +
-                    '</div>'
+    let resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
+                              '<div class="resize nw"></div>' +
+                              '<div class="resize sw"></div>' +
+                              '<div class="resize ne"></div>' +
+                              '<div class="resize se"></div>' +
+                              '<div class="resize e"></div>' +
+                              '<div class="resize n"></div>' +
+                              '<div class="resize w"></div>' +
+                              '<div class="resize s"></div>' +
+                            '</div>'
     me.$('.on_module').removeClass('on_module')
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
@@ -243,30 +246,32 @@ var tool = {
     me.onlineBox.html(ohtm)
     me.todoBox.html(thtm)
   },
-  carryAddElementStorageEvent: function (self, parent, AddElement, y, x) { // 区域存储(多选)
+  carryAddElementStorageEvent: function (self, parent, AddElement, y, x, marginT) { // 区域存储(多选)
     let me = this
     let cname = parent.attr('class')
-    let id = me.guidGenerator() 
-    let regionY =  parseInt(y/300) * 300  // 以y轴300px为区间分段存储  
-
-    let x1 = parseInt(AddElement.css('width')) + x
-    let y1 = parseInt(AddElement.css('height')) + y
-    let br = parseInt(AddElement.css('border-left-width')) < 1 ? parseInt(AddElement.css('border-top-width')) : parseInt(AddElement.css('border-left-width'))
-    AddElement.attr('id', id)
-    let regionYO
-    if (!self.elementStorage[cname][regionY]) {
-      regionYO = self.elementStorage[cname][regionY] = {}
-    } else {
-      regionYO = self.elementStorage[cname][regionY]
+    for(let i = 0, len = AddElement.length; i < len; i++) {
+      let regionY =  parseInt((y + i * marginT)/300) * 300  // 以y轴300px为区间分段存储 
+      let id = me.guidGenerator()
+      let addEle = AddElement.eq(i)
+      let x1 = parseInt(addEle.css('width')) + x
+      let y1 = parseInt(addEle.css('height')) + y
+      let br = parseInt(addEle.css('border-left-width')) < 1 ? parseInt(addEle.css('border-top-width')) : parseInt(addEle.css('border-left-width'))
+      addEle.attr('id', id)
+      let regionYO
+      if (!self.elementStorage[cname][regionY]) {
+        regionYO = self.elementStorage[cname][regionY] = {}
+      } else {
+        regionYO = self.elementStorage[cname][regionY]
+      }    
+      regionYO[id] = {
+        xt: x,
+        yt: y,
+        xb: x1,
+        yb: y1,
+        br: br,
+        ele: addEle
+      }
     }    
-    regionYO[id] = {
-      xt: x,
-      yt: y,
-      xb: x1,
-      yb: y1,
-      br: br,
-      ele: AddElement
-    }
     // console.log(self.elementStorage)
   },
   carryUpdateElementStorageEvent: function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
@@ -1018,51 +1023,54 @@ var tool = {
   },
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
-  // ------------- element 弹框拖拽 ------------    
+  // ------------- element 弹框拖拽 ------------
     me.doc.on('mousedown', '.el-dialog', function (e) { 
-      let body = me.$('body')
-      let elDialog = me.$(this) 
-      let eX = e.pageX
-      let eY = e.pageY
-      let edX = parseInt(elDialog.css('left'))
-      let edY = parseInt(elDialog.css('top'))
-      let edW = parseInt(elDialog.css('width'))
-      let edH = parseInt(elDialog.css('height'))
-      let bW = parseInt(body.css('width'))
-      let bH = parseInt(body.css('height'))
-     
-      me.doc.mousemove(function (e) {
-        let left = edX - (eX - e.pageX)
-        let top = edY - (eY - e.pageY)
-        
-        if (top < 0) {
-          top = 0
-        } else if ((top + edH) > bH) {
-          top = bH - edH
-        }
+      if (me.$(e.target).hasClass('el-dialog__header') || me.$(e.target).hasClass('el-dialog__title')) {       
+      
+        let body = me.$('body')
+        let elDialog = me.$(this) 
+        let eX = e.pageX
+        let eY = e.pageY
+        let edX = parseInt(elDialog.css('left'))
+        let edY = parseInt(elDialog.css('top'))
+        let edW = parseInt(elDialog.css('width'))
+        let edH = parseInt(elDialog.css('height'))
+        let bW = parseInt(body.css('width'))
+        let bH = parseInt(body.css('height'))
 
-        if (left < edW/2) {
-          left = edW/2
-        } else if ((left + edW/2) > bW) {
-          left = bW - edW/2
-        }
+        me.doc.mousemove(function (e) {
+          let left = edX - (eX - e.pageX)
+          let top = edY - (eY - e.pageY)
+          
+          if (top < 0) {
+            top = 0
+          } else if ((top + edH) > bH) {
+            top = bH - edH
+          }
 
-        elDialog.css({'left': left, 'top': top})       
-      })
+          if (left < edW/2) {
+            left = edW/2
+          } else if ((left + edW/2) > bW) {
+            left = bW - edW/2
+          }
 
-      me.doc.mouseup(function (e) {
-        me.doc.unbind('mousemove mouseup')        
-      })
+          elDialog.css({'left': left, 'top': top})       
+        })
+
+        me.doc.mouseup(function (e) {
+          me.doc.unbind('mousemove mouseup')        
+        })
+      }
     })
   // ------------- 操作模块事件 ----------------
     me.editBox.on('mousedown', '.resize', function (e) { // 选中小圆点按钮拉伸容器事件
       let $this = me.$(this)
       let resizeBox = me.$('.resizeBox')
       let parent = me.$('.on_module')
-      let ingbloo = parent.hasClass('picture')
+      let imgbloo = parent.hasClass('picture')
       let picimg
       let picBox  
-      if(ingbloo) {
+      if(imgbloo) {
         picBox = parent.find('.picBox')
         picimg = parent.find('img')
         self.inp_w = parseInt(parent.css('width'))
@@ -1280,20 +1288,25 @@ var tool = {
       }
       // todo: 拉伸某容器固定显示内容
       me.editBox.mousemove(function (e) {
-        part(e)        
+        part(e)
+
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
-        if (picBox.hasClass('round')||picBox.hasClass('square')) {
-          if(self.inp_h < self.inp_w) {
-            picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+        if(imgbloo) {
+          if (picBox.hasClass('round')||picBox.hasClass('square')) {
+            if(self.inp_h < self.inp_w) {
+              picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+            } else {
+              picBox.css({'width': self.inp_w + 'px','height': self.inp_w + 'px'})
+            }
           } else {
-            picBox.css({'width': self.inp_w + 'px','height': self.inp_w + 'px'})
-          }
-        } else {
-          if(ingbloo) {
-            picimg.css('width', self.inp_w)
+            if(imgbloo) {
+              picimg.css('width', self.inp_w)
+            }
           }
         }
+        //模块特效
+        // self.$refs.effect.init()
         return false
       })
       me.editBox.mouseup(function (e) {
@@ -1328,6 +1341,13 @@ var tool = {
           break
         case 'st-effects':
           self.$refs.suspend.show()
+          break
+        case 'st-prospect':
+          self.$refs.effect.show()
+          break
+        case 'st-left st-logintext':
+          console.log('11')
+          self.dialogeditlogin()
           break
       }
       return false
@@ -1549,7 +1569,7 @@ var tool = {
         me.lShrink.show()
       })
       // me.carryOutsideLineEvent(self, e) // 辅助线
-      me.editBox.mouseup(function (e) {
+      me.editBox.mouseup(function (e) { // 鼠标松开事件
         me.lShrink.show()
         me.editBox.unbind('mousemove mouseup')
         me.libLi.unbind('mousemove mouseup')
@@ -1592,10 +1612,20 @@ var tool = {
           }
         }
         box.append(dataCon.html)
-        let bChild = box.children('.module')
-        let AddElement = bChild.eq(bChild.length - 1)
-        AddElement.css({'top': y, 'left': x})
-        me.carryAddElementStorageEvent(self, box, AddElement, y, x) // 区域存储
+        let AddElement = box.children('.addmodule') 
+        let marginT = 0
+        if (dataCon.moduleMargin) {
+          marginT = dataCon.moduleMargin
+        } 
+        for (let i = 0,len = AddElement.length; i < len; i++) {
+          let yg = y + i * marginT
+          AddElement.eq(i).css({'top': yg, 'left': x})
+        }
+        me.$('.addmodule').removeClass('addmodule')
+        if (dataCon.createEvent) {
+          dataCon.createEvent(self, AddElement)
+        }        
+        me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT) // 区域存储
         me.carryLayerEvent(self, box) // 更新图层
       })
       return false
