@@ -195,8 +195,8 @@
       <div class="lib_box">
         <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
-      <!--   <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol onlineBox"></div> -->
+        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol onlineBox"></div>
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
         <div class="header">敬请期待。。。</div>
@@ -555,81 +555,7 @@
         <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- 网校模块   -->
-    <el-dialog
-      :title="carouselTit"
-      :visible.sync="dialogCarousel"
-      size="carousel" >
-      <el-tabs v-model="activeName" >
-        <el-tab-pane label="图片选择" name="first">
-          <div class="scrollBox">
-            <div class="selectBox">
-              <div class="diaimg_li" v-for="(item, index) in carouselData">
-                <img :src="item.imgurl">
-                <div class="handleList">
-                  <el-row>
-                    <el-col :span="3">
-                      <span @click="carouselShiftUpEvent(index)" class="spanTit" v-if="index!=0">上移</span>
-                      <span v-else class="spanTit ban">上移</span>
-                    </el-col>                    
-                    <el-col :span="3">
-                      <span @click="carouselShiftDownEvent(index)" class="spanTit" v-if="index!=carouselData.length-1">下移</span>
-                      <span v-else class="spanTit ban">下移</span>
-                    </el-col>
-                    <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit">删除</span></el-col>
-                    <el-col :span="15">
-                      <span class="spanTit spanUrl">跳转链接
-                        <input type="text" placeholder="请输入链接 ( 默认为空,点击图片不跳转 )" :value="item.clickurl" @change="carouselChangeEvent(index)">
-                      </span>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
-              <div class="diaimg_li" v-if="carouselData.length < 9">
-                <el-upload
-                  class="carousel-uploader"
-                  name="upfile"
-                  action="/uploadv2/image.html"
-                  :show-file-list="false"
-                  :on-success="handleCarouselSuccess"
-                  :before-upload="beforePictureUpload">                  
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-              </div>
-            </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="轮播设置" name="second">
-          <div class="scrollBox">
-            <el-row>
-              <el-col :span="4">展示时长</el-col>
-              <el-col :span="8"><el-input-number v-model="showTime" :min="5" :max="20"></el-input-number></el-col>
-              <el-col :span="4">切换时长</el-col>
-              <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="2" :step="0.2"></el-input-number></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4">显示宽度</el-col>
-              <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600" :step="100"></el-input-number></el-col>
-              <el-col :span="4">切换方式</el-col>
-              <el-col :span="8">
-              <el-select v-model="changeStyle" placeholder="请选择">
-                <el-option
-                  v-for="item in animStyle"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-            </el-row>
-          </div><!-- todo:长宽 -->
-        </el-tab-pane>
-      </el-tabs>    
-      <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogCarousel = false">取 消</el-button>
-        <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
-      </span>
-    </el-dialog>
+  <!-- 网校模块   -->    
     <el-dialog
       title="模块动画"
       :visible.sync="dialogscrollanim"
@@ -696,7 +622,10 @@
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
     <editbutton ref="editbutton"></editbutton>
-<!--     <effect ref="effect"></effect> -->
+    <carousel ref="carousel"></carousel>
+    <waiter ref="waiter"></waiter>
+    <advert ref="advert"></advert> 
+  <!--<effect ref="effect"></effect> -->
   </div>
 </template>
 <script>  
@@ -710,6 +639,10 @@
   import suspend from '@/components/suspend'
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
+  import carousel from '@/components/carousel'
+  import waiter from '@/components/waiter'
+  import advert from '@/components/advert'
+
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
@@ -1165,7 +1098,11 @@
           let module = params.module
           head.html(module.top)
           middle.html(module.body)
-          foot.html(module.foot)
+          foot.html(module.foot)          
+          tool.tool.carryLayerEvent(self, head)
+          tool.tool.carryLayerEvent(self, middle)
+          tool.tool.carryLayerEvent(self, foot)
+          tool.tool.carryLineHeightEvent()
           tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
           tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
           tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
@@ -1255,7 +1192,7 @@
         }
       })
     },
-    components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape,editbutton},
+    components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape, editbutton, carousel, waiter, advert},
     methods: {
       dialogeditlogin(){
         let self = this
@@ -1700,56 +1637,6 @@
             duration: 4000
           })
         }
-      },
-      carouselShiftUpEvent: function (index) { // 上移
-        let self = this
-        let item = self.carouselData.splice(index, 1)
-        self.carouselData.splice(index - 1, 0, item[0])
-      },
-      carouselShiftDownEvent: function (index) { // 下移
-        let self = this
-        let item = self.carouselData.splice(index, 1)
-        self.carouselData.splice(index + 1, 0, item[0])
-      },
-      carouselDeleteEvent: function (index) { // 删除
-        let self = this
-        self.carouselData.splice(index, 1)
-      },
-      carouselChangeEvent: function (index) { // 设置跳转链接
-        let self = this
-        let val = $('.spanUrl input').eq(index).val()
-        self.carouselData[index].clickurl = val
-      },
-      handleCarouselSuccess: function (res) { // 添加图片成功
-        let self = this
-        let code = res.code
-        let data = res.data
-        if (code === 0) {
-          self.carouselData.push({imgurl: data.showurl, clickurl: ''})
-        } else {
-          self.$notify({
-            title: '警告',
-            message: res.msg,
-            type: 'warning',
-            offset: 50,
-            duration: 4000
-          })
-        }
-      },
-      dialogCarouselEvent: function () { // 轮播图配置数据
-        let self = this
-        let obj = {
-          changeStyle: self.changeStyle,
-          showWidth: self.showWidth,
-          showTime: self.showTime,
-          transitionTime: self.transitionTime,
-          carouselData: self.carouselData
-        }
-        let str = JSON.stringify(obj)
-        $('.img_li').css('width', self.showWidth + 'px')
-        $('.screenBox').css('width', self.showWidth + 'px')
-        self.dialogCarousel = false
-        $('.on_module').attr('carouselData', str)
       },
     // ------------- 图片基础组件 ------------
       handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
@@ -3071,92 +2958,7 @@
       display: block;
     }
   /*carousel*/
-    .el-dialog--carousel{
-      width: 980px;
-    }
-    .scrollBox{
-      height: 400px;
-      overflow-y:auto;
-      border-bottom: 1px solid #d1dbe5;
-    }
-    .selectBox{
-    }
-    .diaimg_li {
-      position:relative;
-      margin-bottom: 10px;
-      width: 100%;
-      height: 76px;
-      border-bottom: 1px solid #e3e3e3;
-    }
-    .diaimg_li img{
-      width: 240px;height: 66px;
-    }
-    .handleList{
-      margin-top: 24px;
-      width: 660px;
-      float: right;
-    }
-    .handleList .el-col{
-      text-align: center;
-      cursor: pointer;
-    }
-    .handleList .el-col .spanTit{
-      display: block;
-      width: 100%;
-      height: 100%;
-      color: #20a0ff;
-    }
-    .handleList .el-col .ban{
-      color: #ccc;
-      cursor: not-allowed;
-    }
-    .spanUrl{
-      text-align: left;
-      text-indent: 10px;
-    }
-    .spanUrl input{
-      text-indent: 10px;
-      margin-left: 10px;
-      width: 300px;
-      border-radius: 4px;
-      border: 1px solid #9a9a9a;
-      color: #999;
-    }
-    .carousel-uploader{
-      height: 100%;
-    }
-    .carousel-uploader .el-upload--text{    
-      display: block;
-      margin:0 auto;
-      transform:translateY(20px);
-      -ms-transform:translateY(20px);   /* IE 9 */
-      -moz-transform:translateY(20px);  /* Firefox */
-      -webkit-transform:translateY(20px); /* Safari 和 Chrome */
-      -o-transform:translateY(20px); 
-    }
-    .carousel-uploader .el-icon-plus{
-      font-size: 24px;
-      color: #e3e3e3;
-    }  
-    .scrollBox .el-row{
-      margin-bottom: 15px;
-    }
-    .scrollBox .el-col{
-      height: 36px;
-      line-height: 36px;
-      text-align: center;
-    }
-    .editBox .screenBox .img_ul{
-      left: 50%;
-      transform: translateX(-50%);
-      -ms-transform:translateX(-50%);  
-      -moz-transform:translateX(-50%); 
-      -webkit-transform:translateX(-50%);
-      -o-transform:translateX(-50%);
-    }
-    .scrollBox .el-select{
-      width: 180px;
-    }
+  
   /*picture*/
     .el-dialog--picture{
       width: 750px;

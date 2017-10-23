@@ -55,9 +55,25 @@ var configHtml = {
         name: 'loginbox',
         icon: 'imgicon icon-loginbox',
         text: '登录框'
+      },      
+      {
+        name: 'waiter',
+        icon: 'imgicon icon-editor',
+        text: '客服'
       }
     ],
-    online: [],
+    online: [
+      {
+        name: 'carousel',
+        icon: 'imgicon icon-picture',
+        text: '轮播'
+      },
+      {
+        name: 'advert',
+        icon: 'imgicon icon-picture',
+        text: '悬浮广告'
+      }
+    ],
     todo: [],
     expect: []
   },
@@ -126,7 +142,51 @@ var configHtml = {
   },
   carousel: {
     style: 'width:1200px; height:320px',
-    html: '<div class="carousel module addmodule" datatext="轮播图"><div class="promptBox">轮播图设置</div><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+    tool: {
+      private: {
+        text: '编辑轮播',
+        class: 'st-carousel'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.carousel.show()
+    },
+    html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+  },
+  advert: {
+    style: 'width:300px; height:150px',
+    tool: {
+      private: {
+        text: '编辑广告',
+        class: 'st-advert'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.advert.show()
+    },
+    html: '<div class="advert module addmodule"  datatext="悬浮广告"></div>'
+  },
+  waiter: {
+    style: 'width:50px; height:50px',
+    tool: {
+      private: {
+        text: '编辑客服',
+        class: 'st-waiter'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.waiter.show()
+      if (me.$('.waiter').length < 1) {
+        me.editBox.append('<div class="waiter"><div class="kf-head"></div><div class="kf-top"></div></div>')
+        me.$('.waiter').on('click', function() {
+          self.$refs.waiter.show()
+        })
+      }      
+    },
+    html: '<div class="waiterhide module addmodule" datatext="客服"></div>'
   },
   hline: {
     style: 'width:200px; height:1px',
@@ -159,7 +219,7 @@ var configHtml = {
       }, 
       public: []
     },
-    createEvent: function (self, element) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
+    createEvent: function (self, element, me) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
       self.getcoursecategorys(element)
     },
     html: '<div class="taxonomy module addmodule" datatext="分类"><div class="click-taxonomy"></div><div class="taxonomycont"><ul class="fl allson"></ul><ul class="fl allsondouble"></ul><div style="clear: both;"></div></div></div>'

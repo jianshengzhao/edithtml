@@ -2413,3 +2413,42 @@
   input:-moz-placeholder{color: inherit;font-size: inherit;}                  /* Firefox版本4-18 */
   input::-moz-placeholder{color: inherit;font-size: inherit;}                  /* Firefox版本19+ */
   input:-ms-input-placeholder{color: inherit;font-size: inherit;}           /* IE浏览器 */
+
+/*  waiter   */
+.waiterhide {
+  display: block;
+}
+.waiter {
+  position:absolute;
+  left: 0;
+  bottom: 200px;
+  width: 36px;
+  height: 75px;
+ 
+}
+.kf-head{
+  width:36px;
+  height: 36px;
+  background-color: #18A8F7;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);
+  cursor: pointer;
+}
+.kf-top{
+  margin-top: 3px;
+  width:36px;
+  height: 36px;
+  background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/hddb.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color:#D8D8D8; 
+  cursor: pointer;
+}
+
+/* advert */
+.advert {
+  width: 300px;
+  height: 150px;
+  background-color: #F2F2F2;
+}

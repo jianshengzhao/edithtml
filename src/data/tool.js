@@ -500,7 +500,7 @@ var tool = {
         }        
         break
       case 'left':
-        if (val < 0  && self.config.moveLimit) {
+        if (val < 0 && self.config.moveLimit) {
           val = 0
           self.inp_x = 0
         }
@@ -511,7 +511,7 @@ var tool = {
         } else {          
           maxX = parseInt(onModules.parent().css('width')) - self.inp_w
         }        
-        if (val > maxX) {
+        if (val > maxX && self.config.moveLimit) {
           val = maxX
         }
         if (onModules.length > 1){
@@ -526,7 +526,7 @@ var tool = {
         }
         break
       case 'top':
-        if (val < 0 && self.config.moveLimit) {
+        if (val < 0 ) { // && self.config.moveLimit
           val = 0
           self.inp_y = 0
         }
@@ -1042,13 +1042,14 @@ var tool = {
           let left = edX - (eX - e.pageX)
           let top = edY - (eY - e.pageY)
           
-          if (top < 0) {
+          if (top < 0) { // 最小值
             top = 0
-          } else if ((top + edH) > bH) {
-            top = bH - edH
-          }
+          } 
+          // else if ((top + edH) > bH) {
+          //   top = bH - edH
+          // }
 
-          if (left < edW/2) {
+          if (left < edW/2) { 
             left = edW/2
           } else if ((left + edW/2) > bW) {
             left = bW - edW/2
@@ -1345,9 +1346,17 @@ var tool = {
         case 'st-prospect':
           self.$refs.effect.show()
           break
-        case 'st-left st-logintext':
-          console.log('11')
+        case 'st-left st-logintext':          
           self.dialogeditlogin()
+          break
+        case 'st-left st-carousel':          
+          self.$refs.carousel.show()
+          break
+        case 'st-left st-waiter':
+          self.$refs.waiter.show()
+          break
+        case 'st-left st-advert':
+          self.$refs.advert.show()
           break
       }
       return false
@@ -1446,7 +1455,6 @@ var tool = {
     me.doc.keydown(function (e) { // 键盘方向键微调移动模块事件
       let module = me.$('.on_module')
       let len = module.length
-      if (len < 1) return false
       let keyObj = {
         'ArrowUp': [true, 'top', -1, 'inp_y'],
         'ArrowDown': [true, 'top', 1, 'inp_y'],
@@ -1545,7 +1553,8 @@ var tool = {
       return false
     })
   // ------------- 左边模块库 ------------------
-    me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 todo:
+    me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 
+      me.cleanSignEvent(self)
       me.lShrink.hide()
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
@@ -1623,7 +1632,7 @@ var tool = {
         }
         me.$('.addmodule').removeClass('addmodule')
         if (dataCon.createEvent) {
-          dataCon.createEvent(self, AddElement)
+          dataCon.createEvent(self, AddElement, me)
         }        
         me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT) // 区域存储
         me.carryLayerEvent(self, box) // 更新图层
