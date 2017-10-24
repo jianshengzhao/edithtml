@@ -72,6 +72,11 @@ var configHtml = {
         name: 'advert',
         icon: 'imgicon icon-picture',
         text: '悬浮广告'
+      },
+      {
+        name: 'course',
+        icon: 'imgicon icon-picture',
+        text: '课程'
       }
     ],
     todo: [],
@@ -114,7 +119,7 @@ var configHtml = {
         text: '编辑文本',
         class: 'st-text'
       },
-      public: [ 'e']
+      public: ['e']
     },
     html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
@@ -164,9 +169,9 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.advert.show()
+      self.$refs.advert.show(element)
     },
-    html: '<div class="advert module addmodule"  datatext="悬浮广告"></div>'
+    html: '<div class="advert module addmodule"  datatext="悬浮广告"><div class="advCon"></div></div>'
   },
   waiter: {
     style: 'width:50px; height:50px',
@@ -187,6 +192,20 @@ var configHtml = {
       }      
     },
     html: '<div class="waiterhide module addmodule" datatext="客服"></div>'
+  },
+  course: {
+    style: 'width:260px; height:220px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      }, 
+      public: ['e']
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.course.show(self, element, me)      
+    },
+    html: '<div class="course module addmodule" datatext="课程"><div class="editCourse">+</div></div>'
   },
   hline: {
     style: 'width:200px; height:1px',

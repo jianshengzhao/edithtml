@@ -625,6 +625,7 @@
     <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
+    <course ref="course"></course>    
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -642,12 +643,25 @@
   import carousel from '@/components/carousel'
   import waiter from '@/components/waiter'
   import advert from '@/components/advert'
-
+  import course from '@/components/course'
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
+    components: {
+      colorPicker, 
+      ueditor, 
+      hrefdialog, 
+      myimages, 
+      suspend, 
+      shape, 
+      editbutton, 
+      carousel, 
+      waiter, 
+      advert, 
+      course
+    },
     data: function () {
       return {
       // ------------ 工具栏add ----------------------
@@ -1192,7 +1206,6 @@
         }
       })
     },
-    components: {colorPicker, ueditor, hrefdialog, myimages, suspend, shape, editbutton, carousel, waiter, advert},
     methods: {
       dialogeditlogin(){
         let self = this

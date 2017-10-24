@@ -351,115 +351,6 @@
   .newsList{
     padding:50px 20px 10px;
   }
-  .course{
-    width: 260px;
-    height: 220px;
-  }
-  .course .imgbox {   
-    padding: 10px;
-    height: 140px;
-    min-height: 144px;    
-  }
-  .course .listBox{    
-     position: relative;
-     width: 100%;
-     height: 100%;
-     overflow: hidden;
-  }
-  .course .animateBox{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.3);
-    display: none;
-    color: #fff;
-    font-size: 13px;
-    line-height: 30px;
-    text-decoration:none;
-    text-indent: 10px;
-  }
-  .course .imgbox img{
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.8s;
-    -moz-transition: transform 0.8s; 
-    -webkit-transition: transform 0.8s; 
-    -o-transition: transform 0.8s; 
-  }
-  .course .imgbox:hover img{
-    transform: scale(1.2);
-    -ms-transform:scale(1.2);
-    -moz-transform:scale(1.2);
-    -webkit-transform:scale(1.2); 
-    -o-transform:scale(1.2);
-  }
-  .course .imgbox:hover .animateBox{
-    display: block;
-    z-index: 2;
-    cursor: pointer;
-  }
-  .course .imgbox .openState{
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    width: 66px;
-    height: 66px;
-    background-repeat: no-repeat;
-    background-position: center;    
-    cursor: pointer;
-    z-index: 3;
-  }  
-  .course .imgbox .openState_canpay1{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
-  }
-  .course .imgbox .openState_djbmbg1{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
-  }
-  .course .imgbox .openState_djkt{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
-  }
-  .course .imgbox .openState_free{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
-  }  
-  .course .imgbox .openState_jrxx{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
-  }
-  .course .courseTit{
-    padding: 0 10px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 15px;
-    color: #333;
-    overflow: hidden;
-  }
-  .course .speak, .course .number, .course .popularity{
-    float: left;
-    margin-top: 12px;
-    padding-left:10px;
-    width: 120px;
-    font-size: 13px;
-    line-height: 14px;
-    height: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #999999;
-  }
-  .course .number{
-    float: right;
-    padding-left: 0;
-    width: 60px;
-    text-indent: 20px;
-    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
-  }
-  .course .popularity{
-    float: right;
-    padding-left: 0;
-    width: 60px;
-    text-indent: 20px;
-    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat -72px center
-  }
   /* todo */
 /* 新闻资讯*/
   .newsList {
@@ -2415,40 +2306,176 @@
   input:-ms-input-placeholder{color: inherit;font-size: inherit;}           /* IE浏览器 */
 
 /*  waiter   */
-.waiterhide {
-  display: block;
-}
-.waiter {
-  position:absolute;
-  left: 0;
-  bottom: 200px;
-  width: 36px;
-  height: 75px;
- 
-}
-.kf-head{
-  width:36px;
-  height: 36px;
-  background-color: #18A8F7;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);
-  cursor: pointer;
-}
-.kf-top{
-  margin-top: 3px;
-  width:36px;
-  height: 36px;
-  background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/hddb.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color:#D8D8D8; 
-  cursor: pointer;
-}
+  .waiterhide {
+    display: block;
+  }
+  .waiter {
+    position:absolute;
+    left: 0;
+    bottom: 200px;
+    width: 36px;
+    height: 75px;
+   
+  }
+  .kf-head{
+    width:36px;
+    height: 36px;
+    background-color: #18A8F7;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);
+    cursor: pointer;
+  }
+  .kf-top{
+    margin-top: 3px;
+    width:36px;
+    height: 36px;
+    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/hddb.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color:#D8D8D8; 
+    cursor: pointer;
+  }
 
 /* advert */
-.advert {
-  width: 300px;
-  height: 150px;
-  background-color: #F2F2F2;
-}
+  .advert {
+    width: 300px;
+    height: 150px;
+    background-color: #F2F2F2;
+  }
+  .advert .advCon{
+    width: 300px;
+    height: 100%;
+  }
+  .advert .advCon img{
+    width: 100% 
+  }
+
+/* course */
+  .course{
+    width: 260px;
+    height: 220px;   
+    cursor: pointer;
+  }
+  .course .resize{
+    display: none;
+  }
+  .course .editCourse{
+    width: 100%;
+    height: 100%;
+    background-color: #F2F2F2;
+    font-size: 230px;
+    line-height: 220px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    text-indent: 0;
+  }
+/*  .course .editCourse:hover{
+    background-color: #169BD5;
+  }*/
+  .course .imgbox {   
+    padding: 10px;
+    height: 140px;
+    min-height: 144px;    
+  }
+  .course .listBox{    
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+  }
+  .course .animateBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    color: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    text-decoration:none;
+    text-indent: 10px;
+  }
+  .course .imgbox img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    -moz-transition: transform 0.8s; 
+    -webkit-transition: transform 0.8s; 
+    -o-transition: transform 0.8s; 
+  }
+  .course .imgbox:hover img{
+    transform: scale(1.2);
+    -ms-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    -webkit-transform:scale(1.2); 
+    -o-transform:scale(1.2);
+  }
+  .course .imgbox:hover .animateBox{
+    display: block;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .course .imgbox .openState{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 66px;
+    height: 66px;
+    background-repeat: no-repeat;
+    background-position: center;    
+    cursor: pointer;
+    z-index: 3;
+  }  
+  .course .imgbox .openState_canpay1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
+  }
+  .course .imgbox .openState_djbmbg1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
+  }
+  .course .imgbox .openState_djkt{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
+  }
+  .course .imgbox .openState_free{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
+  }  
+  .course .imgbox .openState_jrxx{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
+  }
+  .course .courseTit{
+    padding: 0 10px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 15px;
+    color: #333;
+    overflow: hidden;
+  }
+  .course .speak, .course .number, .course .popularity{
+    float: left;
+    margin-top: 12px;
+    padding-left:10px;
+    width: 120px;
+    font-size: 13px;
+    line-height: 14px;
+    height: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+  }
+  .course .number{
+    float: right;
+    padding-left: 0;
+    width: 60px;
+    text-indent: 20px;
+    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
+  }
+  .course .popularity{
+    float: right;
+    padding-left: 0;
+    width: 60px;
+    text-indent: 20px;
+    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat -72px center
+  }

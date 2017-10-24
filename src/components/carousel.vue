@@ -179,7 +179,7 @@ export default {
         transitionTime: self.transitionTime,
         carouselData: self.carouselData
       }
-      let str = JSON.stringify(obj)
+      let str = window.JSON.stringify(obj)
       self.dialogCarousel = false
       $('.on_module').attr('carouselData', str)
     }

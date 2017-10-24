@@ -380,7 +380,8 @@ var tool = {
       
       for (let i in obj) { // 判断是否在选区内
         let item = obj[i]
-        if (self.choiceCon) { // 判断选择条件
+        if (self.choiceCon) { // 判断选择条件 (算法有bug)
+
           if (item.xt >= gx && item.xt <= (gx + gw)&& item.yt >= gy && item.yt <= (gy + gh) || item.xb >= gx && item.xb <= (gx + gw) && item.yt >= gy && item.yt <= (gy + gh)||item.xt >= gx && item.xt <= (gx + gw)&& item.yb >= gy && item.yb <= (gy + gh) || item.xb >= gx && item.xb <= (gx + gw) && item.yb >= gy && item.yb <= (gy + gh)){
             item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
           }
@@ -1372,12 +1373,7 @@ var tool = {
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
-      let ys = self.inp_y
-      // let areaB = self.moduleParentElementHeight
-      // let areaR = self.inp_width
-      // let $this = me.$(this)
-      // let sTop = parseInt(me.space.scrollTop())
-      // me.carryLineEvent(self)
+      let ys = self.inp_y     
       let parentClass = self.moduleElement.parent().attr('class')
       let id = self.moduleElement.attr('id')
       let height = self.inp_h
@@ -1390,35 +1386,13 @@ var tool = {
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
         me.carryFuzzyCalibrationEvent(self, parentClass, id, left, top, height, width, self.moduleElement)
-        // if (self.config.moveLimit) {
-        //   if (left < 0) {
-        //     left = 0
-        //   }
-        //   if (left > (areaR - self.inp_w)) {
-        //     left = areaR - self.inp_w
-        //   }
-        //   if (top < 0) {
-        //     top = 0
-        //   }
-        //   if (top > (parseInt(areaB) - self.inp_h)) {
-        //     top = parseInt(areaB) - self.inp_h
-        //   }
-        // }       
-        // self.inp_x = left
-        // self.inp_y = top
-        // $this.css('left', left)
-        // $this.css('top', top)
-        // me.carryLineEvent(self, true)
         return false
       })
       me.editBox.mouseup(function () {
         me.editBox.unbind('mousemove mouseup')
         me.$('.fuzzybox').remove()
         me.line.hide()
-        supendTools.show()
-        // me.line.hide()
-        // me.$('.touch_module').removeClass('touch_module')
-        // me.carryLayerEvent(self, $this.parent())
+        supendTools.show()    
         return false
       })
       return false 
@@ -1725,16 +1699,20 @@ var tool = {
       me.carrySignEvent(self, ele)
     })
   // ------------- 模块双击设置 ----------------
-    me.editBox.on('dblclick', '.on_module', function (e) { // 模块双击操作
-      let onthis = self.moduleElement
-      let type = onthis.attr('class').split(' ')[0]
-      self.tool.switchModuleEvent(type, onthis, self)
-    })
-    me.editBox.on('click', '.promptBox', function (e) { // 设置按钮事件
-      let onthis = me.$(this).parent()
-      let type = onthis.attr('class').split(' ')[0]
-      self.tool.switchModuleEvent(type, onthis, self)
-    })
+    let preTime = 0
+    me.editBox.on('mousedown', '.resizeBox', function (e) { // 模块双击操作
+      let interval = (Date.parse(new Date()) - preTime) / 1000 
+      if (interval < 1) {
+        let type = self.moduleElement.attr('class').split(' ')[0]       
+        switch (type) {
+          case 'rectangle': 
+            self.$refs.hrefdialogp.show()
+            return false
+          }
+      } else {
+        preTime = Date.parse(new Date())
+      }     
+    })  
   }
 }
 

@@ -41,7 +41,7 @@
                 name="upfile"
                 action="/uploadv2/image.html"
                 :show-file-list="false"
-                :on-success="handleCarouselSuccess"
+                :on-success="handleAdvertSuccess"
                 :before-upload="beforePictureUpload">                  
                 <i class="el-icon-plus"></i>
                 <span>添加图片</span>
@@ -64,7 +64,7 @@ export default {
   data () {
     return {
       dialogAdvert: false,
-      showStyle: 'left',
+      showStyle: 'static',
       advertData: [
         {
           img: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
@@ -76,13 +76,14 @@ export default {
       styleOptions: [
         {
           label: '静态悬浮',
-          value: 'left'
+          value: 'static'
         },
         {
           label: '动态悬浮',
-          value: 'right'
+          value: 'dynamic'
         }
-      ]
+      ],
+      currentEle:''
     }
   },
   created: function () {
@@ -92,8 +93,48 @@ export default {
     dialogAdvertEvent: function () {
       let self = this
       self.dialogAdvert = false
+
+      /* 参数设置存储 */
+      
+      let obj = {
+        floatStyle: self.showStyle,       
+        advertData: self.advertData
+      }
+      let str = window.JSON.stringify(obj)
+      self.currentEle.attr('advertData', str)
+
+      /* 添加广告图片和跳转链接 */
+    
+      let advHtml = ''
+      for (let i = 0, len = self.advertData.length; i < len; i++) {
+        let item = self.advertData[i]
+        advHtml += '<a href="'+ item.url +'" target="_blank"><img src="'+ item.img +'"></a>'
+      }
+      let advCon = self.currentEle.find('.advCon')
+      advCon.html(advHtml) 
+
+      /* 计算广告高度 */  
+   
+      self.currentEle.ready(function() {
+        let imgs = advCon.find('img')
+        let hs = 0
+        for(let i = 0, len = imgs.length; i < len; i++) {
+          let imgi =  imgs.eq(i)
+          hs = hs + parseInt(imgi.css('height'))
+        }
+        if (self.showStyle == 'static') {
+          self.currentEle.css('height',hs + 'px')
+        } else {
+          self.currentEle.css({
+            'height': hs + 'px',
+            'top': 0,
+            'left': 0
+          })
+        }
+        self.currentEle.find('.resizeBox').css('height',hs + 'px')
+      })
     },
-    beforePictureUpload: function () {
+    beforePictureUpload: function (file) {
       let self = this
       if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
         self.$notify({
@@ -122,10 +163,22 @@ export default {
         })
       }
     },
-    show: function () {
-      let self = this    
+    show: function (element) {
+      let self = this      
       self.dialogAdvert = true
-      // let jsonS = $.parseJSON(waiter.attr('waiterData'))
+      if (!element) {
+        self.showStyle = '' 
+        self.advertData = [] 
+        self.currentEle = $('.on_module')
+        let advertData = self.currentEle.attr('advertData')
+        if(advertData) {
+          let jsonAdvert = $.parseJSON(advertData)
+          self.showStyle = jsonAdvert.floatStyle      
+          self.advertData = jsonAdvert.advertData
+        }
+      } else {
+        self.currentEle = element
+      }
     }
   }
 }
