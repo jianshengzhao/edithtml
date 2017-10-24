@@ -328,15 +328,21 @@
   }
 </script>
 <style>
-/*top*/
-  .top{
-    padding-top: 4px;
-    position: relative;
-    height: 30px;
+/*top*/  
+  #preview .top{
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 60px;
+    position: relative;    
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
     background-color: #fff;
+    letter-spacing: 0;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    height: 34px;
   }
   .top>div{
     height: 28px;
@@ -347,7 +353,7 @@
   }
   .t_left{
     float: left;
-    width: 600px;  
+    width: 380px;  
     height: 28px;
   }
   .tl_li{
@@ -363,74 +369,85 @@
     border:1px solid #fff;  
     box-sizing: border-box;
   }
-  .tl_li_on{
-    background: rgba(0, 0, 0, 0.04);
-    border-color:rgba(0,0,0,.1);
-  }
-  .tl_li_Disable{
-    opacity: 0.6;
-    cursor:not-allowed;
-  }
-  .tl_li i{
-    float: left;
-    font-size: 18px;
-    line-height: 18px;
-    color:#f55d54;
-  }
-  .tl_li>span{
-    float: left;
-    text-indent: 2px;    
-    font-size: 12px;
-    height: 18px;
-    line-height: 18px;
-    color: #525e71;
-    padding-left: 2px;
-  }
-  .tl_li:hover .toolbar{
-    display: block;
-  } 
-  .tl_li_Disable:hover .toolbar{
-    display: none;
-  }
-  .toolbar{
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    min-width: 124px;
-    background: #fff;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
-  }
-  .toolbar li{
-    padding: 10px;
-    text-align:left;
-    list-style-type: none;
-    color: #525e71;
-  }
-  .toolbar li:hover{
-    background-color: #f5f5f7;
-  }
-  .toolbar li i{
-    margin-right:5px;
-  }  
-  .toolbar input::-webkit-inner-spin-button{
-    display: none;
-  }
-  .t_right{
-    position: relative;
-    float: right;
-  
-    text-align: left;
-  } 
-  .toolbar .el-col{
-    height: 36px;
-    line-height: 36px;
-  }
-  .toolbar .el-input__inner{
-    height: 30px;
-    width: 80px;
-    color: #555;
-  }
+    .tl_li_on{
+      background: rgba(0, 0, 0, 0.04);
+      border-color:rgba(0,0,0,.1);
+    }
+    .tl_li_Disable{
+      cursor:not-allowed;
+    }
+    .top .tl_li_Disable span{
+      color: #cacaca;
+    }
+    .top .tl_li_Disable i{
+      color: #cacaca;
+    }
+    .tl_li i{
+      float: left;
+      font-size: 18px;
+      line-height: 18px;
+      color:#f55d54;
+    }
+    .tl_li>span{
+      float: left;
+      text-indent: 2px;    
+      font-size: 12px;
+      height: 18px;
+      line-height: 18px;
+      color: #525e71;
+      padding-left: 2px;
+    }
+    .tl_li:hover .toolbar{
+      display: block;
+    } 
+    .tl_li_Disable:hover .toolbar{
+      display: none;
+    }
+    .toolbar{
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      min-width: 112px;
+      background: #fff;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+    }
+    .toolbar li{
+      padding: 10px;
+      text-align:left;
+      list-style-type: none;
+      color: #525e71;
+      text-indent:4px;
+      letter-spacing: 2px;
+    }
+    .toolbar li:hover{
+      background-color: #f5f5f7;
+    }
+    .toolbar li i{
+      margin-top: -3px;
+      margin-right:5px;
+      float: left;
+    }  
+    .toolbar input::-webkit-inner-spin-button{
+      display: none;
+    }
+    #preview .t_right{
+      position: absolute;    
+      width: 180px;
+      height: 28px;
+      top: 3px;
+      right: 4px;
+      text-align: left;
+    } 
+    .toolbar .el-col{
+      height: 36px;
+      line-height: 36px;
+    }
+    .toolbar .el-input__inner{
+      height: 30px;
+      width: 80px;
+      color: #555;
+    }
 /*content*/
   #preview{
     overflow-y:auto;
@@ -440,6 +457,7 @@
     margin: 0 auto;
   }
   .head, .middle, .foot{
+    width: 100%;
     position: relative;
   }
 </style>

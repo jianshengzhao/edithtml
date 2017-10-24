@@ -77,3 +77,13 @@
   .hoverbar{
     display: none;
   }
+  .hline .click-hline{
+    width: 100%;
+    height: 9px;
+    margin-top: -5px;    
+  }
+  .sline .click-sline{
+    width: 9px;
+    height: 100%;
+    margin-left: -5px;
+  }

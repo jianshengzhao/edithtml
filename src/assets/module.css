@@ -89,6 +89,15 @@
     word-wrap:break-word;
     border:1px solid #ccc;
   }
+  .editor * {
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+
+  }
+  .editor a:hover {
+    text-decoration:none;
+  }
   .editor p {
     margin:5px 0;
   }
@@ -342,115 +351,6 @@
   .newsList{
     padding:50px 20px 10px;
   }
-  .course{
-    width: 260px;
-    height: 220px;
-  }
-  .course .imgbox {   
-    padding: 10px;
-    height: 140px;
-    min-height: 144px;    
-  }
-  .course .listBox{    
-     position: relative;
-     width: 100%;
-     height: 100%;
-     overflow: hidden;
-  }
-  .course .animateBox{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.3);
-    display: none;
-    color: #fff;
-    font-size: 13px;
-    line-height: 30px;
-    text-decoration:none;
-    text-indent: 10px;
-  }
-  .course .imgbox img{
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.8s;
-    -moz-transition: transform 0.8s; 
-    -webkit-transition: transform 0.8s; 
-    -o-transition: transform 0.8s; 
-  }
-  .course .imgbox:hover img{
-    transform: scale(1.2);
-    -ms-transform:scale(1.2);
-    -moz-transform:scale(1.2);
-    -webkit-transform:scale(1.2); 
-    -o-transform:scale(1.2);
-  }
-  .course .imgbox:hover .animateBox{
-    display: block;
-    z-index: 2;
-    cursor: pointer;
-  }
-  .course .imgbox .openState{
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    width: 66px;
-    height: 66px;
-    background-repeat: no-repeat;
-    background-position: center;    
-    cursor: pointer;
-    z-index: 3;
-  }  
-  .course .imgbox .openState_canpay1{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
-  }
-  .course .imgbox .openState_djbmbg1{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
-  }
-  .course .imgbox .openState_djkt{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
-  }
-  .course .imgbox .openState_free{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
-  }  
-  .course .imgbox .openState_jrxx{
-    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
-  }
-  .course .courseTit{
-    padding: 0 10px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 15px;
-    color: #333;
-    overflow: hidden;
-  }
-  .course .speak, .course .number, .course .popularity{
-    float: left;
-    margin-top: 12px;
-    padding-left:10px;
-    width: 120px;
-    font-size: 13px;
-    line-height: 14px;
-    height: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #999999;
-  }
-  .course .number{
-    float: right;
-    padding-left: 0;
-    width: 60px;
-    text-indent: 20px;
-    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
-  }
-  .course .popularity{
-    float: right;
-    padding-left: 0;
-    width: 60px;
-    text-indent: 20px;
-    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat -72px center
-  }
   /* todo */
 /* 新闻资讯*/
   .newsList {
@@ -695,8 +595,8 @@
   }
 /*-------------picture-----------------*/
   .picture {
-    width: 200px;
-    height: 120px;  
+    width: 243px;
+    height: 144px;  
   }
   .picBox{
     display: block;
@@ -705,7 +605,7 @@
     overflow: hidden;
   }
   .picture img{
-    width: 100%;
+    min-height: 100%;   
   }
 /*-------------button-----------------*/
   .button{
@@ -723,17 +623,57 @@
     width: 100%;
     height: 100%;
     text-decoration: none;
+    font-size: inherit;
+    line-height: inherit;
+    overflow: hidden;
+    color: inherit;
   }
 /*-------------line-----------------*/
   .hline{
-    width: 200px;
-    height: 1px;
-    background: #333;
+    width: 200px;  
+    max-height: 0px;
+    height: 0!important;   
+    border: 0;
+    border-top-width: 1px;
+    border-left-width: 0px!important;
+    border-right-width: 0px!important;
+    border-bottom-width: 0px!important;
+    border-style: solid;
+    border-color: #333;    
+  }
+  .hline .resizeBox{
+    padding: 5px 0;
+    margin-top: -6px;
+    box-sizing: content-box;
+  }
+  .hline .resize{
+    display: none;
+  }
+  .hline .resize.e,.hline .resize.w{
+    display: block;
   }
   .sline{
-    width: 1px;
+    max-width: 0px;
+    width: 0px!important;
     height: 200px;
-    background: #333;
+    border: 0;
+    border-top-width: 0px!important;
+    border-left-width: 1px;
+    border-right-width: 0px!important;
+    border-bottom-width: 0px!important;   
+    border-style: solid;
+    border-color: #333;     
+  }  
+  .sline .resize{
+    display: none;
+  }
+  .sline .resize.n,.sline .resize.s{
+    display: block;
+  }
+  .sline .resizeBox{
+    padding: 0 5px;
+    margin-left: -6px;
+    box-sizing: content-box;
   }
 /*-----------课程分类---------------*/
 	.addcoursetype{
@@ -2047,3 +1987,495 @@
     overflow: hidden;
   }
 
+/*悬浮特效*/
+  .enlarge img{
+    transition: transform 0.3s;
+    -ms-transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .enlarge img:hover{
+    transform:scale(1.2,1.2);
+    -ms-transform:scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:scale(1.2,1.2);   
+  }  
+  .left img{
+    transform:scale(1.1,1.1);
+    -ms-transform:scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:scale(1.1,1.1);
+    transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .left img:hover{
+    transform:translateX(-5%) scale(1.1,1.1);
+    -ms-transform:translateX(-5%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translateX(-5%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translateX(-5%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translateX(-5%) scale(1.1,1.1);
+  }
+  .right img{
+    transform:scale(1.1,1.1);
+    -ms-transform:scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:scale(1.1,1.1);
+    transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; 
+  }
+  .right img:hover{
+    transform:translateX(5%) scale(1.1,1.1);
+    -ms-transform:translateX(5%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translateX(5%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translateX(5%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translateX(5%) scale(1.1,1.1);
+  }
+  .moveup{ 
+     transition: transform 0.3s;
+    -moz-transition: transform 0.3s; /* Firefox 4 */
+    -webkit-transition: transform 0.3s; /* Safari 和 Chrome */
+    -o-transition: transform 0.3s; /* Opera */
+  }
+  .moveup:hover{
+    transform:translateY(-5%);
+    -ms-transform:translateY(-5%);   /* IE 9 */
+    -moz-transform:translateY(-5%);  /* Firefox */
+    -webkit-transform:translateY(-5%); /* Safari 和 Chrome */
+    -o-transform:translateY(-5%);
+  }
+  #app .on_module:hover{
+    transform:translateY(0%);
+    -ms-transform:translateY(0%);   /* IE 9 */
+    -moz-transform:translateY(0%);  /* Firefox */
+    -webkit-transform:translateY(0%); /* Safari 和 Chrome */
+    -o-transform:translateY(0%);
+  }
+  /*图片形状*/
+  .square{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%);
+    width: 118px;
+    height: 118px;
+    overflow: hidden;
+  }
+  .square img{
+    width: auto!important;
+    height: auto;
+    margin: 50% 0 0 50%;
+    transform:translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%);
+  }
+  .right .square img{
+    transform:translate(-50%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-50%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.1,1.1);
+  }
+  .right .square img:hover{   
+    transform:translate(-45%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-45%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-45%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-45%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-45%,-50%) scale(1.1,1.1);
+  }
+
+  .left .square img{
+    transform:translate(-50%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-50%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.1,1.1);
+  }
+  .left .square img:hover{   
+    transform:translate(-55%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-55%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-55%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-55%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-55%,-50%) scale(1.1,1.1);
+  }
+  .enlarge .square img:hover{
+    transform:translate(-50%,-50%) scale(1.2,1.2);
+    -ms-transform:translate(-50%,-50%) scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.2,1.2);
+  }  
+  .fillet{
+    border-radius: 15%;
+    transform: scale(1,1);
+    -ms-transform:scale(1,1);   /* IE 9 */
+    -moz-transform:scale(1,1);  /* Firefox */
+    -webkit-transform:scale(1,1); /* Safari 和 Chrome */
+    -o-transform:scale(1,1);
+  }
+  .round{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%);
+    border-radius: 50%;   
+    width: 118px;
+    height: 118px;
+    overflow: hidden;
+  }
+  .round img{
+    width: auto!important;
+    height: auto;
+    margin: 50% 0 0 50%;
+    transform:translate(-50%,-50%) ;
+    -ms-transform:translate(-50%,-50%);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%);
+  }
+  .right .round img{
+    transform:translate(-50%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-50%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.1,1.1);
+  }
+  .right .round img:hover{   
+    transform:translate(-45%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-45%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-45%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-45%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-45%,-50%) scale(1.1,1.1);
+  }
+  .left .round img{
+    transform:translate(-50%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-50%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.1,1.1);
+  }
+  .left .round img:hover{   
+    transform:translate(-55%,-50%) scale(1.1,1.1);
+    -ms-transform:translate(-55%,-50%) scale(1.1,1.1);   /* IE 9 */
+    -moz-transform:translate(-55%,-50%) scale(1.1,1.1);  /* Firefox */
+    -webkit-transform:translate(-55%,-50%) scale(1.1,1.1); /* Safari 和 Chrome */
+    -o-transform:translate(-55%,-50%) scale(1.1,1.1);
+  }
+   .enlarge .round img:hover{
+    transform:translate(-50%,-50%) scale(1.2,1.2);
+    -ms-transform:translate(-50%,-50%) scale(1.2,1.2);   /* IE 9 */
+    -moz-transform:translate(-50%,-50%) scale(1.2,1.2);  /* Firefox */
+    -webkit-transform:translate(-50%,-50%) scale(1.2,1.2); /* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%) scale(1.2,1.2);
+  }  
+  /* editbutton */
+  .button_radius{
+    background: #4AB344;
+    border-radius: 3px;
+    border:none;
+  }
+  .button_rightangle{
+    background: #4AB344;
+    border:none;
+    border-radius: 0px;
+  }
+  .button_border{
+    border:1px solid #4AB344;
+  }
+  .button_gradients{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
+    border-width: 0;
+  }
+  .button_gradients_border{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 3px;
+    border:1px solid #4AB344;
+  }
+  /* 链接 */
+  .registerEvent,.getUserNameEvent,.loginEvent{
+    cursor: pointer;
+  }
+  /* 分类module */
+  .taxonomycont{
+    width: 100%;
+    height: auto;
+    background: #F6F6F6;
+    float: none;
+    display: block;
+
+  }
+  .taxonomycont .fl{
+    float: left;
+    display: inline;
+  }
+  .taxonomycont a.courselist{
+    font-size: 15px;
+    color: #666;
+    margin: 0 15px;
+    margin-top: 15px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .taxonomycont a.courselist:hover,.taxonomycont  a.courselist.onhover {
+      color: #338bff;
+  }
+  .taxonomycont .allson {
+    width: 100%;
+    padding-bottom: 20px;
+    overflow: hidden;
+  }
+  .taxonomycont .allsondouble{
+    background: #fdfdfd;
+    width: 100%;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    overflow: hidden;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
+  }
+
+
+  /* 登录框 */
+  .username,.password{
+    width: 200px;
+    height: 36px;
+    border:1px solid #666;
+    background: inherit;
+  }
+  .username input,.password  input{
+    width: 100%;
+    height: 100%;
+    border:0;
+    background: inherit;
+    font-size: inherit;
+    color: inherit;
+    padding-left: 5px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
+  }
+  .loginbutton{
+    width: 200px;
+    height: 40px;
+    background: #338bff;
+    color: #fff;
+    border-radius: 4px;
+  }
+  .loginbutton input{
+    width: 100%;
+    height: 100%;
+    border: medium none;
+    cursor: pointer;
+    font-size: inherit;
+    line-height: inherit;
+    overflow: hidden;
+    color: inherit;
+    background: inherit;
+    border-radius: inherit;
+    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+  }
+  input::-webkit-input-placeholder{color: inherit;font-size: inherit;}    /* 使用webkit内核的浏览器 */
+  input:-moz-placeholder{color: inherit;font-size: inherit;}                  /* Firefox版本4-18 */
+  input::-moz-placeholder{color: inherit;font-size: inherit;}                  /* Firefox版本19+ */
+  input:-ms-input-placeholder{color: inherit;font-size: inherit;}           /* IE浏览器 */
+
+/*  waiter   */
+  .waiterhide {
+    display: block;
+  }
+  .waiter {
+    position:absolute;
+    left: 0;
+    bottom: 200px;
+    width: 36px;
+    height: 75px;
+   
+  }
+  .kf-head{
+    width:36px;
+    height: 36px;
+    background-color: #18A8F7;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);
+    cursor: pointer;
+  }
+  .kf-top{
+    margin-top: 3px;
+    width:36px;
+    height: 36px;
+    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/hddb.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color:#D8D8D8; 
+    cursor: pointer;
+  }
+
+/* advert */
+  .advert {
+    width: 300px;
+    height: 150px;
+    background-color: #F2F2F2;
+  }
+  .advert .advCon{
+    width: 300px;
+    height: 100%;
+  }
+  .advert .advCon img{
+    width: 100% 
+  }
+
+/* course */
+  .course{
+    width: 260px;
+    height: 220px;   
+    cursor: pointer;
+  }
+  .course .resize{
+    display: none;
+  }
+  .course .editCourse{
+    width: 100%;
+    height: 100%;
+    background-color: #F2F2F2;
+    font-size: 230px;
+    line-height: 220px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    text-indent: 0;
+  }
+/*  .course .editCourse:hover{
+    background-color: #169BD5;
+  }*/
+  .course .imgbox {   
+    padding: 10px;
+    height: 140px;
+    min-height: 144px;    
+  }
+  .course .listBox{    
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+  }
+  .course .animateBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    color: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    text-decoration:none;
+    text-indent: 10px;
+  }
+  .course .imgbox img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    -moz-transition: transform 0.8s; 
+    -webkit-transition: transform 0.8s; 
+    -o-transition: transform 0.8s; 
+  }
+  .course .imgbox:hover img{
+    transform: scale(1.2);
+    -ms-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    -webkit-transform:scale(1.2); 
+    -o-transform:scale(1.2);
+  }
+  .course .imgbox:hover .animateBox{
+    display: block;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .course .imgbox .openState{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 66px;
+    height: 66px;
+    background-repeat: no-repeat;
+    background-position: center;    
+    cursor: pointer;
+    z-index: 3;
+  }  
+  .course .imgbox .openState_canpay1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/canpay1.png);
+  }
+  .course .imgbox .openState_djbmbg1{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djbmbg1.png);
+  }
+  .course .imgbox .openState_djkt{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/djkt.png);
+  }
+  .course .imgbox .openState_free{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/free.png);
+  }  
+  .course .imgbox .openState_jrxx{
+    background-image: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/jrxx.png);
+  }
+  .course .courseTit{
+    padding: 0 10px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 15px;
+    color: #333;
+    overflow: hidden;
+  }
+  .course .speak, .course .number, .course .popularity{
+    float: left;
+    margin-top: 12px;
+    padding-left:10px;
+    width: 120px;
+    font-size: 13px;
+    line-height: 14px;
+    height: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+  }
+  .course .number{
+    float: right;
+    padding-left: 0;
+    width: 60px;
+    text-indent: 20px;
+    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat left center;
+  }
+  .course .popularity{
+    float: right;
+    padding-left: 0;
+    width: 60px;
+    text-indent: 20px;
+    background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat -72px center
+  }

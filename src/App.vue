@@ -1,8 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" unselectable="on" onselectstart="return false;">
   <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">
-      <div class="t_logo"></div>
       <div class="t_left">
         <div class="tl_li" @click="settingEvent">
           <i class="iconfont mb icon-cog " title="设置"></i>
@@ -24,7 +23,7 @@
           <i class="iconfont icon-gridlines"></i>
           <span>格线</span>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="对齐">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-align-left"></i>
           <div class="doll"></div>
           <!-- <span>对齐</span> -->
@@ -37,7 +36,7 @@
             <li @click="middleAlignEvent"><i class="iconfont icon-align-middle"></i>垂直居中</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="图层">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-layer"></i>
           <div class="doll"></div>
           <!-- <span>图层</span> -->
@@ -48,7 +47,7 @@
             <li @click="downFloorEvent"><i class="iconfont icon-layer-down"></i>下移一层</li>
           </ul>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" title="操作">
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-copy"></i>
           <div class="doll"></div>
           <!-- <span>操作</span> -->
@@ -61,9 +60,9 @@
         </div>
       </div>
       <!-- module attribute -->
-      <div class="toolBox">
-        <div class="property" >
-          <label for="">Z :</label>
+     <!--  <div class="toolBox"> -->
+        <div class="property " >
+          <label for="" class="leftBorder">Z :</label>
           <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
         </div>
         <div class="property" >
@@ -81,12 +80,10 @@
         <div class="property">
           <label for="">高 :</label>
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
-        </div>
-      </div>
-      <!-- module font -->
-      <div class="toolBox">
+        </div>      
+      <!-- module font -->      
         <div class="property">
-          <label for="">字号 :</label>
+          <label for="" class="leftBorder">字号 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
         <div class="property">
@@ -95,20 +92,17 @@
         </div>
         <div class="property">
           <label for="">字色 :</label>
-          <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
-        </div>
-      </div>
-      <!-- module background -->
-      <div class="toolBox">
+          <!-- <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker> -->
+          <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
+        </div>      
+      <!-- module background -->     
         <div class="property">
-          <label for="">背景 :</label>
-          <el-color-picker v-model="color_bg" :disabled='disabled' @change='changeColorBg'></el-color-picker>
-        </div>
-      </div>
-      <!-- module border -->
-      <div class="toolBox">
+          <label for="" class="leftBorder">背景 :</label>
+          <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' @change='changeColorBg'></colorPicker>
+        </div>     
+      <!-- module border -->      
         <div class="property">
-          <label for="">边框 :</label>
+          <label for="" class="leftBorder">边框 :</label>
           <div class="border br-mod br-disable">
             <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
             <div class="doll" ></div>
@@ -117,43 +111,40 @@
               <li v-for="(item, index) in br_widths">
                 <el-radio-button :key="item.value" :label="item.label">
                   <span v-if="item.value == 0" class="borderWidth">none</span>
-                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + ';border-style: ' + br_style + ';border-color: ' + br_color + ';'"></span>
+                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color:#333;'">{{item.label}}</span>
                 </el-radio-button>
               </li>
               </el-radio-group>
             </ul>
           </div>
-          <div class="border br-mod br-disable">
+          <div class="border br-mod br-disable" :style="br_width=='0'?'cursor:not-allowed':''">
             <i class="iconfont2 icon-biankuangyangshi" ></i>
             <div class="doll" ></div>
-            <ul class="toolbar">
+            <ul class="toolbar" v-if="br_width!='0'">
               <el-radio-group v-model="br_style" @change='changeBorderStyle'>
               <li v-for="(item, index) in br_styles">
                 <el-radio-button :key="item.value" :label="item.label">
-                  <span class="borderStyle" :style="'border-width:' + br_width + ';border-style: ' + item.label + ';border-color: ' + br_color + ';'"></span>
+                  <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color:#333;'"></span>
                 </el-radio-button>
               </li>
               </el-radio-group>
             </ul>
           </div>
-          <div class="border br-mod br-disable" :style="'border-color:' + br_color + ';'">
-            <i class="iconfont2 icon-biankuangyanse" :style="'color:' + br_color + ';'"></i>
-            <div class="doll" ></div>          
-            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor'></colorPicker>
+          <div class="border br-mod br-disable" >
+            <i class="iconfont2 icon-biankuangyanse" ></i>
+            <div class="doll" ></div>
+            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width==0">
+            </colorPicker>
           </div>
-        </div>
-      </div>
-      <!-- module opacity -->
-      <div class="toolBox">
+        </div>      
+      <!-- module opacity -->     
         <div class="property">
-          <label for="">透明度 :</label>
+          <label for="" class="leftBorder">透明度 :</label>
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
-        </div>
-      </div>
+        </div>      
       <!-- module shadow -->
-      <div class="toolBox">
-        <div class="property">
-          <label for="">阴影 :</label>
+        <div class="property" style="margin-left:4px;">
+          <label for="" class="leftBorder">阴影 :</label>
           <div class="border br-mod br-disable shadow">
             <i class="iconfont2 icon-yinying"></i>
             <div class="doll"></div>
@@ -182,8 +173,8 @@
               </div>
             </ul>
           </div>
-        </div>
-      </div>
+        </div>      
+      <!-- </div> -->
       <!-- module exit -->
       <div class="t_right">
         <a href="/">
@@ -202,7 +193,7 @@
         </ol>
       </nav> -->
       <div class="lib_box">
-        <div class="header">基本组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
         <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol onlineBox"></div>
@@ -217,15 +208,15 @@
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
-        <div class="header">页头 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead">页头 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>
-        <div class="header">主体 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementMain">
           <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>
-        <div class="header">页尾 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementTail">
           <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span></div>
         </div>       
@@ -252,34 +243,34 @@
         <div class="row-b line"></div> 
         <div class="col-l line"></div>
         <div class="col-r line"></div>
+          <!-- 自定义右键菜单 -->
+        <ul class="contextmenu">
+          <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
+          <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
+          <div class="divider" v-if="rightButton"></div>       
+          <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
+            <i class="el-icon-caret-bottom"></i>
+            <ol>
+              <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
+              <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
+              <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
+              <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
+              <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
+              <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
+            </ol>
+          </li>
+          <div class="divider" v-if="rightButton"></div>
+          <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
+          <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
+          <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
+          <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
+        </ul>
       </div>
     <!-- copyBox  选中的组件容器盒子-->
       <div class="copyBox">
         <div class="copyCon">
         </div>
-      </div>
-    <!-- 自定义右键菜单 -->
-      <ul class="contextmenu">
-        <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
-        <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
-        <div class="divider" v-if="rightButton"></div>       
-        <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
-          <i class="el-icon-caret-bottom"></i>
-          <ol>
-            <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
-            <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
-            <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
-            <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
-            <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
-            <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
-          </ol>
-        </li>
-        <div class="divider" v-if="rightButton"></div>
-        <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
-        <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
-        <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
-        <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
-      </ul>
+      </div>  
     </div>
   <!-- dialog弹框 -->
     <el-dialog
@@ -287,23 +278,26 @@
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
       <el-tabs v-model="activeSetting" type="card" >
-        <el-tab-pane label="页面设置" name="first">
+        <el-tab-pane label="页面设置" name="first" >
           <el-row>
             <el-col :span="5" class="tit">背景色</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="bgColorVal"></el-color-picker>
+              <!-- <el-color-picker v-model="bgColorVal"></el-color-picker> -->
+              <colorPicker v-model="bgColorVal" ></colorPicker>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="5" class="tit">前景色</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="prospectColorVal" ></el-color-picker>
+             <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
+              <colorPicker v-model="prospectColorVal" ></colorPicker>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="5" class="tit">文字链接hover</el-col>
             <el-col :span="7">
-              <el-color-picker v-model="fontHoverColorVal" ></el-color-picker>
+              <!-- <el-color-picker v-model="fontHoverColorVal" ></el-color-picker> -->
+              <colorPicker v-model="fontHoverColorVal" ></colorPicker>
             </el-col>
           </el-row>         
           <el-row>
@@ -489,7 +483,7 @@
         <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
+   <!--  <el-dialog
       title="富文本"
       :visible.sync="dialogEditor"
       size="small" class="ueditor">
@@ -498,7 +492,7 @@
         <el-button @click="dialogEditor = false">取 消</el-button>
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       title="修改图片 ( 点击添加 )"
       :visible.sync="dialogPicture"
@@ -561,123 +555,135 @@
         <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- 网校模块   -->
+  <!-- 网校模块   -->    
     <el-dialog
-      :title="carouselTit"
-      :visible.sync="dialogCarousel"
-      size="carousel" >
-      <el-tabs v-model="activeName" >
-        <el-tab-pane label="图片选择" name="first">
-          <div class="scrollBox">
-            <div class="selectBox">
-              <div class="diaimg_li" v-for="(item, index) in carouselData">
-                <img :src="item.imgurl">
-                <div class="handleList">
-                  <el-row>
-                    <el-col :span="3">
-                      <span @click="carouselShiftUpEvent(index)" class="spanTit" v-if="index!=0">上移</span>
-                      <span v-else class="spanTit ban">上移</span>
-                    </el-col>                    
-                    <el-col :span="3">
-                      <span @click="carouselShiftDownEvent(index)" class="spanTit" v-if="index!=carouselData.length-1">下移</span>
-                      <span v-else class="spanTit ban">下移</span>
-                    </el-col>
-                    <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit">删除</span></el-col>
-                    <el-col :span="15">
-                      <span class="spanTit spanUrl">跳转链接
-                        <input type="text" placeholder="请输入链接 ( 默认为空,点击图片不跳转 )" :value="item.clickurl" @change="carouselChangeEvent(index)">
-                      </span>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
-              <div class="diaimg_li" v-if="carouselData.length < 9">
-                <el-upload
-                  class="carousel-uploader"
-                  name="upfile"
-                  action="/uploadv2/image.html"
-                  :show-file-list="false"
-                  :on-success="handleCarouselSuccess"
-                  :before-upload="beforePictureUpload">                  
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-              </div>
-            </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="轮播设置" name="second">
-          <div class="scrollBox">
-            <el-row>
-              <el-col :span="4">展示时长</el-col>
-              <el-col :span="8"><el-input-number v-model="showTime" :min="5" :max="20"></el-input-number></el-col>
-              <el-col :span="4">切换时长</el-col>
-              <el-col :span="8"><el-input-number v-model="transitionTime" :min="0" :max="2" :step="0.2"></el-input-number></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4">显示宽度</el-col>
-              <el-col :span="8"><el-input-number v-model="showWidth" :min="1" :max="2600" :step="100"></el-input-number></el-col>
-              <el-col :span="4">切换方式</el-col>
-              <el-col :span="8">
-              <el-select v-model="changeStyle" placeholder="请选择">
-                <el-option
-                  v-for="item in animStyle"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-            </el-row>
-          </div><!-- todo:长宽 -->
-        </el-tab-pane>
-      </el-tabs>    
+      title="模块动画"
+      :visible.sync="dialogscrollanim"
+      :close-on-click-modal="false"
+      size="scrollanim">
+      <el-row>
+        <el-col>
+          <div @click="editanim()" class="animlist active"><div :class="animtype==''?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>无效果</p></div>
+          <div @click="editanim('fadeIn')" class="animlist"><div :class="animtype=='fadeIn'?'animimg active':'animimg'">
+            <img  src="./assets/img/fadeIn_icon.png">
+          <div class="animtip">✔</div></div><p>淡入</p></div>
+          <div @click="editanim('slideInRight')" class="animlist"><div :class="animtype=='slideInRight'?'animimg active':'animimg'">
+            <img  src="./assets/img/slideInRight_icon.png">
+          <div class="animtip">✔</div></div><p>飞入</p></div>
+          <div @click="editanim('zoomIn')" class="animlist"><div :class="animtype=='zoomIn'?'animimg active':'animimg'">
+            <img  src="./assets/img/zoomIn_icon.png">
+          <div class="animtip">✔</div></div><p>放大</p></div>
+          <div @click="editanim('bounceInRight')" class="animlist"><div :class="animtype=='bounceInRight'?'animimg active':'animimg'">
+            <img  src="./assets/img/bounceInRight_icon.png">
+          <div class="animtip">✔</div></div><p>跳入</p></div><br>
+          <div @click="editanim('flash')" class="animlist"><div :class="animtype=='flash'?'animimg active':'animimg'">
+            <img  src="./assets/img/flash_icon.png">
+          <div class="animtip">✔</div></div><p>闪现</p></div>
+          <div @click="editanim('rotateIn')" class="animlist"><div :class="animtype=='rotateIn'?'animimg active':'animimg'">
+            <img src="./assets/img/rotateIn_icon.png">
+          <div class="animtip">✔</div></div><p>滚入</p></div>
+          <div @click="editanim('flipInY')" class="animlist"><div :class="animtype=='flipInY'?'animimg active':'animimg'">
+            <img src="./assets/img/flipInY_icon.png">
+          <div class="animtip">✔</div></div><p>翻转</p></div>
+          <div @click="editanim('bounceIn')" class="animlist"><div :class="animtype=='bounceIn'?'animimg active':'animimg'">
+            <img src="./assets/img/bounceIn_icon.png">
+          <div class="animtip">✔</div></div><p>弹性放大</p></div>
+          <div @click="editanim('bounceOut')" class="animlist"><div :class="animtype=='bounceOut'?'animimg active':'animimg'">
+            <img src="./assets/img/bounceOut_icon.png">
+          <div class="animtip">✔</div></div><p>弹性缩小</p></div>
+        </el-col>
+        
+      </el-row>
       <span slot="footer" class="dialog-footer">        
-        <el-button @click="dialogCarousel = false">取 消</el-button>
-        <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
+        <el-button @click="dialogscrollanim = false">取 消</el-button>
+        <el-button @click="editanimate()" type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="编辑文本"
+      :visible.sync="dialogedittext"
+      :close-on-click-modal="false"
+      size="edittext">
+      <el-row>
+        <el-col>
+          <el-input v-model="logintext"></el-input>
+        </el-col>
+        
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogedittext = false">取 消</el-button>
+        <el-button @click="editlogintext()" type="primary">确 定</el-button>
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
+    <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
+    <suspend ref="suspend"></suspend>
+    <shape ref="shape"></shape>
+    <editbutton ref="editbutton"></editbutton>
+    <carousel ref="carousel"></carousel>
+    <waiter ref="waiter"></waiter>
+    <advert ref="advert"></advert> 
+    <course ref="course"></course>    
+  <!--<effect ref="effect"></effect> -->
   </div>
 </template>
-<script>
-  function guidGenerator () {
-    let S4 = function () {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
-    }
-    return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
-  }
+<script>  
   import $ from 'jquery' 
-  import datahtml from '@/data/datahtml.js'
+  import configData from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
+  import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
+  import suspend from '@/components/suspend'
+  import shape from '@/components/shape'
+  import editbutton from '@/components/editbutton'
+  import carousel from '@/components/carousel'
+  import waiter from '@/components/waiter'
+  import advert from '@/components/advert'
+  import course from '@/components/course'
+  /*import effect from '@/components/effect'*/
+  import '@/assets/animate.min.css'
+  let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
+    components: {
+      colorPicker, 
+      ueditor, 
+      hrefdialog, 
+      myimages, 
+      suspend, 
+      shape, 
+      editbutton, 
+      carousel, 
+      waiter, 
+      advert, 
+      course
+    },
     data: function () {
       return {
       // ------------ 工具栏add ----------------------
-        br_width: '1px',
+        br_width: '0',
         br_widths: [{
           value: '0',
-          label: '0px'
+          label: '0'
         },{
           value: '1',
-          label: '1px'
+          label: '1'
         },{
           value: '2',
-          label: '2px'
+          label: '2'
         },{
           value: '3',
-          label: '3px'
+          label: '3'
         },{
           value: '4',
-          label: '4px'
+          label: '4'
         },{
           value: '5',
-          label: '5px'
+          label: '5'
         }],
         br_style: 'solid',
         br_styles: [{
@@ -713,7 +719,14 @@
         inp_weight_y: '0',
         inp_blur: '0',
         bw_color: '#ccc',
+        editEditor: false,
+      //  ---------------登录框文本----------
+        logintext :'',
+        dialogedittext:false,
       // ------------ 基础组件弹框 -------------------
+        dialogscrollanim:false,
+        anim:'',
+        animtype : 0,
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -804,7 +817,7 @@
         activeSetting: 'first',
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
-        fontHoverColorVal: '',
+        fontHoverColorVal: '#333',
         bgImageUrl: '',
         pgImageUrl: '',
         inp_percent: '100',
@@ -820,31 +833,37 @@
         inp_h: '',
         inp_size: '',
         inp_line: '',
-        color_font: '#333',
+        color_font: '#fff',
         color_bg: '#fff',
         moduleElement: '', // 选中的模块全局引用
-        moduleParentElementHeight: '',
+        moduleElementY:'',
+        moduleElementX:'',
+        moduleElementR:'',
+        moduleElementB:'',
+        moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
+      // ---------- config --------------
         config: {
-          stretchLimit: true, // 是否开启module拉伸限制
-          moveLimit: true // 是否开启module移动限制
+          stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
+          moveLimit: config.moveLimit // 是否开启module移动限制
         },
-        paddingtop: 35, // top栏高度
-        paddingleft: 133, // left栏高度
-        postop: 80, // editbox  top值
-        posleft: 1000, // editbox  left值
+        paddingtop: config.paddingtop, // top栏高度
+        paddingleft: config.paddingleft, // left栏高度
+        postop: config.postop, // editbox  top值
+        posleft: config.posleft, // editbox  left值
+        fuzzyVal: config.fuzzyVal, // 模糊度
+        choiceCon: config.choiceCon,
         preHandleTime: 0,
+        elementStorage: {
+          c_top: {},
+          c_body: {},
+          c_foot: {}
+        },
         elementHead: [],
         elementMain: [],
         elementTail: [],
-        datahtml: datahtml.datahtml,      
-        editorConfig: {
-          zIndex: 3000,
-          toolbars: [[
-            'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
-          ]]
-        },
+        datahtml: configData.config,
       // ------------ common -------------------------
         httpget: function (getParam) { // 封装的异步请求数据
           let self = this
@@ -944,28 +963,15 @@
             let w
             let getParam
             let oa
-            switch (type) {
-              case 'editor':
-                self.dialogEditor = true
-                w = parseInt(onthis.css('width'))
-                let html = onthis.find('.editorCon').html()
-                self.$nextTick(function () {
-                  self.$refs.ueditor.id = self.ueditorid
-                  $('.ueditor .el-dialog').css('width', w + 40)
-                  $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
-                  self.editor = window.UE.getEditor(self.ueditorid, self.editorConfig)
-                  self.editor.ready(function () {
-                    self.editor.setContent(html)
-                  })
-                })
-                break
+            switch (type) {              
               case 'picture':
                 self.linkType = 'none'
                 self.inpOnline = ''
                 self.selectNews = []
                 self.selectCoruse = []
                 self.pictureUrl = onthis.find('img').attr('src')
-                self.dialogPicture = true
+                // self.dialogPicture = true
+		            self.$refs.myimages.show();
                 oa = onthis.find('.picBox')
                 self.linkType = oa.attr('linkType') || 'none'
                 switch (self.linkType) {
@@ -1009,20 +1015,71 @@
                 break
             }
           }
+        },
+        getcoursecategorys:function(html){
+          let self = this
+          self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
+            params: {
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            let datas = response.data
+            if(datas.code == 0){
+              let packages = datas.data.packages
+              let sorts = datas.data.sorts
+              let packageshtml = ''
+              let sortshtml = ''
+              for(var i=0;i<packages.length;i++){
+                if(packages[i].pid == 0){
+                  packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
+                }else{
+                  if(packages[i].cur){
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
+                  }else{
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
+                  }
+                }
+              }
+              for(var i=0;i<sorts.length;i++){
+                if(sorts[i].sid == -1){
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
+                }else{
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
+                }
+              }
+              html.find('.allson').html(packageshtml)
+              html.find('.allsondouble').html(sortshtml)
+            }
+          }, function (response) {
+            console.log(response)
+          })
+        },
+        getweather:function(){
+          let self = this
+          self.$http.get('http://api.map.baidu.com/telematics/v3/weather', {
+            params: {
+              location:'杭州',
+              output:'json',
+              ak:'BTxWGxLSfvMBoq3mGaEYVdENUECSWtSv'
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            //let datas = response.data
+            console.log(response)
+          }, function (response) {
+            console.log(response)
+          })
         }
+        
       }
     },
     created: function () {
       var self = this
-      self.ueditorid = guidGenerator()
       self.$nextTick(function () {
+        self.getweather()
         let canvas = $('.canvas')
         let space = $('.space')
         canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
         self.inp_width = parseInt(canvas.css('width'))
-        self.inp_height = parseInt(canvas.css('height'))        
-        // self.tool.bindDblclickEvent(self)
-        // self.moduleEvent()
+        self.inp_height = parseInt(canvas.css('height'))
         space.scrollLeft(900)
         let head = $('.c_top')
         let middle = $('.c_body')
@@ -1055,7 +1112,14 @@
           let module = params.module
           head.html(module.top)
           middle.html(module.body)
-          foot.html(module.foot)
+          foot.html(module.foot)          
+          tool.tool.carryLayerEvent(self, head)
+          tool.tool.carryLayerEvent(self, middle)
+          tool.tool.carryLayerEvent(self, foot)
+          tool.tool.carryLineHeightEvent()
+          tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
         } else {
           let getParam = {
             url: '/aroomv3/roominfo.html',
@@ -1074,7 +1138,7 @@
                   let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
                   self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
                   self.bgColorVal = pp.bg =='transparent'?null:pp.bg
-                  self.fontHoverColorVal = pp.fontHover
+                  self.fontHoverColorVal = pp.fontHover||'#333'
                   self.inp_width = parseInt(pp.width)
                   self.inp_height = parseInt(pp.height)
                   self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
@@ -1102,6 +1166,9 @@
                   tool.tool.carryLayerEvent(self, middle)
                   tool.tool.carryLayerEvent(self, foot)
                   tool.tool.carryLineHeightEvent()
+                  tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
                 }
               }
               self.httppost(getParams)
@@ -1110,10 +1177,94 @@
           self.httpget(getParam)
         }
         tool.tool.init(self, $)
+        let shadow = $('.property .shadow .toolbar')
+        let colorbox = shadow.find('.box')
+        let $top = $('.top')
+        let width
+        let moveShadow
+        positionshadow()
+        $(window).resize(function(event) {
+           positionshadow()
+        })
+        function positionshadow() {
+          width = parseInt($top.css('width'))
+          if(width < 1845){
+            width = parseInt($top.css('width'))   
+            if(width < 1558) {             
+              shadow.css('left', '0px')
+              colorbox.css('left', '0px')
+            } else {
+              moveShadow = width - 1845             
+              if (moveShadow < -212) {
+                shadow.css('left', '-212px')
+                colorbox.css('left', (moveShadow + 212) + 'px')
+              }else{
+                shadow.css('left', moveShadow + 'px')
+              }
+            }     
+          }
+        }
       })
     },
-    components: {colorPicker, hrefdialog, myimages},
     methods: {
+      dialogeditlogin(){
+        let self = this
+        self.logintext = ''
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value')
+          break
+        }
+        self.dialogedittext = true
+      },
+      editlogintext(){
+        let self = this
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value',self.logintext)
+          break
+        }
+        self.dialogedittext = false
+      },
+      dialoganim(){
+        let self = this
+        let anim  = $('.on_module').attr('data-kui-anim')
+        self.anim = anim;
+        self.animtype = anim;
+        self.dialogscrollanim = true
+      },
+      editanim(val){
+        let self = this;
+        let anim = val || ''
+        self.animtype = anim;
+        self.anim = anim;
+        let a = $('.on_module');
+        a.addClass('animated '+anim);
+        setTimeout(function(){
+          a.removeClass(anim);
+          a.removeClass('animated');
+        }, 1000);
+      },
+      editanimate(){
+        let self = this;
+        let a = $('.on_module');
+        a.attr('data-kui-anim',self.anim)
+        self.dialogscrollanim = false
+      },
     // ------------- complete ----------------
       settingEvent: function () { // 页面设置
         let self = this
@@ -1288,283 +1439,146 @@
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
-        if (val < 0) {
-          val = 0
-          self.inp_z = 0
-        }
-        if (val > 99) {
-          val = 99
-          self.inp_z = 99
-        }
-        self.moduleElement.css('zIndex', val)
+        tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
       },
       changeInpX: function (val) { // left 定位
         var self = this
-        if (val < 0 && self.config.moveLimit) {
-          val = 0
-          self.inp_x = 0
-        }
-        let x = self.inp_width - self.inp_w
-        if (val > x && self.config.moveLimit) {
-          val = x
-          self.inp_x = x
-        }
-        self.moduleElement.css('left', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'left', val)
       },
-      changeInpY: function (val) { // right 定位
+      changeInpY: function (val) { // top 定位
         var self = this
-        if (val < 0 && self.config.moveLimit) {
-          val = 0
-          self.inp_y = 0
-        }
-        let y = self.moduleParentElementHeight - self.inp_h
-        if (val > y && self.config.moveLimit) {
-          val = y
-          self.inp_y = y
-        }
-        self.moduleElement.css('top', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'top', val)
       },
       changeInpW: function (val) { // width 宽度
         var self = this
-        if (val < 0 && self.config.stretchLimit) {
-          val = 0
-          self.inp_w = 0
-        }
-        let w = self.inp_width - self.inp_x
-        if (val > w && self.config.stretchLimit) {
-          val = w
-          self.inp_w = w
-        }
-        self.moduleElement.css('width', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'width', val)       
       },
       changeInpH: function (val) { // height 高度
         var self = this
-        if (val < 0 && self.config.stretchLimit) {
-          val = 0
-          self.inp_h = 0
-        }
-        let h = self.moduleParentElementHeight - self.inp_y
-        if (val > h && self.config.stretchLimit) {
-          val = h
-          self.inp_h = h
-        }
-        self.moduleElement.css('height', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'height', val)       
       },
       changeInpSize: function (val) { // font-size 字体大小
         var self = this
-        self.moduleElement.css('fontSize', val + 'px')
-        if(self.inp_line < val){
-          self.moduleElement.css('lineHeight', val + 'px')
-        }
+        tool.tool.carryModuleOperationEvent(self, 'fontSize', val) 
       },
       changeInpLine: function (val) { // line-height 行高
         var self = this
-        self.moduleElement.css('lineHeight', val + 'px')
+        tool.tool.carryModuleOperationEvent(self, 'lineHeight', val)
       },
       changeColorFont: function (val) { // font-color 字体颜色
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('color', val)
-        }
+        var self = this       
+        tool.tool.carryModuleOperationEvent(self, 'color', val)
       },
       changeColorBg: function (val) { // background-color 背景颜色
-        if ($('.on_module').length > 0) {
-          var self = this
-          if (val === null) {
-            val = 'transparent'
-          }
-          self.moduleElement.css('backgroundColor', val)
-        }
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'backgroundColor', val)
       },
       changeBorderWidth: function (val) { // 边框宽度（粗细）
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderWidth', val)
-          self.moduleElement.find('.resizeBox').css({top: '-' + val, left: '-' + val})
-        }
-      },
-      changeBorderStyle: function (val) { // 边框样式
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderStyle', val)
-        }
-      },
-      changeBorderColor: function (val) { // 边框颜色
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('borderColor', val)
-        }
-      },
-      changeOpacity: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('opacity', val/100)
+        var self = this
+        let mods = $('.on_module')
+        if (mods.length > 1){
+          if (parseInt(self.moduleElementY.css('border-left-width'))!== val){
+            tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+          }
+        }else if(mods.length!= 0){
+          tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
         }        
       },
-      changeShadow: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this
-          if (!val) {
-            self.moduleElement.css('boxShadow', 'none')
-          } else {
-            self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+      changeBorderStyle: function (val) { // 边框样式
+        var self = this
+        let mods = $('.on_module')
+        if (mods.length > 1){
+          if (self.moduleElementY.css('border-left-style')!== val){
+            tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
           }
-        }
+        }else if(mods.length!= 0){          
+          tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+        }        
       },
-      changHShadow: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
-        }
+      changeBorderColor: function (val) { // 边框颜色
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'borderColor', val)
       },
-      changVShadow: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this         
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
-        }
+      changeOpacity: function (val) { // 透明度
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'opacity', val)
       },
-      changBlurShadow: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
-        }
+      changeShadow: function (val) { // 阴影开关
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)        
       },
-      changColorShadow: function (val) {
-        if ($('.on_module').length > 0) {
-          var self = this
-          self.moduleElement.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
-        }
+      changHShadow: function (val) { // 水平偏移阴影
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowX', val)        
+      },
+      changVShadow: function (val) { // 垂直偏移阴影
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowY', val)        
+      },
+      changBlurShadow: function (val) { // 阴影模糊
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
+      },
+      changColorShadow: function (val) { // 阴影颜色
+        var self = this        
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
     // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
-        let self = this
-        self.moduleElement.css('top', '0px')
-        self.inp_y = 0
+        var self = this
+        tool.tool.carryModuleOperationEvent(self, 'topAlign')
       },
       bottomAlignEvent: function () { // top 下对齐
         let self = this
-        let x = self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))
-        self.moduleElement.css('top', x)
-        self.inp_y = x
+        tool.tool.carryModuleOperationEvent(self, 'bottomAlign')
       },
       leftAlignEvent: function () { // left 左对齐
         let self = this
-        self.moduleElement.css('left', '0px')
-        self.inp_x = 0
+        tool.tool.carryModuleOperationEvent(self, 'leftAlign')
       },
       rightAlignEvent: function () { // left 右对齐
         let self = this
-        let x = self.inp_width - parseInt(self.moduleElement.css('width'))
-        self.moduleElement.css('left', x)
-        self.inp_x = x
+        tool.tool.carryModuleOperationEvent(self, 'rightAlign')
       },
       centerAlignEvent: function () { // left 水平居中
         let self = this
-        let x = (self.inp_width - parseInt(self.moduleElement.css('width'))) / 2
-        self.moduleElement.css('left', x)
-        self.inp_x = x
+        tool.tool.carryModuleOperationEvent(self, 'centerAlign')
       },
       middleAlignEvent: function () { // top 垂直居中
         let self = this
-        let x = (self.moduleParentElementHeight - parseInt(self.moduleElement.css('height'))) / 2
-        self.inp_y = x
-        self.moduleElement.css('top', x)
+        tool.tool.carryModuleOperationEvent(self, 'middleAlign')
       },
       topFloorEvent: function () { // 图层置顶
         let self = this
-        let z = 99
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'topFloor')
       },
       bottomFloorEvent: function () { // 图层置底
         let self = this
-        let z = 0
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'bottomFloor')
       },
       upFloorEvent: function () { // 图层上移一层
         let self = this
-        let z = self.inp_z + 1
-        if (z > 99) {
-          z = 99
-        }
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'upFloor')       
       },
       downFloorEvent: function () { // 图层下移一层
         let self = this
-        let z = self.inp_z - 1
-        if (z < 0) {
-          z = 0
-        }
-        self.moduleElement.css('zIndex', z)
-        self.inp_z = z
+        tool.tool.carryModuleOperationEvent(self, 'downFloor')
       },
       shearEvent: function () { // 剪切
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.clipboard = self.moduleElement[0].outerHTML
-          self.original = self.moduleElement.parent()
-          self.moduleElement.remove()
-          $('.contextmenu').hide()
-          tool.tool.carryLayerEvent(self, self.original)
-        }
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'shear')
       },
       copyEvent: function () { // 复制
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.clipboard = self.moduleElement[0].outerHTML
-          self.original = self.moduleElement.parent()
-        }
-        $('.contextmenu').hide()
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'copy')
       },
       pasteEvent: function () { // 粘贴
         let self = this
-        if (self.clipboard) {
-          let sTop = parseInt($('.space').scrollTop())
-          let sLeft = parseInt($('.space').scrollLeft())
-          let contextmenu = $('.contextmenu')
-          let y = parseInt(contextmenu.css('top'))
-          let x = parseInt(contextmenu.css('left'))
-          switch (self.original.attr('class')) {
-            case 'c_top':
-              y = y - (self.paddingtop + self.postop) + sTop
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-            case 'c_body':
-              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height'))
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-            case 'c_foot':
-              y = y - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
-              x = x - (self.paddingleft + self.posleft) + sLeft
-              break
-          }
-          self.original.append(self.clipboard)
-          tool.tool.cleanSignEvent(self)
-          let bChild = self.original.children()
-          if (self.config.moveLimit) {
-            if (y < 0) {
-              y = 0
-            }
-            let boxTop = parseInt(self.original.css('height')) - parseInt(bChild.eq(bChild.length - 1).css('height'))
-            if (y > boxTop) {
-              y = boxTop
-            }
-          }
-          bChild.eq(bChild.length - 1).css({'top': y, 'left': x})
-          tool.tool.carryLayerEvent(self, self.original)
-        }
-        $('.contextmenu').hide()
+        tool.tool.carryModuleOperationEvent(self, 'paste')
       },
       deleteEvent: function () { // 删除
-        if ($('.on_module').length > 0) {
-          let self = this
-          self.original = self.moduleElement.parent()
-          self.moduleElement.remove()
-          $('.contextmenu').hide()
-          tool.tool.carryLayerEvent(self, self.original)
-        }
+        let self = this
+        tool.tool.carryModuleOperationEvent(self, 'delete')
       },
     // ------------- 基础模块 ----------------
       dialogTextEvent: function () { // 编辑文本窗口
@@ -1608,15 +1622,7 @@
           self.moduleElement.removeClass('loginEvent')
         }
         self.dialogText = false
-      },
-      dialogEditorEvent: function () { // 富文本窗口
-        let self = this
-        let content = self.editor.getContent()
-        let h = $('.ueditor .edui-editor-iframeholder').css('height')
-        self.dialogEditor = false
-        self.moduleElement.css('height', h)
-        self.moduleElement.find('.editorCon').html(content)
-      },
+      },     
       beforePictureUpload: function (file) {
         let self = this
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
@@ -1644,56 +1650,6 @@
             duration: 4000
           })
         }
-      },
-      carouselShiftUpEvent: function (index) { // 上移
-        let self = this
-        let item = self.carouselData.splice(index, 1)
-        self.carouselData.splice(index - 1, 0, item[0])
-      },
-      carouselShiftDownEvent: function (index) { // 下移
-        let self = this
-        let item = self.carouselData.splice(index, 1)
-        self.carouselData.splice(index + 1, 0, item[0])
-      },
-      carouselDeleteEvent: function (index) { // 删除
-        let self = this
-        self.carouselData.splice(index, 1)
-      },
-      carouselChangeEvent: function (index) { // 设置跳转链接
-        let self = this
-        let val = $('.spanUrl input').eq(index).val()
-        self.carouselData[index].clickurl = val
-      },
-      handleCarouselSuccess: function (res) { // 添加图片成功
-        let self = this
-        let code = res.code
-        let data = res.data
-        if (code === 0) {
-          self.carouselData.push({imgurl: data.showurl, clickurl: ''})
-        } else {
-          self.$notify({
-            title: '警告',
-            message: res.msg,
-            type: 'warning',
-            offset: 50,
-            duration: 4000
-          })
-        }
-      },
-      dialogCarouselEvent: function () { // 轮播图配置数据
-        let self = this
-        let obj = {
-          changeStyle: self.changeStyle,
-          showWidth: self.showWidth,
-          showTime: self.showTime,
-          transitionTime: self.transitionTime,
-          carouselData: self.carouselData
-        }
-        let str = JSON.stringify(obj)
-        $('.img_li').css('width', self.showWidth + 'px')
-        $('.screenBox').css('width', self.showWidth + 'px')
-        self.dialogCarousel = false
-        $('.on_module').attr('carouselData', str)
       },
     // ------------- 图片基础组件 ------------
       handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
@@ -1955,1070 +1911,1148 @@
 </script>
 
 <style>
-/*app*/
-  #app {
-    position: relative;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    height: 100%;
-    cursor: default;
-  }
-  .nodata{
-    background:url(assets/img/nodata.png) no-repeat 50%;
-    min-width: 300px;
-    width: 100%;
-    height: 400px;
-  }
-/*top*/
-  #app .upload-demo{
-    height: 105px;
-    width: 120px;
-  }
-  #app .upload-demo .el-upload {
-    width: 100%;
-    height: 100%;
-    line-height: 105px;
-    border: 1px solid #bfcbd9;
-    border-radius: 4px;
-  }
-  #app .upload-demo .el-upload img{
-    width: 100%;
-    height: 100%;
-  }
-  .top{
-    padding-top: 3px;
-    position: relative;
-    height: 31px;
-    min-width: 1024px;
-    border-bottom: 1px solid #d9d9d9;
-    z-index: 4;
-    background-color: #fff;
-    letter-spacing: 0;
-  }
-  .top>div{
-    height: 28px;
-  }
-  .t_logo{
-    float: left;
-    width: 20px; 
-  }
-  .t_left{
-    float: left;
-    width: 380px;  
-    height: 28px;
-  }
-  .tl_li{
-    position: relative;
-    padding: 2px 4px 0 2px;
-    border-radius: 2px;
-    position: relative;
-    display: inline-block;
-    height: 24px;
-    margin: 2px ;
-    cursor: pointer; 
-    text-align: center; 
-    border:1px solid #fff;  
-    box-sizing: border-box;
-  }
-  .doll{
-    position: absolute;
-    top: 50%;
-    right:-4px;
-    margin-top: -2px;
-    border: 3px solid transparent;
-    border-bottom-color: #cacaca;
-    border-left-color: #cacaca;
-    transform:rotate(-45deg);
-    -ms-transform:rotate(-45deg);
-    -moz-transform:rotate(-45deg);
-    -webkit-transform:rotate(-45deg);
-    -o-transform:rotate(-45deg);
-  }
-  .tl_li_on{
-    background: rgba(0, 0, 0, 0.04);
-    border-color:rgba(0,0,0,.1);
-  }
-  .tl_li_Disable{
-    cursor:not-allowed;
-  }
-  .top .tl_li_Disable span{
-    color: #cacaca;
-  }
-  .top .tl_li_Disable i{
-    color: #cacaca;
-  }
-  .tl_li i{
-    float: left;
-    font-size: 18px;
-    line-height: 18px;
-    color:#f55d54;
-  }
-  .tl_li>span{
-    float: left;
-    text-indent: 2px;    
-    font-size: 12px;
-    height: 18px;
-    line-height: 18px;
-    color: #525e71;
-    padding-left: 2px;
-  }
-  .tl_li:hover .toolbar{
-    display: block;
-  } 
-  .tl_li_Disable:hover .toolbar{
-    display: none;
-  }
-  .toolbar{
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    min-width: 112px;
-    background: #fff;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
-  }
-  .toolbar li{
-    padding: 10px;
-    text-align:left;
-    list-style-type: none;
-    color: #525e71;
-    text-indent:4px;
-    letter-spacing: 2px;
-  }
-  .toolbar li:hover{
-    background-color: #f5f5f7;
-  }
-  .toolbar li i{
-    margin-top: -3px;
-    margin-right:5px;
-    float: left;
-  }  
-  .toolbar input::-webkit-inner-spin-button{
-    display: none;
-  }
-  #app .t_right{
-    position: relative;
-    float: right;
-    width: 60px;
-    text-align: left;
-  } 
-  .toolbar .el-col{
-    height: 36px;
-    line-height: 36px;
-  }
-  .toolbar .el-input__inner{
-    height: 30px;
-    width: 80px;
-    color: #555;
-  }
-  .dialogSetting .el-row{
-    margin:15px 0;
-  }
-  .dialogSetting .el-col{
-    margin-right: 15px;
-    line-height: 36px;    
-  }
-  .dialogSetting .tit{
-    text-align: right;
-  }
-/*边框*/
-  .pick{
-    width: 20px;
-    height: 20px;
-    background-color: #ccc;
-  }
-  .border, .shadow{
-    position: relative;
-    display: inline-block;
-    width: 38px;     
-    cursor:pointer;
-    margin-left: 5px; 
-    font-size: 14px;
-  }
-  .border .doll, .shadow .doll{
-    right: 8px;
-    border-bottom-color: inherit;
-    border-left-color:inherit;
-  }
-  .border:hover .toolbar{
-    display: block;
-  }
-  .br-disable{    
-    cursor: not-allowed;
-    border-color: #ccc;
-  }
-  .br-disable i{
-    color: #ccc;
-  }  
-  .br-disable:hover .toolbar{
-    display: none;
-  }
-  .border .toolbar{
-    padding: 10px 2px 4px 2px;
-  }
-  .border .toolbar li{
-    padding: 8px;
-    text-indent: 0;
-  }
-  .border .borderWidth{
-    margin: 0 auto;
-    display: block;
-    width: 100px;
-    border: 0;
-  }
-  .border .borderStyle{
-    margin: 0 auto;
-    display: block;
-    width: 100px;
-    height: 5px;
-  }
-  .shadow .toolbar{
-    width: 212px;
-    padding: 8px;
-  }
-  .colorShadow{
-    position: relative;
-  }
-  .shadow .toolbar .m-colorPicker {
-    top:5px;
-    left:5px;
-  }
-  .shadow .toolbar span{
-    display: inline-block;
-  }
-  .shadow .toolbar .el-input {
-    width: 50px;
-  }
-  .shadow .toolbar .el-input__inner{
-    width: 50px;
-    text-indent: 0;
-  }
-  .shadow .toolbar input::-webkit-inner-spin-button {
-    display: block;
-  }
-  .border .el-radio-button .el-radio-button__inner{
-    border-radius: 2px;
-  }
-  #app .border .br_color {
-    position: absolute;
-    top:0;
-    left: 0;
-  }
-  #app .border .br_color .colorBtn{
-    width: 38px;
-    height: 20px;
-    opacity: 0;
-  }
-/*tool*/  
-  .tool{
-    padding-top: 2px;
-    position: relative;
-    min-width: 1024px;
-    height: 24px;
-    border-bottom: 1px solid #d9d9d9;
-    background-color: #fff;
-    z-index: 3;
-    text-align: center;
-  }
-  .top .toolBox{
-    margin-left: -2px;
-    margin-top: 4px;
-    display: inline-block;
-    height: 20px;
-    border-left: 1px solid #9c9c9c;
-    padding: 0 10px;
+    .el-dialog__header{
+      cursor: move;
+    }
+    .el-dialog--scrollanim{
+      width: 510px;
+    }
+    .leftBorder{
+      border-left: 1px solid #888;
+      margin-left: 10px;
+      padding-left: 10px;
+      line-height: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+    .picture{
+      border-width: 0; 
+      border-style: solid;
+      border-color: #000;
+    }
+    .propertycolor{
+      width: 22px;
+      height: 15px;
+    }
+    .propertycolor .colorBtn{  
+      position: absolute; 
+      top:2px;
+      left: 0;    
+      border:1px solid #666;
+      cursor: pointer;
+      /*margin:2px;*/
+    }
+    #app .propertycolor .box.open{
+      margin-top: 20px;
+    }
+    #app .propertycolor .disabled{
+      border-color: #ccc;
+    }
+  /*app*/
+    #app {
+      position: relative;
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      height: 100%;
+      cursor: default;
+    }
+    .nodata{
+      background:url(assets/img/nodata.png) no-repeat 50%;
+      min-width: 300px;
+      width: 100%;
+      height: 400px;
+    }
+  /*top*/
+    #app .upload-demo{
+      height: 105px;
+      width: 120px;
+    }
+    #app .upload-demo .el-upload {
+      width: 100%;
+      height: 100%;
+      line-height: 105px;
+      border: 1px solid #bfcbd9;
+      border-radius: 4px;
+    }
+    #app .upload-demo .el-upload img{
+      width: 100%;
+      height: 100%;
+    }
+    .top{
+      padding-top: 3px;
+      padding-left: 10px;
+      padding-right: 60px;
+      position: relative;    
+      min-width: 1024px;
+      border-bottom: 1px solid #d9d9d9;
+      z-index: 4;
+      background-color: #fff;
+      letter-spacing: 0;
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .top>div{
+      height: 28px;
+    }
+    .t_logo{
+      float: left;
+      width: 20px; 
+    }
+    .t_left{
+      float: left;
+      width: 380px;  
+      height: 28px;
+    }
+    .tl_li{
+      position: relative;
+      padding: 2px 4px 0 2px;
+      border-radius: 2px;
+      position: relative;
+      display: inline-block;
+      height: 24px;
+      margin: 2px ;
+      cursor: pointer; 
+      text-align: center; 
+      border:1px solid #fff;  
+      box-sizing: border-box;
+    }
+    .doll{
+      position: absolute;
+      top: 50%;
+      right:-4px;
+      margin-top: -2px;
+      border: 3px solid transparent;
+      border-bottom-color: #cacaca;
+      border-left-color: #cacaca;
+      transform:rotate(-45deg);
+      -ms-transform:rotate(-45deg);
+      -moz-transform:rotate(-45deg);
+      -webkit-transform:rotate(-45deg);
+      -o-transform:rotate(-45deg);
+    }
+    .tl_li_on{
+      background: rgba(0, 0, 0, 0.04);
+      border-color:rgba(0,0,0,.1);
+    }
+    .tl_li_Disable{
+      cursor:not-allowed;
+    }
+    .top .tl_li_Disable span{
+      color: #cacaca;
+    }
+    .top .tl_li_Disable i{
+      color: #cacaca;
+    }
+    .tl_li i{
+      float: left;
+      font-size: 18px;
+      line-height: 18px;
+      color:#f55d54;
+    }
+    .tl_li>span{
+      float: left;
+      text-indent: 2px;    
+      font-size: 12px;
+      height: 18px;
+      line-height: 18px;
+      color: #525e71;
+      padding-left: 2px;
+    }
+    .tl_li:hover .toolbar{
+      display: block;
+    } 
+    .tl_li_Disable:hover .toolbar{
+      display: none;
+    }
+    .toolbar{
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      min-width: 112px;
+      background: #fff;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+    }
+    .toolbar li{
+      padding: 10px;
+      text-align:left;
+      list-style-type: none;
+      color: #525e71;
+      text-indent:4px;
+      letter-spacing: 2px;
+    }
+    .toolbar li:hover{
+      background-color: #f5f5f7;
+    }
+    .toolbar li i{
+      margin-top: -3px;
+      margin-right:5px;
+      float: left;
+    }  
+    .toolbar input::-webkit-inner-spin-button{
+      display: none;
+    }
+    #app .t_right{
+      position: absolute;    
+      width: 60px;
+      height: 28px;
+      top: 3px;
+      right: 4px;
+      text-align: left;
+    } 
+    .toolbar .el-col{
+      height: 36px;
+      line-height: 36px;
+    }
+    .toolbar .el-input__inner{
+      height: 30px;
+      width: 80px;
+      color: #555;
+    }
+    .dialogSetting .el-row{
+      margin:15px 0;
+    }
+    .dialogSetting .el-col{
+      margin-right: 15px;
+      line-height: 36px;    
+    }
+    .dialogSetting .tit{
+      text-align: right;
+    }
+    .getRegion{
+      position: absolute;
+      z-index: 200;
+      background-color: rgba(245, 93, 84, 0.5);
+    }
+  /*边框*/
+    .pick{
+      width: 20px;
+      height: 20px;
+      background-color: #ccc;
+    }
+    .border, .shadow{
+      position: relative;
+      display: inline-block;
+      width: 38px;     
+      cursor:pointer;
+      margin-left: 5px; 
+      font-size: 14px;
+    }
+    .border .doll, .shadow .doll{
+      right: 8px;
+      border-bottom-color: inherit;
+      border-left-color:inherit;
+    }
+    .border:hover .toolbar{
+      display: block;
+    }
+    .br-disable{    
+      cursor: not-allowed;
+      border-color: #ccc;
+    }
+    .br-disable i{
+      color: #ccc;
+    }  
+    .br-disable:hover .toolbar{
+      display: none;
+    }
+    .border .toolbar{
+      padding: 10px 2px 4px 2px;
+    }
+    .border .toolbar li{
+      padding: 8px;
+      text-indent: 0;
+    }
+    .border .borderWidth{
+      margin: 0 auto;
+      display: block;
+      width: 100px;
+      border: 0;
+    }
+    .border .borderStyle{
+      margin: 0 auto;
+      display: block;
+      width: 100px;
+      height: 5px;
+    }
+    .shadow .toolbar{
+      width: 212px;
+      padding: 8px;
+    }
+    .colorShadow{
+      position: relative;
+    }
+    .shadow .toolbar .m-colorPicker {
+      top:5px;
+      left:5px;
+    }
 
-  }  
-  .property{
-    float: left;
-    width: auto;    
-    height: 20px;
-    line-height: 20px;
-    text-align: left;
-  }
-  .property .el-input{
-    display: inline-block;
-    width: 60px;    
-  }
-  .property input{
-    padding: 0;
-    height: 20px;
+    .shadow .toolbar span{
+      display: inline-block;
+    }
+    .shadow .toolbar .el-input {
+      width: 50px;
+    }
+    .shadow .toolbar .el-input__inner{
+      width: 50px;
+      text-indent: 0;
+    }
+    .shadow .toolbar input::-webkit-inner-spin-button {
+      display: block;
+    }
+    .border .el-radio-button .el-radio-button__inner{
+      border-radius: 2px;
+    }
+    #app .border .br_color {
+      position: absolute;
+      top:0;
+      left: 0;
+    }
+    #app .border .br_color .colorBtn{
+      width: 38px;
+      height: 20px;
+      opacity: 0;
+    }
+  /*tool*/  
+    .tool{
+      padding-top: 2px;
+      position: relative;
+      min-width: 1024px;
+      height: 24px;
+      border-bottom: 1px solid #d9d9d9;
+      background-color: #fff;
+      z-index: 3;
+      text-align: center;
+    }
+    .top .toolBox{
+      margin-left: -2px;
+      margin-top: 4px;
+      display: inline-block;
+      height: 20px;
+      border-left: 1px solid #9c9c9c;
+      padding: 0 10px;
+
+    }  
+    .property{
+      float: left;
+      width: auto;    
+      height: 20px;
+      margin-top: 4px;
+      line-height: 20px;
+      text-align: left;
+    }
+    .property .el-input{
+      display: inline-block;
+      width: 50px;    
+    }
+    .property input{
+      padding: 0;
+      height: 20px;
+      text-align: center;
+      text-indent: 5px;
+      border-radius: 0;
+      border:0;
+      border-bottom: 1px solid #d9d9d9;
+      font-size: 12px;
+    }
+    .property .el-color-picker{
+      float: right;
+      margin-right:5px;
+    }
+    .property .el-color-picker__trigger{
+      border:0;
+      padding: 0 4px;
+      height: 20px;
+    }
+    .property .el-color-picker__icon{
+      display: none;
+    }
+    .property .is-disabled .el-input__inner{
+      background-color: #fff;
+    }
+  /*leftlibrary*/
+    .library{
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding-top:35px;
+      width: 133px;
+      height:100%;   
+      border-right: 1px solid #d9d9d9;
+      background-color: #fff;
+      box-sizing: border-box;
+      z-index: 2;
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .lib_nav{
+      position: absolute;
+      width: 40px;
+      height: 100%;
+      background-color: #f8f8f8;
+      border-right:1px solid #d9d9d9;
+      opacity: 1;
+       transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }  
+    .lib_nav ol{
+      float: right;
+      padding-top: 7px;
+      width: 37px;
+    }
+    .lib_nav li{
+      width: 37px;
+      height: 64px;
+      border-top-left-radius:2px; 
+      border-bottom-left-radius:2px; 
+      text-align: center;
+      cursor: pointer;
+    }
+    .lib_nav li.on{
+       background-color: #fff;
+       border: 1px solid #d9d9d9;
+       border-right: 0;
+    }
+    .lib_nav i{
+      margin-top: 12px;
+      font-size: 18px;
+      color: #f55d54;
+    }
+    .lib_nav span{
+      display: inline-block;
+    }
+    .lib_box{
+      width: 100%;
+      height: 100%;
+      color: #7d8695;
+      /*padding-left: 48px;*/
+      overflow: hidden;
+      overflow-y:auto;
+      box-sizing: border-box;
+    }
+    .header{
+      float: left;
+      width: 132px;
+      font-size: 12px;
+      color: #7d8695;
+      height: 30px;
+      line-height: 30px;    
+      cursor: pointer;
+      text-indent:10px;
+    }    
+    .header i{
+      float: right;
+      margin-right:10px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #7d8695;
+    }
+    .basichead i{
+      width: 13px;
+      height: 13px;
+      margin-left: 15px;
+      margin-top: 8px;
+      margin-right: 0;
+      line-height: 15px;
+      text-indent: 0;
+      float: left;
+    }
+    .layerhead i{
+      width: 13px;
+      height: 13px;
+      margin-right: 15px;
+      margin-top: 8px;     
+      line-height: 15px;
+      text-indent: 0;      
+    }
+    .closei i{
+      transform:rotate(-90deg);
+      -ms-transform:rotate(-90deg);   /* IE 9 */
+      -moz-transform:rotate(-90deg);  /* Firefox */
+      -webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(-90deg); 
+    }
+    .closeiR i{
+      width: 13px;
+      height: 13px;
+      margin-top: 8px;
+      transform:rotate(90deg);
+      -ms-transform:rotate(90deg);   /* IE 9 */
+      -moz-transform:rotate(90deg);  /* Firefox */
+      -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(90deg); 
+    }
+    .lib_ol{
+      width: 132px;
+      overflow: hidden;
+      border-bottom: 1px solid #d9d9d9;
+      transition: height 400ms ease-in-out;
+    }
+    .lib_li{
+      float: left;
+      width: 62px;
+      height: 66px;
+      text-align: center;
+      font-size: 28px;
+      color: #525e71;  
+    }
+    .lib_li i{
+      display: inline-block;
+      line-height: 26px;
+    }
+    .lib_li span{
+      display: block;
+      width:100%;
+      font-size: 12px;
+    }
+    .lib_li:hover{
+      background-color: #f5f5f5;
+      cursor:pointer;
+    }
+    .dataHtml{
+      display: none;
+    }
+    .libshrink{
+      position: absolute;
+      top: 50%;
+      left: 133px;
+      width: 22px;
+      height: 24px;
+      background-color: #fff;
+      border:1px solid #d9d9d9;
+      border-left: 0;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      color: #f55d54;
+      text-indent: 1px;
+      line-height: 24px;
+      cursor: pointer;
+      z-index: 4;
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .libshrink i {
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .shrinkout {
+      text-indent: 4px;
+    }
+    .shrinkout i{
+      transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg); 
+      -o-transform: rotate(180deg); 
+    }  
+    .basic {
+      width: 5px;
+    }
+    .basic .lib_nav {
+      display: none;
+      opacity: 0;
+    }
+    .basic .lib_box {
+      padding: 0;
+      width: 62px;
+    }
+    .basic .header, .basic .lib_ol {
+      display: none;
+      opacity: 0;
+    }
+  /*layer*/
+    .layer{
+      position:absolute;
+      top:0;
+      right:0;
+      padding-top:35px;
+      width: 181px;
+      height:100%;
+      border-left: 1px solid #d9d9d9;
+      background-color: #fff;
+      box-sizing: border-box;
+      z-index: 3;
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .layerHide{
+      width: 0;
+    }
+    .layer .shrink{
+      position: absolute;
+      top:50%;
+      left: -22px;
+      width: 22px;
+      height: 24px;
+      background-color: #fff;
+      border:1px solid #d9d9d9;
+      border-right: 0;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+      color: #f55d54;
+      text-indent: 1px;
+      line-height: 24px;
+      cursor: pointer;   
+    }
+    .layer .shrink i {
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .layer .shrinkout {
+      text-indent: 6px;
+    }
+    .layer .shrinkout i{
+      transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg); 
+      -o-transform: rotate(180deg); 
+    }
+    .layer .lib_box {
+      padding: 0;
+    }
+    .layer .header{
+      width: 100%;
+      padding-left: 20px;
+      box-sizing: border-box;
+      background-color: #f8f8f8;
+    }
+    .layer .lib_ol {
+      width: 100%;
+      padding-left: 0px;
+      text-indent: 20px;
+      box-sizing: border-box;
+    }
+    .layer .lib_ol .ele_li{
+      cursor: pointer;
+      height: 24px;
+      line-height: 24px;
+      border-top: 1px solid #eee;
+    }
+    .layer .lib_ol .ele_li:hover{
+      background-color: #eee;
+    }
+  /*editBox*/    
+    #app .module:hover .promptBox{
+      display: block;
+    }
+    .editBox {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding-top: 35px;
+      margin-left: 133px;
+      margin-right: 181px;
+      box-sizing:border-box;    
+      background-color: #f5f5f5;
+      z-index: 2;
+      transition: all 400ms;
+      -moz-transition: all 400ms; 
+      -webkit-transition: all 400ms; 
+      -o-transition: all 400ms;
+    }
+    .space{
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow:auto;
+    }
+    .scrollcanvas {
+      width: 3600px;
+      height: 1px;
+    }
+    .canvas{
+      position:absolute;
+      top: 50px;
+      left: 50px;
+      padding: 400px 0 200px 0;
+      margin-bottom: 100px;
+      width: 1200px;
+      height: 1800px;
+      background-color: #fff;
+      background-size:10px 10px;
+      box-shadow: 0 0 0 1px #d9d9d9;
+      box-sizing: border-box;
+      /*overflow: hidden;*/
+      cursor: default;
+    } 
+    .grid{
+      background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
+    }
+    .c_top{
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 400px;
+      border-bottom: 1px dashed #d9d9d9;
+      box-sizing: border-box;
+    }  
+    .c_body{
+     /* display: none;*/ /*关闭分区*/
+      position: relative;
+      height: 100%;
+    }
+    .c_foot{
+      /*display: none;*/ /*关闭分区*/
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 200px;
+      border-top: 1px dashed #d9d9d9;
+      box-sizing: border-box;
+    }  
+    .hoverbar{
+      display: none;
+      position: absolute;
+      left: 0;
+      bottom: -30px;
+      width: 100%;
+      height:30px; 
+      background-color: rgba(245, 93, 84, 0.9);
+      font-size: 14px;
+      line-height: 30px;
+      text-align: center;
+      color: #fff;
+      cursor: ns-resize;  
+      z-index: 99; 
+    }
+    .c_top:hover .hoverbar{
+     display: block;
+    }
+    .c_foot:hover .hoverbar{
+     display: block;
+    }
+    .on_hoverbar{
+      border-top: 1px solid #f55d54;
+      border-bottom: 1px solid #f55d54;
+    }
+    .c_foot .hoverbar{
+      top:-30px;
+    }
+  /*copyBox*/
+    .copyBox{
+      position: absolute;
+      display: block;    
+      width: 200px;
+      height: 50px;
+      background-color: rgba(245,93,84,0.6);
+      z-index: 100;
+     /* border: 1px dotted #333;*/
+    }
+    .copyCon{
+      display: none;
+    }
+    .line{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3600px;
+      height: 100%;
+      border:0;
+      border-style:dashed;
+      border-color: red;
+      display: none;
+      z-index: 100;
+    }
+    .row-t{
+      height: 0px;
+      border-bottom-width: 1px;
+    }
+    .row-b{
+      height: 0px;
+      border-top-width: 1px;
+    }
+    .col-l{
+      width: 0px;
+      border-right-width: 1px;
+    }
+    .col-r{
+      width: 0px;
+      border-left-width: 1px;
+    }
+  /*module*/
+    .editBox .on_module{
+      /*border-color: transparent;*/
+      box-sizing: border-box;
+      cursor: move;
+    }
+    .editBox .touch_module {
+      border-color: #f55d54;
+    }
+    .supendTools{
+      position: absolute;
+      top:-45px;
+      left: 0px;
+      height: 36px;       
+      box-sizing: border-box;
+      border:1px solid #E4E4E4;
+      background-color: #fff;
+      white-space: nowrap;
+      cursor: default;
+    }
+    .supendTools li {
+      display: inline-block;
+      margin-top: 8px;
+      padding:0 12px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      vertical-align:top;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 18px;
+    }
+    .st-left {
+      border-right: 1px solid #E4E4E4;
+    }
+    .st-prospect {
+      width: 20px;
+      background-image: url(./assets/toolIcon/a.png);
+    }
+    .st-effects {
+      width: 20px;
+      background-image: url(./assets/toolIcon/b.png);
+    }
+    .st-shape {
+      width: 20px;
+      background-image: url(./assets/toolIcon/c.png);
+    }
+    .st-animate {
+      width: 20px;
+      background-image: url(./assets/toolIcon/d.png);
+    }
+    .st-link {
+      width: 20px;
+      border-left: 1px solid #E4E4E4;
+      background-image: url(./assets/toolIcon/e.png);
+    }
+    .fuzzybox{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(254, 233, 218);
+    }
+    .multiBox {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid #f55d54;
+      width: 100%;
+      height: 100%;
+      box-sizing:border-box;
+      background-color: rgba(245, 93, 84, 0.5);
+    }
+    .resizeBox{
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid #f55d54;
+      width: 100%;
+      height: 100%;
+      box-sizing:border-box;
+    }
+    .resize{
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color:#fff;
+      border:1px solid #f55d54;
+      pointer-events: auto;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+    .nw{
+      top: -3px;
+      left: -3px;
+      cursor: nw-resize;
+    }
+    .w{
+      top:50%;
+      left: -3px;
+      transform:translateY(-50%);
+      -ms-transform:translateY(-50%);   /* IE 9 */
+      -moz-transform:translateY(-50%);  /* Firefox */
+      -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+      -o-transform:translateY(-50%);
+      cursor: w-resize;
+    }
+    .sw{
+      bottom: -3px;
+      left:-3px;
+      cursor: sw-resize;
+    }
+    .n{
+      top: -3px;
+      left: 50%;
+      transform:translateX(-50%);
+      -ms-transform:translateX(-50%);   /* IE 9 */
+      -moz-transform:translateX(-50%);  /* Firefox */
+      -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+      -o-transform:translateX(-50%);
+      cursor: n-resize;
+    }
+    .ne{
+      top: -3px;
+      right: -3px;
+      cursor: ne-resize;
+    }
+    .e{
+      top:50%;
+      right:-3px;
+      transform:translateY(-50%);
+      -ms-transform:translateY(-50%);   /* IE 9 */
+      -moz-transform:translateY(-50%);  /* Firefox */
+      -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+      -o-transform:translateY(-50%);
+      cursor: e-resize; 
+    }
+    .se{
+      bottom: -3px;
+      right:-3px;
+      cursor: se-resize;
+    }
+    .s{
+      bottom: -3px;
+      left:50%;
+      transform:translateX(-50%);
+      -ms-transform:translateX(-50%);   /* IE 9 */
+      -moz-transform:translateX(-50%);  /* Firefox */
+      -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+      -o-transform:translateX(-50%);
+      cursor: s-resize;
+    }
+  /*contextmenu*/
+    .contextmenu{
+      position: absolute;
+      top:81px;
+      left:181px;
+      width: 130px;
+      background-color: #fefefe;
+      padding: 3px 0;
+      text-align: left;
+      text-indent: 16px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+      z-index: 101;
+    }
+    .contextmenu li{
+      position: relative;
+      padding:2px;
+      height: 26px;
+      line-height: 26px;
+      color: #525e71;
+      cursor: pointer;
+    }
+    .contextmenu li:hover{
+      background-color: #E2E2E3;
+    }
+    .contextmenu li.tl_li_Disable{
+      color: #cacaca;
+      cursor: not-allowed;
+    }
+    .contextmenu li i {
+      float: left;
+      margin-top: 3px;
+      margin-left: 8px;
+      color: #f55d54;
+      font-size: 18px;
+      text-indent: 4px;
+    }  
+    .contextmenu li i.el-icon-caret-bottom{
+      float: right;
+      margin: 7px;
+      font-size: 12px;
+      color: #cacaca;
+    } 
+    .contextmenu li:hover i.el-icon-caret-bottom{
+       transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -webkit-transform: rotate(-90deg); 
+      -o-transform: rotate(-90deg); 
+      margin-right: 3px;
+    }
+     .contextmenu li ol{
+      position:absolute;
+      top:0;
+      left:100%;
+      display: none;
+      width: 130px;
+      background: #fff;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+    }
+    .contextmenu li:hover ol{
+      display: block;
+    }
+    .contextmenu li.tl_li_Disable i {
+      color: #cacaca;
+    }
+    .contextmenu .divider{
+      margin: 3px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+  /*editor*/
+    .editorC{
+      margin: 0 auto;
+      min-height: 400px 
+    }
+    .el-dialog__footer {
+      padding: 10px 10px 15px;
+    }
+  /*pageHeader-uploader*/
+    .el-dialog--text{
+      width: 600px;
+    }
+    .el-dialog--text .el-row{
+      margin-bottom: 20px;
+    }
+    .el-dialog--text .el-col{
+      height: 36px;
+      line-height: 36px;
+    }
+    .el-dialog--pageSet{
+      width: 500px;
+    }
+    .el-dialog--pageSet .el-tabs__content{
+      overflow: visible;
+    }
+    .el-dialog--pageSet .m-colorPicker .box{
+      z-index: 99;
+    }
+    #app .el-dialog--pageSet .m-colorPicker .colorBtn{
+      width: 30px;
+      height: 30px;
+      border:1px solid #c4c4c4;
+    }
+    .pageHeader-uploader .el-upload {
+      width: 100%;
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .pageHeader-uploader .el-upload:hover {
+      border-color: #20a0ff;
+    }
+    .pageHeader-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .pageHeaderImg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  /*carousel*/
+  
+  /*picture*/
+    .el-dialog--picture{
+      width: 750px;
+    }
+    .picture-uploader .el-upload{
+      display: block;
+      margin:0 auto; 
+      border: 1px dashed #d9d9d9;
+    }
+    .pictureMod {    
+      max-width: 100%;
+      display: block;
+      margin:0 auto;
+    }
+    .diapicture .el-col{
+      height: 36px;
+      line-height: 36px;
+    }
+    .diapicture .el-row{
+      margin-top: 20px;
+    }
+    .diapicture .el-select{
+      width: 320px;
+    }
+  /*button*/
+    .dialogbutton .el-row{
+      margin-top: 10px;
+    }
+    .dialogbutton .el-col-3{
+      margin-right: 20px;
+      height: 36px;
+      text-align: right;
+      line-height: 36px;
+    }
+/* 模块动画 */
+  .animlist{
+    display: block;
+    width: 74px;
+    height: 88px;
     text-align: center;
-    text-indent: 5px;
-    border-radius: 0;
-    border:0;
-    border-bottom: 1px solid #d9d9d9;
-    font-size: 12px;
+    float: left;
+    margin: 24px 10px 0 10px;
+    cursor: pointer;
   }
-  .property .el-color-picker{
-    float: right;
-    margin-right:5px;
-  }
-  .property .el-color-picker__trigger{
-    border:0;
-    padding: 0 4px;
-    height: 20px;
-  }
-  .property .el-color-picker__icon{
-    display: none;
-  }
-  .property .is-disabled .el-input__inner{
-    background-color: #fff;
-  }
-/*leftlibrary*/
-  .library{
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding-top:35px;
-    width: 133px;
-    height:100%;   
-    border-right: 1px solid #d9d9d9;
-    background-color: #fff;
-    box-sizing: border-box;
-    z-index: 2;
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .lib_nav{
-    position: absolute;
-    width: 40px;
-    height: 100%;
-    background-color: #f8f8f8;
-    border-right:1px solid #d9d9d9;
-    opacity: 1;
-     transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }  
-  .lib_nav ol{
-    float: right;
-    padding-top: 7px;
-    width: 37px;
-  }
-  .lib_nav li{
-    width: 37px;
+  .animlist .animimg{
+    width: 74px;
     height: 64px;
-    border-top-left-radius:2px; 
-    border-bottom-left-radius:2px; 
-    text-align: center;
-    cursor: pointer;
-  }
-  .lib_nav li.on{
-     background-color: #fff;
-     border: 1px solid #d9d9d9;
-     border-right: 0;
-  }
-  .lib_nav i{
-    margin-top: 12px;
-    font-size: 18px;
-    color: #f55d54;
-  }
-  .lib_nav span{
-    display: inline-block;
-  }
-  .lib_box{
-    width: 100%;
-    height: 100%;
-    color: #7d8695;
-    /*padding-left: 48px;*/
-    overflow: hidden;
-    overflow-y:auto;
-    box-sizing: border-box;
-  }
-  .header{
-    float: left;
-    width: 132px;
-    font-size: 12px;
-    color: #7d8695;
-    height: 30px;
-    line-height: 30px;    
-    cursor: pointer;
-    text-indent:10px;
-  }
-  .header i{
-    float: right;
-    margin-right:10px;
-    margin-top: 10px;
-    font-size: 12px;
-    color: #7d8695;
-  }
-  .lib_ol{
-    width: 132px;
-    overflow: hidden;
-    border-bottom: 1px solid #d9d9d9;
-    transition: height 400ms ease-in-out;
-  }
-  .lib_li{
-    float: left;
-    width: 62px;
-    height: 66px;
-    text-align: center;
-    font-size: 28px;
-    color: #525e71;  
-  }
-  .lib_li i{
-    display: inline-block;
-    line-height: 26px;
-  }
-  .lib_li span{
-    display: block;
-    width:100%;
-    font-size: 12px;
-  }
-  .lib_li:hover{
-    background-color: #f5f5f5;
-    cursor:pointer;
-  }
-  .dataHtml{
-    display: none;
-  }
-  .libshrink{
-    position: absolute;
-    top: 50%;
-    left: 133px;
-    width: 22px;
-    height: 24px;
-    background-color: #fff;
-    border:1px solid #d9d9d9;
-    border-left: 0;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    color: #f55d54;
-    text-indent: 1px;
-    line-height: 24px;
-    cursor: pointer;
-    z-index: 4;
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .libshrink i {
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .shrinkout {
-    text-indent: 4px;
-  }
-  .shrinkout i{
-    transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -webkit-transform: rotate(180deg); 
-    -o-transform: rotate(180deg); 
-  }  
-  .basic {
-    width: 5px;
-  }
-  .basic .lib_nav {
-    display: none;
-    opacity: 0;
-  }
-  .basic .lib_box {
-    padding: 0;
-    width: 62px;
-  }
-  .basic .header, .basic .lib_ol {
-    display: none;
-    opacity: 0;
-  }
-/*layer*/
-  .layer{
-    position:absolute;
-    top:0;
-    right:0;
-    padding-top:35px;
-    width: 181px;
-    height:100%;
-    border-left: 1px solid #d9d9d9;
-    background-color: #fff;
-    box-sizing: border-box;
-    z-index: 3;
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .layerHide{
-    width: 0;
-  }
-  .layer .shrink{
-    position: absolute;
-    top:50%;
-    left: -22px;
-    width: 22px;
-    height: 24px;
-    background-color: #fff;
-    border:1px solid #d9d9d9;
-    border-right: 0;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    color: #f55d54;
-    text-indent: 1px;
-    line-height: 24px;
-    cursor: pointer;   
-  }
-  .layer .shrink i {
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .layer .shrinkout {
-    text-indent: 6px;
-  }
-  .layer .shrinkout i{
-    transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -webkit-transform: rotate(180deg); 
-    -o-transform: rotate(180deg); 
-  }
-  .layer .lib_box {
-    padding: 0;
-  }
-  .layer .header{
-    width: 100%;
-    padding-left: 20px;
-    box-sizing: border-box;
-    background-color: #f8f8f8;
-  }
-  .layer .lib_ol {
-    width: 100%;
-    padding-left: 0px;
-    text-indent: 20px;
-    box-sizing: border-box;
-  }
-  .layer .lib_ol .ele_li{
-    cursor: pointer;
-    height: 24px;
-    line-height: 24px;
-    border-top: 1px solid #eee;
-  }
-  .layer .lib_ol .ele_li:hover{
-    background-color: #eee;
-  }
-/*editBox*/
-  #app .module:hover .promptBox{
-    display: block;
-  }
-  .editBox {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding-top: 35px;
-    margin-left: 133px;
-    margin-right: 181px;
-    box-sizing:border-box;    
-    background-color: #f5f5f5;
-    z-index: 2;
-    transition: all 400ms;
-    -moz-transition: all 400ms; 
-    -webkit-transition: all 400ms; 
-    -o-transition: all 400ms;
-  }
-  .space{
+    line-height:64px;
+    border: 2px solid #f2f2f2;
+    border-radius: 2px;
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow:auto;
   }
-  .scrollcanvas {
-    width: 3600px;
-    height: 1px;
+  .animlist .animimg:hover{
+    border-color: #7fcc78;
   }
-  .canvas{
-    position:absolute;
-    top: 50px;
-    left: 50px;
-    padding: 400px 0 200px 0;
-    margin-bottom: 100px;
-    width: 1200px;
-    height: 1800px;
-    background-color: #fff;
-    background-size:10px 10px;
-    box-shadow: 0 0 0 1px #d9d9d9;
-    box-sizing: border-box;
-    /*overflow: hidden;*/
-    cursor: default;
-  } 
-  .grid{
-    background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
-  }
-  .c_top{
+  .animlist .animimg .animtip{
+    display: none;
+    width: 16px;
+    height: 16px;
     position: absolute;
-    top:0;
-    left: 0;
-    width: 100%;
-    height: 400px;
-    border-bottom: 1px dashed #d9d9d9;
-    box-sizing: border-box;
-  }  
-  .c_body{
-   /* display: none;*/ /*关闭分区*/
-    position: relative;
-    height: 100%;
-  }
-  .c_foot{
-    /*display: none;*/ /*关闭分区*/
-    position: absolute;
-    left: 0;
+    right: 0;
     bottom: 0;
-    width: 100%;
-    height: 200px;
-    border-top: 1px dashed #d9d9d9;
-    box-sizing: border-box;
-  }  
-  .hoverbar{
-    display: none;
-    position: absolute;
-    left: 0;
-    bottom: -30px;
-    width: 100%;
-    height:30px; 
-    background-color: rgba(245, 93, 84, 0.9);
-    font-size: 14px;
-    line-height: 30px;
-    text-align: center;
+    line-height: 16px;
+    background: #7fcc78;
     color: #fff;
-    cursor: ns-resize;  
-    z-index: 99; 
   }
-  .c_top:hover .hoverbar{
-   display: block;
+  .animlist p{
+    line-height: 24px;
   }
-  .c_foot:hover .hoverbar{
-   display: block;
+  .animlist .active{
+    border-color: #7fcc78;
   }
-  .on_hoverbar{
-    border-top: 1px solid #f55d54;
-    border-bottom: 1px solid #f55d54;
-  }
-  .c_foot .hoverbar{
-    top:-30px;
-  }
-/*copyBox*/
-  .copyBox{
-    position: absolute;
-    display: block;    
-    width: 200px;
-    height: 50px;
-    background-color: rgba(245,93,84,0.6);
-    z-index: 100;
-   /* border: 1px dotted #333;*/
-  }
-  .copyCon{
-    display: none;
-  }
-  .line{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3600px;
-    height: 100%;
-    border:0;
-    border-style:dashed;
-    border-color: red;
-    display: none;
-    z-index: 100;
-  }
-  .row-t{
-    height: 0px;
-    border-bottom-width: 1px;
-  }
-  .row-b{
-    height: 0px;
-    border-top-width: 1px;
-  }
-  .col-l{
-    width: 0px;
-    border-right-width: 1px;
-  }
-  .col-r{
-    width: 0px;
-    border-left-width: 1px;
-  }
-/*module*/
-  .editBox .on_module{
-    /*border-color: transparent;*/
-    box-sizing: border-box;
-    cursor: move;
-  }
-  .editBox .touch_module {
-    border-color: #f55d54;
-  }
-  .supendTools{
-    position: absolute;
-    top:-60px;
-    left: 0px;
-    height: 46px;       
-    box-sizing: border-box;
-    border:1px solid #E4E4E4;
-    background-color: #fff;
-    white-space: nowrap;
-    cursor: default;
-  }
-  .supendTools li {
-    display: inline-block;
-    margin-top: 13px;
-    padding:0 12px;
-    height: 20px;
-    line-height: 20px;
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-    cursor: pointer;
-    vertical-align:top;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 18px;
-  }
-  .st-left {
-    border-right: 1px solid #E4E4E4;
-  }
-  .st-prospect {
-    width: 20px;
-    background-image: url(./assets/toolIcon/a.png);
-  }
-  .st-effects {
-    width: 20px;
-    background-image: url(./assets/toolIcon/b.png);
-  }
-  .st-shape {
-    width: 20px;
-    background-image: url(./assets/toolIcon/c.png);
-  }
-  .st-animate {
-    width: 20px;
-    background-image: url(./assets/toolIcon/d.png);
-  }
-  .st-link {
-    width: 20px;
-    border-left: 1px solid #E4E4E4;
-    background-image: url(./assets/toolIcon/e.png);
-  }
-  .resizeBox{
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 1px solid #f55d54;
-    width: 100%;
-    height: 100%;
-    box-sizing:border-box;
-  }
-  .resize{
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color:#fff;
-    border:1px solid #f55d54;
-    pointer-events: auto;
-    box-sizing: border-box;
-    z-index: 100;
-  }
-  .nw{
-    top: -3px;
-    left: -3px;
-    cursor: nw-resize;
-  }
-  .w{
-    top:50%;
-    left: -3px;
-    transform:translateY(-50%);
-    -ms-transform:translateY(-50%);   /* IE 9 */
-    -moz-transform:translateY(-50%);  /* Firefox */
-    -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
-    -o-transform:translateY(-50%);
-    cursor: w-resize;
-  }
-  .sw{
-    bottom: -3px;
-    left:-3px;
-    cursor: sw-resize;
-  }
-  .n{
-    top: -3px;
-    left: 50%;
-    transform:translateX(-50%);
-    -ms-transform:translateX(-50%);   /* IE 9 */
-    -moz-transform:translateX(-50%);  /* Firefox */
-    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
-    -o-transform:translateX(-50%);
-    cursor: n-resize;
-  }
-  .ne{
-    top: -3px;
-    right: -3px;
-    cursor: ne-resize;
-  }
-  .e{
-    top:50%;
-    right:-3px;
-    transform:translateY(-50%);
-    -ms-transform:translateY(-50%);   /* IE 9 */
-    -moz-transform:translateY(-50%);  /* Firefox */
-    -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
-    -o-transform:translateY(-50%);
-    cursor: e-resize; 
-  }
-  .se{
-    bottom: -3px;
-    right:-3px;
-    cursor: se-resize;
-  }
-  .s{
-    bottom: -3px;
-    left:50%;
-    transform:translateX(-50%);
-    -ms-transform:translateX(-50%);   /* IE 9 */
-    -moz-transform:translateX(-50%);  /* Firefox */
-    -webkit-transform:translateX(-50%); /* Safari 和 Chrome */
-    -o-transform:translateX(-50%);
-    cursor: s-resize;
-  }
-/*contextmenu*/
-  .contextmenu{
-    position: absolute;
-    top:81px;
-    left:181px;
-    width: 130px;
-    background-color: #fefefe;
-    padding: 3px 0;
-    text-align: left;
-    text-indent: 16px;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
-    z-index: 101;
-  }
-  .contextmenu li{
-    position: relative;
-    padding:2px;
-    height: 26px;
-    line-height: 26px;
-    color: #525e71;
-    cursor: pointer;
-  }
-  .contextmenu li:hover{
-    background-color: #E2E2E3;
-  }
-  .contextmenu li.tl_li_Disable{
-    color: #cacaca;
-    cursor: not-allowed;
-  }
-  .contextmenu li i {
-    float: left;
-    margin-top: 3px;
-    margin-left: 8px;
-    color: #f55d54;
-    font-size: 18px;
-    text-indent: 4px;
-  }  
-  .contextmenu li i.el-icon-caret-bottom{
-    float: right;
-    margin: 7px;
-    font-size: 12px;
-    color: #cacaca;
-  } 
-  .contextmenu li:hover i.el-icon-caret-bottom{
-     transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg); 
-    -o-transform: rotate(-90deg); 
-    margin-right: 3px;
-  }
-   .contextmenu li ol{
-    position:absolute;
-    top:0;
-    left:100%;
-    display: none;
-    width: 130px;
-    background: #fff;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
-  }
-  .contextmenu li:hover ol{
+  .animlist .active .animtip{
     display: block;
   }
-  .contextmenu li.tl_li_Disable i {
-    color: #cacaca;
+  /* 模块动画弹窗 */
+  .animlist img{
+    margin-top: 14px; 
   }
-  .contextmenu .divider{
-    margin: 3px 0;
-    border-bottom: 1px solid #e5e5e5;
-  }
-/*editor*/
-  .editorC{
-    margin: 0 auto;
-    min-height: 400px 
-  }
-  .el-dialog__footer {
-    padding: 10px 10px 15px;
-  }
-/*pageHeader-uploader*/
-  .el-dialog--text{
-    width: 600px;
-  }
-  .el-dialog--text .el-row{
-    margin-bottom: 20px;
-  }
-  .el-dialog--text .el-col{
-    height: 36px;
-    line-height: 36px;
-  }
-  .el-dialog--pageSet{
+  /* 登录框编辑文本弹窗 */
+  .el-dialog--edittext{
     width: 500px;
-  }
-  .pageHeader-uploader .el-upload {
-    width: 100%;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .pageHeader-uploader .el-upload:hover {
-    border-color: #20a0ff;
-  }
-  .pageHeader-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .pageHeaderImg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-/*carousel*/
-  .el-dialog--carousel{
-    width: 980px;
-  }
-  .scrollBox{
-    height: 400px;
-    overflow-y:auto;
-    border-bottom: 1px solid #d1dbe5;
-  }
-  .selectBox{
-  }
-  .diaimg_li {
-    position:relative;
-    margin-bottom: 10px;
-    width: 100%;
-    height: 76px;
-    border-bottom: 1px solid #e3e3e3;
-  }
-  .diaimg_li img{
-    width: 240px;height: 66px;
-  }
-  .handleList{
-    margin-top: 24px;
-    width: 660px;
-    float: right;
-  }
-  .handleList .el-col{
-    text-align: center;
-    cursor: pointer;
-  }
-  .handleList .el-col .spanTit{
-    display: block;
-    width: 100%;
-    height: 100%;
-    color: #20a0ff;
-  }
-  .handleList .el-col .ban{
-    color: #ccc;
-    cursor: not-allowed;
-  }
-  .spanUrl{
-    text-align: left;
-    text-indent: 10px;
-  }
-  .spanUrl input{
-    text-indent: 10px;
-    margin-left: 10px;
-    width: 300px;
-    border-radius: 4px;
-    border: 1px solid #9a9a9a;
-    color: #999;
-  }
-  .carousel-uploader{
-    height: 100%;
-  }
-  .carousel-uploader .el-upload--text{    
-    display: block;
-    margin:0 auto;
-    transform:translateY(20px);
-    -ms-transform:translateY(20px);   /* IE 9 */
-    -moz-transform:translateY(20px);  /* Firefox */
-    -webkit-transform:translateY(20px); /* Safari 和 Chrome */
-    -o-transform:translateY(20px); 
-  }
-  .carousel-uploader .el-icon-plus{
-    font-size: 24px;
-    color: #e3e3e3;
-  }  
-  .scrollBox .el-row{
-    margin-bottom: 15px;
-  }
-  .scrollBox .el-col{
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-  }
-  .editBox .screenBox .img_ul{
-    left: 50%;
-    transform: translateX(-50%);
-    -ms-transform:translateX(-50%);  
-    -moz-transform:translateX(-50%); 
-    -webkit-transform:translateX(-50%);
-    -o-transform:translateX(-50%);
-  }
-  .scrollBox .el-select{
-    width: 180px;
-  }
-/*picture*/
-  .el-dialog--picture{
-    width: 750px;
-  }
-  .picture-uploader .el-upload{
-    display: block;
-    margin:0 auto; 
-    border: 1px dashed #d9d9d9;
-  }
-  .pictureMod {    
-    max-width: 100%;
-    display: block;
-    margin:0 auto;
-  }
-  .diapicture .el-col{
-    height: 36px;
-    line-height: 36px;
-  }
-  .diapicture .el-row{
-    margin-top: 20px;
-  }
-  .diapicture .el-select{
-    width: 320px;
-  }
-/*button*/
-  .dialogbutton .el-row{
-    margin-top: 10px;
-  }
-  .dialogbutton .el-col-3{
-    margin-right: 20px;
-    height: 36px;
-    text-align: right;
-    line-height: 36px;
   }
 </style>

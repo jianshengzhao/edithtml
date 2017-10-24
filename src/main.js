@@ -14,6 +14,17 @@ Vue.http.interceptors.push((request, next) => {
   request.credentials = true
   next()
 })
+Vue.filter('time', function (value) {
+    let d = new Date(parseInt(value) * 1000)
+    let year = d.getFullYear(),
+    month = (d.getMonth()+1) < 10 ? '0' + (d.getMonth()+1):d.getMonth()+1,
+    date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+    hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours(),
+   	minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes(),
+    second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+})
 new Vue({
   el: '#parent',
   router,

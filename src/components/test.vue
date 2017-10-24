@@ -3,7 +3,7 @@
     <!-- 颜色显示小方块 -->
     <div class="colorBtn"
       v-bind:style="`background-color: ${showColor}`"
-      v-on:click="openStatus=openStatusEvent"
+      v-on:click="openStatus = !disabled"
       v-bind:class="{ disabled: disabled }"
     ></div>
     <!-- 用以激活HTML5颜色面板 -->
@@ -19,7 +19,7 @@
           v-on:click="handleDefaultColor"
           v-on:mouseover="hoveColor = defaultColor"
           v-on:mouseout="hoveColor = null"
-        >默认透明</div>
+        >默认颜色</div>
       </div>
       <div class="bd">
         <h3>主题颜色</h3>
@@ -75,7 +75,7 @@ export default {
     // 默认颜色
     defaultColor: {
       type: String,
-      default: ''
+      default: '#000'
     },
     // 禁用状态
     disabled: {
@@ -123,13 +123,9 @@ export default {
     showColor () {
       if (this.value) {       
         if(this.value.indexOf('rgb') > -1) {
-          let color = this.value.split('(')[1].split(')')[0].split(',')       
-          if (color[3] == 0){
-            this.entryColor = ''
-          } else {
-            this.entryColor = this.rgbToHex(color[0], color[1], color[2])
-          }
-        } else {          
+          let color = this.value.split('(')[1].split(')')[0].split(',')
+          this.entryColor = this.rgbToHex(color[0], color[1], color[2])
+        } else {
           this.entryColor = this.value
         }
         return this.value
@@ -144,10 +140,6 @@ export default {
         colorArr.push(this.gradient(color[1], color[0], 5))
       }
       return colorArr
-    },
-    openStatusEvent() {     
-      return !this.disabled
-      // this.openStatus = true
     }
   },
   methods: {
@@ -162,7 +154,7 @@ export default {
     },
     entryValue () {      
       let bloo = /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(this.entryColor)      
-      if (bloo || this.entryColor == '') {
+      if (bloo) {
         this.$emit('input', this.entryColor)
         this.$emit('change', this.entryColor)
         this.openStatus = false
@@ -224,6 +216,7 @@ export default {
   },
   mounted () {
     // 点击页面上其他地方，关闭弹窗
+    console.log(this.value)
     let self = this
     document.addEventListener('click', function(){ 
       self.openStatus = false
