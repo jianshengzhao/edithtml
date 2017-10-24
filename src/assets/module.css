@@ -6,10 +6,11 @@
   }
   .head, .middle, .foot{
     position: relative;
+    overflow: hidden;
   }
-  .module:hover{
+  /*.module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
-  }
+  }*/
   .promptBox{
     display: none;
     position: absolute;
@@ -37,7 +38,7 @@
     position: absolute;
     /*background-color: #fff;*/
     z-index: 49;
-    
+    box-sizing: border-box;
   }
   #app .module{
     overflow: visible;
@@ -46,12 +47,19 @@
     width: 200px;
     height: 50px;
     box-sizing: border-box;
+    border: 1px solid #ccc;
+  }
+  .rectangle a,.radius a{
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .radius {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     box-sizing: border-box;
+    border: 1px solid #ccc;
   }
   .text{
     width: 200px;
@@ -66,14 +74,20 @@
   }
   .text a{
     font-size: inherit;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    color: inherit;
   }
   .editor{
     box-sizing: border-box;
     padding: 8px;
     width: 400px;
-    height: 400px;
+    height: 200px;
     word-break:break-all;
     word-wrap:break-word;
+    border:1px solid #ccc;
   }
   .editor p {
     margin:5px 0;
@@ -99,7 +113,7 @@
   }
   .navigation {
     width: 100%;
-    height:50px; 
+    height:auto!important; 
   }
   .navigation a{
     line-height: 50px;
@@ -550,6 +564,7 @@
     color: #fff;
     background-color: rgba(0,0,0,0.5);
     cursor: pointer;
+    overflow: hidden;
   }
   .audition:hover .audiTit {
     display: block;
@@ -1938,6 +1953,7 @@
 		left:0px;
 		line-height:1.8;
 		text-decoration: none;
+    overflow: hidden;
 		
 	}
 	.theteacherteam .addtheteateam  .team_hbj {
@@ -1970,6 +1986,7 @@
 	}
 	.theteacherteam .addtheteateam  .team_p2 {
 		line-height:1.8;
+    height: 44px;
 		text-align:left;
 		margin-top:5px;
 		padding: 0 5px;
@@ -1990,7 +2007,7 @@
 	.contactway{
 		height: 122px;
 		width: 340px;
-		background: #8493af;
+		/*background: #8493af;*/
 		color: #fff;
 	}
 	.contactwaycont{
@@ -2001,6 +2018,7 @@
 		-moz-box-sizing:border-box; /* Firefox */
 		-webkit-box-sizing:border-box; /* Safari */
 		font-size:14px;
+    color: #333;
 		
 	}
 	.contactway .address{
@@ -2020,4 +2038,12 @@
 		background:url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/ico.png?v=01) no-repeat 0 -85px;
 		margin-top:21px;
 	}
+  .navigation .wrap_login a{
+    margin:0;
+  }
+  .editor .editorCon {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 

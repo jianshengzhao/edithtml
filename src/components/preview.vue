@@ -230,6 +230,7 @@
       let params = window.saveParams
       let pp = params.page
       let style = '<style id="previewStyle">' +
+                  'body a[href]:hover{color:' + pp.fontHover + ';}' +
                   'body,#preview{background-color:' + pp.bg + '}' +
                   '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + '}' +
                   '.head{height:' + pp.top + ';}' +
@@ -270,6 +271,9 @@
         let setting = {
           pg: obj.page.pg,
           bg: obj.page.bg,
+          fontHover: obj.page.fontHover,
+          pgImage:obj.page.pgImage,
+          bgImage:obj.page.bgImage,
           width: obj.page.width + 'px',
           height: obj.page.height + 'px',
           top: obj.page.top,
@@ -300,12 +304,20 @@
             auditions: auditions
           },
           fun: function (response) {
-            let code = response.body.code
+            let body = response.body
+            let code = body.code
+            let msg = body.msg
             if (code === 0) {
               self.$notify({
                 title: '成功',
                 message: '保存成功',
                 type: 'success'
+              })
+            } else {
+              self.$notify({
+                title: '警告',
+                message: msg,
+                type: 'warning'
               })
             }
           }
