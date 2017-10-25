@@ -60,6 +60,11 @@ var configHtml = {
         name: 'waiter',
         icon: 'imgicon icon-editor',
         text: '客服'
+      },
+      {
+        name: 'player',
+        icon: 'imgicon icon-picture',
+        text: '播放器'
       }
     ],
     online: [
@@ -206,6 +211,20 @@ var configHtml = {
       self.$refs.course.show(self, element, me)      
     },
     html: '<div class="course module addmodule" datatext="课程"><div class="editCourse">+</div></div>'
+  },
+  player: {
+    style: 'width:940px; height:562px',
+    tool: {
+      private: {
+        text: '编辑视频',
+        class: 'st-player'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.player.show(self, element, me)      
+    },
+    html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
   },
   hline: {
     style: 'width:200px; height:1px',

@@ -1354,10 +1354,13 @@ var tool = {
           self.$refs.carousel.show()
           break
         case 'st-left st-waiter':
-          self.$refs.waiter.show()
+          self.$refs.waiter.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-advert':
-          self.$refs.advert.show()
+          self.$refs.advert.show(self, me.$('.on_module'), me)
+          break
+        case 'st-left st-player':
+          self.$refs.player.show(self, me.$('.on_module'), me)
           break
       }
       return false
@@ -1705,10 +1708,14 @@ var tool = {
       if (interval < 1) {
         let type = self.moduleElement.attr('class').split(' ')[0]       
         switch (type) {
-          case 'rectangle': 
+          case 'course': 
             self.$refs.hrefdialogp.show()
-            return false
+            break
+          case 'player': 
+            self.$refs.player.show()
+            break
           }
+        return false
       } else {
         preTime = Date.parse(new Date())
       }     

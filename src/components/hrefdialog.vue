@@ -8,19 +8,19 @@
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
-            <li>
+            <li v-if="!parameter||parameter.thatName =='online'">
               <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
-            <li>
+            <li v-if="!parameter||parameter.thatName =='news'">
               <a data-index="1"  type="news" >资讯</a>
             </li>
-            <li>
+            <li v-if="!parameter||parameter.thatName =='course'||parameter.thatName =='player'">
               <a data-index="2"  type="course">课程</a>
             </li>
-            <li>
+            <li v-if="!parameter||parameter.thatName =='teacher'">
               <a data-index="3"  type="teacher">教师</a>
             </li>
-            <li>
+            <li v-if="!parameter||parameter.thatName =='onlineschool'">
               <a data-index="4"  type="onlineschool" >网校</a>
             </li>
           </ul>
@@ -41,9 +41,8 @@
                   <!-- <el-radio class="radio" v-model="showtype" label="2">弹出层</el-radio> -->
                 </el-col>       
               </div> 
-                
             </div>
-            <div class="tab-content"> 
+            <div class="tab-content">
                   <div class="newsmbx mbx">
                       <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                       <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
@@ -98,116 +97,115 @@
                     </el-col>
                   </div>
             </div>
-            <div  class="tab-content">
-                <div class="coursembx mbx">
-                      <span class="courseonembx"><a @click="indexinit()">课程</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                      <span class="coursetwombx" style="display: none;"><a  @click="coursebxinit(2)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                      <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                      <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                      <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
-                      <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
-
-                      <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
+            <div class="tab-content">
+              <div class="coursembx mbx">
+                <span class="courseonembx"><a @click="indexinit()">课程</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                <span class="coursetwombx" style="display: none;"><a  @click="coursebxinit(2)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
+                <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
+                <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
+                <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
+              </div>
+              <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
+                <form class="oneselcourse">
+                 <div class="courseradio">
+                    <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" />
+                    <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程 (<span style="color: red;"> {{mecoursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
-                  <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
-                    <form class="oneselcourse">
-                     <div class="courseradio">
-                        <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" />
-                        <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程 (<span style="color: red;"> {{mecoursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                      </div>
-                      <div class="courseradio" v-for="(item,index) in schsourcelist">
-                        <input :sourceid="item.sourcecrid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
-                        <a @click="getsoncourse(item.sourcecrid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                      </div>
-                      <div style="clear: both;"></div>
-                      <input type="reset" class="courseradioreset" style="display: none;" value="Reset">
-                    </form>
-                    <form class="twoselcourse" style="display: none;">
-                      <div class="courseradio" v-for="(item,index) in coursesort">
-                        <input :pid="item.pid" :pname="item.pname" :checked="inpid == item.pid?true:false"  name="twocourse" type="radio" value="" />
-                        <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                      </div>
-                      <div style="clear: both;"></div>
-                      <input type="reset" class="courseradiotworeset" style="display: none;" value="Reset">
-                    </form>
-                    <form class="threeselcourse" style="display: none;">
-                     <!--  <div class="courseradio" v-if="sourceid">
-                       <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
-                       <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
-                     </div>
-                      -->
-                      <div class="courseradio" v-for="(item,index) in sidlist">
-                        <input :sid="item.sid" :sname="item.sname" :checked="insid == item.sid?true:false"  name="threecourse" type="radio" value="" />
-                        <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                      </div>
-                      <div class="nodata" v-if="!sidlist.length && !sourceid"></div>
-                      <div style="clear: both;"></div>
-                      <input type="reset" class="courseradiothreereset" style="display: none;" value="Reset">
-                    </form>
-                    <form class="fourselcourse" style="display: none;">
-                     
-                      <div class="nodata" v-if="!courselist.length"></div>
-                      <!-- <div class="courseradio" v-for="(item,index) in courselist">
-                        <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
-                        <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
-                      </div> -->
-                      <div  class="courselist" v-for="(item,index) in courselist">
-                        <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
-                        <a @click="getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
-                          <img :src="item.img" ><br/>
-                          <div style="text-align: center;width: 121px;">
-                            <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
-                            <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
-                          </div>
-                        </a>
-                      </div> 
-                     <!--  @click="getcwlistall(item.folderid,item.foldername)" -->
-                      <div style="clear: both;"></div>
-                      <input type="reset" class="courseradiofourreset" style="display: none;" value="Reset">
-                      <el-col v-if="foldercount > folderpagesize" style="text-align: right;margin-top: 10px;">
-                          <el-pagination
-                            @size-change="handlefolderSizeChange"
-                            @current-change="handlefolderCurrentChange"
-                            :current-page="folderpage"
-                            :page-sizes="[15, 30, 50, 100]"
-                            :page-size="folderpagesize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="foldercount">
-                          </el-pagination>
-                        </el-col>
-                    </form>
-                    <form class="fiveselcourse" style="display: none;">
-                    
-                      <div class="nodata" v-if="!cwlist.length"></div>
-                      <el-col v-for="(item,index) in cwlist" :key="item.sname">
-                        <h3>{{item.sname}}</h3>
-                        <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid">
-                          <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" value="" />
-                          <a class="vc-font2">
-                            <img :src="items.logo" ><br/>
-                            <h3 :title="items.title">{{items.title}}</h3>
-                          </a>
-                        </label> 
-                        <!-- <div class="courseradio" v-for="(items,indexs) in item.cwlist">
-                          <input :cwid="items.cwid"  name="fivecourse" type="radio" value="" />
-                          <a  class="vc-font2"><span class="vc-inner">{{items.title}}</span><span class="vc-fix">此标签不能换行</span></a>
-                        </div> -->
-                      </el-col>
-                      
-                      <div style="clear: both;"></div>
-                      <el-col v-if="cwcount > cwpagesize" style="text-align: right;margin-top: 10px;">
-                          <el-pagination
-                            @size-change="handlecwSizeChange"
-                            @current-change="handlecwCurrentChange"
-                            :current-page="cwpage"
-                            :page-sizes="[15, 30, 50, 100]"
-                            :page-size="cwpagesize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="cwcount">
-                          </el-pagination>
-                      </el-col>
-                    </form>
+                  <div class="courseradio" v-for="(item,index) in schsourcelist">
+                    <input :sourceid="item.sourcecrid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
+                    <a @click="getsoncourse(item.sourcecrid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
+                  <div style="clear: both;"></div>
+                  <input type="reset" class="courseradioreset" style="display: none;" value="Reset">
+                </form>
+                <form class="twoselcourse" style="display: none;">
+                  <div class="courseradio" v-for="(item,index) in coursesort">
+                    <input :pid="item.pid" :pname="item.pname" :checked="inpid == item.pid?true:false"  name="twocourse" type="radio" value="" />
+                    <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                  </div>
+                  <div style="clear: both;"></div>
+                  <input type="reset" class="courseradiotworeset" style="display: none;" value="Reset">
+                </form>
+                <form class="threeselcourse" style="display: none;">
+                 <!--  <div class="courseradio" v-if="sourceid">
+                   <input sid="0"  name="threecourse" :checked="insid == '0'?true:false" sname="其他" type="radio" value="" />
+                   <a  @click="getcourseall(0,'其他')" class="vc-font2"><span class="vc-inner">其他</span><span class="vc-fix">此标签不能换行</span></a>
+                 </div>
+                  -->
+                  <div class="courseradio" v-for="(item,index) in sidlist">
+                    <input :sid="item.sid" :sname="item.sname" :checked="insid == item.sid?true:false"  name="threecourse" type="radio" value="" />
+                    <a  @click="getcourseall(item.sid,item.sname)" class="vc-font2"><span class="vc-inner">{{item.sname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                  </div>
+                  <div class="nodata" v-if="!sidlist.length && !sourceid"></div>
+                  <div style="clear: both;"></div>
+                  <input type="reset" class="courseradiothreereset" style="display: none;" value="Reset">
+                </form>
+                <form class="fourselcourse" style="display: none;">
+                 
+                  <div class="nodata" v-if="!courselist.length"></div>
+                  <!-- <div class="courseradio" v-for="(item,index) in courselist">
+                    <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
+                    <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
+                  </div> -->
+                  <div  class="courselist" v-for="(item,index) in courselist">
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
+                    <a @click="getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
+                      <img :src="item.img" ><br/>
+                      <div style="text-align: center;width: 121px;">
+                        <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
+                        <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
+                      </div>
+                    </a>
+                  </div> 
+                 <!--  @click="getcwlistall(item.folderid,item.foldername)" -->
+                  <div style="clear: both;"></div>
+                  <input type="reset" class="courseradiofourreset" style="display: none;" value="Reset">
+                  <el-col v-if="foldercount > folderpagesize" style="text-align: right;margin-top: 10px;">
+                      <el-pagination
+                        @size-change="handlefolderSizeChange"
+                        @current-change="handlefolderCurrentChange"
+                        :current-page="folderpage"
+                        :page-sizes="[15, 30, 50, 100]"
+                        :page-size="folderpagesize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="foldercount">
+                      </el-pagination>
+                    </el-col>
+                </form>
+                <form class="fiveselcourse" style="display: none;">
+                
+                  <div class="nodata" v-if="!cwlist.length"></div>
+                  <el-col v-for="(item,index) in cwlist" :key="item.sname">
+                    <h3>{{item.sname}}</h3>
+                    <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" value="" :disabled="!parameter.thatName ? false : items.ism3u8=='1' ? false:true"/>
+                      <a class="vc-font2" :style="!parameter.thatName ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
+                        <img :src="items.logo" ><br/>
+                        <h3 :title="items.title">{{items.title}}</h3>
+                      </a>
+                    </label> 
+                    <!-- <div class="courseradio" v-for="(items,indexs) in item.cwlist">
+                      <input :cwid="items.cwid"  name="fivecourse" type="radio" value="" />
+                      <a  class="vc-font2"><span class="vc-inner">{{items.title}}</span><span class="vc-fix">此标签不能换行</span></a>
+                    </div> -->
+                  </el-col>
+                  
+                  <div style="clear: both;"></div>
+                  <el-col v-if="cwcount > cwpagesize" style="text-align: right;margin-top: 10px;">
+                      <el-pagination
+                        @size-change="handlecwSizeChange"
+                        @current-change="handlecwCurrentChange"
+                        :current-page="cwpage"
+                        :page-sizes="[15, 30, 50, 100]"
+                        :page-size="cwpagesize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="cwcount">
+                      </el-pagination>
+                  </el-col>
+                </form>
+              </div>
             </div>
             <div class="tab-content">
               <div class="teambx mbx">
@@ -303,6 +301,7 @@
     name: 'hrefdialog',
     data: function () {
       return {
+        parameter:'',
         visdialog:false,
         mecoursenum : 0,
         edithref:'',
@@ -612,22 +611,31 @@
               crid: sourceid || 0
             }
           }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.cwlist;
-          
-            for(var i=0;i<list.length;i++){
-              if(list[i].cwlist){
-                for(var j=0;j<list[i].cwlist.length;j++){
-                  if(list[i].cwlist[j].logo == null || list[i].cwlist[j].logo  == ""){
-                    if(list[i].cwlist[j].type == "flv"  || list[i].cwlist[j].type == "jar" || list[i].cwlist[j].type == "mp3"){
-                    list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/attach.png"
-                    }else if(list[i].cwlist[j].islive == '1'){
+            let list = response.data.data.cwlist;           
+            for (var i = 0; i < list.length; i++) {
+              if (list[i].cwlist) {
+                for (var j = 0; j < list[i].cwlist.length; j++) {
+                  if (list[i].cwlist[j].logo == null || list[i].cwlist[j].logo  == "") {
+                    if (list[i].cwlist[j].type == "flv" || list[i].cwlist[j].type == "jar" || list[i].cwlist[j].type == "mp3") {
+
+                      list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/attach.png"
+
+                    } else if (list[i].cwlist[j].islive == '1') {
+
                       list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/livelogo.jpg"
-                    }else if(list[i].cwlist[j].type == "ppt"){
+
+                    } else if (list[i].cwlist[j].type == "ppt") {
+
                       list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/ppt.png"
-                    }else if(list[i].cwlist[j].type == "doc"){
+
+                    } else if (list[i].cwlist[j].type == "doc") {
+
                       list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/doc.png"
-                    }else{
+
+                    } else {
+
                       list[i].cwlist[j].logo = "http://static.ebanhui.com/ebh/tpl/2014/images/defaultcwimggray.png?v=20160504001"
+
                     }
                   }
                 }
@@ -736,29 +744,40 @@
       this.geschsource()
     },
     methods:{
-      show:function(){
+      show: function(thatName, thatSelf, Callback){
         let self = this;
         self.visdialog = true;
         self.$nextTick( () => {
           let linktype = $('.on_module a').attr('linktype');
-          let linkobj =  $('.on_module a').attr('linkobj');
+          let linkobj =  $('.on_module a').attr('linkobj');          
           linkobj = linkobj?$.parseJSON(linkobj):'';
+          // 新增：调用视频课件链接
+          self.parameter = ''
+          if (thatName) {
+            linktype = 'course'
+            self.parameter = {
+              thatName: thatName,
+              thatSelf: thatSelf,
+              Callback: Callback
+            }
+          }
+
           $('ul.tabsul li a').removeClass('tab-active')
-           $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
+          $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
           if(linktype == 'news'){
             $('ul.tabsul li a[data-index=1]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(1).addClass('tab-content-active')
             if(linkobj.active == 3){
               if(linkobj.news.len){
                 self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
-                setTimeout(function(){
+                setTimeout(function () {
                   self.newsq = linkobj.q;
                   self.newspagesize =  linkobj.pagesize;
                   self.newspage = linkobj.page;
                   self.newscode = linkobj.newscode;
                   self.getsonNews(linkobj.news.code1,linkobj.news.son1,linkobj.news.label1)
-                },0)
-              }else{
+                }, 0)
+              } else {
                 self.newsq = linkobj.q;
                 self.newspagesize =  linkobj.pagesize;
                 self.newspage = linkobj.page;
@@ -805,20 +824,19 @@
                 self.getmorelogin()       
             }
             $("input[code='"+linkobj.oneinlineschool+"']").attr('checked','true');
-          }else{
+          }else {
             $('ul.tabsul li a[data-index=0]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(0).addClass('tab-content-active')
             self.edithref = linkobj.href;
           }
           let widget = $('#tabs-vertical');
-          let tabs = widget.find('ul.tabsul a'),
+          let tabs = widget.find('ul.tabsul'),
           content = widget.find('.tabs-content-placeholder > div');
           $('.teaflowx').scrollTop(0);
-          console.log('111')
-          tabs.on('click', function (e) {
+          tabs.on('click','a', function (e) {           
             e.preventDefault();
-            let index = $(this).data('index');
-            tabs.removeClass('tab-active');
+            let index = $(this).data('index');           
+            tabs.find('a').removeClass('tab-active');
             content.removeClass('tab-content-active');
             $(this).addClass('tab-active');
             content.eq(index).addClass('tab-content-active');
@@ -1463,7 +1481,7 @@
  }
  .hrefdialog .tabs-vertical .mbx{
     width: 100%;
-    height: 41px;
+    height: 42px;
     border-bottom: 1px solid #CECECE;
     text-align: left;
     line-height: 41px;

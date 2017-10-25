@@ -625,7 +625,8 @@
     <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
-    <course ref="course"></course>    
+    <course ref="course"></course>
+    <player ref="player"></player>      
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -644,6 +645,7 @@
   import waiter from '@/components/waiter'
   import advert from '@/components/advert'
   import course from '@/components/course'
+  import player from '@/components/player'
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
@@ -660,7 +662,8 @@
       carousel, 
       waiter, 
       advert, 
-      course
+      course,
+      player
     },
     data: function () {
       return {
@@ -963,7 +966,7 @@
             let w
             let getParam
             let oa
-            switch (type) {              
+            switch (type) {
               case 'picture':
                 self.linkType = 'none'
                 self.inpOnline = ''
@@ -1023,7 +1026,7 @@
             }
           }, {emulateJSON: true}).then(function (response) {
             let datas = response.data
-            if(datas.code == 0){
+            if(datas.code == 0) {
               let packages = datas.data.packages
               let sorts = datas.data.sorts
               let packageshtml = ''
@@ -1068,7 +1071,6 @@
             console.log(response)
           })
         }
-        
       }
     },
     created: function () {

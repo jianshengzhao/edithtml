@@ -2348,7 +2348,8 @@
     height: 100%;
   }
   .advert .advCon img{
-    width: 100% 
+    width: 100%;
+    display: block;
   }
 
 /* course */
@@ -2371,7 +2372,7 @@
     text-align: center;
     text-indent: 0;
   }
-/*  .course .editCourse:hover{
+  /*  .course .editCourse:hover{
     background-color: #169BD5;
   }*/
   .course .imgbox {   
@@ -2478,4 +2479,55 @@
     width: 60px;
     text-indent: 20px;
     background: url(http://static.ebanhui.com/ebh/tpl/newschoolindex/images/rqsl1.png) no-repeat -72px center
+  }
+/* player */
+  .player {
+    width:900px;
+    height:562px;
+    background-color:#F2F2F2;
+  }
+  .player .editPlayer{
+    width: 100%;
+    height: 100%;
+  }
+  .player .cover{
+    width: 100%;
+    height: 100%;
+  }
+  .player .rightMenu{
+    display: none;
+    position: absolute;
+    top:0;
+    left:100%;
+    width: 260px;
+    height: 100%;
+    background-color: #333;
+  }
+  .player .rightMenu li{
+      height: 60px;
+      padding: 10px ;
+  }
+  .player .rightMenu li.on{
+    background-color: #666;
+  }
+  .player .rightMenu li img{
+    float: left;
+    width: 120px;
+    height: 60px;
+  }
+  .rightMenu .title{
+    float: left;
+    width: 110px;
+    margin-left: 5px;
+    font-size: 16px;
+    line-height: 20px;
+    color: #fff;
+    overflow: hidden;
+  }
+  .rightMenu .studyNum{
+    float: left;
+    width: 110px;
+    margin-left: 5px;
+    font-size: 13px;
+    color: #ccc;
   }
