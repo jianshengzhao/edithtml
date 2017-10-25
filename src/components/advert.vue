@@ -28,7 +28,7 @@
                 <div class="delete">删除</div>
               </div>  
               <div class="set-url-btn" v-if="!item.url">设置链接</div>
-              <div class="update-url-box">
+              <div class="update-url-box" v-if="item.url">
                 <div class="urlType">{{item.urlType}}：</div>
                 <div class="urlRoute">{{item.urlRoute}}</div>
                 <div class="update">修改</div>
@@ -122,15 +122,15 @@ export default {
           let imgi =  imgs.eq(i)
           hs = hs + parseInt(imgi.css('height'))
         }
-        if (self.showStyle == 'static') {
+        // if (self.showStyle == 'static') {
           self.currentEle.css('height',hs + 'px')
-        } else {
-          self.currentEle.css({
-            'height': hs + 'px',
-            'top': 0,
-            'left': 0
-          })
-        }
+        // } else {
+        //   self.currentEle.css({
+        //     'height': hs + 'px',
+        //     'top': 0,
+        //     'left': 0
+        //   })
+        // }
         self.currentEle.find('.resizeBox').css('height',hs + 'px')
       })
     },
