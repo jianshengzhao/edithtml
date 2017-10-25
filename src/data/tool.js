@@ -1359,6 +1359,10 @@ var tool = {
         case 'st-left st-advert':
           self.$refs.advert.show()
           break
+        case 'st-left st-course':
+          self.$refs.courseUrl.show()
+          break
+          
       }
       return false
     })
@@ -1705,8 +1709,8 @@ var tool = {
       if (interval < 1) {
         let type = self.moduleElement.attr('class').split(' ')[0]       
         switch (type) {
-          case 'rectangle': 
-            self.$refs.hrefdialogp.show()
+          case 'course': 
+            self.$refs.courseUrl.show()
             return false
           }
       } else {

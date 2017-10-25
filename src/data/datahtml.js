@@ -197,10 +197,10 @@ var configHtml = {
     style: 'width:260px; height:220px',
     tool: {
       private: {
-        text: '',
-        class: ''
+        text: '添加课程',
+        class: 'st-course'
       }, 
-      public: ['e']
+      public: []
     },
     createEvent: function (self, element, me) {      
       self.$refs.course.show(self, element, me)      
