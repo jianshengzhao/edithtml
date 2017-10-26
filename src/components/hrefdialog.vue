@@ -8,19 +8,19 @@
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
-            <li v-if="!parameter||parameter.linktype =='online'">
+            <li v-if="!parameter||parameter.linktype =='online'||parameter.thatName == 'advert'">
               <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='news'">
+            <li v-if="!parameter||parameter.linktype =='news'||parameter.thatName == 'advert'">
               <a data-index="1"  type="news" >资讯</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='course'">
+            <li v-if="!parameter||parameter.linktype =='course'||parameter.thatName == 'advert'">
               <a data-index="2"  type="course">课程</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='teacher'">
+            <li v-if="!parameter||parameter.linktype =='teacher'||parameter.thatName == 'advert'">
               <a data-index="3"  type="teacher">教师</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='onlineschool'">
+            <li v-if="!parameter||parameter.linktype =='onlineschool'||parameter.thatName == 'advert'">
               <a data-index="4"  type="onlineschool" >网校</a>
             </li>
           </ul>
@@ -771,6 +771,9 @@
                 linktype = 'online'
                 saveparam = true
                 break
+              case 'advert':                
+                saveparam = true
+                break
             }
             if (saveparam) {
               self.parameter = {
@@ -872,7 +875,7 @@
         let a 
       // ----------- update start------------
         let parameter = self.parameter
-        if (parameter) {
+        if (parameter && parameter.thatName!='advert') {
           linkType = parameter.linktype         
         } else {
           let origin = window.location.origin
