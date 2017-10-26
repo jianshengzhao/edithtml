@@ -65,6 +65,21 @@ var configHtml = {
         name: 'player',
         icon: 'imgicon icon-picture',
         text: '播放器'
+      },
+      {
+        name: 'schoollogo',
+        icon: 'imgicon icon-schoollogo',
+        text: 'LOGO'
+      },
+      {
+        name: 'schoolmap',
+        icon: 'imgicon icon-schoolmap',
+        text: '地图'
+      },
+      {
+        name: 'schoolqr',
+        icon: 'imgicon icon-schoolqr',
+        text: '二维码'
       }
     ],
     online: [
@@ -77,11 +92,26 @@ var configHtml = {
         name: 'advert',
         icon: 'imgicon icon-picture',
         text: '悬浮广告'
-      },
+      },      
+      {
+        name: 'teacher',
+        icon: 'imgicon icon-picture',
+        text: '教师'
+      },     
+      {
+        name: 'audition',
+        icon: 'imgicon icon-picture',
+        text: '试听'
+      },      
       {
         name: 'course',
         icon: 'imgicon icon-picture',
         text: '课程'
+      },
+      {
+        name: 'information',
+        icon: 'imgicon icon-information',
+        text: '资讯'
       }
     ],
     todo: [],
@@ -202,15 +232,43 @@ var configHtml = {
     style: 'width:260px; height:220px',
     tool: {
       private: {
-        text: '添加课程',
+        text: '编辑课程',
         class: 'st-course'
       }, 
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.course.show(self, element, me)      
+      self.$refs.course.show(self, element, me, 'course')      
     },
-    html: '<div class="course module addmodule" datatext="课程"><div class="editCourse">+</div></div>'
+    html: '<div class="course module addmodule" datatext="课程"><div class="editAdd"><div class="add-icon"></div></div></div>'
+  },
+  audition: {
+    style: 'width:190px; height:120px',
+    tool: {
+      private: {
+        text: '编辑试听',
+        class: 'st-audition'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.course.show(self, element, me, 'audition')      
+    },
+    html: '<div class="audition module addmodule"  datatext="免费试听"><div class="editAdd"><div class="add-icon"></div></div></div>'
+  },
+  teacher: {
+    style: 'width: 247px; height: 228px',
+    tool: {
+      private: {
+        text: '编辑教师',
+        class: 'st-teacher'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.course.show(self, element, me, 'teacher')      
+    },
+    html: '<div class="teacher module addmodule"  datatext="教师"><div class="editAdd"><div class="add-icon"></div></div></div>'
   },
   player: {
     style: 'width:940px; height:562px',
@@ -273,6 +331,42 @@ var configHtml = {
     },
     html: '<div class="loginbox username module addmodule"  datatext="账号"><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="loginbox password module addmodule"  datatext="密码"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"></div><div class="loginbox loginbutton module addmodule"  datatext="登录按钮"><input id="signbtnsubmit" class="signbtn" value="立即登录" name="Submit" type="submit"></div>',
     moduleMargin: 60 // 一次性添加多个模块才配置的模块间距
+  },
+  schoollogo: {
+    style: 'width:220px; height:220px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      },
+      public: ['b','c','d','e']
+    },
+    html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
+  },
+  schoolmap: {
+    style: 'width:935px; height:325px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      },
+      public: []
+    },
+    createEvent: function (self, element, that) {
+      self.createmap(element, that)
+    },
+    html: '<div class="schoolmap module addmodule" datatext="地图"><div id="schoolmap"></div></div>'
+  },
+  schoolqr: {
+    style: 'width:212px; height:212px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      },
+      public: ['b','c','d']
+    },
+    html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img src="" /></a></div>'
   }
 }
 exports.config = configHtml

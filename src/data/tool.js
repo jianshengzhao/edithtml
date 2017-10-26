@@ -1363,9 +1363,36 @@ var tool = {
           self.$refs.player.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-course':
-          self.$refs.courseUrl.show()
+          self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
+            let courseHtm = '<div class="imgbox">'
+                          + '<div class="listBox">'
+                          + '<a target="_blank" class="animateBox">课程</a>'
+                          + '<img src="'+ data.img +'">'
+                          + '<a target="_blank" class="openState openState_djbmbg1"></a>'
+                          + '</div>'
+                          + '</div>'
+                          + '<div class="courseTit">'+ data.foldername +'</div>'
+                          + '<div class="speak">讲师</div>'
+                          + '<div class="popularity">'+ data.viewnum+'</div>'
+                          + '<div class="number">'+ data.studynum +'</div>'
+            element.attr('datacoruse', data.itemid)
+            element.find('.editAdd').html(courseHtm)
+          })
           break
-          
+        case 'st-left st-audition':
+          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {            
+            let auditionHtm = '<a target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+            element.attr('auditionid', data.cwid)
+            element.find('.editAdd').html(auditionHtm)
+          })
+          break
+        case 'st-left st-teacher': 
+          self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {
+            console.log(data)           
+            let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '"><a class="team_mask" href="/master/' + data.teauid + '.html" target="_blank">' + data.profile + '</a><a href="/master/' + data.teauid + '.html" target="_blank"><div class="team_hbj"><img src="' + data.face + '"><h3 class="team_h3">' + data.realname + '</h3><p class="team_p1">' + data.professionaltitle + '</p></div><p class="team_p2">' + data.profile + '</p></a></div>'
+            element.find('.editAdd').html(teacherHtm)
+          })
+          break
       }
       return false
     })
@@ -1461,11 +1488,9 @@ var tool = {
     })
   // ------------- 右键菜单栏 ------------------
     me.canvas.bind('contextmenu', function () { // 清除canvas原有的contextmenu事件
-
       return false
     })
     me.contextmenu.bind('contextmenu click mousedown', function () { // 清除contextmenu原有的contextmenu click事件
-
       return false
     })
     me.canvas.mousedown(function (e) { // 右键唤出菜单
@@ -1537,12 +1562,19 @@ var tool = {
     me.libLi.mousedown(function (e) { // 左边模块库鼠标拖动事件 
       me.cleanSignEvent(self)
       me.lShrink.hide()
+      let that = me.$(this)
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
+      
+      if(that.hasClass("onlyone")){ //只能添加一个模块
+      	me.libLi.unbind('mousemove mouseup')
+      	return false;
+      }
+      
       me.copyBox.attr('style', dataCon.style)
       me.copyBox.show().css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       me.editBox.unbind('mouseup') // editBox解除mouseup事件
-
+        
       me.editBox.mousemove(function (e) { // editBox鼠标移动事件
         me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
       })
@@ -1614,7 +1646,7 @@ var tool = {
         me.$('.addmodule').removeClass('addmodule')
         if (dataCon.createEvent) {
           dataCon.createEvent(self, AddElement, me)
-        }        
+        } 
         me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT) // 区域存储
         me.carryLayerEvent(self, box) // 更新图层
       })
@@ -1713,8 +1745,23 @@ var tool = {
         let type = self.moduleElement.attr('class').split(' ')[0]       
         switch (type) {
           case 'course': 
-            self.$refs.courseUrl.show()
-            return false
+            self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
+              let courseHtm = '<div class="imgbox">'
+                            + '<div class="listBox">'
+                            + '<a target="_blank" class="animateBox">课程</a>'
+                            + '<img src="'+ data.img +'">'
+                            + '<a target="_blank" class="openState openState_djbmbg1"></a>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="courseTit">'+ data.foldername +'</div>'
+                            + '<div class="speak">讲师</div>'
+                            + '<div class="popularity">'+ data.viewnum+'</div>'
+                            + '<div class="number">'+ data.studynum +'</div>'
+              element.attr('datacoruse', data.itemid)
+              element.find('.editCourse').remove()
+              element.append(courseHtm)
+            })
+            break
           case 'player': 
             self.$refs.player.show()
             break

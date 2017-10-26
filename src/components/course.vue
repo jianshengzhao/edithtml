@@ -45,28 +45,65 @@ export default {
       let x = parseInt(self.element.css('left'))
       let y = parseInt(self.element.css('top'))    
       let copyNum = self.row_num * self.col_num
-      let copyhtml = ''      
+      let copyhtml = '' 
+      let w
+      let h
+      let ml
+      let mt 
+      let htmFun     
+      switch (self.type) {
+        case 'course':
+          w = 260
+          h = 220          
+          ml = 30
+          mt = 20
+          htmFun = function (x,y) {
+            let html = '<div class="course module addmodule" datatext="课程" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            return html
+          }
+          break
+        case 'audition':
+          w = 190
+          h = 120          
+          ml = 15
+          mt = 10
+          htmFun = function (x,y) {
+            let html = '<div class="audition module addmodule"  datatext="免费试听" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            return html
+          }
+          break
+        case 'teacher':
+          w = 274
+          h = 228          
+          ml = 50
+          mt = 15
+          htmFun = function (x,y) {
+            let html = '<div class="teacher module addmodule"  datatext="教师" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            return html
+          }
+          break          
+      } 
       for (let i = 1; i < copyNum; i++) {
-        let xi = x + (260 + 30) * (i % self.col_num)
-        let yi = y + (220 + 20) * parseInt(i / self.col_num)
-        copyhtml += '<div class="course module addmodule" datatext="课程" style="top:' + yi + 'px;left:' + xi + 'px;"><div class="editCourse">+</div></div>'
+        let xi = x + (w + ml) * (i % self.col_num)
+        let yi = y + (h + mt) * parseInt(i / self.col_num)
+        copyhtml += htmFun(xi, yi)
       }
       parentBox.append(copyhtml)      
       let copyElement = parentBox.children('.addmodule')
       for (let i = 1; i < copyNum; i++) {
-        let xi = x + (260 + 30) * (i % self.col_num)
-        let yi = y + (220 + 20) * parseInt(i / self.col_num)
+        let xi = x + (w + ml) * (i % self.col_num)
+        let yi = y + (h + mt) * parseInt(i / self.col_num)
         let AddElement = copyElement.eq(i - 1)
         self.me.carryAddElementStorageEvent(self.that, parentBox, AddElement, yi, xi, 0)
       }
       $('.addmodule').removeClass('addmodule')
-      // <div class="imgbox"><div class="listBox"><a target="_blank" class="animateBox">课程</a><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"><a target="_blank" class="openState openState_djbmbg1"></a></div></div><div class="courseTit">课程名称</div><div class="speak">讲师</div><div class="popularity">6999</div><div class="number">199</div>
     },
-    show: function (that, element, me) {
+    show: function (that, element, me, type) {
       let self = this
       self.that = that
       self.element = element
       self.me = me
+      self.type = type
       self.dialogCourse = true
       // me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT)
     }

@@ -24,7 +24,7 @@
           <el-radio class="radio" v-model="playerWay" label="1">直接播放</el-radio>
         </el-col>       
       </el-row>
-      <el-row>
+      <el-row v-if="selectStyle!==''">
         <el-col :span="4" class="right">添加视频：</el-col>
       </el-row>
       <el-row v-if="selectStyle!==''">
@@ -92,30 +92,31 @@ export default {
     },
     addPlayerEvent: function () { // 添加视频
       let self = this
-      self.that.$refs.hrefdialogp.show('course', self, function (self, data) {
+      self.that.$refs.hrefdialogp.show('coursecw', self, function (self, data) {       
         self.playerData.push({
-          title: '娃娃',
-          desc: '啦啦啦啦',
-          pic: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
-          cwid: '123'
+          title: data.cwname,
+          desc: data.summary,
+          pic: data.logo,
+          cwid: data.cwid,
+          styleNum: data.viewnum
         })
       }) 
     },
     updatePlayerEvent: function (index) { // 修改视频
       let self = this
-      self.playerData.splice(index,1,{
-          title: '娃娃33',
-          desc: '啦啦啦啦',
-          pic: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
-          cwid: '123'
-      })
+      self.that.$refs.hrefdialogp.show('coursecw', self, function (self, data) {       
+        self.playerData.splice(index,1,{
+          title: data.cwname,
+          desc: data.summary,
+          pic: data.logo,
+          cwid: data.cwid,
+          styleNum: data.viewnum
+        })
+      })       
     },
     deletePlayerEvent: function (index) { // 删除视频
       let self = this
       self.playerData.splice(index,1)
-    },
-    selectStyleEvent: function () { // 选择
- 
     },   
     dialogPlayerEvent: function () { // 确定
       let self = this
@@ -125,9 +126,11 @@ export default {
 
       if (self.selectStyle == "single") {
         rightMenu.hide()
+        self.playerData.splice(1, self.playerData.length-1)
       } else {
         for (let i = 0, len = self.playerData.length; i < len; i++) {
-          html += '<li><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"><div class="title">王献之王献之王献之</div><div class="studyNum">385次学习</div></li>'
+          let item = self.playerData[i]
+          html += '<li><img src="'+ item.pic +'"><div class="title">'+ item.title +'</div><div class="studyNum">'+item.styleNum+'次学习</div></li>'
         }
         rightMenu.show()
         rightMenu.html(html)
@@ -216,14 +219,16 @@ export default {
     font-size: 16px;
     color:#333;
     font-weight: 600;
+    overflow: hidden;
   }
   .vo-li .cwDesc{
     float: left;
     width: 230px;
-    height: 48px;
-    line-height: 20px;
+    height: 50px;
+    line-height: 18px;
     font-size: 12px;
     padding-left: 8px;
+    overflow: hidden;
   }
   .vo-li .update{
     float: right;

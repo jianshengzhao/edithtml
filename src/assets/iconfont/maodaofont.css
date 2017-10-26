@@ -850,6 +850,12 @@ svg.icon {
 
 .icon-sline { background-image: url(../img/sline.png); background-size:auto 28px; }
 
+.icon-schoollogo { background-image: url(../img/schoollogo.png); background-size:auto 28px; }
+
+.icon-schoolmap { background-image: url(../img/schoolmap.png); background-size:auto 28px; }
+
+.icon-schoolqr { background-image: url(../img/schoolqr.png); background-size:auto 28px; }
+
 .icon-pageHeader { background-image: url(../img/pageHeader.png); background-size: 28px; }
 
 .icon-navigation { background-image: url(../img/navigation.png); background-size: 28px; }

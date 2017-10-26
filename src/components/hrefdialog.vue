@@ -8,19 +8,19 @@
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
-            <li v-if="!parameter||parameter.thatName =='online'">
+            <li v-if="!parameter||parameter.linktype =='online'">
               <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
-            <li v-if="!parameter||parameter.thatName =='news'">
+            <li v-if="!parameter||parameter.linktype =='news'">
               <a data-index="1"  type="news" >资讯</a>
             </li>
-            <li v-if="!parameter||parameter.thatName =='course'">
+            <li v-if="!parameter||parameter.linktype =='course'">
               <a data-index="2"  type="course">课程</a>
             </li>
-            <li v-if="!parameter||parameter.thatName =='teacher'">
+            <li v-if="!parameter||parameter.linktype =='teacher'">
               <a data-index="3"  type="teacher">教师</a>
             </li>
-            <li v-if="!parameter||parameter.thatName =='onlineschool'">
+            <li v-if="!parameter||parameter.linktype =='onlineschool'">
               <a data-index="4"  type="onlineschool" >网校</a>
             </li>
           </ul>
@@ -150,7 +150,7 @@
                     <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                   </div> -->
                   <div  class="courselist" v-for="(item,index) in courselist">
-                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername"  name="fourcourse" type="radio" value="" />
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" name="fourcourse" type="radio" value="" />
                     <a @click="parameter.thatName == 'course' ? '' : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
                       <div style="text-align: center;width: 121px;">
@@ -180,7 +180,7 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" value="" :disabled="!parameter.thatName ? false : items.ism3u8=='1' ? false:true"/>
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName ? false : items.ism3u8=='1' ? false:true"/>
                       <a class="vc-font2" :style="!parameter.thatName ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
@@ -216,7 +216,7 @@
                 <el-col class="teaflowx" style="height: 450px;overflow-x: hidden;">
                   <form >
                     <label  class="teacherlist" v-for="(item,index) in tealist">
-                      <input :code="item.uid"  name="teacher" type="radio" value="" />
+                      <input :code="item.uid" :face="item.face" :profile="item.profile" :realname="item.realname" :professionaltitle="item.professionaltitle" name="teacher" type="radio" value="" />
                       <a class="vc-font2">
                         <img :src="item.face" ><br/>
                         <h3 :title="item.realname">{{item.realname}}</h3>
@@ -745,11 +745,9 @@
         self.$nextTick( () => {
           let linktype = $('.on_module a').attr('linktype');
           let linkobj =  $('.on_module a').attr('linkobj');          
-          linkobj = linkobj?$.parseJSON(linkobj):'';
-          $("input[name='onecourse']").show()
-          $("input[name='twocourse']").show()
-          $("input[name='threecourse']").show()
-          $("input[name='fourcourse']").show()
+          linkobj = linkobj?$.parseJSON(linkobj):''; 
+          let tCP = $('.tabs-content-placeholder')
+          tCP.attr('class', 'tabs-content-placeholder')
         // ----------- update start------------
           self.parameter = ''
           if (thatName) { 
@@ -758,17 +756,12 @@
               case 'course':
                 linktype = 'course'
                 saveparam = true
-                $("input[name='onecourse']").hide()
-                $("input[name='twocourse']").hide()
-                $("input[name='threecourse']").hide()
+                tCP.addClass('inputCoruse')                
                 break
               case 'coursecw':
                 linktype = 'course'
                 saveparam = true
-                $("input[name='onecourse']").hide()
-                $("input[name='twocourse']").hide()
-                $("input[name='threecourse']").hide()
-                $("input[name='fourcourse']").hide()
+                tCP.addClass('inputCwlist')
                 break
               case 'teacher':
                 linktype = 'teacher'
@@ -788,7 +781,7 @@
               }
             }
           }
-        // ----------- update end------------
+        // ----------- update end--------------
 
           $('ul.tabsul li a').removeClass('tab-active')
           $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
@@ -1050,7 +1043,11 @@
             a.attr('href', url)   
           break
           case 'teacher':
+            let face = $("input[name='teacher']:checked").attr('face');
             let teauid = $("input[name='teacher']:checked").attr('code');
+            let profile = $("input[name='teacher']:checked").attr('profile');
+            let realname = $("input[name='teacher']:checked").attr('realname');
+            let professionaltitle = $("input[name='teacher']:checked").attr('professionaltitle');
             if(teauid == undefined || teauid == 'undefined' || !teauid) {
               this.$notify({
                 title: '警告',
@@ -1060,7 +1057,11 @@
               return false
             }
             obj = {
-              teauid : teauid,
+              teauid: teauid,
+              face: face,            
+              profile: profile,
+              realname: realname,
+              professionaltitle: professionaltitle,
               q :self.hrefteaq
             }
             // ----------- update start------------ 
@@ -1172,6 +1173,11 @@
                 folderid : fourcourseradio,
                 itemid : itemid,
                 foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
+                // ----------- update start------------ 
+                img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
+                studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
+                viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
+                // ----------- update end------------ 
                 folderq : self.folderq,
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize
@@ -1212,7 +1218,11 @@
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize,
                 cwid:fivecourseradio,
+              // ----------- update start------------  
                 logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
+                viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
+                summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
+              // ----------- update end------------  
                 cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
@@ -1241,6 +1251,7 @@
         // ----------- update end------------ 
         self.visdialog = false
       },
+    // -------------------
       getsonNews(code,son,label){
         let self = this;
         self.navcode = code;
@@ -1773,4 +1784,18 @@
   box-sizing: border-box;
   height: 100px;
 }
+/* update 隐藏选中框*/ 
+.hrefdialog .inputCoruse input[name='onecourse'],
+.hrefdialog .inputCoruse input[name='twocourse'],
+.hrefdialog .inputCoruse input[name='threecourse']{
+  display: none;
+}
+
+.hrefdialog .inputCwlist input[name='onecourse'],
+.hrefdialog .inputCwlist input[name='twocourse'],
+.hrefdialog .inputCwlist input[name='threecourse'],
+.hrefdialog .inputCwlist input[name='fourcourse']{
+  display: none;
+}
+/* update */
 </style>

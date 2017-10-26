@@ -11,12 +11,12 @@
 		      
 			<ul class="pic_ul">
 			    <li class="pic_li borderBnone">我的文件</li>
-			    <!-- <li class="pic_li">图片库</li> -->
+			    <li class="pic_li">图片库</li> 
 			    <div class="rectangularBlock"></div>
 			    <div class="tabs_extendedLine"></div>
 			</ul>
 			     	
-			<!--我的文件-->
+			<!--我的文件结构-->
 			<div class="el-menu-mypic">
 			   	<div class="el-menu-mypic-tool">
 			     	<el-button @click="newFlies" :disabled="newdisabled" class="newMyfile"><i class="el-icon-plus el-icon--right"></i>新建文件夹</el-button>
@@ -49,7 +49,41 @@
 				    <ul class="myImgs"></ul>
 				</div>  		
 			</div>
-			     	
+			
+			
+			<!--图片库结构-->
+			<div class="el-menu-library">
+				<div class="nofile nofir" v-loading="libraryloading" style="display: none;"></div>
+				<div class="fir" v-loading="libraryloading">
+					<div class="library_tabs">
+						<el-radio-group v-model="radio_type" @change="radio_type_change(radio_type)">
+						    <el-radio-button v-for="(item, index) in radio_type_tabs" :label="item.alname"></el-radio-button>
+						</el-radio-group>
+					</div>
+					<div class="library_content">
+						<div class="nofile nosec" style="display: none;"></div>
+						<div class="sec">
+							<p class="library_classifys">
+								
+							</p>
+							<div class="library_img nofalls"> <!--非瀑布流-->
+								<div class="nofile nothd" style="display: none;"></div>
+								<div class="library_imgs thd">
+									
+								</div>
+							</div>
+							<div class="library_img falls"> <!--瀑布流-->
+								<div class="nofile nothdfalls" style="display: none;"></div>
+								
+								<div class="library_imgs_falls thdfalls" id="waterfall-box">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		    <span slot="footer">
 		      	<el-button @click="dialogmyPicture = false" size="large">取 消</el-button>
 		        <el-button :disabled="hasimg" type="primary" @click="imgconfirm" size="large">确 定</el-button>
@@ -72,6 +106,14 @@
        			searchMypic:'',			//搜索关键字
        			fileaid:0,
 				// --------- 图片模块组件 ---------
+				
+				//图片库组件
+				radio_type:'图片', 		//图片类型
+				radio_type_tabs:[],
+				libraryloading:true,//加载中
+				radioaid:"",		//第一层图片图标分类id
+				scrollimgpage:1,	
+				scrollimg: 10,		//一次加载多少张图
 				
 				//获取文件以及图片列表，参数表示文件夹aid和搜索关键字q
        			getfilelist:function(param){ 
@@ -149,11 +191,13 @@
 		        			});
 		        			//选中图片
 		        			$('.img_box').on('click',function(){
-		        				for(var i=0;i<$('.img_box').length;i++){
-		        					$($('.img_box')[i]).css("border-color","#ffffff");
-		        				}
-		        				$(this).css("border-color","#557CE1");
+		        				$('.checked_icons').hide();
+		        				$(".icons_box").css("border-color","#ffffff");
+		        				$('.checked_falls').hide();
+		        				$('.waterfall').css("border-color","#ffffff");
 		        				
+		        				$(this).parent().siblings().children(".img_box").css("border-color","#ffffff");
+		        				$(this).css("border-color","#557CE1");
 		        				$(".checked_img").hide();
 		        				$(this).children(".checked_img").show();
 		        				self.hasimg = false;
@@ -311,8 +355,217 @@
 		       		$('.myFiles').hide();
 		       		$('.fileOfimg').show();
 		       		self.getfilelist(param);
-		       },
-		       getImageWidth:function(url,callback){
+		       	},
+		       	//获取图片库分类信息
+		       	getlibraryclassify:function(){
+		       		var self = this;
+		       		self.libraryloading = true;
+		       		//window.host+"/admin/gallery/getgallerys.html"
+		       		self.$http.post(window.host+"/room/albums/getgallerys.html",
+		       		{},{emulateJSON:true}).then(function(response){
+		        		if(response.data.code == 0){
+		        			var datas = response.data;
+		        			var gallerys = [];
+		        			for(var i=0;i<datas.data.gallerys.length;i++){
+		        				if(datas.data.gallerys[i].ishide != 1){
+		        					gallerys.push(datas.data.gallerys[i]);
+		        				}
+		        			}
+		        			if(gallerys.length <= 0){
+		        				$('.nofir').show();
+		        				$('.fir').hide();
+		        			}else{
+		        				$('.nofir').hide();
+		        				$('.fir').show();
+			        			self.radio_type_tabs = gallerys;
+		        				self.radio_type = gallerys[0].alname;
+		        				
+		        				
+		        				if(gallerys[0].children){
+		        					$('.nosec').hide();
+      								$('.sec').show();
+      								$(".library_classifys").empty();
+				      				var spans = "";
+				      				for( i in gallerys[0].children){
+				      					spans += "<span class='classify' aid="+gallerys[0].children[i].aid+">"+gallerys[0].children[i].alname+"</span>"
+				      				}
+				      				$(".library_classifys").append(spans);
+				      				$($(".classify")[0]).addClass("classify_check");
+				      				
+				      				self.radioaid = gallerys[0].children[0].aid;
+				      				var param = {
+										aid:self.radioaid,
+										page:self.scrollimgpage,
+										pagesize:self.scrollimg
+									}
+									self.getlibrary(param);
+									
+									//二级分类点击切换
+									$(".classify").on("click",function(){
+										$("#waterfall-box").empty();
+				      					$(this).siblings().removeClass("classify_check");
+				      					$(this).addClass("classify_check");
+				      					self.radioaid = $(this).attr("aid");
+				      					self.scrollimgpage = 1;
+				      					var param = {
+											aid:self.radioaid,
+											page:self.scrollimgpage,
+											pagesize:self.scrollimg
+										}
+										self.getlibrary(param);
+										
+										$("#waterfall-box").on("scroll",function(){
+											var thisHeight = $(this).height();
+											var thisscrollTop = $(this).scrollTop();
+											var scrollHeight = $("#waterfall-box")[0].scrollHeight;
+											if(thisscrollTop + thisHeight >= scrollHeight){
+												self.scrollimgpage = self.scrollimgpage + 1;
+												var param = {
+													aid:self.radioaid,
+													page:self.scrollimgpage,
+													pagesize:self.scrollimg
+												}
+												self.getlibrary(param);
+											}
+										})
+										
+				      				});
+									
+		        				}else{
+		        					$('.nosec').show();
+      								$('.sec').hide();
+		        				}
+		        			}
+		        			self.libraryloading = false;
+		        		}
+		        	},function(response){
+		        		console.log(response);
+		        	});
+		       	},
+		       	//获取图片库的图片
+		       	getlibrary:function(param){
+		       		var self = this;
+		       		//window.host+"/admin/gallery/getphotos.html"
+		       		self.$http.post(window.host+"/room/albums/getgalleryphotos.html",
+		       		param,{emulateJSON:true}).then(function(response){
+		       			if(response.data.code == 0){
+		       				var datas = response.data;
+		       				if(self.radio_type == "图片"){ 	//瀑布流
+		       					$(".falls").show();
+		       					$(".nofalls").hide();
+		       					if(datas.data.photos.length < self.scrollimg){
+		       						$("#waterfall-box").unbind("scroll");
+		       					}
+		       					if(datas.data.photos.length || $('.waterfall').length){
+		       						$(".nothdfalls").hide();
+		       						$(".thdfalls").show();
+		       						var photos = datas.data.photos;
+		       						var oDiv = "";
+									for(let i in photos){
+										let height = photos[i].height>300?300:photos[i].height;
+										var oDiv = "<div class='waterfall' style='height:"+height+"px' title="+photos[i].photoname+"><img class='' style='height:"+height+"px' src="+photos[i].imgurl+" /><span class='checked_falls'></span></div>"
+										$("#waterfall-box").append(oDiv);
+									}
+		       						change();
+		       						$('.waterfall').on("click",function(){
+		       							$('.img_box').css("border-color","#ffffff");
+		       							$(".checked_img").hide();
+		       							$(this).siblings().children(".checked_falls").hide();
+		       							$(this).children(".checked_falls").show();
+		       							$(this).css("border-color","#557CE1");
+		       							$(this).siblings().css("border-color","#FFFFFF");
+		       							self.hasimg = false;
+		       						});
+		       						$('.waterfall').hover(function(){
+										if($(this).children(".checked_falls").css("display") == "none"){
+											$(this).css("border-color","#557CE1");
+										}
+									},function(){
+										if($(this).children(".checked_falls").css("display") == "block"){
+											$(this).css("border-color","#557CE1");
+										}else{
+											$(this).css("border-color","#ffffff");
+										}
+									});
+		       					}else{
+		       						$(".nothdfalls").show();
+		       						$(".thdfalls").hide();
+		       					}
+								
+		       				}else{							//非瀑布流
+		       					$(".falls").hide();
+		       					$(".nofalls").show();
+		       					
+		       					$(".library_imgs").empty();
+		       					if(datas.data.photos.length){
+		       						$(".nothd").hide();
+		       						$(".thd").show();
+		       						var uls = "<ul>";
+		       						for(var i in datas.data.photos){
+		       							uls += "<li class='icons_box' title="+datas.data.photos[i].photoname+"><img class='icons' src="+datas.data.photos[i].imgurl+' /><span class="checked_icons"></span></li>'
+		       						}
+		       						uls += "</ul>";
+		       						$(".library_imgs").append(uls);
+		       					}else{
+		       						$(".nothd").show();
+		       						$(".thd").hide();
+		       					}
+		       				}
+		       				//这里
+		       				$(".icons_box").on("click",function(){
+		       					$('.img_box').css("border-color","#ffffff");
+		       					$(".checked_img").hide();
+		       					$(this).children(".checked_icons").show();
+		       					$(this).siblings().children(".checked_icons").hide();
+		       					$(this).css("border-color","#557CE1");
+		       					$(this).siblings().css("border-color","#FFFFFF");
+		       					self.hasimg = false;
+		       				});
+		       				
+		       				$('.icons_box').hover(function(){
+								if($(this).children(".checked_icons").css("display") == "none"){
+									$(this).css("border-color","#557CE1");
+								}
+							},function(){
+								if($(this).children(".checked_icons").css("display") == "block"){
+									$(this).css("border-color","#557CE1");
+								}else{
+									$(this).css("border-color","#ffffff");
+								}
+							});
+		       				
+		       				function change() {
+		       					var $waterfall = $(".waterfall");
+		       					var arrH = [];
+								for(let i=0,len=$waterfall.length;i<len;i++){
+									var j = i%4;
+									if (arrH.length == 4) {
+						                var min = findMin(arrH);
+						                $waterfall[i].style.left = 30 + min*190 + "px";       
+						                $waterfall[i].style.top = arrH[min]+10 + "px";
+						                arrH[min] += $($waterfall[i]).height() + 10;   
+						           }else{
+						                arrH[j] = $($waterfall[i]).height();        
+						                $waterfall[i].style.left = 30 + 180*j+10*j + "px";
+						                $waterfall[i].style.top = 0;
+						            }
+								}        
+						    }
+		       				function findMin(arr) {
+							    var m = 0;
+							    for (var i = 0; i < arr.length; i++) {
+							        m = Math.min(arr[m], arr[i]) == arr[m] ? m : i;
+							    }
+							    return m;
+							}
+		       				
+		       			}
+		        	},function(response){
+		        		console.log(response);
+		        	});
+		       	},
+		       	
+		       	getImageWidth:function(url,callback){
 					var img = new Image();
 					img.src = url;
 					if(img.complete){
@@ -360,13 +613,27 @@
 				var param = {
 					aid:self.fileaid
 				};
-				self.getfilelist(param);		
+				self.getfilelist(param);//加载我的文件数据
+				self.getlibraryclassify(); //加载图片库分类数据
+				
 				self.$nextTick( () => {
 					let $pic_li = $('.pic_li');
 					let $rectangularBlock = $('.rectangularBlock');
 					let $tabs_extendedLine = $('.tabs_extendedLine');
 					//我的文件和图片库切换
 					$pic_li.on('click',function(){
+						//切换时让之前选中的取消选中
+//						$(".checked_img").hide();
+//						$('.img_box').css("border-color","#ffffff");
+//						self.hasimg = true;
+						
+						if($(this).html() == "我的文件"){
+							$(".el-menu-mypic").show();
+							$(".el-menu-library").hide();
+						}else{
+							$(".el-menu-mypic").hide();
+							$(".el-menu-library").show();
+						}					
 						if(!$(this).hasClass('borderBnone')){
 							$(this).addClass("borderBnone");
 							$(this).siblings().removeClass("borderBnone");
@@ -392,12 +659,27 @@
 							}
 						}
 					});
+					$("#waterfall-box").on("scroll",function(){
+						var thisHeight = $(this).height();
+						var thisscrollTop = $(this).scrollTop();
+						var scrollHeight = $("#waterfall-box")[0].scrollHeight;
+						if(thisscrollTop + thisHeight >= scrollHeight){
+							self.scrollimgpage = self.scrollimgpage + 1;
+							var param = {
+								aid:self.radioaid,
+								page:self.scrollimgpage,
+								pagesize:self.scrollimg
+							}
+							self.getlibrary(param);
+						}
+					})
 				})
 			},
 			//弹窗关闭事件
 			closeMypic: function(){
 				var self = this;
 				self.fileaid = 0;
+				self.scrollimgpage = 1;
 				self.placeholder = '搜索所有文件';
 				self.searchMypic = "";
 				self.data_img = {aid:0};
@@ -405,6 +687,7 @@
 				self.hasimg = true;
 				$('.myFiles').show();
 		       	$('.fileOfimg').hide();
+		       	$("#waterfall-box").empty();
 			},
 			//图片上传前，控制图片大小和格式
 	     	beforeMypic: function(file){
@@ -472,11 +755,23 @@
       		//点击确定按钮保存图片
       		imgconfirm: function(){
       			var self = this;
-      			var $checked_img = $('.img_box').children(".checked_img");
       			var checkimg;
+      			var $checked_img = $(".checked_img");
       			for(var i=0;i<$checked_img.length;i++){
       				if($($checked_img[i]).css("display") == 'block'){
       					checkimg = $($checked_img[i]).siblings('img').attr('src');
+      				}
+      			}
+      			var $checked_icons = $(".checked_icons");
+      			for(var i=0;i<$checked_icons.length;i++){
+      				if($($checked_icons[i]).css("display") == 'block'){
+      					checkimg = $($checked_icons[i]).siblings('img').attr('src');
+      				}
+      			}
+      			var $checked_falls = $(".checked_falls");
+      			for(var i=0;i<$checked_falls.length;i++){
+      				if($($checked_falls[i]).css("display") == 'block'){
+      					checkimg = $($checked_falls[i]).siblings('img').attr('src');
       				}
       			}
       			let mod = $('.on_module')
@@ -497,7 +792,76 @@
 					}					
 				});
 				self.dialogmyPicture = false;
-      		}
+      		},
+      		
+      		
+      		//图片库一级菜单改变事件
+      		radio_type_change:function(val){
+      			$("#waterfall-box").empty();
+      			var self = this,seclevel = [];
+      			for(var i=0;i<self.radio_type_tabs.length;i++){
+      				if(val == self.radio_type_tabs[i].alname){
+      					seclevel = self.radio_type_tabs[i].children;
+      				}
+      			}
+      			//判断是否有二级菜单
+      			if(seclevel){
+      				$('.nosec').hide();
+      				$('.sec').show();
+      				$(".library_classifys").empty();
+      				var spans = "";
+      				for( i in seclevel){
+      					spans += "<span class='classify' aid="+seclevel[i].aid+">"+seclevel[i].alname+"</span>"
+      				}
+      				$(".library_classifys").append(spans);
+      				$($(".classify")[0]).addClass("classify_check");
+      				
+      				self.radioaid = seclevel[0].aid;
+      				
+      				var param = {
+						aid:self.radioaid,
+						page:self.scrollimgpage,
+						pagesize:self.scrollimg
+					}
+					self.getlibrary(param);
+      				
+      				$(".classify").on("click",function(){
+      					$("#waterfall-box").empty();
+      					$(this).siblings().removeClass("classify_check");
+      					$(this).addClass("classify_check");
+      					self.radioaid = $(this).attr("aid");
+      					self.scrollimgpage = 1;
+      					var param = {
+							aid:self.radioaid,
+							page:self.scrollimgpage,
+							pagesize:self.scrollimg
+						}
+						self.getlibrary(param);
+						
+						$("#waterfall-box").on("scroll",function(){
+							var thisHeight = $(this).height();
+							var thisscrollTop = $(this).scrollTop();
+							var scrollHeight = $("#waterfall-box")[0].scrollHeight;
+							if(thisscrollTop + thisHeight >= scrollHeight){
+								self.scrollimgpage = self.scrollimgpage + 1;
+								var param = {
+									aid:self.radioaid,
+									page:self.scrollimgpage,
+									pagesize:self.scrollimg
+								}
+								self.getlibrary(param);
+							}
+						})
+						
+						
+						
+						
+      				});
+      			}else{
+      				$('.nosec').show();
+      				$('.sec').hide();
+      			}
+      		},
 		}
 	}
 </script>
@@ -696,5 +1060,99 @@
 		width: 100%;
 		height: 100%;
 		background: url(http://static.ebanhui.com/ebh/tpl/default/images/nofile.png) center center no-repeat;
+	}
+	
+	
+	
+	
+	
+	.el-menu-library{
+		width: 802px;
+		height: 535px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: none;
+	}
+	.library_tabs{
+		padding: 20px;
+	}
+	.library_tabs .el-radio-group{
+		
+	}
+	.library_content{
+		height: 458px;
+	}
+	.library_content .library_classifys{
+		padding-left: 20px;
+		margin-bottom: 20px;
+	}
+	.library_content .library_classifys .classify{
+		margin-right: 20px;
+		cursor: pointer;
+	}
+	.classify_check{
+		color: #557CE1;
+	}
+	.library_content .library_img{
+		height: 420px;
+	}
+	.library_content .library_imgs{
+		height: 100%;
+		padding: 0 15px;
+	}
+	.icons_box{
+		float: left;
+		width: 80px;
+		height: 80px;
+		border: 1px solid #FFFFFF;
+		list-style: none;
+		margin: 5px;
+		position: relative;
+	}
+	.icons_box .icons{
+		float: left;
+		width: 80px;
+		height: 80px;
+		cursor: pointer;
+		border: 0 none;
+	}
+	.checked_icons{
+		display: none;
+		width: 17px;
+		height: 13px;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 5;
+		background: url(http://static.ebanhui.com/ebh/tpl/default/images/checkfile.png);
+	}	
+	
+	
+	.library_imgs_falls{  /*瀑布流*/
+		width: 802px;
+		height: 410px;
+		position: relative;
+		overflow-y: auto;
+	}
+	.waterfall{
+		width: 175px;
+		position: absolute;
+		border: 1px solid #FFFFFF;
+	}
+	.waterfall img{
+		float: left;
+		width: 175px;
+		cursor: pointer;
+	}
+	.checked_falls{
+		display: none;
+		width: 17px;
+		height: 13px;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 5;
+		background: url(http://static.ebanhui.com/ebh/tpl/default/images/checkfile.png);
 	}
 </style>

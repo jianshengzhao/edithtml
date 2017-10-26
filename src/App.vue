@@ -619,14 +619,16 @@
     <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
+    <information ref="information"></information>
+    <weather ref="weather"></weather>
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
     <editbutton ref="editbutton"></editbutton>
     <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
-    <advert ref="advert"></advert>
+    <advert ref="advert"></advert> 
     <course ref="course"></course>
-    <player ref="player"></player> 
+    <player ref="player"></player>      
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -638,6 +640,8 @@
   import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
+  import information from '@/components/information'
+  import weather from '@/components/weather'
   import suspend from '@/components/suspend'
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
@@ -655,7 +659,9 @@
       colorPicker, 
       ueditor, 
       hrefdialog, 
-      myimages, 
+      myimages,
+      information,
+      weather, 
       suspend, 
       shape, 
       editbutton, 
@@ -920,45 +926,45 @@
               if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
                 ele.ele.addClass('touch_module')
               }
-            // if (mohubloo) { // 模糊校准
-            //   self.tool.changeMoveEvents(warp)
-            //   if (Math.abs(ele.x - item.x) < 10){
-            //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.x - item.x1) < 10){
-            //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.x1 - item.x) < 10){
-            //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.x1 - item.x1) < 10){
-            //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.y - item.y) < 10){
-            //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.y - item.y1) < 10){
-            //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.y1 - item.y) < 10){
-            //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   } else if (Math.abs(ele.y1 - item.y1) < 10){
-            //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
-            //     mohubloo = false
-            //     line.show()
-            //   }
-            // }
-            // if(!mohubloo){
-            //   ele.ele.addClass('touch_module')
-            // }
+              // if (mohubloo) { // 模糊校准
+              //   self.tool.changeMoveEvents(warp)
+              //   if (Math.abs(ele.x - item.x) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x - item.x1) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x1 - item.x) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.x1 - item.x1) < 10){
+              //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y - item.y) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y - item.y1) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y1 - item.y) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   } else if (Math.abs(ele.y1 - item.y1) < 10){
+              //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
+              //     mohubloo = false
+              //     line.show()
+              //   }
+              // }
+              // if(!mohubloo){
+              //   ele.ele.addClass('touch_module')
+              // }
             }
           },
         // --------------- todo: ---------------------
@@ -1055,6 +1061,21 @@
           }, function (response) {
             console.log(response)
           })
+        },
+        createmap:function(html,that){
+          let self = this
+          var map = new BMap.Map("schoolmap");
+			  	var point = new BMap.Point(116.404, 39.915);
+			  	var pointinfo = new BMap.Point(116.404, 39.935);
+			  	map.centerAndZoom(point, 11);  // 初始化地图,设置中心点坐标和地图级别
+			  	var marker = new BMap.Marker(point);
+			  	map.addOverlay(marker);
+			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>" 
+			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
+			  	var infoWindow = new BMap.InfoWindow(sContent);
+					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
+					
+					that.addClass("onlyone");
         },
         getweather:function(){
           let self = this
@@ -1407,6 +1428,19 @@
           }
         }
         auditions = auditions.substring(0, auditions.length - 1)
+        let player = $('.player')
+        let vedioids = []
+        let vedioidObj = {}
+        for (let i = 0, len = player.length; i < len; i++) {
+          let playerData = $.parseJSON(player.eq(i).attr('playerData')).playerData
+          for (let j = 0, jen = playerData.length; j < jen; j++) {
+            let cwid = playerData[j].cwid
+            if (!vedioidObj[cwid]) {
+              vedioids.push(cwid) 
+              vedioidObj[cwid] = true
+            }
+          }
+        }       
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -1415,7 +1449,8 @@
             body: bodyArray,
             settings: strSetting,
             status: 0,
-            auditions: auditions
+            auditions: auditions,
+            vedioids: vedioids
           },
           fun: function (response) {
             let body = response.body

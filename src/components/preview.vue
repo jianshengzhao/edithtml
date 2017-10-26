@@ -249,7 +249,7 @@
         let carousel = $('.carousel')
         for (let i = 0, len = carousel.length; i < len; i++) {
           self.carouselEvent(self, carousel.eq(i), i)
-        }
+        }       
         // let newscarouseldata = $('.news').attr('carouseldata') || ''
         // self.getnews(newscarouseldata)
         self.switchPwd()
