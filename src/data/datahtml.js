@@ -190,7 +190,7 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.carousel.show()
+      self.$refs.carousel.show(self, element)
     },
     html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
   },
@@ -204,9 +204,23 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.advert.show(element)
+      self.$refs.advert.show(self, element)
     },
     html: '<div class="advert module addmodule"  datatext="悬浮广告"><div class="advCon"></div></div>'
+  },
+  information: {
+    style: 'width:1200px;',
+    tool: {
+      private: {
+        text: '编辑资讯',
+        class: 'st-information'
+      }, 
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.information.show(element)
+    },
+    html: '<div class="information module addmodule"  datatext="资讯"><div class="inforCon"></div></div>'
   },
   waiter: {
     style: 'width:50px; height:50px',

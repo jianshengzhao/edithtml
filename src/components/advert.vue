@@ -24,28 +24,24 @@
             <div class="addLi" v-for="(item, index) in advertData">
               <div class="imgbox">
                 <img :src="item.img" alt="">
-                <div class="update">修改</div>
-                <div class="delete">删除</div>
+                <div class="update" @click="updatePictureEvent(index)">修改</div>
+                <div class="delete" @click="deletePictureEvent(index)">删除</div>
               </div>  
-              <div class="set-url-btn" v-if="!item.url">设置链接</div>
+              <div class="set-url-btn" :style="!item.url ? 'display:block' : 'display:none'" @click="settingHrefEvent(index)">设置链接</div>
               <div class="update-url-box" v-if="item.url">
                 <div class="urlType">{{item.urlType}}：</div>
                 <div class="urlRoute">{{item.urlRoute}}</div>
-                <div class="update">修改</div>
-                <div class="delete">删除</div>
+                <div class="update" @click="settingHrefEvent(index)">修改</div>
+                <div class="delete" @click="deleteHrefEvent(index)">删除</div>
               </div>
             </div>
-            <div class="addLi">
-              <el-upload
-                class="advert-uploader"
-                name="upfile"
-                action="/uploadv2/image.html"
-                :show-file-list="false"
-                :on-success="handleAdvertSuccess"
-                :before-upload="beforePictureUpload">                  
-                <i class="el-icon-plus"></i>
-                <span>添加图片</span>
-              </el-upload>
+            <div class="addLi" v-if="advertData.length < 5">
+              <div class="advert-uploader">
+                <div class="el-upload el-upload--text" @click="addPictureEvent">
+                  <i class="el-icon-plus"></i>
+                  <span>添加图片</span>
+                </div>
+              </div>
             </div>
           </div>
         </el-col>
@@ -65,14 +61,7 @@ export default {
     return {
       dialogAdvert: false,
       showStyle: 'static',
-      advertData: [
-        {
-          img: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
-          url: 'asdads',
-          urlType: '课程',
-          urlRoute: '路径'
-        }
-      ],
+      advertData: [],
       styleOptions: [
         {
           label: '静态悬浮',
@@ -89,7 +78,25 @@ export default {
   created: function () {
     // let self = this 
   },
-  methods: {     
+  methods: {
+    show: function (that, element) {
+      let self = this
+      self.that = that
+      self.dialogAdvert = true
+      if (!element) {
+        self.showStyle = '' 
+        self.advertData = [] 
+        self.currentEle = $('.on_module')
+        let advertData = self.currentEle.attr('advertData')
+        if(advertData) {
+          let jsonAdvert = $.parseJSON(advertData)
+          self.showStyle = jsonAdvert.floatStyle      
+          self.advertData = jsonAdvert.advertData
+        }
+      } else {
+        self.currentEle = element
+      }
+    },    
     dialogAdvertEvent: function () {
       let self = this
       self.dialogAdvert = false
@@ -108,7 +115,11 @@ export default {
       let advHtml = ''
       for (let i = 0, len = self.advertData.length; i < len; i++) {
         let item = self.advertData[i]
-        advHtml += '<a href="'+ item.url +'" target="_blank"><img src="'+ item.img +'"></a>'
+        if (item.url == 'loginEvent' || item.url == 'getUserNameEvent' || item.url == 'registerEvent' ) {
+          advHtml += '<a class="' + item.url + '" target="_blank"><img src="'+ item.img +'"></a>'
+        } else {
+          advHtml += '<a href="'+ item.url +'" target="_blank"><img src="'+ item.img +'"></a>'
+        }        
       }
       let advCon = self.currentEle.find('.advCon')
       advCon.html(advHtml) 
@@ -134,51 +145,174 @@ export default {
         self.currentEle.find('.resizeBox').css('height',hs + 'px')
       })
     },
-    beforePictureUpload: function (file) {
-      let self = this
-      if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-        self.$notify({
-          title: '警告',
-          message: '上传的图片只能是jpg、png或gif格式。',
-          type: 'warning',
-          offset: 50,
-          duration: 4000
+    addPictureEvent: function () {
+      let self = this    
+      self.that.$refs.myimages.show('advert', self, function (self, data) {        
+        self.advertData.push({
+          img: data,
+          url: '',
+          urlType: '',
+          urlRoute: ''
         })
-        return false
-      }
+      })
     },
-    handleAdvertSuccess: function (res) {
-      let self = this
-      let code = res.code
-      let data = res.data
-      if (code === 0) {
-        self.advertData.push({img: data.showurl, url: '', urlType:'',urlRoute:''})
-      } else {
-        self.$notify({
-          title: '警告',
-          message: res.msg,
-          type: 'warning',
-          offset: 50,
-          duration: 4000
-        })
-      }
+    updatePictureEvent: function (index) {
+      let self = this 
+      self.index = index   
+      self.that.$refs.myimages.show('advert', self, function (self, data) {        
+        self.advertData[self.index]['img'] = data
+      })
     },
-    show: function (element) {
-      let self = this      
-      self.dialogAdvert = true
-      if (!element) {
-        self.showStyle = '' 
-        self.advertData = [] 
-        self.currentEle = $('.on_module')
-        let advertData = self.currentEle.attr('advertData')
-        if(advertData) {
-          let jsonAdvert = $.parseJSON(advertData)
-          self.showStyle = jsonAdvert.floatStyle      
-          self.advertData = jsonAdvert.advertData
-        }
-      } else {
-        self.currentEle = element
-      }
+    deletePictureEvent: function (index) {
+      let self = this;
+      self.advertData.splice(index,1)
+    },
+    settingHrefEvent: function (index) {
+      let self = this;
+      self.index = index
+      self.that.$refs.hrefdialogp.show('advert', self, function (self, data, linkType) {
+        let urlType = ''
+        let urlHref = ''
+        let urlRoute = ''
+        let navcm        
+        switch(linkType){
+          case 'online':
+            urlType = '外部链接'            
+            urlRoute = data.href
+            urlHref = data.href
+            break
+          case 'news':
+            urlType = '资讯'
+            switch (data.active) {
+              case 1:      
+                switch (data.news) {
+                  case 'news':
+                    urlHref = '/dyinformation.html'
+                  break
+                  default:
+                    navcm = data.newscode.split('n')[1]  
+                    urlHref = '/navcm/' + navcm + '.html'
+                }              
+                urlRoute = data.news.label
+                break
+              case 2: 
+                let w = data.newscode.indexOf("s");
+                navcm = data.newscode.substring(0,w).split('n')[1]
+                let ns = data.newscode.split('s')[1]
+                if (ns) {
+                  urlHref = '/navcm/' + navcm + '.html?s=' + ns
+                } else {
+                  urlHref = '/navcm/' + navcm + '.html'
+                }               
+                urlRoute = data.news.label + '/' + data.news.label1
+                break
+              case 3:
+                urlHref = '/dyinformation/' + data.news + '.html'
+                urlRoute = data.news.label1 != '' ? data.news.label + '/' + data.news.label1 + '/' + data.newsTitle : data.news.label + '/' + data.newsTitle
+                break
+            }             
+            break
+          case 'course':
+            switch (data.course) {
+              case 1:
+                urlType = '课程链接'
+                urlRoute = '选课中心'
+                urlHref = '/platform.html'
+                break
+              case 2:
+                urlType = '课程主类'
+                urlRoute = (data.name || '本校课程') + ' / ' + data.pname
+                urlHref = '/platform-1-0-0.html?pid='+ data.pid
+                break
+              case 3:
+                urlType = '课程主类'
+                urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname     
+                if(data.sid == 0){
+                  urlHref ='/platform-1-0-0.html?pid='+ data.pid
+                } else {
+                  urlHref ='/platform-1-0-0.html?pid='+ data.pid + '&sid=' + data.sid
+                }
+                break
+              case 4:
+                urlType = '课程'
+                urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname + ' / ' + data.foldername
+                urlHref ='/courseinfo/' + data.itemid + '.html'
+                break
+              case 5:
+                urlType = '课件'
+                urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname + ' / ' + data.foldername + ' / ' + data.cwname
+                if(data.cwpay == '1'){
+                  urlHref = '/ibuy.html?cwid=' + data.cwid
+                }else{
+                  urlHref = '/courseinfo/' + data.itemid + '.html'
+                }
+                break
+            }            
+            break
+          case 'teacher':
+            urlType = '教师主页'
+            urlRoute = '教师：' + data.realname
+            urlHref = '/master/'+ data.teauid +'.html'
+            break
+          case 'onlineschool':
+            let origin = window.location.origin
+            urlType = '网校应用'                
+            switch (data.oneinlineschool) {
+              case 'summary':
+                urlRoute = '网校简介'
+                urlHref = '/introduce.html'
+              break
+              case 'course':
+                urlRoute = '选课中心'
+                urlHref = '/platform.html'
+              break
+              case 'contact':
+                urlRoute = '联系我们'
+                urlHref = '/contacts.html'
+              break              
+              case 'password':
+                urlRoute = '忘记密码'
+                urlHref = '/forget.html' 
+              break              
+              case 'QQ':
+                urlRoute = '第三方QQ登录'
+                urlHref =  'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin
+              break
+              case 'weibo':
+                urlRoute = '第三方微博登录'
+                urlHref = 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin
+              break
+              case 'WeChat':
+                urlRoute = '第三方微信登录'
+                urlHref = 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin    
+              break
+              case 'register':               
+                urlRoute = '注册'
+                urlHref = 'registerEvent'
+              break
+              case 'username':
+                urlRoute = '获取用户名'
+                urlHref = 'getUserNameEvent'             
+              break
+              case 'login':
+                urlRoute = '登录弹框'
+                urlHref = 'loginEvent'             
+              break
+              case 'login1':
+                urlRoute = '登录弹框'
+                urlHref = 'loginEvent'
+              break
+            }
+            break
+          }
+         self.advertData[self.index]['urlType'] = urlType
+         self.advertData[self.index]['urlRoute'] = urlRoute
+         self.advertData[self.index]['url'] = urlHref
+      })     
+    },
+    deleteHrefEvent: function (index) {
+      let self = this;
+      self.advertData[index].url = ''     
     }
   }
 }
@@ -266,7 +400,11 @@ export default {
   #advert .addLi .update-url-box div {
     line-height: 24px;
   }
-  #advert .urlRoute{
+  #advert .addLi .update-url-box .urlRoute{
+    width: 290px;
+    line-height: 18px;
+    height: 36px;
+    overflow: hidden;
     color: #999999;
   }
   #advert .update-url-box .update{

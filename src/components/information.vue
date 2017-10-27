@@ -29,14 +29,13 @@
 		      		<el-cascader
 		      			:props="propsclassify"
 					    :options="optionsclassify"
-					    v-model="selectedclassify"
-					    @change="classifyChange">
+					    v-model="selectedclassify">
 					</el-cascader>
 		      	</div>
 		      	<div class="contentrange-wrap">
 		      		<div class="infordesc">内容区间：</div>
-		      		<el-input-number v-model="num1" :min="1" @change="minrows"></el-input-number>&nbsp;~&nbsp;
-		      		<el-input-number v-model="num2" :min="1" @change="maxrows"></el-input-number>&nbsp;行
+		      		<el-input-number v-model="num1" :min="1" :max="num2"></el-input-number>&nbsp;~&nbsp;
+		      		<el-input-number v-model="num2" :min="num1"></el-input-number>&nbsp;条
 		      	</div>
 		      	<p class="infrotips">（选择后显示已选择分类下对应位置资讯）</p>
 		    <span slot="footer">
@@ -75,7 +74,17 @@
 					}, function(response){
 						console.log(response)
 					});
-				}
+				},
+				getLocalTime:function (nS) {//时间戳转换日期格式
+		            var now = new Date(nS*1000),
+		               year = now.getFullYear(),
+		               month = (now.getMonth()+1) < 10 ? '0' + (now.getMonth()+1):now.getMonth()+1,
+		               date = now.getDate() < 10 ? '0' + now.getDate() : now.getDate(),
+		               hour = now.getHours() < 10 ? '0' + now.getHours() : now.getHours(),
+		               minute = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes(),
+		               second = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+		            return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+		       	},
 			}
 		},
 		created:function(){
@@ -83,14 +92,22 @@
 		},
 		methods:{
 			//用于主页调用当前模板函数，弹出弹框并加载数据
-			show:function(){
+			show:function(element){
 		        var self = this;
 		        self.dialogInformation = true;
 		    },
 		    //窗口打开函数
 		    openInformation:function(){
 		    	var self = this;
-		    	self.selectedclassify = [];
+		    	$(".img-wrap").css("border-color","#FFFFFF");
+	    		$($(".img-wrap")[0]).css("border-color","#557CE1");
+	    		$('.checked_infor').hide();
+	    		$($('.checked_infor')[0]).show();
+	    		self.infortype = 1;
+				self.selectedclassify = [];
+	    		self.num1 = 1;
+	    		self.num2 = 5;
+	    		
 		    	self.getinfordesc();
 		    	self.$nextTick( () => {
 					let $imgwrap = $(".img-wrap");
@@ -105,22 +122,8 @@
 		    },
 			closeInformation:function(){
 				var self = this;
-				//弹窗关闭初始化数据还是弹窗打开先初始化数据有待考虑
-//				$(".img-wrap").css("border-color","#FFFFFF");
-//	    		$($(".img-wrap")[0]).css("border-color","#557CE1");
-//	    		$('.checked_infor').hide();
-//	    		$($('.checked_infor')[0]).show();
-//	    		
-//	    		self.infortype = 1;
-	    		//这里还要将分类初始化
-//	    		self.num1 = 1;
-//	    		self.num2 = 5;
 			},
 			
-			classifyChange:function(value) {//分类改变函数
-				
-		   	},
-		   
 		   	minrows:function(value){
 		   		
 		   	},
@@ -136,10 +139,11 @@
 						message: '请选择资讯分类！',
 						type: 'warning',
 						offset: 40,
-						duration: 1500
+						duration: 2000
 					});
 		   			return false;
 		   		}
+		   		$('.on_module').find(".inforCon").empty();
 		   		self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
 		   		{
 					begin:self.num1,
@@ -147,7 +151,46 @@
 					navcode:self.selectedclassify[i],
 				}, {emulateJSON: true}).then(function(response) {
 					var datas = response.data;
-					
+					if(datas.code == 0){
+						if(self.num1 <= datas.data.count){
+							var inforhtml = "";
+							for (var i in datas.data.newslist){ 
+								datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
+								inforhtml += '<div class="infor-wrap">'
+								inforhtml += 	'<div class="infor-cont">'
+								inforhtml += 		'<p class="infor-title">'+datas.data.newslist[i].subject+'</p>'
+								if(self.infortype == 1){
+									inforhtml += '<div class="infor-img">'
+									inforhtml += '<img src="'+datas.data.newslist[i].thumb+'" />'
+								}else{
+									inforhtml += '<div class="infor-desc-text">'
+								}
+								inforhtml += 			'<div class="infor-desc">'
+								inforhtml += 				'<p class="infor-conc">'+datas.data.newslist[i].note+'</p>'
+								inforhtml += 				'<div class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</div>'
+								inforhtml += 			'</div>'
+								inforhtml += 		'</div>'
+								inforhtml += 	'</div>'
+								inforhtml += '</div>'
+							}
+							$('.on_module').find(".inforCon").html(inforhtml);
+							self.dialogInformation = false;
+							$('.on_module').ready(function() {
+								$('.on_module').css("background-color","#FFFFFF");
+						        $('.on_module').css('height',datas.data.newslist.length * 200 + 'px')
+						        $('.on_module').find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
+						   	})
+						}else{
+							self.$notify({
+								title: '提示',
+								message: '资讯条数总共只有'+datas.data.count+'条。',
+								type: 'warning',
+								offset: 40,
+								duration: 3000
+							});
+						}
+						
+					}
 				}, function(response) {
 					console.log(response)
 				});
@@ -230,5 +273,62 @@
 		width: 100%;
 		margin-left: 78px;
 		color: #999999;
+	}
+	
+	
+	.infor-wrap{
+		width: 1140px;
+		height: 180px;
+		padding: 20px 30px 0 30px;
+	}
+	.infor-cont{
+		width: 100%;
+		height: 180px;
+		border-bottom: 1px solid #F5F5F5;
+	}
+	.infor-title{
+		height: 40px;
+		font-size: 22px;
+		color: #616161;
+		font-weight: 900;
+	}
+	.infor-img{
+		width: 100%;
+		height: 140px;
+	}
+	.infor-img img{
+		float: left;
+		width: 210px;
+		height: 128px;
+		border: 0 none;
+	}
+	.infor-desc{
+		float: left;
+		width: 930px;
+		height: 128px;
+		position: relative;
+	}
+	.infor-desc-text{
+		float: left;
+		width: 100%;
+		height: 128px;
+		position: relative;
+	}
+	.infor-conc{
+		width: 100%;
+		max-height: 110px;
+		color: #919191;
+		font-size: 14px;
+		padding-left: 16px;
+		text-indent: 20px;
+		line-height: 20px;
+		overflow: hidden;
+	}
+	.infor-time{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		color: #999999;
+		font-size: 14px;
 	}
 </style>

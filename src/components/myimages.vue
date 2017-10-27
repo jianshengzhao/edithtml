@@ -48,8 +48,7 @@
 				    <p><span class="allFile">所有文件 > </span><span class="nowfileName">文件夹</span></p>
 				    <ul class="myImgs"></ul>
 				</div>  		
-			</div>
-			
+			</div>			
 			
 			<!--图片库结构-->
 			<div class="el-menu-library">
@@ -114,7 +113,7 @@
 				radioaid:"",		//第一层图片图标分类id
 				scrollimgpage:1,	
 				scrollimg: 10,		//一次加载多少张图
-				
+				systype:1,
 				//获取文件以及图片列表，参数表示文件夹aid和搜索关键字q
        			getfilelist:function(param){ 
 		       		var self = this;
@@ -360,7 +359,6 @@
 		       	getlibraryclassify:function(){
 		       		var self = this;
 		       		self.libraryloading = true;
-		       		//window.host+"/admin/gallery/getgallerys.html"
 		       		self.$http.post(window.host+"/room/albums/getgallerys.html",
 		       		{},{emulateJSON:true}).then(function(response){
 		        		if(response.data.code == 0){
@@ -394,6 +392,7 @@
 				      				
 				      				self.radioaid = gallerys[0].children[0].aid;
 				      				var param = {
+				      					systype:self.systype,
 										aid:self.radioaid,
 										page:self.scrollimgpage,
 										pagesize:self.scrollimg
@@ -408,6 +407,7 @@
 				      					self.radioaid = $(this).attr("aid");
 				      					self.scrollimgpage = 1;
 				      					var param = {
+				      						systype:self.systype,
 											aid:self.radioaid,
 											page:self.scrollimgpage,
 											pagesize:self.scrollimg
@@ -421,6 +421,7 @@
 											if(thisscrollTop + thisHeight >= scrollHeight){
 												self.scrollimgpage = self.scrollimgpage + 1;
 												var param = {
+													systype:self.systype,
 													aid:self.radioaid,
 													page:self.scrollimgpage,
 													pagesize:self.scrollimg
@@ -445,7 +446,6 @@
 		       	//获取图片库的图片
 		       	getlibrary:function(param){
 		       		var self = this;
-		       		//window.host+"/admin/gallery/getphotos.html"
 		       		self.$http.post(window.host+"/room/albums/getgalleryphotos.html",
 		       		param,{emulateJSON:true}).then(function(response){
 		       			if(response.data.code == 0){
@@ -585,10 +585,17 @@
 		},
 		methods:{
 			//用于主页调用当前模板函数，弹出弹框并加载数据
-			show:function(){
+			show:function(returnSrc, that, srcFun){
 		        let self = this;
 		        self.dialogmyPicture = true;
-		        
+		        self.saveParam = false
+		        if (returnSrc) {
+		        	self.saveParam = {
+		        		returnSrc: returnSrc,
+		        		that: that,
+		        		srcFun: srcFun
+		        	}
+		        }
 		        self.$nextTick( () => {
 		        	let $allFile = $('.allFile');
 		        	//点击所有文件跳回最外层
@@ -666,6 +673,7 @@
 						if(thisscrollTop + thisHeight >= scrollHeight){
 							self.scrollimgpage = self.scrollimgpage + 1;
 							var param = {
+								systype:self.systype,
 								aid:self.radioaid,
 								page:self.scrollimgpage,
 								pagesize:self.scrollimg
@@ -694,6 +702,16 @@
 	     		var self = this;
 	     		if(self.httpStart > 0) return;
             	self.httpStart = 1;
+            	if(file.type != "image/jpeg" || file.type != "image/gif" || file.type != "image/png"){
+            		self.$notify({
+		    			title: '警告',
+		    			message: '上传的文件只能是jpeg、jpg、gif或png格式。',
+		    			type: 'warning',
+		    			offset: 50,
+		    			duration: 4000
+		    		});
+		    		return false;
+            	}
      			if(file.size / 1024 / 1024 > 1){
 	    			self.$notify({
 		    			title: '警告',
@@ -774,23 +792,30 @@
       					checkimg = $($checked_falls[i]).siblings('img').attr('src');
       				}
       			}
-      			let mod = $('.on_module')
-      			let img = mod.find('img')
-      			img.removeAttr('style')
-      			let picBox = mod.find('.picBox')
-      			img.attr('src',checkimg);
-      			let imgSrc = img.attr("src");      			
-				self.getImageWidth(imgSrc,function(w,h){
-					mod.css({'width': w, 'height': h})
-					mod.find('.resizeBox').css({'width': w, 'height': h})
-					if(picBox.hasClass('round') || picBox.hasClass('square')){						
-						if (parseInt(w) > parseInt(h)) {
-							picBox.css({'width': h, 'height': h})
-						} else {
-							picBox.css({'width': w, 'height': w})
-						}
-					}					
-				});
+
+      			let saveParam = self.saveParam
+      			if(saveParam) { // 判断是否作用在模块上，还是放回img src      				
+		        	saveParam.srcFun(saveParam.that, checkimg)
+      			} else {
+	      			// checkimg
+	      			let mod = $('.on_module')
+	      			let img = mod.find('img')
+	      			img.removeAttr('style')
+	      			let picBox = mod.find('.picBox')
+	      			img.attr('src',checkimg);
+	      			let imgSrc = img.attr("src");      			
+					self.getImageWidth(imgSrc,function(w,h){
+						mod.css({'width': w, 'height': h})
+						mod.find('.resizeBox').css({'width': w, 'height': h})
+						if(picBox.hasClass('round') || picBox.hasClass('square')){						
+							if (parseInt(w) > parseInt(h)) {
+								picBox.css({'width': h, 'height': h})
+							} else {
+								picBox.css({'width': w, 'height': w})
+							}
+						}					
+					})					
+				}
 				self.dialogmyPicture = false;
       		},
       		
@@ -799,6 +824,8 @@
       		radio_type_change:function(val){
       			$("#waterfall-box").empty();
       			var self = this,seclevel = [];
+      			self.scrollimgpage = 1;
+      			self.systype = val=="图片"?1:2;
       			for(var i=0;i<self.radio_type_tabs.length;i++){
       				if(val == self.radio_type_tabs[i].alname){
       					seclevel = self.radio_type_tabs[i].children;
@@ -819,6 +846,7 @@
       				self.radioaid = seclevel[0].aid;
       				
       				var param = {
+      					systype:self.systype,
 						aid:self.radioaid,
 						page:self.scrollimgpage,
 						pagesize:self.scrollimg
@@ -832,6 +860,7 @@
       					self.radioaid = $(this).attr("aid");
       					self.scrollimgpage = 1;
       					var param = {
+      						systype:self.systype,
 							aid:self.radioaid,
 							page:self.scrollimgpage,
 							pagesize:self.scrollimg
@@ -845,6 +874,7 @@
 							if(thisscrollTop + thisHeight >= scrollHeight){
 								self.scrollimgpage = self.scrollimgpage + 1;
 								var param = {
+									systype:self.systype,
 									aid:self.radioaid,
 									page:self.scrollimgpage,
 									pagesize:self.scrollimg

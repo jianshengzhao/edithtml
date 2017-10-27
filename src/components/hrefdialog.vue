@@ -52,17 +52,16 @@
                   <div class="newscont">
                     <form class="oneselnews">
                       <div class="newsradio" v-for="(item,index) in NewsOptions">
-                        <input :code="item.value"  name="onenews" type="radio" value="" />
+                        <input :code="item.value" :newsname="item.label" name="onenews" type="radio" value="" />
                         <a @click="getsonNews(item.value,0,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
-
                       <div style="clear: both;"></div>
                        <input type="reset" class="newsradioreset" style="display: none;" value="Reset">
                     </form>
                     <div class="nodata" v-if="!NewsOptions.length"></div>
                     <form class="twoselnews">
                       <div class="newsradio" v-for="(item,index) in sonNewsOptions">
-                        <input :code="item.value" name="twonews" type="radio" value="" />
+                        <input :code="item.value" :newsname="item.label" name="twonews" type="radio" value="" />
                         <a @click="getsonNews(item.value,1,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                       </div>
                       <div style="clear: both;"></div>
@@ -180,8 +179,8 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName ? false : items.ism3u8=='1' ? false:true"/>
-                      <a class="vc-font2" :style="!parameter.thatName ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName||parameter.thatName == 'advert' ? false : items.ism3u8=='1' ? false:true"/>
+                      <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert' ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
                       </a>
@@ -740,6 +739,7 @@
     },
     methods:{
       show: function(thatName, thatSelf, Callback){
+        console.log(thatName, thatSelf, Callback)
         let self = this;
         self.visdialog = true;
         self.$nextTick( () => {
@@ -916,20 +916,29 @@
             let news;
             let url;
             let num = 0;
+            let newsTitle = ''
             let onenews = $('.oneselnews').is(':hidden');
             let twonews = $('.twoselnews').is(':hidden');
             let threenews = $('.threeselnews').is(':hidden');
             if(!onenews){
-              news = $("input[name='onenews']:checked").attr('code');
+              let onenewsChecked = $("input[name='onenews']:checked")
+              news = onenewsChecked.attr('code');
+              self.newsobj['label'] = onenewsChecked.attr('newsname')
               num = 1;
             }else if(!twonews){
-              news = $("input[name='twonews']:checked").attr('code');
-              num = 2;
-              
+              let twonewsChecked = $("input[name='twonews']:checked")
+              news = twonewsChecked.attr('code');
+              self.newsobj['label1'] = twonewsChecked.attr('newsname')
+              num = 2;              
             }else if(!threenews){
-              news = self.threenewsradio;
-              num = 3;
-              
+              news = self.threenewsradio;             
+              for (let i = 0, len = self.newslist.length; i < len; i++) {
+                let itemNews = self.newslist[i]
+                if (itemNews.itemid == self.threenewsradio) {
+                  newsTitle = itemNews.subject
+                }
+              }              
+              num = 3;              
             }
             if(news == undefined || news == 'undefined' || !news) {
               this.$notify({
@@ -964,6 +973,7 @@
             if(num == 3){
               obj = {
                 active : num,
+                newsTitle: newsTitle,
                 newscode : news,
                 news : self.newsobj,
                 pagesize : self.newspagesize,
@@ -1222,6 +1232,7 @@
                 folderpagesize: self.folderpagesize,
                 cwid:fivecourseradio,
               // ----------- update start------------  
+                cwpay: cwpay,
                 logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
                 viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
                 summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
@@ -1246,7 +1257,7 @@
         }
         // ----------- update start------------
         if (parameter) { 
-          parameter.Callback(parameter.thatSelf, obj)        
+          parameter.Callback(parameter.thatSelf, obj, linkType)        
         } else {
           a.attr('linktype',linkType)
           a.attr('target','_blank')

@@ -1357,7 +1357,10 @@ var tool = {
           self.$refs.waiter.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-advert':
-          self.$refs.advert.show(self, me.$('.on_module'), me)
+          self.$refs.advert.show(self)
+          break
+        case 'st-left st-information':
+          self.$refs.information.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-player':
           self.$refs.player.show(self, me.$('.on_module'), me)
@@ -1740,36 +1743,36 @@ var tool = {
   // ------------- 模块双击设置 ----------------
     let preTime = 0
     me.editBox.on('mousedown', '.resizeBox', function (e) { // 模块双击操作
-      let interval = (Date.parse(new Date()) - preTime) / 1000 
-      if (interval < 1) {
-        let type = self.moduleElement.attr('class').split(' ')[0]       
-        switch (type) {
-          case 'course': 
-            self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
-              let courseHtm = '<div class="imgbox">'
-                            + '<div class="listBox">'
-                            + '<a target="_blank" class="animateBox">课程</a>'
-                            + '<img src="'+ data.img +'">'
-                            + '<a target="_blank" class="openState openState_djbmbg1"></a>'
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="courseTit">'+ data.foldername +'</div>'
-                            + '<div class="speak">讲师</div>'
-                            + '<div class="popularity">'+ data.viewnum+'</div>'
-                            + '<div class="number">'+ data.studynum +'</div>'
-              element.attr('datacoruse', data.itemid)
-              element.find('.editCourse').remove()
-              element.append(courseHtm)
-            })
-            break
-          case 'player': 
-            self.$refs.player.show()
-            break
-          }
-        return false
-      } else {
-        preTime = Date.parse(new Date())
-      }     
+      // let interval = (Date.parse(new Date()) - preTime) / 1000 
+      // if (interval < 1) {
+      //   let type = self.moduleElement.attr('class').split(' ')[0]       
+      //   switch (type) {
+      //     case 'course': 
+      //       self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
+      //         let courseHtm = '<div class="imgbox">'
+      //                       + '<div class="listBox">'
+      //                       + '<a target="_blank" class="animateBox">课程</a>'
+      //                       + '<img src="'+ data.img +'">'
+      //                       + '<a target="_blank" class="openState openState_djbmbg1"></a>'
+      //                       + '</div>'
+      //                       + '</div>'
+      //                       + '<div class="courseTit">'+ data.foldername +'</div>'
+      //                       + '<div class="speak">讲师</div>'
+      //                       + '<div class="popularity">'+ data.viewnum+'</div>'
+      //                       + '<div class="number">'+ data.studynum +'</div>'
+      //         element.attr('datacoruse', data.itemid)
+      //         element.find('.editCourse').remove()
+      //         element.append(courseHtm)
+      //       })
+      //       break
+      //     case 'player': 
+      //       self.$refs.player.show()
+      //       break
+      //     }
+      //   return false
+      // } else {
+      //   preTime = Date.parse(new Date())
+      // }     
     })  
   }
 }
