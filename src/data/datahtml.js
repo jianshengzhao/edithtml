@@ -18,12 +18,12 @@ var configHtml = {
       },
       {
         name: 'radius',
-        icon: 'imgicon icon-radius',
+        icon: 'imgicon icon-round',
         text: '圆形'
        },
       {
         name: 'editor',
-        icon: 'imgicon icon-editor',
+        icon: 'imgicon icon-text',
         text: '文本'
       },
       {
@@ -38,59 +38,59 @@ var configHtml = {
       },
       {
         name: 'hline',
-        icon: 'imgicon icon-hline',
+        icon: 'imgicon icon-level_Line',
         text: '横线'
       },
       {
         name: 'sline',
-        icon: 'imgicon icon-sline',
+        icon: 'imgicon icon-vertical_Line',
         text: '竖线'
       },
       {
         name: 'taxonomy',
-        icon: 'imgicon icon-cursetaxonomy',
+        icon: 'imgicon icon-classify',
         text: '分类'
       },
       {
         name: 'loginbox',
-        icon: 'imgicon icon-loginbox',
+        icon: 'imgicon icon-login',
         text: '登录框'
       },      
       {
         name: 'waiter',
-        icon: 'imgicon icon-editor',
+        icon: 'imgicon icon-waiter',
         text: '客服'
       },
       {
         name: 'player',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-player',
         text: '播放器'
       },
       {
         name: 'schoollogo',
-        icon: 'imgicon icon-schoollogo',
+        icon: 'imgicon icon-logo',
         text: 'LOGO'
       },
       {
         name: 'schoolmap',
-        icon: 'imgicon icon-schoolmap',
+        icon: 'imgicon icon-map',
         text: '地图'
       },
       {
         name: 'schoolqr',
-        icon: 'imgicon icon-schoolqr',
+        icon: 'imgicon icon-QRcode',
         text: '二维码'
       }
     ],
     online: [
       {
         name: 'carousel',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-carousel',
         text: '轮播'
       },
       {
         name: 'advert',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-advert',
         text: '悬浮广告'
       },      
       {
@@ -105,7 +105,7 @@ var configHtml = {
       },      
       {
         name: 'course',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-course',
         text: '课程'
       },
       {
@@ -232,11 +232,11 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.waiter.show()
+      self.$refs.waiter.show(self, element)
       if (me.$('.waiter').length < 1) {
         me.editBox.append('<div class="waiter"><div class="kf-head"></div><div class="kf-top"></div></div>')
         me.$('.waiter').on('click', function() {
-          self.$refs.waiter.show()
+          self.$refs.waiter.show(self, element)
         })
       }      
     },

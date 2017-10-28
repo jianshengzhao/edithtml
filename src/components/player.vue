@@ -92,7 +92,7 @@ export default {
     },
     addPlayerEvent: function () { // 添加视频
       let self = this
-      self.that.$refs.hrefdialogp.show('coursecw', self, function (self, data) {       
+      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {       
         self.playerData.push({
           title: data.cwname,
           desc: data.summary,
@@ -104,7 +104,7 @@ export default {
     },
     updatePlayerEvent: function (index) { // 修改视频
       let self = this
-      self.that.$refs.hrefdialogp.show('coursecw', self, function (self, data) {       
+      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {       
         self.playerData.splice(index,1,{
           title: data.cwname,
           desc: data.summary,

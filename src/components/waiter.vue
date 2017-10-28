@@ -22,7 +22,7 @@
         <el-col :span="4">
           <div class="waiterImgBox" :style="'background-image:url('+ waiterImg +')'" v-if="waiterImg!=''">        
           </div>
-          <span class="addPic">{{waiterImg==''?'添加':'修改'}}</span>
+          <span class="addPic" @click="addPictureEvent">{{waiterImg==''?'添加':'修改'}}</span>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">        
@@ -56,7 +56,20 @@ export default {
   created: function () {
     // let self = this 
   },
-  methods: {     
+  methods: {
+    show: function (that, element) {
+      let self = this
+      self.that = that
+      self.showStyle = ''
+      self.waiterImg = ''
+      self.dialogWaiter = true
+      let waiter = $('.waiter')
+      if (waiter.length > 0) {
+        let jsonS = $.parseJSON(waiter.attr('waiterData'))
+        self.showStyle = jsonS.showStyle || 'left'
+        self.waiterImg = jsonS.waiterImg || 'http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png'
+      }
+    },
     dialogWaiterEvent: function () {
       let self = this
       let waiter = $('.waiter')
@@ -67,6 +80,7 @@ export default {
       }
       let str = window.JSON.stringify(obj)
       waiter.attr('waiterData', str)
+      waiter.find('.kf-head').css('background-image', 'url(' + self.waiterImg + ')')
       waiterhide.attr('waiterData', str)
       if (self.showStyle == 'right'){
         let rig = $('.editBox').css('paddingRight')
@@ -82,17 +96,11 @@ export default {
       }
       self.dialogWaiter = false
     },
-    show: function () {
-      let self = this
-      self.showStyle = ''
-      self.waiterImg = ''
-      self.dialogWaiter = true
-      let waiter = $('.waiter')
-      if (waiter.length > 0) {
-        let jsonS = $.parseJSON(waiter.attr('waiterData'))
-        self.showStyle = jsonS.showStyle || 'left'
-        self.waiterImg = jsonS.waiterImg || 'http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png'
-      }
+    addPictureEvent: function () {
+      let self = this    
+      self.that.$refs.myimages.show('waiter', self, function (self, data) {
+        self.waiterImg = data
+      })
     }
   }
 }

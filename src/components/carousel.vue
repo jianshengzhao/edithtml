@@ -22,16 +22,16 @@
         </el-row>
         <el-row>
           <el-col :span="2">展示时长：</el-col>
-          <el-col :span="5"><el-input-number v-model="showTime" :min="5" :max="20"></el-input-number></el-col>
+          <el-col :span="5"><el-input-number v-model="showTime" :min="1" :max="99"></el-input-number></el-col>
           <el-col :span="2">切换时长：</el-col>
-          <el-col :span="6"><el-input-number v-model="transitionTime" :min="0" :max="2" :step="0.2"></el-input-number></el-col>
+          <el-col :span="6"><el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.2"></el-input-number></el-col>
         </el-row>        
         <div class="selectBox">
           <div class="diaimg_li" v-for="(item, index) in carouselData">
             <div class="carImgBox">
               <img :src="item.imgurl">
-              <div class="update" @click="updatePictureEvent(index)">修改</div>
-              <div class="delete" @click="deletePictureEvent(index)">删除</div>
+              <div class="update" @click="updatePictureEvent(index)"></div>
+              <div class="delete" @click="deletePictureEvent(index)"></div>
             </div>            
             <div class="handleList">
               <el-row>
@@ -43,7 +43,7 @@
                   <span class="spanTit spanUrl" :style="!item.clickurl ? 'display:block' : 'display:none'" @click="carouselChangeEvent(index)">设置链接</span>                
                   <div class="urlType" v-if="item.clickurl">{{item.urlType}}：</div>               
                 </el-col>
-                <el-col :span="3"><span @click="carouselChangeEvent(index)" class="spanTit">修改</span></el-col>
+                <el-col :span="3"><span @click="carouselChangeEvent(index)" class="spanTit" v-if="item.clickurl">修改</span></el-col>
               </el-row>
               <el-row>
                 <el-col :span="2">
@@ -53,11 +53,11 @@
                 <el-col :span="19">
                   <div class="urlRoute" v-if="item.clickurl">{{item.urlRoute}}</div>
                 </el-col>
-                <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit">删除</span></el-col>
+                <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit" v-if="item.clickurl">删除</span></el-col>
               </el-row>
             </div>
           </div>
-          <div class="diaimg_li" v-if="carouselData.length < 9">
+          <div class="diaimg_li" v-if="carouselData.length < 8">
             <div class="carousel-uploader" @click="addPictureEvent">
               <div class="el-upload el-upload--text">
                 <i class="el-icon-plus"></i>
@@ -82,8 +82,8 @@ export default {
     return {
       dialogCarousel: false,
       carouselData: [],
-        showTime: 5,
-        transitionTime: 0.6,
+        showTime: 3,
+        transitionTime: 1.5,
         showSuit: 'false',
         showWidth: 1200,
         carouselTit: '轮播图',
@@ -186,7 +186,7 @@ export default {
             urlType = '资讯'
             switch (data.active) {
               case 1:      
-                switch (data.news) {
+                switch (data.newscode) {
                   case 'news':
                     urlHref = '/dyinformation.html'
                   break
@@ -208,7 +208,7 @@ export default {
                 urlRoute = data.news.label + '/' + data.news.label1
                 break
               case 3:
-                urlHref = '/dyinformation/' + data.news + '.html'
+                urlHref = '/dyinformation/' + data.newscode + '.html'
                 urlRoute = data.news.label1 != '' ? data.news.label + '/' + data.news.label1 + '/' + data.newsTitle : data.news.label + '/' + data.newsTitle
                 break
             }             
@@ -311,22 +311,6 @@ export default {
         self.carouselData[self.index]['clickurl'] = urlHref
       })
       // self.carouselData[index].clickurl = val
-    },
-    handleCarouselSuccess: function (res) { // 添加图片成功
-      let self = this
-      let code = res.code
-      let data = res.data
-      if (code === 0) {
-        self.carouselData.push({imgurl: data.showurl, clickurl: ''})
-      } else {
-        self.$notify({
-          title: '警告',
-          message: res.msg,
-          type: 'warning',
-          offset: 50,
-          duration: 4000
-        })
-      }
     }
   }
 }
@@ -372,12 +356,15 @@ export default {
     .diaimg_li .carImgBox .update{
       display: none;
       position: absolute;
-      right: 30px;
+      right: 24px;
       top:0;
-      line-height: 24px;
-      color: #999;      
-      background-color: #fff;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
+      background-color: #20a1ff;
+      background-image: url(../assets/newslibIcon/update.png);
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .diaimg_li .carImgBox:hover .update{
       display: block;
@@ -387,10 +374,13 @@ export default {
       position: absolute;
       right: 0;
       top:0;
-      color: #999;
-      line-height: 24px;
-      background-color: #fff;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
+      background-color: #f92121;
+      background-image: url(../assets/newslibIcon/delete.png);
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .diaimg_li .carImgBox:hover .delete{
       display: block;

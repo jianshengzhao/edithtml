@@ -1323,19 +1323,19 @@ var tool = {
       el_dialog.removeAttr('style').css('top', '15%')      
       let classname = me.$(e.target).attr('class')
       switch (classname) {
-        case 'st-left st-text': 
+        case 'st-left st-text':
           self.$refs.ueditor.show()
           break
-        case 'st-left st-style': 
+        case 'st-left st-style':
           self.$refs.editbutton.show()
           break
-        case 'st-link': 
+        case 'st-link':
           self.$refs.hrefdialogp.show()
           break
-        case 'st-left st-picture': 
+        case 'st-left st-picture':
           self.$refs.myimages.show()
           break
-        case 'st-animate': 
+        case 'st-animate':
           self.dialoganim()
           break
         case 'st-shape':
@@ -1347,14 +1347,14 @@ var tool = {
         case 'st-prospect':
           self.$refs.effect.show()
           break
-        case 'st-left st-logintext':          
+        case 'st-left st-logintext':
           self.dialogeditlogin()
           break
-        case 'st-left st-carousel':          
-          self.$refs.carousel.show()
+        case 'st-left st-carousel':
+          self.$refs.carousel.show(self, me.$('.on_module'))
           break
         case 'st-left st-waiter':
-          self.$refs.waiter.show(self, me.$('.on_module'), me)
+          self.$refs.waiter.show(self, me.$('.on_module'))
           break
         case 'st-left st-advert':
           self.$refs.advert.show(self)
@@ -1383,13 +1383,13 @@ var tool = {
           })
           break
         case 'st-left st-audition':
-          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {            
+          self.$refs.hrefdialogp.show('coursecw|audition', me.$('.on_module'), function (element, data) {            
             let auditionHtm = '<a target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
             element.attr('auditionid', data.cwid)
             element.find('.editAdd').html(auditionHtm)
           })
           break
-        case 'st-left st-teacher': 
+        case 'st-left st-teacher':
           self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {
             console.log(data)           
             let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '"><a class="team_mask" href="/master/' + data.teauid + '.html" target="_blank">' + data.profile + '</a><a href="/master/' + data.teauid + '.html" target="_blank"><div class="team_hbj"><img src="' + data.face + '"><h3 class="team_h3">' + data.realname + '</h3><p class="team_p1">' + data.professionaltitle + '</p></div><p class="team_p2">' + data.profile + '</p></a></div>'

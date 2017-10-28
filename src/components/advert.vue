@@ -24,8 +24,8 @@
             <div class="addLi" v-for="(item, index) in advertData">
               <div class="imgbox">
                 <img :src="item.img" alt="">
-                <div class="update" @click="updatePictureEvent(index)">修改</div>
-                <div class="delete" @click="deletePictureEvent(index)">删除</div>
+                <div class="update" @click="updatePictureEvent(index)"></div>
+                <div class="delete" @click="deletePictureEvent(index)"></div>
               </div>  
               <div class="set-url-btn" :style="!item.url ? 'display:block' : 'display:none'" @click="settingHrefEvent(index)">设置链接</div>
               <div class="update-url-box" v-if="item.url">
@@ -185,7 +185,7 @@ export default {
             urlType = '资讯'
             switch (data.active) {
               case 1:      
-                switch (data.news) {
+                switch (data.newscode) {
                   case 'news':
                     urlHref = '/dyinformation.html'
                   break
@@ -207,7 +207,7 @@ export default {
                 urlRoute = data.news.label + '/' + data.news.label1
                 break
               case 3:
-                urlHref = '/dyinformation/' + data.news + '.html'
+                urlHref = '/dyinformation/' + data.newscode + '.html'
                 urlRoute = data.news.label1 != '' ? data.news.label + '/' + data.news.label1 + '/' + data.newsTitle : data.news.label + '/' + data.newsTitle
                 break
             }             
@@ -368,18 +368,42 @@ export default {
     float: left;
   }
   #advert .addLi .imgbox .update {
+    display: none;
     position: absolute;
     top:0;
-    right: 30px;
+    right: 24px;
     line-height: 14px;
     cursor: pointer;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #20a1ff;
+    background-image: url(../assets/newslibIcon/update.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+  }
+  #advert .addLi .imgbox:hover .update{
+    display: block;
   }
   #advert .addLi .imgbox .delete {
+    display: none;
     position: absolute;
     top:0;
     right: 0px;
     line-height: 14px;
     cursor: pointer;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #f92121;
+    background-image: url(../assets/newslibIcon/delete.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+  }
+  #advert .addLi .imgbox:hover .delete{
+    display: block;
   }
   #advert .addLi .imgbox img{
     width: 100%;

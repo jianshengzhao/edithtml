@@ -179,8 +179,8 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName||parameter.thatName == 'advert' ? false : items.ism3u8=='1' ? false:true"/>
-                      <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert' ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition' ? false : items.ism3u8=='1' ? false:true"/>
+                      <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition' ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
                       </a>
@@ -300,6 +300,7 @@
     name: 'hrefdialog',
     data: function () {
       return {
+        formVue: '',
         parameter:'',
         visdialog:false,
         mecoursenum : 0,
@@ -738,8 +739,7 @@
       this.geschsource()
     },
     methods:{
-      show: function(thatName, thatSelf, Callback){
-        console.log(thatName, thatSelf, Callback)
+      show: function(thatName, thatSelf, Callback){        
         let self = this;
         self.visdialog = true;
         self.$nextTick( () => {
@@ -752,7 +752,7 @@
           self.parameter = ''
           if (thatName) { 
             let saveparam = false            
-            switch(thatName){
+            switch(thatName.split('|')[0]){
               case 'course':
                 linktype = 'course'
                 saveparam = true
@@ -761,6 +761,7 @@
               case 'coursecw':
                 linktype = 'course'
                 saveparam = true
+                self.formVue = thatName.split('|')[1]
                 tCP.addClass('inputCwlist')
                 break
               case 'teacher':
