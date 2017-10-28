@@ -371,7 +371,7 @@ export default {
     display: none;
     position: absolute;
     top:0;
-    right: 24px;
+    right: 20px;
     line-height: 14px;
     cursor: pointer;
     width: 20px;
