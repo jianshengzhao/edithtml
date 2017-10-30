@@ -171,7 +171,7 @@ export default {
     carouselChangeEvent: function (index) { // 设置跳转链接
       let self = this    
       self.index = index
-      self.that.$refs.hrefdialogp.show('advert', self, function (self, data, linkType) {
+      self.that.$refs.hrefdialogp.show('carousel', self, function (self, data, linkType) {
         let urlType = ''
         let urlHref = ''
         let urlRoute = ''

@@ -8,16 +8,16 @@
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
-            <li v-if="!parameter||parameter.linktype =='online'||parameter.thatName == 'advert'">
+            <li v-if="!parameter||parameter.linktype =='online'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'">
               <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='news'||parameter.thatName == 'advert'">
+            <li v-if="!parameter||parameter.linktype =='news'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'">
               <a data-index="1"  type="news" >资讯</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='course'||parameter.thatName == 'advert'">
+            <li v-if="!parameter||parameter.linktype =='course'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'">
               <a data-index="2"  type="course">课程</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='teacher'||parameter.thatName == 'advert'">
+            <li v-if="!parameter||parameter.linktype =='teacher'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'">
               <a data-index="3"  type="teacher">教师</a>
             </li>
             <li v-if="!parameter||parameter.linktype =='onlineschool'||parameter.thatName == 'advert'">
@@ -773,6 +773,9 @@
                 saveparam = true
                 break
               case 'advert':                
+                saveparam = true
+                break
+              case 'carousel':                
                 saveparam = true
                 break
             }

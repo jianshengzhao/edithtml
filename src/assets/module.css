@@ -2363,9 +2363,57 @@
     background-color: #18A8F7;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);
-    cursor: pointer;
+    background-image: url(http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png);    
     background-size: 20px;
+  }
+  .kf-head:hover .box{
+    display: block;
+  }
+  .kf-head .box{
+    display: none;
+    position: absolute;
+    top:0;
+    left:36px;
+    width: 150px;
+    min-height: 160px;
+    background-color: #18A8F7;
+    font-family: "Microsoft YaHe";
+  }
+  .kf-head .box .QQbox, .kf-head .box .phonebox{
+    margin: 6px auto;
+    width: 138px;
+    min-height: 48px;
+    background-color: #fff;
+    border-radius: 4px;  
+    padding-bottom: 1px;  
+  }
+  .QQbox .prompt, .phonebox .prompt{
+    text-align: center;   
+    font-size: 14px;
+    line-height: 36px;
+    color: #18A8F7;
+    background-image: url('http://static.ebanhui.com/ebh/tpl/2016/images/line1.png');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+  }  
+  .QQbox .QQbtn{
+    display: block;
+    margin:4px auto;
+    width: 96px;
+    height: 26px;
+    text-align: center;
+    line-height: 26px;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    background:url('http://static.ebanhui.com/ebh/tpl/2016/images/zxkfbj.png') no-repeat center center;
+  }
+  .phonebox .phoneInfo{
+    margin: 8px auto;
+    text-align: center;
+    line-height: 17px;
+    font-size: 13px;
+    color: #18A8F7;
   }
   .kf-top{
     margin-top: 3px;
@@ -2377,7 +2425,7 @@
     background-color:#D8D8D8; 
     cursor: pointer;
   }
-
+  
 /* advert */
   .advert {   
     width: 300px;
