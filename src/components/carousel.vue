@@ -8,7 +8,7 @@
             <el-radio class="radio" v-model="showSuit" label="true">是</el-radio>
             <el-radio class="radio" v-model="showSuit" label="false">否</el-radio>
           </el-col>
-          <el-col :span="2">切换方式：</el-col>
+         <!--  <el-col :span="2">切换方式：</el-col>
           <el-col :span="5">
             <el-select v-model="changeStyle" placeholder="请选择">
               <el-option
@@ -18,7 +18,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="2">展示时长：</el-col>
@@ -88,13 +88,10 @@ export default {
         showWidth: 1200,
         carouselTit: '轮播图',
         animStyle: [{
-          value: false,
-          label: '滚动'
-        }, {
           value: true,
           label: '渐显'
         }],
-        changeStyle: false,
+        changeStyle: true,
     }
   },
   created: function () {

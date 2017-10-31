@@ -8,6 +8,11 @@
     position: relative;
     overflow: hidden;
   }
+  input:-webkit-autofill {
+    background-color: #FAFFBD;
+    background-image: none;
+    color: #000;
+  }
   /*.module:hover{
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);   
   }*/
@@ -525,6 +530,9 @@
     height: 320px;
     background: #fff;
   }
+  .carousel .resize {
+    display: none;
+  }
   .screenBox{
     position: absolute;
     top:0;
@@ -685,10 +693,10 @@
 		height: 220px;
 	}
 	.schoollogo .picBox{
-		display: block;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+	  display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
 	}
 	.schoollogo img{
 		min-height: 100%; 
@@ -697,6 +705,18 @@
 	.schoolmap{
 		width: 935px;
 		height: 325px;
+		min-width: 400px;
+		min-height: 300px;
+	}
+	.schoolmap .picBox{
+		display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+	}
+	.schoolmap .resizeBox{
+		min-width: 400px;
+		min-height: 300px;
 	}
 	#schoolmap{
 		height: 100%;
@@ -2307,6 +2327,7 @@
     height: 36px;
     border:1px solid #666;
     background: inherit;
+    border-radius: 2px;
   }
   .username input,.password  input{
     width: 100%;
@@ -2318,7 +2339,14 @@
     padding-left: 5px;
     box-sizing:border-box;
     -moz-box-sizing:border-box; /* Firefox */
-    -webkit-box-sizing:border-box; /* Safari */
+    -webkit-box-sizing:border-box; /* Safari */    
+  }
+  .username input::-webkit-input-placeholder,
+  .password  input::-webkit-input-placeholder{
+    color: #b4bccc;
+  }
+  .username::placeholder,.password::placeholder {
+    color: #b4bccc;
   }
   .loginbutton{
     width: 200px;
@@ -2431,6 +2459,10 @@
     width: 300px;
     height: 150px;
     background-color: #F2F2F2;
+    transition: transform 5s linear;
+    -moz-transition: transform 5s linear; /* Firefox 4 */
+    -webkit-transition: transform 5s linear; /* Safari 和 Chrome */
+    -o-transition: transform 5s linear; /* Opera */
   } 
   .advert .advCon{
     width:  100%;
@@ -2468,19 +2500,48 @@
   }
 /*information*/
 	.information{
-		width: 1200px;
-    height: 200px;
-    background-color: #F2F2F2;
+	  width: 1200px;
+      height: 200px;
+      background-color: #F2F2F2;
+      min-width: 550px;
+	}
+	.information .resizeBox{
+		min-width: 550px;
 	}
 	.information .inforCon{
 		width: 1200px;
 		height: 100%;
 	}
+/*introduce*/
+	.introduce{
+	  width: 580px;
+	  height: 145px;
+	  background-color: #F2F2F2;
+	}	
+	.introduce .picBox{
+	  display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+	}
+/*weather*/
+	.weather{
+		width: 260px;
+		height: 140px;
+		background-color: #F2F2F2;
+	}
+	.weather .picBox{
+	  display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+	}
 /* course */
   .course{
     width: 260px;
     height: 220px;   
-    cursor: pointer;        
+    cursor: pointer; 
+    background-color: #fff;       
   }
   .course .resize{
     display: none;

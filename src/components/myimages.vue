@@ -56,7 +56,7 @@
 				<div class="fir" v-loading="libraryloading">
 					<div class="library_tabs">
 						<el-radio-group v-model="radio_type" @change="radio_type_change(radio_type)">
-						    <el-radio-button v-for="(item, index) in radio_type_tabs" :label="item.alname"></el-radio-button>
+						    <el-radio-button v-for="(item, index) in radio_type_tabs" :key="index" :label="item.alname"></el-radio-button>
 						</el-radio-group>
 					</div>
 					<div class="library_content">
@@ -133,7 +133,7 @@
 						     				newli	+= '<img class="flieimg" src="http://static.ebanhui.com/ebh/tpl/default/images/newfile.png" />';
 						     				newli += '<span class="del_flie"></span>'
 						     			newli += '</div>'
-						     			newli	+= '<input class="fliename" type="text" value="'+datas.ablums[i].alname+'" readonly />';
+						     			newli	+= '<input class="fliename" type="text" value="'+datas.ablums[i].alname+'" readonly title="'+datas.ablums[i].alname+'"/>';
 						     		newli	+= '</li>';
 			        			}
 		       				}
@@ -145,7 +145,7 @@
 			        						newli += '<span class="del_img"></span>';
 			        						newli += '<span class="checked_img"></span>'
 			        					newli += '</div>'
-			        					newli += '<input class="fliename" type="text" value="'+datas.photos[j].photoname+'" readonly />';
+			        					newli += '<input class="fliename" type="text" value="'+datas.photos[j].photoname+'" readonly title="'+datas.photos[j].photoname+'" />';
 			        				newli+= '</li>';
 			        			}
 		        			}
@@ -299,11 +299,6 @@
 											self.$message({
 									            type: 'success',
 									            message: '修改成功!'
-									        });
-										}else{
-											self.$message({
-									            type: 'error',
-									            message: '修改失败!'
 									        });
 										}
 									},function(response){
@@ -1128,8 +1123,11 @@
 		height: 420px;
 	}
 	.library_content .library_imgs{
-		height: 100%;
-		padding: 0 15px;
+		width: 742px;
+		height: 410px;
+		position: relative;
+		overflow-y: auto;
+		padding: 0 25px;
 	}
 	.icons_box{
 		float: left;
@@ -1160,7 +1158,7 @@
 	
 	
 	.library_imgs_falls{  /*瀑布流*/
-		width: 802px;
+		width: 792px;
 		height: 410px;
 		position: relative;
 		overflow-y: auto;

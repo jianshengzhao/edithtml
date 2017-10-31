@@ -124,8 +124,14 @@ var tool = {
         thtml += '<li class="' + toolClass[tool.public[i]][0] + '" title="' + toolClass[tool.public[i]][1] + '"></li>'
       }
       thtml += '</div>'
-    }
-    let resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
+    }                     
+    if(cName == "information"){
+    	var resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
+                              '<div class="resize e"></div>' +
+                              '<div class="resize w"></div>' +
+                            '</div>'
+    }else{
+    	var resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
                               '<div class="resize nw"></div>' +
                               '<div class="resize sw"></div>' +
                               '<div class="resize ne"></div>' +
@@ -135,6 +141,7 @@ var tool = {
                               '<div class="resize w"></div>' +
                               '<div class="resize s"></div>' +
                             '</div>'
+    }
     me.$('.on_module').removeClass('on_module')
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
@@ -1078,6 +1085,11 @@ var tool = {
         self.inp_w = parseInt(parent.css('width'))
         self.inp_h = parseInt(parent.css('height'))
       }     
+      
+      let inforCon = parent.find('.inforCon')
+      let infor_wrap = parent.find('.infor-wrap')
+      let infor_desc = parent.find('.infor-desc')
+      
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
@@ -1293,6 +1305,15 @@ var tool = {
         part(e)
 
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+        
+        //资讯拉伸规则
+        inforCon.css({'width': self.inp_w + 'px'})
+        var infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60
+        infor_wrap.css({'width': infor_wrap_width + 'px'})
+       	var infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
+        infor_desc.css({'width': infor_desc_width + 'px'})//资讯拉伸规则  
+        
+        
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
         if(imgbloo) {
           if (picBox.hasClass('round')||picBox.hasClass('square')) {
@@ -1361,6 +1382,9 @@ var tool = {
           break
         case 'st-left st-information':
           self.$refs.information.show(self, me.$('.on_module'), me)
+          break
+        case 'st-left st-weather':
+          self.$refs.weather.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-player':
           self.$refs.player.show(self, me.$('.on_module'), me)

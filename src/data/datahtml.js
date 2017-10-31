@@ -80,6 +80,16 @@ var configHtml = {
         name: 'schoolqr',
         icon: 'imgicon icon-QRcode',
         text: '二维码'
+      },
+      {
+        name: 'weather',
+        icon: 'imgicon icon-weather',
+        text: '天气'
+      },
+      {
+        name: 'introduce',
+        icon: 'imgicon icon-introduce',
+        text: '网校介绍'
       }
     ],
     online: [
@@ -220,7 +230,7 @@ var configHtml = {
     createEvent: function (self, element, me) {      
       self.$refs.information.show(element)
     },
-    html: '<div class="information module addmodule"  datatext="资讯"><div class="inforCon"></div></div>'
+    html: '<div class="information module addmodule" datatext="资讯"><div class="inforCon"></div></div>'
   },
   waiter: {
     style: 'width:50px; height:50px',
@@ -366,10 +376,11 @@ var configHtml = {
       },
       public: []
     },
-    createEvent: function (self, element, that) {
-      self.createmap(element, that)
+    createEvent: function (self, element) {
+    	
+      self.createmap(element)
     },
-    html: '<div class="schoolmap module addmodule" datatext="地图"><div id="schoolmap"></div></div>'
+    html: '<div class="schoolmap module addmodule" datatext="地图"><a class="picBox"><div id="schoolmap"></div></a></div>'
   },
   schoolqr: {
     style: 'width:212px; height:212px',
@@ -381,6 +392,31 @@ var configHtml = {
       public: ['b','c','d']
     },
     html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img src="" /></a></div>'
+  },
+  introduce: {
+    style: 'width:580px; height:145px',
+    tool: {
+      private: {
+        text: '',
+        class: ''
+      },
+      public: []
+    },
+    html: '<div class="introduce picture module addmodule"  datatext="网校介绍"><a class="picBox"></a></div>'
+  },
+  weather: {
+    style: 'width:260px; height:140px',
+    tool: {
+      private: {
+        text: '编辑天气',
+        class: 'st-weather'
+      },
+      public: []
+    },
+    createEvent: function (self, element, me) {      
+      self.$refs.weather.show(element)
+    },
+    html: '<div class="weather picture module addmodule"  datatext="天气"><a class="picBox"></a></div>'
   }
 }
 exports.config = configHtml

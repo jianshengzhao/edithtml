@@ -85,6 +85,7 @@
 		               second = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
 		            return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
 		       	},
+		       	currentEle_info:''
 			}
 		},
 		created:function(){
@@ -95,6 +96,11 @@
 			show:function(element){
 		        var self = this;
 		        self.dialogInformation = true;
+		        if (!element.length) {
+			        self.currentEle_info = $('.on_module')
+			    } else {
+			        self.currentEle_info = element
+			    }  
 		    },
 		    //窗口打开函数
 		    openInformation:function(){
@@ -143,7 +149,7 @@
 					});
 		   			return false;
 		   		}
-		   		$('.on_module').find(".inforCon").empty();
+		   		self.currentEle_info.find(".inforCon").empty();
 		   		self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
 		   		{
 					begin:self.num1,
@@ -158,28 +164,31 @@
 								datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
 								inforhtml += '<div class="infor-wrap">'
 								inforhtml += 	'<div class="infor-cont">'
-								inforhtml += 		'<p class="infor-title">'+datas.data.newslist[i].subject+'</p>'
-								if(self.infortype == 1){
+								inforhtml += 		'<p class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
+								if(self.infortype == 1 && datas.data.newslist[i].thumb != ""){
 									inforhtml += '<div class="infor-img">'
 									inforhtml += '<img src="'+datas.data.newslist[i].thumb+'" />'
+									inforhtml += '<div class="infor-desc">'
 								}else{
 									inforhtml += '<div class="infor-desc-text">'
+									inforhtml += '<div class="infor-desc-no">'
 								}
-								inforhtml += 			'<div class="infor-desc">'
-								inforhtml += 				'<p class="infor-conc">'+datas.data.newslist[i].note+'</p>'
+								
+								inforhtml += 				'<p class="infor-conc" title='+datas.data.newslist[i].note+'>'+datas.data.newslist[i].note+'</p>'
 								inforhtml += 				'<div class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</div>'
 								inforhtml += 			'</div>'
 								inforhtml += 		'</div>'
 								inforhtml += 	'</div>'
 								inforhtml += '</div>'
 							}
-							$('.on_module').find(".inforCon").html(inforhtml);
+							self.currentEle_info.find(".inforCon").html(inforhtml);
 							self.dialogInformation = false;
-							$('.on_module').ready(function() {
-								$('.on_module').css("background-color","#FFFFFF");
-						        $('.on_module').css('height',datas.data.newslist.length * 200 + 'px')
-						        $('.on_module').find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
-						   	})
+							self.currentEle_info.ready(function() {
+								self.currentEle_info.css("background-color","#FFFFFF");
+						        self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
+						        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
+						   		
+							})
 						}else{
 							self.$notify({
 								title: '提示',
@@ -201,7 +210,7 @@
 
 <style type="text/css">
 	.el-dialog--myinformation{
-		width: 500px;
+		width: 420px;
 	}
 	
 	
@@ -291,6 +300,10 @@
 		font-size: 22px;
 		color: #616161;
 		font-weight: 900;
+		min-width: 490px;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 	}
 	.infor-img{
 		width: 100%;
@@ -307,6 +320,13 @@
 		width: 930px;
 		height: 128px;
 		position: relative;
+		min-width: 280px;
+	}
+	.infor-desc-no{
+		float: left;
+		width: 100%;
+		height: 128px;
+		position: relative;
 	}
 	.infor-desc-text{
 		float: left;
@@ -321,13 +341,13 @@
 		font-size: 14px;
 		padding-left: 16px;
 		text-indent: 20px;
-		line-height: 20px;
+		line-height: 22px;
 		overflow: hidden;
 	}
 	.infor-time{
 		position: absolute;
-		right: 0;
-		bottom: 0;
+		right: -20px;
+		bottom: -5px;
 		color: #999999;
 		font-size: 14px;
 	}

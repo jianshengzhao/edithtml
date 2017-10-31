@@ -336,7 +336,7 @@ export default {
     color: #48576a;
   }  
   #advert .addImgList{
-    width: 440px;
+    width: 450px;
     border:1px solid #E4E4E4;
     padding-bottom: 15px;
   }
