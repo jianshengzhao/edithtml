@@ -826,11 +826,6 @@ svg.icon {
 
 .icon-label { background-image: url(../icon/label.png); }
 
-.icon-information { background-image: url(../icon/introduce.png); }
-
-.icon-introduce { background-image: url(../icon/introduce.png); }
-
-
 
 .icon-rectangle { background-image: url(../img/rectangle.png); background-size: 28px; }
 
@@ -898,6 +893,7 @@ svg.icon {
 .icon-carousel { background-image: url(../newslibIcon/carousel.png); background-size: 28px; }
 .icon-classify { background-image: url(../newslibIcon/classify.png); background-size: 23px auto; }
 .icon-information { background-image: url(../newslibIcon/information.png); background-size: 25px 25px; }
+.icon-introduce { background-image: url(../newslibIcon/introduce.png); background-size: 28px; }
 .icon-level_Line { background-image: url(../newslibIcon/level_Line.png); background-size: 28px; }
 .icon-login { background-image: url(../newslibIcon/login.png); background-size: 25px 25px; }
 .icon-logo { background-image: url(../newslibIcon/logo.png); background-size: 28px; }
@@ -912,7 +908,8 @@ svg.icon {
 .icon-waiter { background-image: url(../newslibIcon/waiter.png); background-size: 28px; }
 .icon-weather { background-image: url(../newslibIcon/weather.png); background-size: 28px; }
 .icon-course { background-image: url(../newslibIcon/course.png); background-size: 28px auto; }
-
+.icon-teacher { background-image: url(../newslibIcon/teacher.png); background-size: 28px auto; }
+.icon-audition { background-image: url(../newslibIcon/audition.png); background-size: 28px auto; }
 @font-face {
 	font-family:Material Icons;font-style:normal;font-weight:400;src:local("Material Icons"),local("MaterialIcons-Regular"),url(material.570eb83859dc23dd0eec423a49e147fe.woff2) format("woff2"),url(material.012cf6a10129e2275d79d6adac7f3b02.woff) format("woff"),url(material.a37b0c01c0baf1888ca812cc0508f6e2.ttf) format("truetype")
 }

@@ -149,8 +149,8 @@
                     <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                   </div> -->
                   <div  class="courselist" v-for="(item,index) in courselist">
-                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" name="fourcourse" type="radio" value="" />
-                    <a @click="parameter.thatName == 'course' ? '' : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" name="fourcourse" type="radio" value="" />
+                    <a @click="parameter.thatName == 'course' ? infolderid = item.folderid  : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
                       <div style="text-align: center;width: 121px;">
                         <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
@@ -179,7 +179,7 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum"value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition' ? false : items.ism3u8=='1' ? false:true"/>
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition' ? false : items.ism3u8=='1' ? false:true"/>
                       <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition' ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
@@ -739,7 +739,7 @@
       this.geschsource()
     },
     methods:{
-      show: function(thatName, thatSelf, Callback){        
+      show: function(thatName, thatSelf, Callback) {
         let self = this;
         self.visdialog = true;
         self.$nextTick( () => {
@@ -756,7 +756,9 @@
               case 'course':
                 linktype = 'course'
                 saveparam = true
-                tCP.addClass('inputCoruse')                
+                tCP.addClass('inputCoruse') 
+                self.indexinit()
+                // self.coursebxinit(4)               
                 break
               case 'coursecw':
                 linktype = 'course'
@@ -872,14 +874,14 @@
           });
         })
       },
-      dialogEvent: function () { // 编辑文本窗口
+      dialogEvent: function () { // 选择链接确定
         let self = this;
         let obj;
         let linkType
         let a 
       // ----------- update start------------
         let parameter = self.parameter
-        if (parameter && parameter.thatName!='advert') {
+        if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
           linkType = parameter.linktype         
         } else {
           let origin = window.location.origin
@@ -1191,6 +1193,7 @@
                 itemid : itemid,
                 foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
                 // ----------- update start------------ 
+                summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
                 img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
                 studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
                 viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
@@ -1237,6 +1240,8 @@
                 cwid:fivecourseradio,
               // ----------- update start------------  
                 cwpay: cwpay,
+                thumb: $("input[cwid='"+fivecourseradio+"']").attr('thumb'),
+                cwsize: $("input[cwid='"+fivecourseradio+"']").attr('cwsize'),
                 logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
                 viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
                 summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
@@ -1260,7 +1265,7 @@
           break  
         }
         // ----------- update start------------
-        if (parameter) { 
+        if (parameter) {          
           parameter.Callback(parameter.thatSelf, obj, linkType)        
         } else {
           a.attr('linktype',linkType)

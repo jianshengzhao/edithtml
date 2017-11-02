@@ -1183,4 +1183,7 @@
 		z-index: 5;
 		background: url(http://static.ebanhui.com/ebh/tpl/default/images/checkfile.png);
 	}
+	.el-radio-button__orig-radio:checked+.el-radio-button__inner{
+		background-color: #527EDF;
+	}
 </style>

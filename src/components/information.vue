@@ -186,6 +186,7 @@
 							self.currentEle_info.ready(function() {
 								self.currentEle_info.css("background-color","#FFFFFF");
 						        self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
+						        self.currentEle_info.find('.resizeBox').css('width',1200+'px')
 						        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
 						   		
 							})
@@ -277,78 +278,13 @@
 	.contentrange-wrap .el-input-number__decrease,.contentrange-wrap .el-input-number__increase{
 		display: none;	
 	}
-	
+	.information .el-dialog__header{
+	    border-bottom: 1px solid #CECECE;
+	    height: 30px;
+	  }
 	.infrotips{
 		width: 100%;
 		margin-left: 78px;
 		color: #999999;
-	}
-	
-	
-	.infor-wrap{
-		width: 1140px;
-		height: 180px;
-		padding: 20px 30px 0 30px;
-	}
-	.infor-cont{
-		width: 100%;
-		height: 180px;
-		border-bottom: 1px solid #F5F5F5;
-	}
-	.infor-title{
-		height: 40px;
-		font-size: 22px;
-		color: #616161;
-		font-weight: 900;
-		min-width: 490px;
-		overflow: hidden;
-		text-overflow:ellipsis;
-		white-space: nowrap;
-	}
-	.infor-img{
-		width: 100%;
-		height: 140px;
-	}
-	.infor-img img{
-		float: left;
-		width: 210px;
-		height: 128px;
-		border: 0 none;
-	}
-	.infor-desc{
-		float: left;
-		width: 930px;
-		height: 128px;
-		position: relative;
-		min-width: 280px;
-	}
-	.infor-desc-no{
-		float: left;
-		width: 100%;
-		height: 128px;
-		position: relative;
-	}
-	.infor-desc-text{
-		float: left;
-		width: 100%;
-		height: 128px;
-		position: relative;
-	}
-	.infor-conc{
-		width: 100%;
-		max-height: 110px;
-		color: #919191;
-		font-size: 14px;
-		padding-left: 16px;
-		text-indent: 20px;
-		line-height: 22px;
-		overflow: hidden;
-	}
-	.infor-time{
-		position: absolute;
-		right: -20px;
-		bottom: -5px;
-		color: #999999;
-		font-size: 14px;
 	}
 </style>

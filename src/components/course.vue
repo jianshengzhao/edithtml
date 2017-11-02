@@ -1,13 +1,13 @@
 <template>
   <div id="course">
     <el-dialog
-      title="课程"
+      :title="title"
       :visible.sync="dialogCourse"
       size="course" >
       <el-row>
         <el-col :span="4" class="right">单行显示：</el-col>
         <el-col :span="18">
-          <el-input-number size="small" v-model="col_num" :min="1" :max="8"></el-input-number>个<span>（建议最大值不超过4个）</span>
+          <el-input-number size="small" v-model="col_num" :min="1" :max="8"></el-input-number>个<span>（建议最大值不超过{{type=="audition" ? '6' : '4'}}个）</span>
         </el-col>
       </el-row>
       <el-row>
@@ -29,8 +29,10 @@ export default {
   name: 'course',
   data () {
     return {
+      title:'',
       col_num:1,
       row_num:1,
+      type:'',
       dialogCourse: false
     }
   },
@@ -52,7 +54,7 @@ export default {
       let mt 
       let htmFun     
       switch (self.type) {
-        case 'course':
+        case 'course':          
           w = 260
           h = 220          
           ml = 30
@@ -62,7 +64,7 @@ export default {
             return html
           }
           break
-        case 'audition':
+        case 'audition':          
           w = 190
           h = 120          
           ml = 15
@@ -72,7 +74,7 @@ export default {
             return html
           }
           break
-        case 'teacher':
+        case 'teacher':          
           w = 274
           h = 228          
           ml = 50
@@ -102,7 +104,24 @@ export default {
       let self = this
       self.that = that
       self.element = element
-      self.me = me
+      self.me = me      
+      switch (type) {
+        case 'course':
+          self.title = '课程'
+          self.col_num = 4
+          self.row_num = 3
+          break
+        case 'audition':
+          self.title = '试听'
+          self.col_num = 6
+          self.row_num = 3
+          break
+        case 'teacher':
+          self.title = '教师'
+          self.col_num = 4
+          self.row_num = 3
+          break
+      }
       self.type = type
       self.dialogCourse = true
       // me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT)
@@ -131,7 +150,12 @@ export default {
   #course .right {
     text-align: right;
   }
+  #course .el-dialog__header{
+    border-bottom: 1px solid #CECECE;
+    height: 30px;
+  }
   #course .el-dialog__body{
     padding: 20px 30px 10px;
   }
+
 </style>

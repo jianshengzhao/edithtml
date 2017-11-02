@@ -195,7 +195,7 @@
       <div class="lib_box">
         <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
-        <div class="header">网校组件 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header basichead">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol onlineBox"></div>
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
@@ -893,138 +893,139 @@
           })
         },
       // ---------------------------------------------
-        tool: { /* 工具箱事件 */
-        // --------------- complete ------------------
-          getAlignmentElement: function (self) { // 触碰
-            let parent = self.moduleElement.parent()
-            let arrEle
-            let item = {
-              x: parseInt(self.moduleElement.css('left')),
-              x1: parseInt(self.moduleElement.css('left')) + parseInt(self.moduleElement.css('width')),
-              y: parseInt(self.moduleElement.css('top')),
-              y1: parseInt(self.moduleElement.css('top')) + parseInt(self.moduleElement.css('height'))
-            }
-            let w = parseInt(self.moduleElement.css('width'))
-            let h = parseInt(self.moduleElement.css('height'))
-            switch (parent.attr('class')) {
-              case 'c_top':
-                arrEle = self.elementHead
-                break
-              case 'c_body':
-                arrEle = self.elementMain
-                break
-              case 'c_foot':
-                arrEle = self.elementTail
-                break
-            }
-            $('.touch_module').removeClass('touch_module')
-            let mohubloo = true
-            let line = $('.line')
-            // line.hide()
-            for (let i = 0, len = arrEle.length; i < len; i++) { // todo:校准
-              let ele = arrEle[i]
-              if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
-                ele.ele.addClass('touch_module')
-              }
-              // if (mohubloo) { // 模糊校准
-              //   self.tool.changeMoveEvents(warp)
-              //   if (Math.abs(ele.x - item.x) < 10){
-              //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.x - item.x1) < 10){
-              //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.x1 - item.x) < 10){
-              //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.x1 - item.x1) < 10){
-              //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.y - item.y) < 10){
-              //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.y - item.y1) < 10){
-              //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.y1 - item.y) < 10){
-              //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   } else if (Math.abs(ele.y1 - item.y1) < 10){
-              //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
-              //     mohubloo = false
-              //     line.show()
-              //   }
-              // }
-              // if(!mohubloo){
-              //   ele.ele.addClass('touch_module')
-              // }
-            }
-          },
-        // --------------- todo: ---------------------
-          switchModuleEvent: function (type, onthis, self) {
-            let w
-            let getParam
-            let oa
-            switch (type) {
-              case 'picture':
-                self.linkType = 'none'
-                self.inpOnline = ''
-                self.selectNews = []
-                self.selectCoruse = []
-                self.pictureUrl = onthis.find('img').attr('src')
-                // self.dialogPicture = true
-		            self.$refs.myimages.show();
-                oa = onthis.find('.picBox')
-                self.linkType = oa.attr('linkType') || 'none'
-                switch (self.linkType) {
-                  case 'online':
-                    self.getNewsCategorysData()
-                    self.inpOnline = oa.attr('href')
-                    break
-                  case 'news':
-                    self.getNewsCategorysData()
-                    self.selectNews = oa.attr('selectNews').split(',')
-                    break
-                  case 'coruse':
-                     self.courseSortData()
-                    self.selectCoruse = oa.attr('selectCoruse').split(',')
-                    break
-                }
-                break
-              case 'button':
-                self.dialogButton = true
-                self.inputBtnText = onthis.find('a').text()
-                self.inputBtnHref = onthis.find('a').attr('href')
-                break
-              case 'carousel':
-                self.dialogCarousel = true
-                let carouselData = $('.on_module').attr('carouselData')
-                let hs = parseInt($('.screenBox').css('height'))
-                let ws = parseInt($('.screenBox').css('width'))
-                self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
-                self.showWidth = ws
-                if (carouselData) {
-                  let data = $.parseJSON(carouselData)
-                  self.showWidth = data.showWidth
-                  self.carouselData = data.carouselData
-                  self.showTime = data.showTime
-                  self.transitionTime = data.transitionTime
-                  self.changeStyle = data.changeStyle
-                }
-                break
-              default:
-                console.log('module')
-                break
-            }
-          }
-        },
+        tool: tool,
+        // { /* 工具箱事件 */
+        // // --------------- complete ------------------
+        //   // getAlignmentElement: function (self) { // 触碰
+        //   //   let parent = self.moduleElement.parent()
+        //   //   let arrEle
+        //   //   let item = {
+        //   //     x: parseInt(self.moduleElement.css('left')),
+        //   //     x1: parseInt(self.moduleElement.css('left')) + parseInt(self.moduleElement.css('width')),
+        //   //     y: parseInt(self.moduleElement.css('top')),
+        //   //     y1: parseInt(self.moduleElement.css('top')) + parseInt(self.moduleElement.css('height'))
+        //   //   }
+        //   //   let w = parseInt(self.moduleElement.css('width'))
+        //   //   let h = parseInt(self.moduleElement.css('height'))
+        //   //   switch (parent.attr('class')) {
+        //   //     case 'c_top':
+        //   //       arrEle = self.elementHead
+        //   //       break
+        //   //     case 'c_body':
+        //   //       arrEle = self.elementMain
+        //   //       break
+        //   //     case 'c_foot':
+        //   //       arrEle = self.elementTail
+        //   //       break
+        //   //   }
+        //   //   $('.touch_module').removeClass('touch_module')
+        //   //   let mohubloo = true
+        //   //   let line = $('.line')
+        //   //   // line.hide()
+        //   //   for (let i = 0, len = arrEle.length; i < len; i++) { // todo:校准
+        //   //     let ele = arrEle[i]
+        //   //     if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
+        //   //       ele.ele.addClass('touch_module')
+        //   //     }
+        //   //     // if (mohubloo) { // 模糊校准
+        //   //     //   self.tool.changeMoveEvents(warp)
+        //   //     //   if (Math.abs(ele.x - item.x) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x - item.x1) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x1 - item.x) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x1 - item.x1) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y - item.y) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y - item.y1) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y1 - item.y) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y1 - item.y1) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   }
+        //   //     // }
+        //   //     // if(!mohubloo){
+        //   //     //   ele.ele.addClass('touch_module')
+        //   //     // }
+        //   //   }
+        //   // },       
+        //   // switchModuleEvent: function (type, onthis, self) {
+        //   //   let w
+        //   //   let getParam
+        //   //   let oa
+        //   //   switch (type) {
+        //   //     case 'picture':
+        //   //       self.linkType = 'none'
+        //   //       self.inpOnline = ''
+        //   //       self.selectNews = []
+        //   //       self.selectCoruse = []
+        //   //       self.pictureUrl = onthis.find('img').attr('src')
+        //   //       // self.dialogPicture = true
+		      //   //     self.$refs.myimages.show();
+        //   //       oa = onthis.find('.picBox')
+        //   //       self.linkType = oa.attr('linkType') || 'none'
+        //   //       switch (self.linkType) {
+        //   //         case 'online':
+        //   //           self.getNewsCategorysData()
+        //   //           self.inpOnline = oa.attr('href')
+        //   //           break
+        //   //         case 'news':
+        //   //           self.getNewsCategorysData()
+        //   //           self.selectNews = oa.attr('selectNews').split(',')
+        //   //           break
+        //   //         case 'coruse':
+        //   //            self.courseSortData()
+        //   //           self.selectCoruse = oa.attr('selectCoruse').split(',')
+        //   //           break
+        //   //       }
+        //   //       break
+        //   //     case 'button':
+        //   //       self.dialogButton = true
+        //   //       self.inputBtnText = onthis.find('a').text()
+        //   //       self.inputBtnHref = onthis.find('a').attr('href')
+        //   //       break
+        //   //     case 'carousel':
+        //   //       self.dialogCarousel = true
+        //   //       let carouselData = $('.on_module').attr('carouselData')
+        //   //       let hs = parseInt($('.screenBox').css('height'))
+        //   //       let ws = parseInt($('.screenBox').css('width'))
+        //   //       self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
+        //   //       self.showWidth = ws
+        //   //       if (carouselData) {
+        //   //         let data = $.parseJSON(carouselData)
+        //   //         self.showWidth = data.showWidth
+        //   //         self.carouselData = data.carouselData
+        //   //         self.showTime = data.showTime
+        //   //         self.transitionTime = data.transitionTime
+        //   //         self.changeStyle = data.changeStyle
+        //   //       }
+        //   //       break
+        //   //     default:
+        //   //       console.log('module')
+        //   //       break
+        //   //   }
+        //   // }
+        // },
+      // ---------------------------------------------
         getcoursecategorys:function(html){
           let self = this
           self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
@@ -1062,7 +1063,7 @@
             console.log(response)
           })
         },
-        createmap:function(html,that){
+        createmap:function(html){
           let self = this
           var map = new BMap.Map("schoolmap");
 			  	var point = new BMap.Point(116.404, 39.915);
@@ -1074,8 +1075,18 @@
 			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
 			  	var infoWindow = new BMap.InfoWindow(sContent);
 					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
-					
-					that.addClass("onlyone");
+        },
+        createqr_logo:function(html){
+        	let self = this
+        	if(html.hasClass("schoolqr")){
+        		html.find("img").attr("src",window.roominfo.wechatimg)
+        	}else{
+        		html.find("img").attr("src",window.roominfo.cface)
+        	}
+        },
+        createintroduce:function(html){
+        	let self = this
+        	html.find(".picBox").html(window.roominfo.summary)
         },
         getweather:function(){
           let self = this
@@ -1199,6 +1210,13 @@
           }
           self.httpget(getParam)
         }
+        // 客服
+        if ($('.waiter').length < 2) {
+          $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+          $('.waiter').on('click', function() {
+            self.$refs.waiter.show(self, canvas.find('.waiter'))
+          })
+        } 
         tool.tool.init(self, $)
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
@@ -3091,5 +3109,19 @@
   /* 登录框编辑文本弹窗 */
   .el-dialog--edittext{
     width: 500px;
+  }
+  .pitchIcon {
+    display:none; 
+    position: absolute;
+    bottom: 0;
+    right:0;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
+    background-color: #20a0ff;
+  }
+  .is-active .pitchIcon {
+    display: block;
   }
 </style>

@@ -110,8 +110,9 @@ var tool = {
     let w = element.css('width')
     let h = element.css('height')
     let b = parseInt(element.css('border-left-width')) < 1 ? element.css('border-top-width') : element.css('border-left-width')
-   
+    console.log(element)
     let cName = element.attr('class').split(' ')[0]
+    console.log(cName)
     let thtml = ''
     let tool = self.datahtml[cName].tool
     let toolClass = self.datahtml['supendTools']
@@ -392,6 +393,7 @@ var tool = {
           if (item.xt >= gx && item.xt <= (gx + gw)&& item.yt >= gy && item.yt <= (gy + gh) || item.xb >= gx && item.xb <= (gx + gw) && item.yt >= gy && item.yt <= (gy + gh)||item.xt >= gx && item.xt <= (gx + gw)&& item.yb >= gy && item.yb <= (gy + gh) || item.xb >= gx && item.xb <= (gx + gw) && item.yb >= gy && item.yb <= (gy + gh)){
             item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
           }
+
         }else {
           if (item.xt >= gx && item.xb <= (gx + gw) && item.yt >= gy && item.yb <= (gy + gh)) {
             item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
@@ -1078,17 +1080,20 @@ var tool = {
       let parent = me.$('.on_module')
       let imgbloo = parent.hasClass('picture')
       let picimg
-      let picBox  
+      let picBox
       if(imgbloo) {
         picBox = parent.find('.picBox')
         picimg = parent.find('img')
         self.inp_w = parseInt(parent.css('width'))
         self.inp_h = parseInt(parent.css('height'))
-      }     
+      }
       
-      let inforCon = parent.find('.inforCon')
-      let infor_wrap = parent.find('.infor-wrap')
-      let infor_desc = parent.find('.infor-desc')
+    	var inforCon = parent.find('.inforCon')
+      var infor_wrap = parent.find('.infor-wrap')
+      var infor_desc = parent.find('.infor-desc')
+      var inforheight = parseInt(parent.css('height'))
+      
+      var weatherCon = parent.find('.weatherCon')      
       
       let x = e.pageX
       let y = e.pageY
@@ -1303,17 +1308,22 @@ var tool = {
       // todo: 拉伸某容器固定显示内容
       me.editBox.mousemove(function (e) {
         part(e)
-
-        resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         
-        //资讯拉伸规则
-        inforCon.css({'width': self.inp_w + 'px'})
-        var infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60
-        infor_wrap.css({'width': infor_wrap_width + 'px'})
-       	var infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
-        infor_desc.css({'width': infor_desc_width + 'px'})//资讯拉伸规则  
-        
-        
+        if(parent.hasClass('information')){
+					resizeBox.css({'width': self.inp_w + 'px','height': inforheight + 'px'})
+					//资讯拉伸规则
+	        inforCon.css({'width': self.inp_w + 'px'})
+	        var infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60
+	        infor_wrap.css({'width': infor_wrap_width + 'px'})
+	       	var infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
+	        infor_desc.css({'width': infor_desc_width + 'px'})//资讯拉伸规则  
+	      }else if(parent.hasClass('weather')){
+	      	weatherCon.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+	      	resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+	      }else{
+	      	resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+	      }
+	      
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
         if(imgbloo) {
           if (picBox.hasClass('round')||picBox.hasClass('square')) {
@@ -1378,7 +1388,7 @@ var tool = {
           self.$refs.waiter.show(self, me.$('.on_module'))
           break
         case 'st-left st-advert':
-          self.$refs.advert.show(self)
+          self.$refs.advert.show(self, me.$('.on_module'))
           break
         case 'st-left st-information':
           self.$refs.information.show(self, me.$('.on_module'), me)
@@ -1390,10 +1400,14 @@ var tool = {
           self.$refs.player.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-course':
-          self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
+          self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {           
+            data.summary = data.summary || '--'
+            data.foldername = data.foldername || '--'
+            data.viewnum = data.viewnum || 0
+            data.studynum = data.studynum || 0
             let courseHtm = '<div class="imgbox">'
                           + '<div class="listBox">'
-                          + '<a target="_blank" class="animateBox">课程</a>'
+                          + '<a target="_blank" class="animateBox">'+ data.summary +'</a>'
                           + '<img src="'+ data.img +'">'
                           + '<a target="_blank" class="openState openState_djbmbg1"></a>'
                           + '</div>'
@@ -1415,7 +1429,9 @@ var tool = {
           break
         case 'st-left st-teacher':
           self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {
-            console.log(data)           
+            console.log(data)
+            data.profile = data.profile || '暂无简介'
+            data.professionaltitle = data.professionaltitle || '暂无职称'
             let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '"><a class="team_mask" href="/master/' + data.teauid + '.html" target="_blank">' + data.profile + '</a><a href="/master/' + data.teauid + '.html" target="_blank"><div class="team_hbj"><img src="' + data.face + '"><h3 class="team_h3">' + data.realname + '</h3><p class="team_p1">' + data.professionaltitle + '</p></div><p class="team_p2">' + data.profile + '</p></a></div>'
             element.find('.editAdd').html(teacherHtm)
           })

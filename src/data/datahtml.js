@@ -105,12 +105,12 @@ var configHtml = {
       },      
       {
         name: 'teacher',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-teacher',
         text: '教师'
       },     
       {
         name: 'audition',
-        icon: 'imgicon icon-picture',
+        icon: 'imgicon icon-audition',
         text: '试听'
       },      
       {
@@ -241,16 +241,16 @@ var configHtml = {
       }, 
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {          
       self.$refs.waiter.show(self, element)
-      if (me.$('.waiter').length < 1) {
-        me.editBox.append('<div class="waiter"><div class="kf-head"></div><div class="kf-top"></div></div>')
+      if (me.$('.waiter').length < 2) {
+        me.editBox.append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
         me.$('.waiter').on('click', function() {
           self.$refs.waiter.show(self, element)
         })
       }      
     },
-    html: '<div class="waiterhide module addmodule" datatext="客服"></div>'
+    html: '<div class="waiter module addmodule" style="display:none;" datatext="客服"><div class="kf-head"></div><div class="kf-top"></div></div>'
   },
   course: {
     style: 'width:260px; height:220px',
@@ -303,8 +303,17 @@ var configHtml = {
       }, 
       public: []
     },
-    createEvent: function (self, element, me) {      
-      self.$refs.player.show(self, element, me)      
+    createEvent: function (self, element, me) { 
+      if (me.$('.player').length > 1) {
+        self.$notify({
+          title: '警告',
+          message: '您已经添加过播放器',
+          type: 'warning'
+        }) 
+        element.remove()
+      } else {
+        self.$refs.player.show(self, element, me)
+      }     
     },
     html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
   },
@@ -365,6 +374,9 @@ var configHtml = {
       },
       public: ['b','c','d','e']
     },
+    createEvent: function (self, element) {
+      self.createqr_logo(element)
+    },
     html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
   },
   schoolmap: {
@@ -380,7 +392,7 @@ var configHtml = {
     	
       self.createmap(element)
     },
-    html: '<div class="schoolmap module addmodule" datatext="地图"><a class="picBox"><div id="schoolmap"></div></a></div>'
+    html: '<div class="schoolmap module addmodule" datatext="地图"><div id="schoolmap"></div></div>'
   },
   schoolqr: {
     style: 'width:212px; height:212px',
@@ -391,7 +403,10 @@ var configHtml = {
       },
       public: ['b','c','d']
     },
-    html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img src="" /></a></div>'
+    createEvent: function (self, element) {
+      self.createqr_logo(element)
+    },
+    html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img class="schoolqrimg" src="" /></a></div>'
   },
   introduce: {
     style: 'width:580px; height:145px',
@@ -402,7 +417,10 @@ var configHtml = {
       },
       public: []
     },
-    html: '<div class="introduce picture module addmodule"  datatext="网校介绍"><a class="picBox"></a></div>'
+    createEvent: function (self, element) {
+      self.createintroduce(element)
+    },
+    html: '<div class="introduce picture module addmodule" datatext="网校介绍"><a class="picBox"></a></div>'
   },
   weather: {
     style: 'width:260px; height:140px',
@@ -416,7 +434,7 @@ var configHtml = {
     createEvent: function (self, element, me) {      
       self.$refs.weather.show(element)
     },
-    html: '<div class="weather picture module addmodule"  datatext="天气"><a class="picBox"></a></div>'
+    html: '<div class="weather module addmodule" datatext="天气"><div class="weatherCon"></div></div>'
   }
 }
 exports.config = configHtml

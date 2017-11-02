@@ -1,6 +1,6 @@
 <template>
   <div id="carousel">
-    <el-dialog :title="carouselTit" :visible.sync="dialogCarousel" size="carousel" >
+    <el-dialog :title="carouselTit" :visible.sync="dialogCarousel" size="carousel" @close="beforeCloseEvent">
       <div class="scrollBox">
         <el-row>
           <el-col :span="2">自适应：</el-col>
@@ -21,10 +21,23 @@
           </el-col> -->
         </el-row>
         <el-row>
-          <el-col :span="2">展示时长：</el-col>
-          <el-col :span="5"><el-input-number v-model="showTime" :min="1" :max="99"></el-input-number></el-col>
-          <el-col :span="2">切换时长：</el-col>
-          <el-col :span="6"><el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.2"></el-input-number></el-col>
+          <el-col :span="3">展示时间（s）：</el-col>
+          <el-col :span="8">
+            <el-input-number v-model="showTime" :min="1" :max="99"></el-input-number>
+            <span style="color: #999;">（1~99）</span>
+          </el-col>
+         </el-row>
+         <el-row>
+          <el-col :span="3">切换速度（s）：</el-col>
+          <el-col :span="8">
+            <el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.5"></el-input-number>
+             <span style="color: #999;">（0.5~5）</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            添加图片：<span style="color: #999;">（最多8张图片）</span>
+          </el-col>
         </el-row>        
         <div class="selectBox">
           <div class="diaimg_li" v-for="(item, index) in carouselData">
@@ -40,8 +53,8 @@
                   <span v-else class="spanTit ban">上移</span>
                 </el-col>  
                 <el-col :span="19">
-                  <span class="spanTit spanUrl" :style="!item.clickurl ? 'display:block' : 'display:none'" @click="carouselChangeEvent(index)">设置链接</span>                
-                  <div class="urlType" v-if="item.clickurl">{{item.urlType}}：</div>               
+                  <span class="spanTit spanUrl" :style="!item.clickurl ? 'display:block' : 'display:none'" @click="carouselChangeEvent(index)">设置链接</span>
+                  <div class="urlType" v-if="item.clickurl">{{item.urlType}}：</div>
                 </el-col>
                 <el-col :span="3"><span @click="carouselChangeEvent(index)" class="spanTit" v-if="item.clickurl">修改</span></el-col>
               </el-row>
@@ -53,7 +66,7 @@
                 <el-col :span="19">
                   <div class="urlRoute" v-if="item.clickurl">{{item.urlRoute}}</div>
                 </el-col>
-                <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit" v-if="item.clickurl">删除</span></el-col>
+                <el-col :span="3"><span @click="carouselDeleteEvent(index)" class="spanTit" v-if="item.clickurl" style="color: #FF0000;">删除</span></el-col>
               </el-row>
             </div>
           </div>
@@ -82,16 +95,16 @@ export default {
     return {
       dialogCarousel: false,
       carouselData: [],
-        showTime: 3,
-        transitionTime: 1.5,
-        showSuit: 'false',
-        showWidth: 1200,
-        carouselTit: '轮播图',
-        animStyle: [{
-          value: true,
-          label: '渐显'
-        }],
-        changeStyle: true,
+      showTime: 3,
+      transitionTime: 1.5,
+      showSuit: 'false',
+      showWidth: 1200,
+      carouselTit: '轮播图',
+      animStyle: [{
+        value: true,
+        label: '渐显'
+      }],
+      changeStyle: true
     }
   },
   created: function () {
@@ -100,8 +113,19 @@ export default {
   methods: { 
     show: function (that, element) { 
       let self = this
-      self.that = that     
-      self.dialogCarousel = true      
+      self.that = that
+      self.element = element     
+      self.dialogCarousel = true 
+      self.carouselData = []
+      let cData = element.attr('carouseldata')
+      if (cData) {
+        cData = $.parseJSON(cData)
+        self.changeStyle = cData.changeStyle
+        self.showSuit = cData.showSuit
+        self.showTime = cData.showTime
+        self.transitionTime = cData.transitionTime
+        self.carouselData = cData.carouselData
+      }     
     },
     addPictureEvent: function () {
       let self = this    
@@ -127,6 +151,14 @@ export default {
     },
     dialogCarouselEvent: function () { // 轮播图配置数据
       let self = this
+      if (self.carouselData.length < 1) {
+        self.$notify({
+          title: '警告',
+          message: '您还未添加图片',
+          type: 'warning'
+        })
+        return false
+      }      
       let obj = {
         changeStyle: self.changeStyle,
         showSuit: self.showSuit,
@@ -136,7 +168,9 @@ export default {
       }
       let str = window.JSON.stringify(obj)
       self.dialogCarousel = false
-      $('.on_module').attr('carouselData', str)
+      self.element.find('img').attr('src', self.carouselData[0].imgurl)
+      self.element.show()
+      self.element.attr('carouselData', str)      
     },     
     beforePictureUpload: function (file) { // 上传图片验证
       let self = this
@@ -172,7 +206,8 @@ export default {
         let urlType = ''
         let urlHref = ''
         let urlRoute = ''
-        let navcm        
+        let navcm     
+        console.log(data)
         switch(linkType){
           case 'online':
             urlType = '外部链接'            
@@ -308,6 +343,15 @@ export default {
         self.carouselData[self.index]['clickurl'] = urlHref
       })
       // self.carouselData[index].clickurl = val
+    },
+    beforeCloseEvent: function () { // 关闭弹框前的回调     
+      let self = this      
+      if (self.carouselData.length < 1) {
+        let parent = self.element.parent()
+        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
+        self.element.remove()        
+        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+      }
     }
   }
 }
@@ -315,6 +359,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+    #carousel .el-dialog__header{
+      border-bottom: 1px solid #CECECE;
+      height: 30px;
+    }
     .carousel .el-dialog__header {
       border-bottom: 1px solid #CECECE;
       height: 40px;
@@ -435,7 +483,7 @@ export default {
       line-height: 16px;
       padding-left: 5px;
       color: #666;
-      height: 36px;
+      height: 34px;
       overflow: hidden;     
     }
     .spanUrl{

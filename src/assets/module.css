@@ -6,7 +6,7 @@
   }
   .head, .middle, .foot{
     position: relative;
-    overflow: hidden;
+   /* overflow: hidden;*/
   }
   input:-webkit-autofill {
     background-color: #FAFFBD;
@@ -529,9 +529,10 @@
     width: 1200px;
     height: 320px;
     background: #fff;
+    display: none;
   }
   .carousel .resize {
-    display: none;
+    /*display: none;*/
   }
   .screenBox{
     position: absolute;
@@ -547,6 +548,7 @@
     overflow: hidden;
   }
   .screenBox .img_ul{
+    width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
@@ -555,7 +557,7 @@
   .screenBox .img_li {
     position: relative;
     float: left;
-    width: 1200px;
+    width: 100%;
     height: 100%;
   }
   .screenBox2 .img_li{
@@ -586,6 +588,7 @@
     -webkit-transform:translateX(-50%); 
     -o-transform:translateX(-50%);
     height: 12px;
+    z-index: 3;
   }
   .barbox li {
     float: left;
@@ -1917,6 +1920,9 @@
 		width: 247px;
 		height: 228px
 	}
+  .teacher .resize{
+    display: none;
+  }
 	.teacher .editAdd{
 		width: 100%;
 		height: 100%;
@@ -2281,13 +2287,20 @@
     cursor: pointer;
   }
   /* 分类module */
+  .taxonomy{
+    min-width: 200px;    
+  }
+  .taxonomy .resizeBox{
+    min-width: 200px;  
+  }
   .taxonomycont{
     width: 100%;
-    height: auto;
+    height: 100%; 
+   
     background: #F6F6F6;
     float: none;
     display: block;
-
+    overflow: hidden;
   }
   .taxonomycont .fl{
     float: left;
@@ -2455,7 +2468,8 @@
   }
   
 /* advert */
-  .advert {   
+  .advert { 
+    display: none;  
     width: 300px;
     height: 150px;
     background-color: #F2F2F2;
@@ -2467,6 +2481,7 @@
   .advert .advCon{
     width:  100%;
     height: 100%;
+    overflow: hidden;
   }
   .advert .advCon a{
     width: 100%;
@@ -2484,10 +2499,11 @@
   .module .editAdd .add-icon{
     width: 100%;
     height: 100%;
-    background: url(icon/addtea.png) center center no-repeat;
-    background-size: 102% 102%;
+    background: url(icon/addmodule.png) center center no-repeat;
+   /* background-size: 102% 102%;*/
     border:1px solid #c0c0c0;
     box-sizing: border-box;
+    background-color: #F2F2F2;
   }
   .module .editAdd .add-icon:hover{
     background-color: #169BD5;
@@ -2498,11 +2514,13 @@
     height:120px;
     cursor: pointer;
   }
+  .audition .resize{
+    display: none;
+  }
 /*information*/
 	.information{
 	  width: 1200px;
       height: 200px;
-      background-color: #F2F2F2;
       min-width: 550px;
 	}
 	.information .resizeBox{
@@ -2516,25 +2534,26 @@
 	.introduce{
 	  width: 580px;
 	  height: 145px;
-	  background-color: #F2F2F2;
 	}	
 	.introduce .picBox{
 	  display: block;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+	  width: 100%;
+	  height: 100%;
+	  overflow: hidden;
+	  text-indent: 30px;
+	  font-size: 14px;
+	  text-decoration: none;
 	}
 /*weather*/
 	.weather{
 		width: 260px;
-		height: 140px;
-		background-color: #F2F2F2;
+		height: 130px;
 	}
-	.weather .picBox{
+	.weather .weatherCon{
 	  display: block;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 	}
 /* course */
   .course{
@@ -2563,7 +2582,7 @@
     height: 100%;
     background-color: rgba(0,0,0,0.3);
     display: none;
-    color: #fff;
+    color: #fff!important;
     font-size: 13px;
     line-height: 30px;
     text-decoration:none;
@@ -2656,6 +2675,7 @@
     width:900px;
     height:562px;
     background-color:#F2F2F2;
+    display: none;
   }
   .player .editPlayer{
     width: 100%;
@@ -2673,6 +2693,7 @@
     width: 260px;
     height: 100%;
     background-color: #333;
+    overflow-y: scroll;
   }
   .player .rightMenu li{
       height: 60px;
@@ -2703,3 +2724,256 @@
     font-size: 13px;
     color: #ccc;
   }
+  
+
+	
+/*天气*/
+	.weather-box{
+		width: 100%;
+		height: 100%;
+	}
+	.weather-box:before {
+		width: 100%;
+	  content: '';
+	  display: inline-block;
+	  vertical-align: middle;
+	}
+	.weather-type1:before{
+	  height: 20%;
+	}
+	.weather-type2:before{
+	  height: 30%;
+	}
+	.weather-type3:before{
+	  height: 20%;
+	}
+	.weather-type4:before{
+	  height: 40%;
+	}
+	.centered {
+	  display: inline-block;
+	  vertical-align: middle;
+	  width: 100%;
+	  color: #8e8e8e;
+	}
+/*类型一样式*/
+
+	.weacity{
+		font-size: 16px;
+		font-weight: bold;
+		width: 100%;
+		height: 40%;
+	}
+	.weacontent{
+		width: 100%;
+		height: 60%;
+	}
+	.weatoday,.weatomorrow{
+		font-size: 12px;
+		width: 50%;
+		height: 100%;
+		float: left;
+	}
+	.oneimg_box{
+		float: left;
+		width: 30%;
+		height: 80%;
+	}
+	.oneimg_today,.oneimg_tomorrow{
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+	}
+	.onedetail{
+		float: left;
+		width: 70%;
+		height: 100%;
+		text-align: center;
+	}
+	
+	.temp_min_today,.temp_max_today,.temp_min_tomorrow,.temp_max_tomorrow{
+		font-size: 14px;
+		color: #fdbf43;
+	}
+	.weastatus{
+		font-size: 14px;
+	}
+/*类型一样式*/
+
+/*类型二样式*/
+	.weaicon_box{
+		float: left;
+		width: 35%;
+		height: 100%;
+		text-align: center;
+	}
+	.imgser{
+		width: 80%;
+		height: 100%;
+	}
+	.weadetail_box{
+		float: left;
+		width: 62%;
+		height: 100%;
+		text-indent: 20px;
+	}
+	.ser_city{
+		color: #8E8E8E;
+		font-size: 16px;
+	}
+	.weatem{
+		margin-left: 10px;
+		font-size: 25px;
+		color: #fdbf43;
+	}
+	.ser_max_temp{
+		font-size: 25px;
+	}
+	.ser_status,.ser_wind{
+		color: #8E8E8E;
+		font-size: 14px;
+	}
+/*类型二样式*/
+
+/*类型三样式*/
+	.weatypethd{
+		width: 40%;
+		height: 100%;
+		text-align: center;
+		float: left;
+	}
+	.weatypethd_city{
+		color: #8E8E8E;
+		font-size: 16px;
+		height: 24%;
+		margin-bottom: 1%;
+	}
+	.imgthd_box{
+		width: 45%;
+		height: 55%;
+		margin: 0 auto;
+	}
+	.imgthd{
+		width: 100%;
+		height: 100%;
+	}
+	.status_thd{
+		font-size: 14px;
+		color: #8E8E8E;
+		height: 19%;
+		margin-top: 1%;
+	}
+	.weatypethd_detail{
+		width: 60%;
+		float: left;
+		text-indent: 10px;
+		font-size: 14px;
+		color: #8E8E8E;
+	}
+	.thddescribe{
+		font-size: 14px;
+	}
+	.thd_temp{
+		color: #fdbf43;
+		font-size: 18px;
+	}
+	.thd_min_temp,.thd_max_temp{
+		font-size: 18px;
+	}
+/*类型三样式*/
+
+/*类型四样式*/
+	.detailfor{
+		width: 100%;
+		height: 100%;
+		color: #a4a4a4;
+		font-size: 16px;
+		text-align: center;
+	}
+	.detailfor_city{
+		font-size: 16px;
+		color: #8E8E8E;
+	}
+	.detailfor_weacon{
+		margin: 0 5%;	
+		font-size: 14px;
+		color: #8E8E8E;
+	}
+	.detailfor_tem{
+		font-size: 25px;
+		color: #fdbf43;
+	}
+	.for_min_temp,.for_max_temp{
+		font-size: 25px;
+	}
+/*类型四样式*/
+
+
+/*资讯样式*/
+	.infor-wrap{
+		width: 1140px;
+		height: 180px;
+		padding: 20px 30px 0 30px;
+	}
+	.infor-cont{
+		width: 100%;
+		height: 180px;
+		border-bottom: 1px solid #F5F5F5;
+	}
+	.infor-title{
+		height: 40px;
+		font-size: 22px;
+		color: #616161;
+		font-weight: 900;
+		min-width: 490px;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
+	.infor-img{
+		width: 100%;
+		height: 140px;
+	}
+	.infor-img img{
+		float: left;
+		width: 210px;
+		height: 128px;
+		border: 0 none;
+	}
+	.infor-desc{
+		float: left;
+		width: 930px;
+		height: 128px;
+		position: relative;
+		min-width: 280px;
+	}
+	.infor-desc-no{
+		float: left;
+		width: 100%;
+		height: 128px;
+		position: relative;
+	}
+	.infor-desc-text{
+		float: left;
+		width: 100%;
+		height: 128px;
+		position: relative;
+	}
+	.infor-conc{
+		width: 100%;
+		max-height: 110px;
+		color: #919191;
+		font-size: 14px;
+		padding-left: 16px;
+		text-indent: 20px;
+		line-height: 22px;
+		overflow: hidden;
+	}
+	.infor-time{
+		position: absolute;
+		right: -20px;
+		bottom: -5px;
+		color: #999999;
+		font-size: 14px;
+	}
+/*资讯样式*/

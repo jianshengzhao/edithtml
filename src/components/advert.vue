@@ -3,22 +3,35 @@
     <el-dialog
       title="悬浮广告"
       :visible.sync="dialogAdvert"
-      size="advert" >
-      <el-row>
+      size="advert"
+      @close="beforeCloseEvent" >
+      <el-row style="margin-bottom: 26px;">
         <el-col :span="4">悬浮方式</el-col>
         <el-col :span="18">
-           <el-select v-model="showStyle" placeholder="请选择悬浮方式" >
+          <el-radio-group v-model="showStyle">
+            <el-radio-button label="static">
+              <img src="../assets/newdialog/static.jpg">
+              <span class="stylename">静态悬浮</span>
+              <div class="pitchIcon">✔</div>
+            </el-radio-button>
+            <el-radio-button label="dynamic">
+              <img src="../assets/newdialog/dynamic.gif">
+              <span class="stylename">动态悬浮</span>
+              <div class="pitchIcon">✔</div>
+            </el-radio-button>
+          </el-radio-group>
+          <!-- <el-select v-model="showStyle" placeholder="请选择悬浮方式" >
             <el-option
               v-for="item in styleOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </el-col>
       </el-row>
       <el-row>
-        <el-col >添加图片：</el-col>
+        <el-col >添加图片：<span style="color: #999;">（最多添加5张图片）</span></el-col>
         <el-col >
           <div class="addImgList">
             <div class="addLi" v-for="(item, index) in advertData">
@@ -82,23 +95,28 @@ export default {
     show: function (that, element) {
       let self = this
       self.that = that
+      self.showStyle = 'static' 
+      self.advertData = [] 
       self.dialogAdvert = true
-      if (!element) {
-        self.showStyle = '' 
-        self.advertData = [] 
-        self.currentEle = $('.on_module')
-        let advertData = self.currentEle.attr('advertData')
-        if(advertData) {
-          let jsonAdvert = $.parseJSON(advertData)
-          self.showStyle = jsonAdvert.floatStyle      
-          self.advertData = jsonAdvert.advertData
-        }
-      } else {
-        self.currentEle = element
-      }
+      self.currentEle = element     
+      let advertData = self.currentEle.attr('advertData')
+      if(advertData) {
+        let jsonAdvert = $.parseJSON(advertData)
+        self.showStyle = jsonAdvert.floatStyle      
+        self.advertData = jsonAdvert.advertData
+      }      
     },    
     dialogAdvertEvent: function () {
       let self = this
+      if (self.advertData.length < 1) {
+        self.$notify({
+          title: '警告',
+          message: '您还未添加广告图片',
+          type: 'warning'
+        })
+        return false
+      }
+      self.currentEle.show()
       self.dialogAdvert = false
 
       /* 参数设置存储 */
@@ -313,6 +331,15 @@ export default {
     deleteHrefEvent: function (index) {
       let self = this;
       self.advertData[index].url = ''     
+    },
+    beforeCloseEvent: function () { // 关闭弹框前的回调     
+      let self = this      
+      if (self.advertData.length < 1) {
+        let parent = self.currentEle.parent()
+        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.currentEle, self.currentEle) // 更新选区
+        self.currentEle.remove()        
+        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+      }
     }
   }
 }
@@ -442,5 +469,37 @@ export default {
     top:24px;
     right: 5px;
     color: #FF0000;
+  }
+  #advert .el-radio-button__inner{
+    position: relative;
+    display: block;
+    width: 90px;
+    height: 60px;
+    padding: 0;
+    margin-right:10px;
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;  
+    border: 1px solid #999999;  
+    box-sizing: content-box; 
+  }
+  
+  #advert .is-active .el-radio-button__inner {
+    border: 1px solid #20a0ff;
+    background-color: #fff;
+  }
+  #advert .is-active .el-radio-button__inner .stylename{
+    color: #20a0ff;
+  }
+  #advert .el-radio-button__inner img{
+    display: block;   
+    width: 90px;
+    height: 60px;
+  }
+  #advert .el-radio-button__inner .stylename{
+    position: absolute;
+    left: 24px;
+    bottom: -20px;
+    color: #999999;
   }
 </style>

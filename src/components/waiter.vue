@@ -4,21 +4,33 @@
       title="客服"
       :visible.sync="dialogWaiter"
       size="waiter" >
-      <el-row>
-        <el-col :span="4">显示方式</el-col>
+      <el-row style = 'margin-bottom: 56px;'>
+        <el-col :span="4">显示方式：</el-col>
         <el-col :span="18">
-           <el-select v-model="showStyle" placeholder="请选择悬浮位置" >
+          <el-radio-group v-model="showStyle">
+            <el-radio-button label="left">
+              <img src="../assets/newdialog/left.jpg">
+              <span class="stylename">左悬浮</span>
+              <div class="pitchIcon">✔</div>
+            </el-radio-button>
+            <el-radio-button label="right">
+              <img src="../assets/newdialog/right.jpg">
+              <span class="stylename">右悬浮</span>
+              <div class="pitchIcon">✔</div>
+            </el-radio-button>
+          </el-radio-group>
+          <!-- <el-select v-model="showStyle" placeholder="请选择悬浮位置" >
             <el-option
               v-for="item in styleOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">添加图标</el-col>
+        <el-col :span="8">添加图标（20*20）：</el-col>
         <el-col :span="4">
           <div class="waiterImgBox" :style="'background-image:url('+ waiterImg +')'" v-if="waiterImg!=''">        
           </div>
@@ -60,14 +72,20 @@ export default {
     show: function (that, element) {
       let self = this
       self.that = that
-      self.showStyle = ''
+      self.showStyle = 'left'
       self.waiterImg = ''
       self.dialogWaiter = true
       let waiter = $('.waiter')
       if (waiter.length > 0) {
-        let jsonS = $.parseJSON(waiter.attr('waiterData'))
-        self.showStyle = jsonS.showStyle || 'left'
-        self.waiterImg = jsonS.waiterImg || 'http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png'
+        let waiterData = waiter.attr('waiterData')
+        if (waiterData) {
+          let jsonS = $.parseJSON(waiterData)
+          self.showStyle = jsonS.showStyle || 'left'
+          self.waiterImg = jsonS.waiterImg || 'http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png'
+        } else {
+          self.showStyle = 'left'
+          self.waiterImg = 'http://static.ebanhui.com/ebh/tpl/2016/images/kfico.png'
+        }
       }
     },
     dialogWaiterEvent: function () {
@@ -128,12 +146,44 @@ export default {
     display: inline-block;
     width: 36px;
     height: 36px;
-    background-color: #333;    
+    background-size: 20px;
+    background-color: #18A8F7;    
     background-position: center;
     background-repeat: no-repeat;
   }  
   #waiter .addPic {
     cursor: pointer;
     color: #169BD5;
+  }  
+  #waiter .el-radio-button__inner{
+    position: relative;
+    display: block;
+    width: 90px;
+    height: 60px;
+    padding: 0;
+    margin-right:10px;
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;  
+    border: 1px solid #999999;  
+    box-sizing: content-box; 
+  }
+  #waiter .is-active .el-radio-button__inner {
+    border: 1px solid #20a0ff;
+    background-color: #fff;
+  }
+  #waiter .is-active .el-radio-button__inner .stylename{
+    color: #20a0ff;
+  }
+  #waiter .el-radio-button__inner img{
+    display: block;   
+    width: 90px;
+    height: 60px;
+  }
+  #waiter .el-radio-button__inner .stylename{
+    position: absolute;
+    left: 24px;
+    bottom: -20px;
+    color: #999999;
   }
 </style>
