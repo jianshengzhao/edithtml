@@ -411,7 +411,7 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
     }
-    .diaimg_li .carImgBox:hover .update{
+    .diaimg_li:hover .carImgBox .update{
       display: block;
     }
     .diaimg_li .carImgBox .delete{
@@ -427,7 +427,7 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
     }
-    .diaimg_li .carImgBox:hover .delete{
+    .diaimg_li:hover .carImgBox .delete{
       display: block;
     }
     .diaimg_li img{
@@ -445,9 +445,9 @@ export default {
     }
     .handleList{
       margin-top: 10px;
-      width: 430px;
+      width: 420px;
       height:70px;
-      float: right;
+      float: left;
     }    
     .handleList .el-col{
       text-align: left;

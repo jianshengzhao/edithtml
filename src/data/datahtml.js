@@ -362,6 +362,16 @@ var configHtml = {
       }, 
       public: []
     },
+    createEvent: function (self, element, me) {      
+      if (me.$('.loginbox').length > 3) {
+        self.$notify({
+          title: '警告',
+          message: '您已经添加过登录组件',
+          type: 'warning'
+        })
+        element.remove()
+      }
+    },
     html: '<div class="loginbox username module addmodule"  datatext="账号"><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div><div class="loginbox password module addmodule"  datatext="密码"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"></div><div class="loginbox loginbutton module addmodule"  datatext="登录按钮"><input id="signbtnsubmit" class="signbtn" value="立即登录" name="Submit" type="submit"></div>',
     moduleMargin: 60 // 一次性添加多个模块才配置的模块间距
   },
@@ -374,8 +384,17 @@ var configHtml = {
       },
       public: ['b','c','d','e']
     },
-    createEvent: function (self, element) {
-      self.createqr_logo(element)
+    createEvent: function (self, element ,me) {
+      	if (me.$('.schoollogo').length > 1) {
+	        self.$notify({
+	          title: '警告',
+	          message: '您已经添加过LOGO',
+	          type: 'warning'
+	        })
+	        element.remove()
+	    }else{
+      		self.createqr_logo(element)
+	    }
     },
     html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
   },
@@ -388,11 +407,19 @@ var configHtml = {
       },
       public: []
     },
-    createEvent: function (self, element) {
-    	
-      self.createmap(element)
+    createEvent: function (self, element,me) {   
+    	if (me.$('.schoolmap').length > 1) {
+	        self.$notify({
+	          title: '警告',
+	          message: '您已经添加过地图',
+	          type: 'warning'
+	        })
+	        element.remove()
+	    }else{
+      		self.createmap(element)
+	    }
     },
-    html: '<div class="schoolmap module addmodule" datatext="地图"><div id="schoolmap"></div></div>'
+    html: '<div class="schoolmap module addmodule" datatext="地图"><div class="schoolmap_box" id="schoolmap"></div></div>'
   },
   schoolqr: {
     style: 'width:212px; height:212px',
@@ -420,7 +447,7 @@ var configHtml = {
     createEvent: function (self, element) {
       self.createintroduce(element)
     },
-    html: '<div class="introduce picture module addmodule" datatext="网校介绍"><a class="picBox"></a></div>'
+    html: '<div class="introduce module addmodule" datatext="网校介绍"><a class="picBox"></a></div>'
   },
   weather: {
     style: 'width:260px; height:140px',

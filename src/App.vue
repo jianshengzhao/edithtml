@@ -210,15 +210,15 @@
       <div class="lib_box">
         <div class="header layerhead">页头 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
-          <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span></div>
+          <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
         </div>
         <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementMain">
-          <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span></div>
+          <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
         </div>
         <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementTail">
-          <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span></div>
+          <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
         </div>       
       </div>
       <div class="shrink shrinkout">
@@ -1065,15 +1065,23 @@
         },
         createmap:function(html){
           let self = this
-          var map = new BMap.Map("schoolmap");
-			  	var point = new BMap.Point(116.404, 39.915);
-			  	var pointinfo = new BMap.Point(116.404, 39.935);
-			  	map.centerAndZoom(point, 11);  // 初始化地图,设置中心点坐标和地图级别
-			  	var marker = new BMap.Marker(point);
+          var	lng = parseFloat(window.roominfo.lng),
+          		lat = parseFloat(window.roominfo.lat),
+           		map = new BMap.Map("schoolmap"),
+          		point = new BMap.Point(lng, lat),
+			  			marker = new BMap.Marker(point),
+			  			top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+			  			
+			  	map.centerAndZoom(point, 12);  //设置中心点坐标
 			  	map.addOverlay(marker);
+			  	map.addControl(top_right_navigation); 
+			  	map.enableDragging();
+			  	map.enableScrollWheelZoom(true);
+			  	
 			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>" 
 			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
 			  	var infoWindow = new BMap.InfoWindow(sContent);
+			  	var pointinfo = new BMap.Point(lng, lat+0.01);	
 					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
         },
         createqr_logo:function(html){
@@ -1087,28 +1095,12 @@
         createintroduce:function(html){
         	let self = this
         	html.find(".picBox").html(window.roominfo.summary)
-        },
-        getweather:function(){
-          let self = this
-          self.$http.get('http://api.map.baidu.com/telematics/v3/weather', {
-            params: {
-              location:'杭州',
-              output:'json',
-              ak:'BTxWGxLSfvMBoq3mGaEYVdENUECSWtSv'
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            //let datas = response.data
-            console.log(response)
-          }, function (response) {
-            console.log(response)
-          })
         }
       }
     },
     created: function () {
       var self = this
       self.$nextTick(function () {
-        self.getweather()
         let canvas = $('.canvas')
         let space = $('.space')
         canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
@@ -3123,5 +3115,15 @@
   }
   .is-active .pitchIcon {
     display: block;
+  }
+  .ele_li:hover .deleteLayer {
+    display: block;
+  }
+  .deleteLayer{
+    display: none;
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 16px;
   }
 </style>

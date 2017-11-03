@@ -250,7 +250,7 @@ export default {
   }
   .vo-li .cwTlt{
     float: left;
-    width: 230px;
+    width: 225px;
     height: 24px;
     line-height: 24px;
     padding-left: 8px;
@@ -261,7 +261,7 @@ export default {
   }
   .vo-li .cwDesc{
     float: left;
-    width: 230px;
+    width: 225px;
     height: 50px;
     line-height: 18px;
     font-size: 12px;

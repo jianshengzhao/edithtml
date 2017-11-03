@@ -6,8 +6,9 @@
 		    size="myweather"
 		    :close-on-click-modal="false"
 		    @open="openWeather"
-		    @close="closeWeather">
-			    <div style="border-top: 1px solid #ccc;margin-top: 10px;">
+		    @close="closeWeather"
+		    :before-close="beforeclose">
+			    <div >
 			    	<p style="margin: 20px 0 0 20px;">选择样式：</p>
 			    	<ul class="weather-ul">
 			    		<li class="weather-li" style="margin: 0 45px 0 0;">
@@ -172,6 +173,9 @@
 		   	closeWeather:function(){
 		   		
 		   	},
+		   	beforeclose:function(done){
+		   		console.log(1);
+		   	},
 		   	confirmweather:function(){
 		   		var self = this;
 		   		self.currentEle_wea.find(".weatherCon").empty();
@@ -200,6 +204,8 @@
 						imgsrc_today += "/weaSunny.png"
 					}else if(status_today == "多云"){
 						imgsrc_today += "/weaCloudy.png"
+					}else if(imgsrc_today == "阴"){
+						imgsrc_today += "/weaShade.png"
 					}
 					
 					var imgsrc_tomorrow = "http://static.ebanhui.com/ebh/tpl/aroomv3/icon";
@@ -207,6 +213,8 @@
 						imgsrc_tomorrow += "/weaSunny.png"
 					}else if(status_tomorrow == "多云"){
 						imgsrc_tomorrow += "/weaCloudy.png"
+					}else if(status_tomorrow == "阴"){
+						imgsrc_tomorrow += "/weaShade.png"
 					}
 					
 					if(self.weathertype == 1){

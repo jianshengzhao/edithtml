@@ -131,6 +131,7 @@ export default {
       /* 添加广告图片和跳转链接 */
     
       let advHtml = ''
+
       for (let i = 0, len = self.advertData.length; i < len; i++) {
         let item = self.advertData[i]
         if (item.url == 'loginEvent' || item.url == 'getUserNameEvent' || item.url == 'registerEvent' ) {
@@ -147,12 +148,12 @@ export default {
       self.currentEle.ready(function() {
         let imgs = advCon.find('img')
         let hs = 0
-        for(let i = 0, len = imgs.length; i < len; i++) {
+        for (let i = 0, len = imgs.length; i < len; i++) {
           let imgi =  imgs.eq(i)
           hs = hs + parseInt(imgi.css('height'))
         }
         // if (self.showStyle == 'static') {
-          self.currentEle.css('height',hs + 'px')
+        self.currentEle.css('height',hs + 'px')
         // } else {
         //   self.currentEle.css({
         //     'height': hs + 'px',
@@ -161,6 +162,12 @@ export default {
         //   })
         // }
         self.currentEle.find('.resizeBox').css('height',hs + 'px')
+        let as = advCon.find('a')
+        for (let i = 0, len = as.length; i < len; i++) {
+          let ai = as.eq(i)
+          let aih = (parseInt(ai.css('height')) / hs) * 100          
+          ai.css('height', aih + '%')
+        }
       })
     },
     addPictureEvent: function () {
@@ -410,7 +417,7 @@ export default {
     background-repeat: no-repeat;
     background-size: 16px;
   }
-  #advert .addLi .imgbox:hover .update{
+  #advert .addLi:hover  .imgbox .update{
     display: block;
   }
   #advert .addLi .imgbox .delete {
@@ -429,7 +436,7 @@ export default {
     background-repeat: no-repeat;
     background-size: 16px;
   }
-  #advert .addLi .imgbox:hover .delete{
+  #advert .addLi:hover .imgbox .delete{
     display: block;
   }
   #advert .addLi .imgbox img{

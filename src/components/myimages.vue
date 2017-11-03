@@ -457,8 +457,7 @@
 		       						var photos = datas.data.photos;
 		       						var oDiv = "";
 									for(let i in photos){
-										let height = photos[i].height>300?300:photos[i].height;
-										var oDiv = "<div class='waterfall' style='height:"+height+"px' title="+photos[i].photoname+"><img class='' style='height:"+height+"px' src="+photos[i].imgurl+" /><span class='checked_falls'></span></div>"
+										var oDiv = "<div class='waterfall' style='height:"+photos[i].height+"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].height+"px' src="+photos[i].imgurl+" /><span class='checked_falls'></span></div>"
 										$("#waterfall-box").append(oDiv);
 									}
 		       						change();
@@ -697,7 +696,7 @@
 	     		var self = this;
 	     		if(self.httpStart > 0) return;
             	self.httpStart = 1;
-            	if(file.type != "image/jpeg" || file.type != "image/gif" || file.type != "image/png"){
+            	if(file.type != "image/jpeg" && file.type != "image/gif" && file.type != "image/png"){
             		self.$notify({
 		    			title: '警告',
 		    			message: '上传的文件只能是jpeg、jpg、gif或png格式。',
@@ -1185,5 +1184,8 @@
 	}
 	.el-radio-button__orig-radio:checked+.el-radio-button__inner{
 		background-color: #527EDF;
+	}
+	.el-radio-button__orig-radio:checked+.el-radio-button__inner{
+		border-color: #527EDF;
 	}
 </style>

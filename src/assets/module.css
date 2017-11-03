@@ -702,7 +702,8 @@
       overflow: hidden;
 	}
 	.schoollogo img{
-		min-height: 100%; 
+    width: 100%;
+    height: 100%;
 	}
 /*-----------地图---------------*/	
 	.schoolmap{
@@ -722,6 +723,7 @@
 		min-height: 300px;
 	}
 	#schoolmap{
+		width: 100%;
 		height: 100%;
 	}
 /*-----------二维码---------------*/
@@ -736,7 +738,8 @@
     overflow: hidden;
 	}
 	.schoolqr img{
-		min-height: 100%; 
+		width: 100%;
+    height: 100%;
 	}
 /*-----------课程分类---------------*/
 	.addcoursetype{
@@ -1717,63 +1720,8 @@
 	.login input:-webkit-autofill {
 		-webkit-box-shadow: 0 0 0px 1000px #f5f7fa inset;
 		
-	}
-  .denser .risfgr {
-      border: 1px solid #cdcdcd;
-      float: left;
-      height: 100px;
-      margin-top: 28px;
-      margin-bottom: 15px;
-      width: 100px;
-      border-radius: 50px;
-  }
-  .denser .erseasd {
-    float: left;
-    margin-left: 15px;
-  }
-  .denser .waisrd {
-    margin-top: 40px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    max-width: 110px;
-    display:block;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-	}
-  .denser .mdistr {
-      font-size: 13px;
-      line-height: 2;
-  }
-
-  .denser .flosret {
-      float: left;
-      width: 245px;
-      border-top: solid 1px #f2f2f2;
-      text-align: center;
-      height: 32px;
-      line-height: 32px;
-      margin-top: 24px;
-  }
-  .denser .flosret a {
-      font-size: 13px;
-      color: #888;
-  }
-	.entryandexit .exitbtn{
-		background: #338bff;
-    border: medium none;
-    border-radius: 4px;
-    cursor: pointer;
-    height: 45px;
-    line-height: 45px;
-    width: 70px;
-    color: #fff;
-    font-size: 16px;
-    font-family: 微软雅黑;
-    margin-top: 0px;
-	  text-align: center;
-    margin-right: 8px;
-	}
+	}  
+	
 	/*登录框样式1*/
 	  #logintype1{
     background: #338bff;
@@ -2354,13 +2302,13 @@
     -moz-box-sizing:border-box; /* Firefox */
     -webkit-box-sizing:border-box; /* Safari */    
   }
-  .username input::-webkit-input-placeholder,
+  /*.username input::-webkit-input-placeholder,
   .password  input::-webkit-input-placeholder{
     color: #b4bccc;
   }
   .username::placeholder,.password::placeholder {
     color: #b4bccc;
-  }
+  }*/
   .loginbutton{
     width: 200px;
     height: 40px;
@@ -2489,6 +2437,7 @@
   }
   .advert .advCon img{
     width: 100%;
+    height: 100%;
     display: block;
   }
 /* editAdd */
@@ -2580,13 +2529,14 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
     display: none;
-    color: #fff!important;
+    color: #eee!important;
     font-size: 13px;
-    line-height: 30px;
+    line-height: 20px;
     text-decoration:none;
     text-indent: 10px;
+    padding: 3px;
   }
   .course .imgbox img{
     display: block;
@@ -2977,3 +2927,19 @@
 		font-size: 14px;
 	}
 /*资讯样式*/
+
+/*地图样式*/
+.BMap_top{
+	display: block;
+	border-top: 1px solid #ababab;
+ 	background-color: #fff;
+}
+.BMap_center{
+	border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
+  background-color: #fff;
+}
+.BMap_bottom{
+	border-bottom: 1px solid #ababab;
+  background-color: #fff;
+}

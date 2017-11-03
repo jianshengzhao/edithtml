@@ -110,9 +110,9 @@ var tool = {
     let w = element.css('width')
     let h = element.css('height')
     let b = parseInt(element.css('border-left-width')) < 1 ? element.css('border-top-width') : element.css('border-left-width')
-    console.log(element)
+    // console.log(element)
     let cName = element.attr('class').split(' ')[0]
-    console.log(cName)
+    // console.log(cName)
     let thtml = ''
     let tool = self.datahtml[cName].tool
     let toolClass = self.datahtml['supendTools']
@@ -495,7 +495,7 @@ var tool = {
       self.original = self.moduleElement.parent()
     }
     switch (type) {
-      // -------------- css属性 -----------------
+    // -------------- css属性 -----------------
       case 'zIndex':
         if (val < 0) {
           val = 0
@@ -646,8 +646,7 @@ var tool = {
         }
         break
       case 'borderStyle':
-        part = function (ele) {
-          console.log(val)
+        part = function (ele) {          
           ele.css('borderStyle', val)
         }
         break
@@ -695,7 +694,7 @@ var tool = {
           ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
         }
         break
-      // ------------- 快捷工具 -----------------
+    // ------------- 快捷工具 -----------------
       case 'topAlign':
         if (onModules.length > 1) {
           let topY = parseInt(self.moduleElementY.css('top'))
@@ -829,12 +828,20 @@ var tool = {
         break
       case 'copy':
         self.clipboard = ''        
-        part = function (ele) {                  
-          ele.find('.multiBox').remove()
-          ele.find('.resizeBox').remove()
-          ele.find('.supendTools').remove()
-          self.clipboard += ele[0].outerHTML
-          ele.removeClass('on_module')
+        part = function (ele) {  
+          if (!ele.hasclass('player')) {
+            ele.find('.multiBox').remove()
+            ele.find('.resizeBox').remove()
+            ele.find('.supendTools').remove()
+            self.clipboard += ele[0].outerHTML
+            ele.removeClass('on_module')
+          } else {
+            self.$notify({
+              title: '警告',
+              message: '播放器禁止复制',
+              type: 'warning'
+            });
+          }
         }
         break
       case 'paste':
@@ -843,19 +850,18 @@ var tool = {
           let sTop = parseInt(me.space.scrollTop())
           let sLeft = parseInt(me.space.scrollLeft())           
           let menuY = parseInt(me.contextmenu.css('top')) - me.space.scrollTop() + self.paddingtop
-          let menuX = parseInt(me.contextmenu.css('left')) - me.space.scrollLeft()
-          console.log(menuX)
+          let menuX = parseInt(me.contextmenu.css('left')) - me.space.scrollLeft()         
           switch (self.original.attr('class')) {
             case 'c_top':
               menuY = menuY - (self.paddingtop + self.postop) + sTop
               menuX = menuX - self.posleft + sLeft
               break
             case 'c_body':
-              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height'))
+              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt(me.$('.c_top').css('height'))
               menuX = menuX - self.posleft + sLeft
               break
             case 'c_foot':
-              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt($('.c_top').css('height')) - parseInt($('.c_body').css('height'))
+              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt(me.$('.c_top').css('height')) - parseInt($('.c_body').css('height'))
               menuX = menuX - self.posleft + sLeft
               break
           }
@@ -1345,6 +1351,13 @@ var tool = {
       me.editBox.mouseup(function (e) {
         me.editBox.unbind('mousemove mouseup')
         me.line.hide()
+        if(parent.find("#schoolmap").hasClass("schoolmap_box")){
+        	parent.find("#schoolmap").remove();
+        	var schoolmap = '<div class="schoolmap_box" id="schoolmap"></div>';
+        	parent.append(schoolmap);
+        	self.createmap();
+        	resizeBox.hide();
+        }
       })
       return false 
     })
@@ -1421,15 +1434,14 @@ var tool = {
           })
           break
         case 'st-left st-audition':
-          self.$refs.hrefdialogp.show('coursecw|audition', me.$('.on_module'), function (element, data) {            
-            let auditionHtm = '<a target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {            
+            let auditionHtm = '<a src="/course/' + data.cwid + '.html" target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
             element.attr('auditionid', data.cwid)
             element.find('.editAdd').html(auditionHtm)
           })
           break
         case 'st-left st-teacher':
-          self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {
-            console.log(data)
+          self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {           
             data.profile = data.profile || '暂无简介'
             data.professionaltitle = data.professionaltitle || '暂无职称'
             let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '"><a class="team_mask" href="/master/' + data.teauid + '.html" target="_blank">' + data.profile + '</a><a href="/master/' + data.teauid + '.html" target="_blank"><div class="team_hbj"><img src="' + data.face + '"><h3 class="team_h3">' + data.realname + '</h3><p class="team_p1">' + data.professionaltitle + '</p></div><p class="team_p2">' + data.profile + '</p></a></div>'
@@ -1767,18 +1779,48 @@ var tool = {
     })
     me.elementHead.on('click', '.ele_li', function (e) {
       let index = me.$(this).attr('dataIndex')
-      let ele = self.elementHead[index].ele
+      let ele = self.elementHead[index].ele     
       me.carrySignEvent(self, ele)
     })
+    me.elementHead.on('click', '.deleteLayer', function (e) {      
+      let index = me.$(this).attr('dataIndex') 
+      if (self.elementHead[index].text == '客服') {
+        me.$('.waiter').remove()
+      }         
+      self.elementHead[index].ele.remove()
+      self.elementHead.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele) waiter 
+    })    
     me.elementMain.on('click', '.ele_li', function (e) {
       let index = me.$(this).attr('dataIndex')
       let ele = self.elementMain[index].ele
       me.carrySignEvent(self, ele)
     })
+    me.elementMain.on('click', '.deleteLayer', function (e) {      
+      let index = me.$(this).attr('dataIndex') 
+      if (self.elementHead[index].text == '客服') {
+        me.$('.waiter').remove()
+      }      
+      self.elementMain[index].ele.remove()
+      self.elementMain.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele)
+    })
     me.elementTail.on('click', '.ele_li', function (e) {
       let index = me.$(this).attr('dataIndex')
       let ele = self.elementTail[index].ele
       me.carrySignEvent(self, ele)
+    })
+    me.elementTail.on('click', '.deleteLayer', function (e) {      
+      let index = me.$(this).attr('dataIndex') 
+      if (self.elementHead[index].text == '客服') {
+        me.$('.waiter').remove()
+      }           
+      self.elementTail[index].ele.remove()
+      self.elementTail.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele)
     })
   // ------------- 模块双击设置 ----------------
     let preTime = 0
