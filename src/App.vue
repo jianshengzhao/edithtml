@@ -52,8 +52,8 @@
           <div class="doll"></div>
           <!-- <span>操作</span> -->
           <ul class="toolbar" >
-            <li @click="shearEvent" ><i class="iconfont icon-shear"></i>剪切</li>
-            <li @click="copyEvent" ><i class="iconfont icon-copy"></i>复制</li>
+            <li @click="shearEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="iconfont icon-shear"></i>剪切</li>
+            <li @click="copyEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="iconfont icon-copy"></i>复制</li>
             <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
             <li @click="deleteEvent" ><i class="iconfont icon-delete"></i>删除</li>
           </ul>
@@ -260,8 +260,8 @@
             </ol>
           </li>
           <div class="divider" v-if="rightButton"></div>
-          <li @click="shearEvent" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
-          <li @click="copyEvent" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
+          <li @click="shearEvent" :class="onlybloo?'':'tl_li_Disable'" v-if="rightButton"><i class="iconfont icon-shear"></i>剪切</li>
+          <li @click="copyEvent" :class="onlybloo?'':'tl_li_Disable'" v-if="rightButton"><i class="iconfont icon-copy"></i>复制</li>
           <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
           <li @click="deleteEvent" v-if="rightButton"><i class="iconfont icon-delete"></i>删除</li>
         </ul>
@@ -674,6 +674,7 @@
     data: function () {
       return {
       // ------------ 工具栏add ----------------------
+        onlybloo: true,
         br_width: '0',
         br_widths: [{
           value: '0',
@@ -1075,8 +1076,7 @@
 			  	map.centerAndZoom(point, 12);  //设置中心点坐标
 			  	map.addOverlay(marker);
 			  	map.addControl(top_right_navigation); 
-			  	map.enableDragging();
-			  	map.enableScrollWheelZoom(true);
+			  	map.disableDragging();     
 			  	
 			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>" 
 			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
@@ -1195,6 +1195,12 @@
                   tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
                   tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
                   tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
+                  if ($('.waiter').length < 2 && $('.waiter').length > 0) {
+                    $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+                    $('.waiter').on('click', function() {
+                      self.$refs.waiter.show(self, canvas.find('.waiter'))
+                    })
+                  } 
                 }
               }
               self.httppost(getParams)
@@ -1202,8 +1208,8 @@
           }
           self.httpget(getParam)
         }
-        // 客服
-        if ($('.waiter').length < 2) {
+        // 客服     
+        if ($('.waiter').length < 2 && $('.waiter').length > 0) {
           $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
           $('.waiter').on('click', function() {
             self.$refs.waiter.show(self, canvas.find('.waiter'))

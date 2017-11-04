@@ -1887,28 +1887,30 @@
     transition: all 0.45s ease-out 0s;
     position: relative;
 	}
-	.teacher .editAdd  .team_mask {
+	.teacher .editAdd .team_mask {
 		display: none;
-	}
-	.teacher .editAdd  .team_bk:hover .team_mask {
-		background: #8493af none repeat scroll 0 0;
-		opacity: 0.9;
-		display:block;
-		color:#fff;
-		width:100%;
-		box-shadow: 0 0 15px #ccc;
-		height:100%;
-		position: absolute;
-		padding: 20px;
-		box-sizing:border-box;
-		-moz-box-sizing:border-box; /* Firefox */
-		-webkit-box-sizing:border-box; /* Safari */
-		top:0px;
-		left:0px;
-		line-height:1.8;
-		text-decoration: none;
+    background: #8493af none repeat scroll 0 0;
+    opacity: 0.9;
+    color: #fff;
+    width:100%;
+    box-shadow: 0 0 15px #ccc;
+    height:100%;
+    position: absolute;
+    padding: 10px 15px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
+    top:0px;
+    left:0px;
+    font-size: 16px;
+    line-height:27px;
+    text-decoration: none;
     overflow: hidden;
-		
+    border-radius: 4px;
+	}
+	.teacher .editAdd .team_bk:hover .team_mask {
+		display:block;
+    color: #fff;
 	}
 	.teacher .editAdd  .team_hbj {
 	    height:169px;
@@ -2659,7 +2661,7 @@
   }
   .rightMenu .title{
     float: left;
-    width: 110px;
+    width: 98px;
     height: 40px;
     margin-left: 5px;
     font-size: 16px;
@@ -2669,7 +2671,7 @@
   }
   .rightMenu .studyNum{
     float: left;
-    width: 110px;
+    width: 98px;
     margin-left: 5px;
     font-size: 13px;
     color: #ccc;

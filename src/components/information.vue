@@ -6,7 +6,7 @@
 		    size="myinformation"
 		    :close-on-click-modal="false"
 		    @open="openInformation"
-		    @close="closeInformation">
+		    :before-close="beforeclose">
 		      	<div class="style-wrap">
 		      		<div class="infordesc" style="padding-top: 5px;">选择样式：</div>
 		      		<div class="imgdesc" style="margin-right: 20px;">
@@ -39,7 +39,7 @@
 		      	</div>
 		      	<p class="infrotips">（选择后显示已选择分类下对应位置资讯）</p>
 		    <span slot="footer">
-		      	<el-button @click="dialogInformation = false" size="large">取 消</el-button>
+		      	<el-button @click="cancelInformation" size="large">取 消</el-button>
 		        <el-button type="primary" @click="confirmInformation" size="large">确 定</el-button>
 		    </span>
 		</el-dialog>
@@ -93,8 +93,10 @@
 		},
 		methods:{
 			//用于主页调用当前模板函数，弹出弹框并加载数据
-			show:function(element){
+			show:function(that,element){
 		        var self = this;
+		        self.that = that
+      			self.element = element 
 		        self.dialogInformation = true;
 		        if (!element.length) {
 			        self.currentEle_info = $('.on_module')
@@ -113,7 +115,6 @@
 				self.selectedclassify = [];
 	    		self.num1 = 1;
 	    		self.num2 = 5;
-	    		
 		    	self.getinfordesc();
 		    	self.$nextTick( () => {
 					let $imgwrap = $(".img-wrap");
@@ -126,15 +127,25 @@
 					});
 				})
 		    },
-			closeInformation:function(){
-				var self = this;
-			},
-			
-		   	minrows:function(value){
-		   		
+		   	beforeclose:function(done){
+		   		var self = this;
+		   		if(self.currentEle_info.find(".inforCon").children().length < 1){
+		   			let parent = self.element.parent()
+			        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
+			        self.element.remove()        
+			        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+		   		}
+		   		done();
 		   	},
-		   	maxrows:function(value){
-		   		
+		   	cancelInformation:function(){
+		   		var self = this;
+		   		if(self.currentEle_info.find(".inforCon").children().length < 1){
+		   			let parent = self.element.parent()
+			        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
+			        self.element.remove()        
+			        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+		   		}
+		   		self.dialogInformation = false;
 		   	},
 		   	confirmInformation:function(){
 		   		var self = this;
@@ -149,6 +160,9 @@
 					});
 		   			return false;
 		   		}
+		   		self.currentEle_info.attr('begin', self.num1)
+		   		self.currentEle_info.attr('last', self.num2)
+		   		self.currentEle_info.attr('navcode', self.selectedclassify[i])
 		   		self.currentEle_info.find(".inforCon").empty();
 		   		self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
 		   		{
@@ -186,9 +200,9 @@
 							self.currentEle_info.ready(function() {
 								self.currentEle_info.css("background-color","#FFFFFF");
 						        self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
-						        self.currentEle_info.find('.resizeBox').css('width',1200+'px')
+						        self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
+						        self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
 						        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
-						   		
 							})
 						}else{
 							self.$notify({
@@ -199,7 +213,6 @@
 								duration: 3000
 							});
 						}
-						
 					}
 				}, function(response) {
 					console.log(response)
@@ -281,7 +294,7 @@
 	.information .el-dialog__header{
 	    border-bottom: 1px solid #CECECE;
 	    height: 30px;
-	  }
+	}
 	.infrotips{
 		width: 100%;
 		margin-left: 78px;

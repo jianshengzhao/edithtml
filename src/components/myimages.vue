@@ -141,7 +141,7 @@
 		        				for(var j=0,len=datas.photos.length;j<len;j++){
 			        				newli += '<li class="myFiles_li">';
 			        					newli += '<div class="img_box" aid="'+datas.photos[j].aid+'" pid="'+datas.photos[j].pid+'">'
-			        						newli += '<img class="myimgs" src="'+datas.showpath+datas.photos[j].path+'" />';
+			        						newli += '<img class="myimgs" src="'+datas.showpath+datas.photos[j].path+'"  dataW="'+ (datas.photos[i].width|| false) +'" dataH ="'+(datas.photos[i].height|| false)+'" />';
 			        						newli += '<span class="del_img"></span>';
 			        						newli += '<span class="checked_img"></span>'
 			        					newli += '</div>'
@@ -457,7 +457,7 @@
 		       						var photos = datas.data.photos;
 		       						var oDiv = "";
 									for(let i in photos){
-										var oDiv = "<div class='waterfall' style='height:"+photos[i].height+"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].height+"px' src="+photos[i].imgurl+" /><span class='checked_falls'></span></div>"
+										var oDiv = "<div class='waterfall' style='height:"+photos[i].height+"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].height+"px' src="+photos[i].imgurl+"  dataW='"+ (photos[i].width|| false) +" dataH='"+ (photos[i].height|| false) +"'/><span class='checked_falls'></span></div>"
 										$("#waterfall-box").append(oDiv);
 									}
 		       						change();

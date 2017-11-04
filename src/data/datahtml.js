@@ -228,7 +228,7 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.information.show(element)
+      self.$refs.information.show(self,element)
     },
     html: '<div class="information module addmodule" datatext="资讯"><div class="inforCon"></div></div>'
   },
@@ -243,12 +243,14 @@ var configHtml = {
     },
     createEvent: function (self, element, me) {          
       self.$refs.waiter.show(self, element)
-      if (me.$('.waiter').length < 2) {
+      if (me.$('.waiter').length < 3) {
         me.editBox.append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
         me.$('.waiter').on('click', function() {
           self.$refs.waiter.show(self, element)
         })
-      }      
+      } else {
+        element.remove()
+      }     
     },
     html: '<div class="waiter module addmodule" style="display:none;" datatext="客服"><div class="kf-head"></div><div class="kf-top"></div></div>'
   },
@@ -459,7 +461,7 @@ var configHtml = {
       public: []
     },
     createEvent: function (self, element, me) {      
-      self.$refs.weather.show(element)
+      self.$refs.weather.show(self,element)
     },
     html: '<div class="weather module addmodule" datatext="天气"><div class="weatherCon"></div></div>'
   }

@@ -146,6 +146,7 @@ var tool = {
     me.$('.on_module').removeClass('on_module')
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
+    me.$('.multiBox').remove()
     element.addClass('on_module')
     element.append(resizeBox)
     // if (element.hasClass('picture')){ // 禁止图片拉伸
@@ -818,18 +819,26 @@ var tool = {
         break
       case 'shear':
         self.clipboard = ''        
-        part = function (ele) {          
-          ele.find('.multiBox').remove()
-          ele.find('.resizeBox').remove()
-          ele.find('.supendTools').remove()
-          self.clipboard += ele[0].outerHTML
-          ele.remove()
+        part = function (ele) {           
+          if (!ele.hasClass('player')) {        
+            ele.find('.multiBox').remove()
+            ele.find('.resizeBox').remove()
+            ele.find('.supendTools').remove()
+            self.clipboard += ele[0].outerHTML
+            ele.remove()
+          } else {
+            self.$notify({
+              title: '警告',
+              message: '播放器禁止剪切',
+              type: 'warning'
+            });
+          }
         }
         break
       case 'copy':
         self.clipboard = ''        
         part = function (ele) {  
-          if (!ele.hasclass('player')) {
+          if (!ele.hasClass('player')) {
             ele.find('.multiBox').remove()
             ele.find('.resizeBox').remove()
             ele.find('.supendTools').remove()
@@ -927,7 +936,6 @@ var tool = {
         me.cleanSignEvent(self)
         break
     }
-
     onModules.each(function () { // 更新多选元素集合
       $this = me.$(this) 
       part($this)
@@ -1435,7 +1443,7 @@ var tool = {
           break
         case 'st-left st-audition':
           self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {            
-            let auditionHtm = '<a src="/course/' + data.cwid + '.html" target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+            let auditionHtm = '<a href ="/course/' + data.cwid + '.html" target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
             element.attr('auditionid', data.cwid)
             element.find('.editAdd').html(auditionHtm)
           })
@@ -1515,25 +1523,25 @@ var tool = {
     })
   // ------------- 键盘按下事件 ----------------
     me.doc.unbind('keydown')
-    me.doc.keydown(function (e) { // 键盘方向键微调移动模块事件
+    me.doc.keydown(function (e) { // 键盘方向键微调移动模块事件     
       let module = me.$('.on_module')
       let len = module.length
       let keyObj = {
-        'ArrowUp': [true, 'top', -1, 'inp_y'],
-        'ArrowDown': [true, 'top', 1, 'inp_y'],
-        'ArrowLeft': [true, 'left', -1, 'inp_x'],
-        'ArrowRight': [true, 'left', 1, 'inp_x']
-      }
+        '38': [true, 'top', -1, 'inp_y'],
+        '40': [true, 'top', 1, 'inp_y'],
+        '37': [true, 'left', -1, 'inp_x'],
+        '39': [true, 'left', 1, 'inp_x']
+      }     
       if (len > 0) {
-        let key = keyObj[e.key]
-        if (key) {
-          e.preventDefault()
+        let key = keyObj[e.keyCode]    
+        if (key) {         
           let moveXY = parseInt(self[key[3]]) + key[2]
           me.carryModuleOperationEvent(self, key[1], moveXY)
+          e.preventDefault()
           return false
         }
-        if (e.key === 'Delete') {
-          if (me.$(e.target).get(0).tagName == 'BODY') {
+        if (e.keyCode == 46) {
+          if (me.$(e.target).get(0).tagName == 'BODY' || me.$(e.target).parent().hasClass('loginbox')) {
             let original = module.parent()
             module.remove()
             me.carryLayerEvent(self, original)
@@ -1557,6 +1565,12 @@ var tool = {
         } else {
           module = me.$(e.target).parents('.module')
         }
+        if (me.$(e.target).hasClass('player') || me.$(e.target).parents('.module').hasClass('player')) {
+          self.onlybloo = false
+        } else {
+          self.onlybloo = true
+        }
+        console.log(self.onlybloo)
         if (module.length > 0) {
           if (!module.hasClass('on_module')) {
             me.carrySignEvent(self, module)
@@ -1799,7 +1813,7 @@ var tool = {
     })
     me.elementMain.on('click', '.deleteLayer', function (e) {      
       let index = me.$(this).attr('dataIndex') 
-      if (self.elementHead[index].text == '客服') {
+      if (self.elementMain[index].text == '客服') {
         me.$('.waiter').remove()
       }      
       self.elementMain[index].ele.remove()
@@ -1814,7 +1828,7 @@ var tool = {
     })
     me.elementTail.on('click', '.deleteLayer', function (e) {      
       let index = me.$(this).attr('dataIndex') 
-      if (self.elementHead[index].text == '客服') {
+      if (self.elementTail[index].text == '客服') {
         me.$('.waiter').remove()
       }           
       self.elementTail[index].ele.remove()

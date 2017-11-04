@@ -879,12 +879,13 @@
         let obj;
         let linkType
         let a 
+        let origin
       // ----------- update start------------
         let parameter = self.parameter
         if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
           linkType = parameter.linktype         
         } else {
-          let origin = window.location.origin
+          origin = window.location.origin
           a = $('.on_module').find('a');          
           linkType = $('a.tab-active').attr('type')
           a.removeClass('registerEvent')

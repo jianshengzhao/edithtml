@@ -1,14 +1,12 @@
 <template>
-	<div class="information">
+	<div class="weather">
 		<el-dialog
 		    title="天气"
 		    :visible.sync="dialogweather"
 		    size="myweather"
 		    :close-on-click-modal="false"
-		    @open="openWeather"
-		    @close="closeWeather"
 		    :before-close="beforeclose">
-			    <div >
+			    <div style="margin-top: 10px;">
 			    	<p style="margin: 20px 0 0 20px;">选择样式：</p>
 			    	<ul class="weather-ul">
 			    		<li class="weather-li" style="margin: 0 45px 0 0;">
@@ -42,7 +40,7 @@
 			    	</ul>
 			    </div>
 		    <span slot="footer">
-		      	<el-button @click="dialogweather = false" size="large">取 消</el-button>
+		      	<el-button @click="cancelweather" size="large">取 消</el-button>
 		        <el-button type="primary" @click="confirmweather" size="large">确 定</el-button>
 		    </span>
 		</el-dialog>
@@ -140,7 +138,8 @@
 			return {
 				dialogweather:false,
 				weathertype:1,
-				currentEle_wea:''
+				currentEle_wea:'',
+				weatherData:''
 			}
 		},
 		created:function(){
@@ -148,18 +147,17 @@
 		},
 		methods:{
 			//用于主页调用当前模板函数，弹出弹框并加载数据
-			show:function(element){
+			show:function(that,element){
 		        var self = this;
+		        self.that = that
+		        self.element = element  
 		        self.dialogweather = true;
 		        if (!element.length) {
 			        self.currentEle_wea = $('.on_module')
 			    } else {
 			        self.currentEle_wea = element
 			    }  
-		   	},
-		   	openWeather:function(){
-		   		var self = this;
-		    	self.$nextTick( () => {
+			    self.$nextTick( () => {
 					let $weatherwrap = $(".weather-wrap");
 					$weatherwrap.on("click",function(){
 						$(this).css("border-color","#557CE1");
@@ -170,11 +168,25 @@
 					});
 				})
 		   	},
-		   	closeWeather:function(){
-		   		
-		   	},
 		   	beforeclose:function(done){
-		   		console.log(1);
+		   		var self = this;
+		   		if(self.currentEle_wea.find(".weatherCon").children().length < 1){
+		   			let parent = self.element.parent()
+			        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
+			        self.element.remove()        
+			        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+		   		}
+		   		done();
+		   	},
+		   	cancelweather:function(){
+		   		var self = this;
+		   		if(self.currentEle_wea.find(".weatherCon").children().length < 1){
+		   			let parent = self.element.parent()
+			        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
+			        self.element.remove()        
+			        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+		   		}
+		   		self.dialogweather = false;
 		   	},
 		   	confirmweather:function(){
 		   		var self = this;
@@ -197,25 +209,81 @@
 					 	temp_min_tomorrow = tomorrow.temperature2,
 					 	temp_max_tomorrow = tomorrow.temperature1,
 					 	status_tomorrow = tomorrow.status1
-					
-//					.weaCloudy,.weaCloudy_night,.weaFog,.weaHeavyrain,.weaLightrain,.weaModeraterain,.weaShade,.weaSunny,.weaSunny_night,.weaThundershower,
+
 					var imgsrc_today = "http://static.ebanhui.com/ebh/tpl/aroomv3/icon";
-					if(status_today == "晴"){
-						imgsrc_today += "/weaSunny.png"
-					}else if(status_today == "多云"){
-						imgsrc_today += "/weaCloudy.png"
-					}else if(imgsrc_today == "阴"){
+					if(status_today.indexOf("小雨") != -1)
+						imgsrc_today += "/weaLightrain.png"
+					if(status_today.indexOf("中雨") != -1)
+						imgsrc_today += "/weaModeraterain.png"	
+					if(status_today.indexOf("大雨") != -1)
+						imgsrc_today += "/weaHeavyrain.png"
+					if(status_today.indexOf("暴雨") != -1)
+						imgsrc_today += "/weaBigerrain.png"	
+					if(status_today.indexOf("雷阵雨") != -1)
+						imgsrc_today += "/weaThundershower.png"	
+						
+					if(status_today.indexOf("小雪") != -1)
+						imgsrc_today += "/weaLightsnow.png"
+					if(status_today.indexOf("中雪") != -1)
+						imgsrc_today += "/weaModeratesnow.png"
+						if(status_today.indexOf("大雪") != -1)
+						imgsrc_today += "/weaHeavysnow.png"
+					if(status_today.indexOf("暴雪") != -1)
+						imgsrc_today += "/weaBigersnow.png"	
+						
+					if(status_today.indexOf("霾") != -1)
+						imgsrc_today += "/weaHaze.png"	
+					if(status_today.indexOf("阴") != -1)
 						imgsrc_today += "/weaShade.png"
-					}
+					if(status_today.indexOf("雾") != -1)
+						imgsrc_today += "/weaFog.png"	
+					
+					
+					if(status_today.indexOf("多云") != -1)
+						imgsrc_today += "/weaCloudy.png"
+//					if(status_today.indexOf("多云") != -1)
+//						imgsrc_today += "/weaCloudy_night.png"
+					if(status_today.indexOf("晴") != -1)
+						imgsrc_today += "/weaSunny.png"
+//					if(status_today.indexOf("晴") != -1)
+//						imgsrc_today += "/weaSunny_night.png"
 					
 					var imgsrc_tomorrow = "http://static.ebanhui.com/ebh/tpl/aroomv3/icon";
-					if(status_tomorrow == "晴"){
-						imgsrc_tomorrow += "/weaSunny.png"
-					}else if(status_tomorrow == "多云"){
-						imgsrc_tomorrow += "/weaCloudy.png"
-					}else if(status_tomorrow == "阴"){
+					if(status_tomorrow.indexOf("小雨") != -1)
+						imgsrc_tomorrow += "/weaLightrain.png"
+					if(status_tomorrow.indexOf("中雨") != -1)
+						imgsrc_tomorrow += "/weaModeraterain.png"	
+					if(status_tomorrow.indexOf("大雨") != -1)
+						imgsrc_tomorrow += "/weaHeavyrain.png"
+					if(status_tomorrow.indexOf("暴雨") != -1)
+						imgsrc_tomorrow += "/weaBigerrain.png"	
+					if(status_tomorrow.indexOf("雷阵雨") != -1)
+						imgsrc_tomorrow += "/weaThundershower.png"	
+						
+					if(status_tomorrow.indexOf("小雪") != -1)
+						imgsrc_tomorrow += "/weaLightsnow.png"
+					if(status_tomorrow.indexOf("中雪") != -1)
+						imgsrc_tomorrow += "/weaModeratesnow.png"
+						if(status_tomorrow.indexOf("大雪") != -1)
+						imgsrc_tomorrow += "/weaHeavysnow.png"
+					if(status_tomorrow.indexOf("暴雪") != -1)
+						imgsrc_tomorrow += "/weaBigersnow.png"	
+						
+					if(status_tomorrow.indexOf("霾") != -1)
+						imgsrc_tomorrow += "/weaHaze.png"	
+					if(status_tomorrow.indexOf("阴") != -1)
 						imgsrc_tomorrow += "/weaShade.png"
-					}
+					if(status_tomorrow.indexOf("雾") != -1)
+						imgsrc_tomorrow += "/weaFog.png"	
+					
+					if(status_tomorrow.indexOf("多云") != -1)
+						imgsrc_tomorrow += "/weaCloudy.png"
+//					if(status_tomorrow.indexOf("多云") != -1)
+//						imgsrc_tomorrow += "/weaCloudy_night.png"
+					if(status_tomorrow.indexOf("晴") != -1)
+						imgsrc_tomorrow += "/weaSunny.png"
+//					if(status_tomorrow.indexOf("晴") != -1)
+//						imgsrc_tomorrow += "/weaSunny_night.png"
 					
 					if(self.weathertype == 1){
 						$(".weacity").html(city);
@@ -254,6 +322,7 @@
 						var typeone_html = $('#weather-type4').html();
 						self.currentEle_wea.find(".weatherCon").append(typeone_html);
 					}
+					self.currentEle_wea.attr("weathertype",self.weathertype)
 					self.dialogweather = false;
 				}, function(response){
 					console.log(response)
@@ -265,6 +334,10 @@
 <style type="text/css">
 	.el-dialog--myweather{
 		width: 420px;
+	}
+	.weather .el-dialog__header{
+	    border-bottom: 1px solid #CECECE;
+	    height: 30px;
 	}
 	.el-dialog--myweather .el-dialog__body{
 		padding: 0;
