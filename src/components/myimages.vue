@@ -141,7 +141,7 @@
 		        				for(var j=0,len=datas.photos.length;j<len;j++){
 			        				newli += '<li class="myFiles_li">';
 			        					newli += '<div class="img_box" aid="'+datas.photos[j].aid+'" pid="'+datas.photos[j].pid+'">'
-			        						newli += '<img class="myimgs" src="'+datas.showpath+datas.photos[j].path+'"  dataW="'+ (datas.photos[i].width|| false) +'" dataH ="'+(datas.photos[i].height|| false)+'" />';
+			        						newli += '<img class="myimgs" src="'+datas.showpath+datas.photos[j].path+'"  dataW="'+ (datas.photos[j].width|| false) +'" dataH ="'+(datas.photos[j].height|| false)+'" />';
 			        						newli += '<span class="del_img"></span>';
 			        						newli += '<span class="checked_img"></span>'
 			        					newli += '</div>'
@@ -457,7 +457,7 @@
 		       						var photos = datas.data.photos;
 		       						var oDiv = "";
 									for(let i in photos){
-										var oDiv = "<div class='waterfall' style='height:"+photos[i].height+"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].height+"px' src="+photos[i].imgurl+"  dataW='"+ (photos[i].width|| false) +" dataH='"+ (photos[i].height|| false) +"'/><span class='checked_falls'></span></div>"
+										var oDiv = "<div class='waterfall' style='height:" + photos[i].picheight +"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].picheight+"px' src="+photos[i].imgurl+"  dataW='"+ (photos[i].width|| false) +"' dataH='"+ (photos[i].height|| false) +"'/><span class='checked_falls'></span></div>"
 										$("#waterfall-box").append(oDiv);
 									}
 		       						change();
@@ -496,7 +496,7 @@
 		       						$(".thd").show();
 		       						var uls = "<ul>";
 		       						for(var i in datas.data.photos){
-		       							uls += "<li class='icons_box' title="+datas.data.photos[i].photoname+"><img class='icons' src="+datas.data.photos[i].imgurl+' /><span class="checked_icons"></span></li>'
+		       							uls += "<li class='icons_box' title="+datas.data.photos[i].photoname+"><img class='icons' dataW='"+ (datas.data.photos[i].width|| false) +"' dataH='"+ (datas.data.photos[i].height|| false) +"' src="+datas.data.photos[i].imgurl+' /><span class="checked_icons"></span></li>'
 		       						}
 		       						uls += "</ul>";
 		       						$(".library_imgs").append(uls);
@@ -769,27 +769,37 @@
       			var self = this;
       			var checkimg;
       			var $checked_img = $(".checked_img");
+      			var checkimgSize = {
+      				w: '',
+      				h: ''
+      			};
       			for(var i=0;i<$checked_img.length;i++){
-      				if($($checked_img[i]).css("display") == 'block'){
+      				if($($checked_img[i]).css("display") == 'block'){      					
       					checkimg = $($checked_img[i]).siblings('img').attr('src');
+      					checkimgSize.w = $($checked_img[i]).siblings('img').attr('dataw') || false
+      					checkimgSize.h = $($checked_img[i]).siblings('img').attr('datah') || false
       				}
       			}
       			var $checked_icons = $(".checked_icons");
       			for(var i=0;i<$checked_icons.length;i++){
       				if($($checked_icons[i]).css("display") == 'block'){
       					checkimg = $($checked_icons[i]).siblings('img').attr('src');
+      					checkimgSize.w = $($checked_icons[i]).siblings('img').attr('dataw') || false
+      					checkimgSize.h = $($checked_icons[i]).siblings('img').attr('datah') || false
       				}
       			}
       			var $checked_falls = $(".checked_falls");
       			for(var i=0;i<$checked_falls.length;i++){
       				if($($checked_falls[i]).css("display") == 'block'){
       					checkimg = $($checked_falls[i]).siblings('img').attr('src');
+      					checkimgSize.w = $($checked_falls[i]).siblings('img').attr('dataw') || false
+      					checkimgSize.h = $($checked_falls[i]).siblings('img').attr('datah') || false
       				}
       			}
 
       			let saveParam = self.saveParam
       			if(saveParam) { // 判断是否作用在模块上，还是放回img src      				
-		        	saveParam.srcFun(saveParam.that, checkimg)
+		        	saveParam.srcFun(saveParam.that, checkimg, checkimgSize)
       			} else {
 	      			// checkimg
 	      			let mod = $('.on_module')

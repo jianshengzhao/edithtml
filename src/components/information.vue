@@ -163,6 +163,7 @@
 		   		self.currentEle_info.attr('begin', self.num1)
 		   		self.currentEle_info.attr('last', self.num2)
 		   		self.currentEle_info.attr('navcode', self.selectedclassify[i])
+		   		self.currentEle_info.attr('infortype', self.infortype)		   		
 		   		self.currentEle_info.find(".inforCon").empty();
 		   		self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
 		   		{

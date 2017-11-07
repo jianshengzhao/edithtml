@@ -175,7 +175,13 @@
           </div>
         </div>      
       <!-- </div> -->
-      <!-- module exit -->
+      <!-- module exit -->     
+      <div class="t_clean">       
+        <div class="tl_li" @click="cleanScreenEvent">
+          <i class="icon-clean">×</i>
+          <span>清屏</span>
+        </div>       
+      </div> 
       <div class="t_right">
         <a href="/">
           <div class="tl_li">
@@ -628,7 +634,8 @@
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
     <course ref="course"></course>
-    <player ref="player"></player>      
+    <player ref="player"></player>
+    <addcoursetype ref="addcoursetype"></addcoursetype>      
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -650,6 +657,8 @@
   import advert from '@/components/advert'
   import course from '@/components/course'
   import player from '@/components/player'
+  import addcoursetype from '@/components/addcoursetype'
+  
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
@@ -669,7 +678,8 @@
       waiter, 
       advert, 
       course,
-      player
+      player,
+      addcoursetype
     },
     data: function () {
       return {
@@ -1143,9 +1153,16 @@
           tool.tool.carryLayerEvent(self, middle)
           tool.tool.carryLayerEvent(self, foot)
           tool.tool.carryLineHeightEvent()
-          tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
+          // 客服     
+          if ($('.waiter').length < 2 && $('.waiter').length > 0) {
+            $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+            $('.waiter').on('click', function() {
+              self.$refs.waiter.show(self, canvas.find('.waiter'))
+            })
+          } 
         } else {
           let getParam = {
             url: '/aroomv3/roominfo.html',
@@ -1157,7 +1174,7 @@
                 url: '/room/design/getdesign.html',
                 params: {crid: crid},
                 fun: function (response) {
-                  let saveParams = response.body.data
+                  let saveParams = response.body.data                
                   let headHtml = saveParams.head.replace(/[\\]/g, '')
                   let bodyHtml = saveParams.body.replace(/[\\]/g, '')
                   let footHtml = saveParams.foot.replace(/[\\]/g, '')
@@ -1192,15 +1209,17 @@
                   tool.tool.carryLayerEvent(self, middle)
                   tool.tool.carryLayerEvent(self, foot)
                   tool.tool.carryLineHeightEvent()
-                  tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
-                  tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
-                  tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
                   if ($('.waiter').length < 2 && $('.waiter').length > 0) {
                     $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
                     $('.waiter').on('click', function() {
                       self.$refs.waiter.show(self, canvas.find('.waiter'))
                     })
                   } 
+                  tool.tool.topRangeY = parseInt(tool.tool.top.css('height')) + self.paddingtop + self.postop // top选区范围
+                  tool.tool.bodyRangeY = parseInt(tool.tool.body.css('height')) + tool.tool.topRangeY // body选区范围
                 }
               }
               self.httppost(getParams)
@@ -1208,13 +1227,7 @@
           }
           self.httpget(getParam)
         }
-        // 客服     
-        if ($('.waiter').length < 2 && $('.waiter').length > 0) {
-          $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
-          $('.waiter').on('click', function() {
-            self.$refs.waiter.show(self, canvas.find('.waiter'))
-          })
-        } 
+        
         tool.tool.init(self, $)
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
@@ -1246,6 +1259,26 @@
       })
     },
     methods: {
+      cleanScreenEvent: function () {
+        let self = this
+        let head = $('.c_top')
+        let middle = $('.c_body')
+        let foot = $('.c_foot')
+        head.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>')
+        middle.html('')
+        foot.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>')
+        tool.tool.carryLayerEvent(self, head)
+        tool.tool.carryLayerEvent(self, middle)
+        tool.tool.carryLayerEvent(self, foot)
+        tool.tool.carryLineHeightEvent()
+        tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
+        tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
+        tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
+        self.elementStorage.c_top = {}
+        self.elementStorage.c_body = {}
+        self.elementStorage.c_foot = {}
+        console.log(self.elementStorage)
+      },
       dialogeditlogin(){
         let self = this
         self.logintext = ''
@@ -2035,7 +2068,7 @@
     .top{
       padding-top: 3px;
       padding-left: 10px;
-      padding-right: 60px;
+      padding-right: 130px;
       position: relative;    
       min-width: 1024px;
       border-bottom: 1px solid #d9d9d9;
@@ -2146,6 +2179,23 @@
     }  
     .toolbar input::-webkit-inner-spin-button{
       display: none;
+    }
+    #app .t_clean{
+      position: absolute;    
+      width: 60px;
+      height: 28px;
+      top: 3px;
+      right: 64px;      
+    }
+    #app .icon-clean{
+      background-color: #fff;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid #f55d54;
+      font-size: 18px;
+      color: #f55d54;
+      line-height: 12px;
     }
     #app .t_right{
       position: absolute;    

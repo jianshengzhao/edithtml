@@ -119,6 +119,23 @@ export default {
       self.currentEle.show()
       self.dialogAdvert = false
 
+      /* 计算最宽的图片 */
+
+      let maxW = 0 // 最大值      
+      for(let i = 0, len = self.advertData.length; i < len; i++) {
+        let item = self.advertData[i]       
+        if (item.imgW && parseInt(item.imgW) > maxW) {
+          maxW = parseInt(item.imgW)        
+        }
+      }
+     
+      if (maxW > 0) {
+        self.currentEle.css({
+          width: maxW
+        })       
+      } 
+
+
       /* 参数设置存储 */
       
       let obj = {
@@ -172,20 +189,24 @@ export default {
     },
     addPictureEvent: function () {
       let self = this    
-      self.that.$refs.myimages.show('advert', self, function (self, data) {        
+      self.that.$refs.myimages.show('advert', self, function (self, data, imgSize) {        
         self.advertData.push({
           img: data,
           url: '',
           urlType: '',
-          urlRoute: ''
+          urlRoute: '',
+          imgW: imgSize.w,
+          imgh: imgSize.h
         })
       })
     },
     updatePictureEvent: function (index) {
       let self = this 
       self.index = index   
-      self.that.$refs.myimages.show('advert', self, function (self, data) {        
+      self.that.$refs.myimages.show('advert', self, function (self, data, imgSize) {        
         self.advertData[self.index]['img'] = data
+        self.advertData[self.index]['imgW'] = imgSize.w
+        self.advertData[self.index]['imgh'] = imgSize.h
       })
     },
     deletePictureEvent: function (index) {

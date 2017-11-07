@@ -3,7 +3,9 @@
     <el-dialog
       :title="title"
       :visible.sync="dialogCourse"
-      size="course" >
+      size="course" 
+      @close="beforeCloseEvent"
+      >
       <el-row>
         <el-col :span="4" class="right">单行显示：</el-col>
         <el-col :span="18">
@@ -98,13 +100,18 @@ export default {
         let AddElement = copyElement.eq(i - 1)
         self.me.carryAddElementStorageEvent(self.that, parentBox, AddElement, yi, xi, 0)
       }
-      $('.addmodule').removeClass('addmodule')
+      $('.addmodule').removeClass('addmodule')      
+      self.element.show()
+      self.addstate = true
+      self.that.tool.tool.carryLayerEvent(self.that, parentBox) // 更新图层
     },
     show: function (that, element, me, type) {
       let self = this
       self.that = that
       self.element = element
-      self.me = me      
+      self.element.hide()
+      self.me = me
+      self.addstate = false
       switch (type) {
         case 'course':
           self.title = '课程'
@@ -125,6 +132,15 @@ export default {
       self.type = type
       self.dialogCourse = true
       // me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT)
+    },
+    beforeCloseEvent: function () {
+      let self = this      
+      if (!self.addstate) {
+        let parent = self.element.parent()
+        self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, 'delete') // 更新选区
+        self.element.remove()        
+        self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
+      }
     }
   }
 }

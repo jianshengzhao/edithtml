@@ -104,7 +104,8 @@ export default {
         value: true,
         label: '渐显'
       }],
-      changeStyle: true
+      changeStyle: true,
+      imgSizeArr:[]
     }
   },
   created: function () {
@@ -129,20 +130,24 @@ export default {
     },
     addPictureEvent: function () {
       let self = this    
-      self.that.$refs.myimages.show('carousel', self, function (self, data) {        
+      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {        
         self.carouselData.push({
           imgurl: data,
           clickurl: '',
           urlType: '',
-          urlRoute: ''
-        })
+          urlRoute: '',
+          imgW: imgSize.w,
+          imgh: imgSize.h
+        })        
       })
     },
     updatePictureEvent: function (index) {
       let self = this 
       self.index = index   
-      self.that.$refs.myimages.show('carousel', self, function (self, data) {        
+      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {        
         self.carouselData[self.index]['imgurl'] = data
+        self.carouselData[self.index]['imgW'] = imgSize.w
+        self.carouselData[self.index]['imgh'] = imgSize.h
       })
     },
     deletePictureEvent: function (index) {
@@ -158,7 +163,33 @@ export default {
           type: 'warning'
         })
         return false
+      } 
+      
+      let maxW = 0 // 最大值
+      let maxH = 0 // 最大值
+      let maxI = 0
+      for(let i = 0, len = self.carouselData.length; i < len; i++) {
+        let item = self.carouselData[i]
+        if (item.imgW && parseInt(item.imgW) > maxW) {
+          maxW = parseInt(item.imgW)
+          maxH = parseInt(item.imgh)
+          maxI = i
+        }
+      }
+      if (maxW > 0) {
+        self.element.css({
+          width: maxW,
+          height: maxH
+        })
+        self.element.find('.resizeBox').css({
+          width: maxW,
+          height: maxH
+        })
+        if (maxW < 110) {
+          self.element.find('.barbox').hide()
+        }
       }      
+      
       let obj = {
         changeStyle: self.changeStyle,
         showSuit: self.showSuit,
@@ -168,7 +199,7 @@ export default {
       }
       let str = window.JSON.stringify(obj)
       self.dialogCarousel = false
-      self.element.find('img').attr('src', self.carouselData[0].imgurl)
+      self.element.find('img').attr('src', self.carouselData[maxI].imgurl)
       self.element.show()
       self.element.attr('carouselData', str)      
     },     
@@ -206,8 +237,7 @@ export default {
         let urlType = ''
         let urlHref = ''
         let urlRoute = ''
-        let navcm     
-        console.log(data)
+        let navcm             
         switch(linkType){
           case 'online':
             urlType = '外部链接'            

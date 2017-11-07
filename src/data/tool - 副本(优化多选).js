@@ -266,7 +266,12 @@ var tool = {
       let y1 = parseInt(addEle.css('height')) + y
       let br = parseInt(addEle.css('border-left-width')) < 1 ? parseInt(addEle.css('border-top-width')) : parseInt(addEle.css('border-left-width'))
       addEle.attr('id', id)
-      let regionYO = self.elementStorage[cname]     
+      let regionYO
+      if (!self.elementStorage[cname][regionY]) {
+        regionYO = self.elementStorage[cname][regionY] = {}
+      } else {
+        regionYO = self.elementStorage[cname][regionY]
+      }    
       regionYO[id] = {
         xt: x,
         yt: y,
@@ -276,48 +281,48 @@ var tool = {
         ele: addEle
       }
     }
-    // console.log(self.elementStorage)
+    console.log(self.elementStorage)
     // console.log(self.elementStorage)
   },
   carryUpdateElementStorageEvent: function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
     let me = this
     let cname = parent.attr('class')
-    // let regionY
-    // let regionYO
+    let regionY
+    let regionYO
     let parentO = self.elementStorage[cname]
     for (let i = 0, len = elements.length; i < len; i++) {
       let item = elements.eq(i)
       let id = item.attr('id')      
       let iTop = parseInt(item.css('top'))
-      // regionY = parseInt(iTop / 300) * 300
-      if (deleteEle == 'delete') {       
-        delete parentO[id]
-      } else {
-        let iLeft = parseInt(item.css('left'))
-        let ibottom = parseInt(item.css('height')) + iTop
-        let iright = parseInt(item.css('width')) + iLeft
-        let ibor = parseInt(item.css('border-left-width')) < 1? parseInt(item.css('border-top-width')) : parseInt(item.css('border-left-width'))
+      regionY = parseInt(iTop / 300) * 300
+      if (deleteEle) {
+        delete parentO[regionY][id]
+        return false
+      }      
+      let iLeft = parseInt(item.css('left'))
+      let ibottom = parseInt(item.css('height')) + iTop
+      let iright = parseInt(item.css('width')) + iLeft
+      let ibor = parseInt(item.css('border-left-width')) < 1? parseInt(item.css('border-top-width')) : parseInt(item.css('border-left-width'))
       
-        // if (!parentO[regionY]) {
-        //   regionYO = parentO[regionY] = {}
-        // } else {
-        //   regionYO = parentO[regionY]
-        // }
-        // for(let j in parentO) { // 清除因为移动而产生跨区的重复的元素
-        //   let jtem = parentO[j]
-        //   if (jtem[id]) {
-        //     delete jtem[id]
-        //   }
-        // }
-        parentO[id] = { // 更新存储的数据
-          xt: iLeft,
-          yt: iTop,
-          xb: iright,
-          yb: ibottom,
-          br: ibor,
-          ele: item
-        } 
+      if (!parentO[regionY]) {
+        regionYO = parentO[regionY] = {}
+      } else {
+        regionYO = parentO[regionY]
       }
+      for(let j in parentO) { // 清除因为移动而产生跨区的重复的元素
+        let jtem = parentO[j]
+        if (jtem[id]) {
+          delete jtem[id]
+        }
+      }
+      regionYO[id] = { // 更新存储的数据
+        xt: iLeft,
+        yt: iTop,
+        xb: iright,
+        yb: ibottom,
+        br: ibor,
+        ele: item
+      }   
     }
     // console.log(self.elementStorage[cname])
   },
@@ -367,7 +372,7 @@ var tool = {
     let gh
     let sy
     let ey
-    let obj = self.elementStorage[parent]
+    let elements = self.elementStorage[parent]
     me.editBox.on('mouseup', function (e) {
       me.editBox.unbind('mousemove mouseup')
       gx = parseInt(getregion.css('left')) // 获得选区X坐标
@@ -376,12 +381,12 @@ var tool = {
       gh = parseInt(getregion.css('height')) // 获得选区高      
       sy = parseInt(gy/300) * 300
       ey = parseInt((gy + gh) /300) * 300
-      // let obj = elements    
-      // for(let i in elements){        
-      //   if (i >= sy && i <= ey) {
-      //     me.$.extend(obj, elements[i]);
-      //   }
-      // }
+      let obj = {}     
+      for(let i in elements){        
+        if (i >= sy && i <= ey) {
+          me.$.extend(obj, elements[i]);
+        }
+      }
       
       for (let i in obj) { // 判断是否在选区内
         let item = obj[i]
@@ -974,21 +979,21 @@ var tool = {
     let me = this
     me.$('.fuzzybox').remove()
     me.line.hide()
-    let obj = self.elementStorage[parentClass]
-    // let obj = {}
+    let storage = self.elementStorage[parentClass]
+    let obj = {}
     let yT = top
     let yB = top + height
     let xL = left
     let xR = left + width
-    // let sy = parseInt(yT/300) * 300
-    // let ey = parseInt((yB) /300) * 300
+    let sy = parseInt(yT/300) * 300
+    let ey = parseInt((yB) /300) * 300
     let fv = self.fuzzyVal
     let fyzzyHtml = '<div class="fuzzybox"></div>'
-    // for (let i in storage) {
-    //   if (i >= sy || i <= ey) {
-    //     me.$.extend(obj, storage[i])
-    //   }
-    // }    
+    for (let i in storage) {
+      if (i >= sy || i <= ey) {
+        me.$.extend(obj, storage[i])
+      }
+    }    
     for (let i in obj) {     
       if (i != id) {
         let item = obj[i]    
@@ -1450,11 +1455,6 @@ var tool = {
             element.find('.editAdd').html(teacherHtm)
           })
           break
-        case 'st-left st-addcoursetype':
-          self.$refs.addcoursetype.show('addcoursetype', me.$('.on_module'), function (element, data) {           
-            
-          })
-          break
       }
       return false
     })
@@ -1541,10 +1541,9 @@ var tool = {
         }
         if (e.keyCode == 46) {
           if (me.$(e.target).get(0).tagName == 'BODY' || me.$(e.target).parent().hasClass('loginbox')) {
-            // let original = module.parent()
-            // module.remove()
-            me.carryModuleOperationEvent(self, 'delete')
-            // me.carryLayerEvent(self, original)
+            let original = module.parent()
+            module.remove()
+            me.carryLayerEvent(self, original)
           }
         }
       }             
