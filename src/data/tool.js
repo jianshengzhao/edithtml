@@ -1419,10 +1419,10 @@ var tool = {
             data.summary = data.summary || '--'
             data.foldername = data.foldername || '--'
             data.viewnum = data.viewnum || 0
-            data.studynum = data.studynum || 0
+            data.studynum = data.studynum || 0            
             let courseHtm = '<div class="imgbox">'
                           + '<div class="listBox">'
-                          + '<a target="_blank" class="animateBox">'+ data.summary +'</a>'
+                          + '<a target="_blank" class="animateBox" >'+ data.summary +'</a>'
                           + '<img src="'+ data.img +'">'
                           + '<a target="_blank" class="openState openState_djbmbg1"></a>'
                           + '</div>'

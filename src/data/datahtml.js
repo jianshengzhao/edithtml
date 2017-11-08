@@ -126,7 +126,7 @@ var configHtml = {
       {
         name: 'addcoursetype',
         icon: 'imgicon icon-addcoursetype',
-        text: '课程分类'
+        text: '课程导航'
       }
     ],
     todo: [],

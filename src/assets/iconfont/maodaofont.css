@@ -857,7 +857,9 @@ svg.icon {
 
 .icon-carousel { background-image: url(../img/carousel.png); background-size: 28px; }
 
-.icon-addcoursetype { background-image: url(../img/addcoursetype.png); background-size: 20px; }
+/* .icon-addcoursetype { background-image: url(../img/addcoursetype.png); background-size: 20px; } */
+
+.icon-addcoursetype { background-image: url(../img/send.png); background-size: 26px; }
 
 .icon-cursetaxonomy { background-image: url(../img/curse_taxonomy.png); background-size: 28px; }
 

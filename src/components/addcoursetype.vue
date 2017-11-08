@@ -171,27 +171,34 @@ export default {
     },
     editcourselist:function(){
       let self = this
-      let obj = {
-        classs: self.courseobj.classs,
-        zhuxnum: self.courseobj.zhuxnum,
-        zhulnum:self.courseobj.zhulnum,
-        zhunum :self.courseobj.zhunum,
-        type : self.courseobj.type
-      }
-      $('.courseclassification .first_li').css('height', self.courseobj.zhuxnum + 'px')
-      $('.courseclassification .first_li').css('line-height', self.courseobj.zhuxnum + 'px')
-      $('.courseclassification .second_mune_ul').css('top', self.courseobj.zhuxnum + 'px')
-      $('.courseclassification .second_mune_ul li').css('height', self.courseobj.zhulnum + 'px')
-      $('.addcoursetype #coursenav_ul').attr('class', self.courseobj.classs)
-      if(self.courseobj.type == '1'){
-        $('.courseclassification .second_mune_ul').attr('class','second_mune_ul')
-      }else{
-        $('.courseclassification .second_mune_ul').attr('class','second_mune_ul second_mune_ul_none')
-      }
-      let str = JSON.stringify(obj)
-      $('.on_module').attr('carouselData', str)
-      self.dialogaddcoursetype = false
-      self.getcoursesort()
+      self.$refs.courseobj.validate((valid) => {
+          if(valid) {
+            let obj = {
+              classs: self.courseobj.classs,
+              zhuxnum: self.courseobj.zhuxnum,
+              zhulnum:self.courseobj.zhulnum,
+              zhunum :self.courseobj.zhunum,
+              type : self.courseobj.type
+            }
+            $('.courseclassification .first_li').css('height', self.courseobj.zhuxnum + 'px')
+            $('.courseclassification .first_li').css('line-height', self.courseobj.zhuxnum + 'px')
+            $('.courseclassification .second_mune_ul').css('top', self.courseobj.zhuxnum + 'px')
+            $('.courseclassification .second_mune_ul li').css('height', self.courseobj.zhulnum + 'px')
+            $('.addcoursetype #coursenav_ul').attr('class', self.courseobj.classs)
+            if(self.courseobj.type == '1'){
+              $('.courseclassification .second_mune_ul').attr('class','second_mune_ul')
+            }else{
+              $('.courseclassification .second_mune_ul').attr('class','second_mune_ul second_mune_ul_none')
+            }
+            let str = JSON.stringify(obj)
+            $('.on_module').attr('carouselData', str)
+            self.dialogaddcoursetype = false
+            self.getcoursesort()
+          } else {
+            return false;
+          }
+        });
+      
        
     }
   }
