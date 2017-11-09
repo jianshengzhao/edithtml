@@ -122,7 +122,9 @@
                 <form class="twoselcourse" style="display: none;">
                   <div class="courseradio" v-for="(item,index) in coursesort">
                     <input :pid="item.pid" :pname="item.pname" :checked="inpid == item.pid?true:false"  name="twocourse" type="radio" value="" />
-                    <a  @click="getsidcourse(item.pid,item.pname)" class="vc-font2"><span class="vc-inner">{{item.pname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+
+                    <a @click="parameter.thatName == 'addcoursetype' ? inpid = item.pid  : getsidcourse(item.pid,item.pname)" class="vc-font2">
+                    <span class="vc-inner">{{item.pname}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
                   <div style="clear: both;"></div>
                   <input type="reset" class="courseradiotworeset" style="display: none;" value="Reset">
@@ -289,7 +291,8 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="indexinit(1)">重 置</el-button>
-        <el-button type="primary" @click="dialogEvent" >确 定</el-button>
+        <el-button v-if="!addcoursetype" type="primary" @click="dialogEvent" >确 定</el-button>
+        <el-button v-if="addcoursetype" type="primary" @click="dialogaddcourse" >确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -300,6 +303,7 @@
     name: 'hrefdialog',
     data: function () {
       return {
+        addcoursetype:false,
         formVue: '',
         parameter:'',
         visdialog:false,
@@ -471,7 +475,6 @@
         },
         getitemlist:function(sourceid,pid,sid,linkobj){
           let self = this
-          console.log(self.schsourcelist)
           for(var i=0;i<self.schsourcelist.length;i++){
             if(self.schsourcelist[i].sourcecrid == sourceid){
               self.coursesort = self.schsourcelist[i].packages;
@@ -758,6 +761,29 @@
                 saveparam = true
                 tCP.addClass('inputCoruse') 
                 self.indexinit()
+                /*let names = thatName.split('|')[1]
+                if(names == 'addcoursetype'){
+                    self.addcoursetype = true
+                    let index = thatName.split('|')[2]
+                    saveparam = false
+                    self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index}   
+                }*/
+
+                // self.coursebxinit(4)               
+                break
+              case 'addcoursetype':
+                linktype = 'course'
+                saveparam = true
+                tCP.addClass('inputAddcoursetype') 
+                self.indexinit()
+                self.addcoursetype = true
+                let index = thatName.split('|')[1]
+                saveparam = false
+                if(index){
+                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index} 
+                }else{
+                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf} 
+                }
                 // self.coursebxinit(4)               
                 break
               case 'coursecw':
@@ -1276,6 +1302,381 @@
         self.visdialog = false
       },
     // -------------------
+      dialogaddcourse(){  //添加课程导航
+        let self = this;
+        let obj;
+        let linkType
+        let a 
+        let origin
+      // ----------- update start------------
+        let parameter = self.parameter
+        if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
+          linkType = parameter.linktype         
+        } else {
+          origin = window.location.origin
+          a = $('.on_module').find('a');          
+          linkType = $('a.tab-active').attr('type')
+          a.removeClass('registerEvent')
+          a.removeClass('getUserNameEvent')
+          a.removeClass('loginEvent')
+        }       
+      // ----------- update end------------        
+        switch (linkType) {
+          case 'none':            
+            a.removeAttr('href')
+          break
+          case 'online':
+            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+            if (reg.test(self.edithref)) {
+              obj = {
+                href : self.edithref,
+                opentype : self.showtype
+              }
+              // ----------- update start------------ 
+              if (!parameter) { 
+                a.attr('href', self.edithref)
+                a.attr('linkobj', JSON.stringify(obj))
+              }
+              // ----------- update end------------ 
+            } else {
+              self.$notify({
+                title: '警告',
+                message: '请输入正确完整的跳转链接',
+                type: 'warning'
+              })
+              return
+            }
+          break
+          case 'news':
+            let news;
+            let url;
+            let num = 0;
+            let newsTitle = ''
+            let onenews = $('.oneselnews').is(':hidden');
+            let twonews = $('.twoselnews').is(':hidden');
+            let threenews = $('.threeselnews').is(':hidden');
+            if(!onenews){
+              let onenewsChecked = $("input[name='onenews']:checked")
+              news = onenewsChecked.attr('code');
+              self.newsobj['label'] = onenewsChecked.attr('newsname')
+              num = 1;
+            }else if(!twonews){
+              let twonewsChecked = $("input[name='twonews']:checked")
+              news = twonewsChecked.attr('code');
+              self.newsobj['label1'] = twonewsChecked.attr('newsname')
+              num = 2;              
+            }else if(!threenews){
+              news = self.threenewsradio;             
+              for (let i = 0, len = self.newslist.length; i < len; i++) {
+                let itemNews = self.newslist[i]
+                if (itemNews.itemid == self.threenewsradio) {
+                  newsTitle = itemNews.subject
+                }
+              }              
+              num = 3;              
+            }
+            if(news == undefined || news == 'undefined' || !news) {
+              this.$notify({
+                title: '警告',
+                message: '请选择资讯',
+                type: 'warning'
+              })
+              return false
+            }
+            if(num == 1){
+              let navcm = news.split('n')[1]
+              switch (news) {
+                case 'news':
+                  url = '/dyinformation.html'
+                break
+                default:
+                  url = '/navcm/' + navcm + '.html'
+              }
+            }else if(num == 2){
+              let w = news.indexOf("s");
+              let navcm = news.substring(0,w).split('n')[1]
+              let ns = news.split('s')[1]
+              if (ns) {
+                url = '/navcm/' + navcm + '.html?s=' + ns
+              } else {
+                url = '/navcm/' + navcm + '.html'
+              }
+            }else if(num == 3){
+              url = '/dyinformation/' + news + '.html'
+              
+            }
+            if(num == 3){
+              obj = {
+                active : num,
+                newsTitle: newsTitle,
+                newscode : news,
+                news : self.newsobj,
+                pagesize : self.newspagesize,
+                page: self.newspage,
+                q : self.newsq
+              }
+            }else{
+              obj = {
+                active : num,
+                newscode : news,
+                news : self.newsobj
+              }
+            }
+            a.attr('linkobj', JSON.stringify(obj)) 
+            a.attr('href', url)   
+          break
+          case 'onlineschool':
+            let oneinlineschool;
+            let oneschool = $('.oneselinlineschool').is(':hidden');
+            let twoschool = $('.twoselinlineschool').is(':hidden');
+            if(!oneschool){
+              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');                
+            }else if(!twoschool){
+              oneinlineschool =  $("input[name='logintype']:checked").attr('code');                
+            }
+            if(oneinlineschool == undefined ||  oneinlineschool == 'undefined' || !oneinlineschool) {
+              this.$notify({
+                title: '警告',
+                message: '请选择网校功能',
+                type: 'warning'
+              })
+              return false
+            }
+
+            switch (oneinlineschool) {
+              case 'summary':
+                a.attr('href', '/introduce.html')
+              break
+              case 'course':
+                a.attr('href', '/platform.html')
+              break
+              case 'contact':
+                a.attr('href', '/contacts.html')
+              break
+              case 'register':
+                a.removeAttr('href')
+                a.addClass('registerEvent')
+              break
+              case 'password':
+                a.attr('href', '/forget.html')  
+              break
+              case 'username':
+                a.removeAttr('href')
+                a.addClass('getUserNameEvent')
+              break
+              case 'login':
+                a.removeAttr('href')
+                a.addClass('loginEvent')
+              break
+              case 'login1':
+                a.removeAttr('href')
+                a.addClass('loginEvent')
+              break
+              case 'QQ':
+                a.attr('href', 'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin)
+              break
+              case 'weibo':
+                a.attr('href', 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin)
+              break
+              case 'WeChat':
+                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)    
+              break
+            }
+
+            obj = {
+              oneinlineschool : oneinlineschool
+
+            }
+            a.attr('linkobj', JSON.stringify(obj))
+            a.attr('href', url)   
+          break
+          case 'teacher':
+            let face = $("input[name='teacher']:checked").attr('face');
+            let teauid = $("input[name='teacher']:checked").attr('code');
+            let profile = $("input[name='teacher']:checked").attr('profile');
+            let realname = $("input[name='teacher']:checked").attr('realname');
+            let professionaltitle = $("input[name='teacher']:checked").attr('professionaltitle');
+            if(teauid == undefined || teauid == 'undefined' || !teauid) {
+              this.$notify({
+                title: '警告',
+                message: '请选择教师',
+                type: 'warning'
+              })
+              return false
+            }
+            obj = {
+              teauid: teauid,
+              face: face,            
+              profile: profile,
+              realname: realname,
+              professionaltitle: professionaltitle,
+              q :self.hrefteaq
+            }
+            // ----------- update start------------ 
+            if (!parameter) { 
+              a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href', '/master/'+teauid+'.html')
+            }
+            // ----------- update end------------ 
+          break  
+          case 'course':
+            let courseactive;
+            let onecourse = $('.oneselcourse').is(':hidden');
+            let twocourse = $('.twoselcourse').is(':hidden');
+            let threecourse = $('.threeselcourse').is(':hidden');
+            let fourcourse = $('.fourselcourse').is(':hidden');
+            let fivecourse = $('.fiveselcourse').is(':hidden');           
+            if (!onecourse) {
+              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');             
+              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');             
+              if(onecourseradio == undefined || onecourseradio == '' || onecourseradio == 'undefined'){
+                this.$notify({
+                  title: '警告',
+                  message: '请点击网校分类',
+                  type: 'warning'
+                })
+                return false
+              }
+              courseactive = 1;
+              obj = {
+                course : 1,
+                sourceid: onecourseradio,
+                name : sourcename
+
+              }
+              a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href','/platform.html')
+            } else if (!twocourse) {
+              let twocourseradio = $("input[name='twocourse']:checked").attr('pid');
+              let pname = $("input[name='twocourse']:checked").attr('pname');
+              if(twocourseradio == undefined ||twocourseradio == 'undefined' || twocourseradio == ''){
+                this.$notify({
+                  title: '警告',
+                  message: '请点击课程主类',
+                  type: 'warning'
+                })
+                return false
+              }
+              courseactive = 2;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              obj = {
+                course : 2,
+                sourceid: sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                pid: twocourseradio,
+                pname : pname
+              }
+              let courselist = self.parameter.thatSelf.$refs.addcoursetype.courselist
+              let index = self.parameter.index
+              let len =  courselist.length;
+              if(courselist){
+                for(var i=0;i<len;i++){
+                 if(twocourseradio == courselist[i].pid){
+                    this.$notify({
+                      title: '警告',
+                      message: '该课程分类已添加',
+                      type: 'warning'
+                    })
+                    return false
+                 }
+                }
+              }
+              
+              if(index){
+                courselist.splice(parseInt(index),1,obj)
+              }else{
+                if(courselist){
+                  let len =  courselist.length;
+                  if(len >= 15){
+                    this.$notify({
+                      title: '警告',
+                      message: '最多添加15个课程分类',
+                      type: 'warning'
+                    })
+                    return false
+                  }
+                }
+                courselist.push(obj)
+              }
+
+             /* a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio) */             
+            } else if (!threecourse) {
+              let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
+              let sname = $("input[name='threecourse']:checked").attr('sname');
+              if(threecourseradio == undefined ||threecourseradio == 'undefined' || threecourseradio == ''){
+                this.$notify({
+                  title: '警告',
+                  message: '请点击课程子类',
+                  type: 'warning'
+                })
+                return false
+              }
+              courseactive = 3;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              obj = {
+                course : 3,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                sid: threecourseradio,
+                sname : sname,
+                pid : self.pid,
+                pname : $("input[pid='"+self.pid+"']").attr('pname')
+              }
+              a.attr('linkobj', JSON.stringify(obj))
+              if(threecourseradio == 0){
+                a.attr('href','/platform-1-0-0.html?pid='+ self.pid)
+              }else{
+                a.attr('href','/platform-1-0-0.html?pid='+ self.pid + '&sid=' + threecourseradio)
+              }
+            } else if (!fourcourse) {
+              let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
+              let itemid = $("input[name='fourcourse']:checked").attr('itemid');
+              
+              if(fourcourseradio == undefined ||fourcourseradio == 'undefined' || fourcourseradio == ''){
+                this.$notify({
+                  title: '警告',
+                  message: '请选择课程',
+                  type: 'warning'
+                })
+                return false
+              }
+              courseactive = 4;
+              let sourceid = self.sourceid?self.sourceid:'0';
+              let sid = self.sid?self.sid:'0';
+              obj = {
+                course : 4,
+                sourceid: self.sourceid,
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
+                sid: self.sid || '0',
+                sname : $("input[sid='"+sid+"']").attr('sname'),
+                pid : self.pid,
+                pname : $("input[pid='"+self.pid+"']").attr('pname'),
+                folderid : fourcourseradio,
+                itemid : itemid,
+                foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
+                // ----------- update start------------ 
+                summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
+                img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
+                studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
+                viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
+                // ----------- update end------------ 
+                folderq : self.folderq,
+                folderpage : self.folderpage,
+                folderpagesize: self.folderpagesize
+              }
+              
+              // ----------- update start------------ 
+              /*if (!parameter) {
+                a.attr('linkobj', JSON.stringify(obj))
+                a.attr('href','/courseinfo/' + itemid + '.html')
+              }*/
+              // ----------- update end------------ 
+            }
+          break  
+        }
+        self.visdialog = false
+      },
       getsonNews(code,son,label){
         let self = this;
         self.navcode = code;
@@ -1333,7 +1734,6 @@
       handleIconfolderClick(){
         let self = this;
         self.folderpage = 1;
-        console.log(self.sourceid)
         if(!self.sourceid){
           self.getcourselist(self.pid,self.sid)
         }else{
@@ -1822,4 +2222,7 @@
   display: none;
 }
 /* update */
+.hrefdialog .inputAddcoursetype input[name='onecourse']{
+  display: none;
+}
 </style>

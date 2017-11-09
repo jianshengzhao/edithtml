@@ -37,8 +37,21 @@
             <el-form-item prop="zhulnum" label="主类框高度：">
               <el-input-number v-model="courseobj.zhulnum" :min="50" :max="100"></el-input-number>
             </el-form-item>
-            <el-form-item prop="zhunum" label="主类数量：">
-              <el-input-number v-model="courseobj.zhunum" :min="1" :max="15"></el-input-number>
+            <el-form-item label="添加分类：">
+              <el-col class="coursesort" v-for="(item,index) in courselist">
+                <el-col :span="16">
+                  <span class="schoolname" :title="item.name">{{item.name}}</span>
+                  <span :title="item.pname">{{item.pname}}</span>
+                </el-col>
+                <el-col class="editbuttons" style="text-align: right;" :span="8">
+                  <el-button v-if="index > 0"  @click="upy(index)" type="text">上移</el-button>
+                  <el-button v-if="index+1 < courselist.length"  @click="downy(index)" type="text">下移</el-button>
+                  <el-button  @click="edit(index)" type="text">修改</el-button>
+                  <el-button   style="color:red" @click="del(index)" type="text">删除</el-button>
+                </el-col>
+              </el-col>
+              <el-button @click="create()" type="text">添加</el-button>
+              <!-- <el-input-number v-model="courseobj.zhunum" :min="1" :max="15"></el-input-number> -->
             </el-form-item>
           </el-form>
         </el-col>
@@ -76,6 +89,7 @@ export default {
         zhunum: 5,
         classs: 'theme_4'
       },
+      courselist:[],
       rules: {
         zhuxnum: [{
           required: true,
@@ -86,12 +100,51 @@ export default {
           required: true,
           validator: validatenum,
           trigger: 'blur'
-        }],
-        zhunum: [{
-          required: true,
-          validator: validatenum,
-          trigger: 'blur'
         }]
+      },
+      getcourselist:function(pids){
+        let self = this
+        self.$http.get(window.host + "/room/design/getcategorymenu.html", {
+          params: {
+            pids: pids
+          }
+        }, {
+          emulateJSON: true
+        }).then(function(response) {
+          var data = response.data.data;
+            let html = ''
+            for (let i = 0, len = data.length; i < len; i++) {
+              let item = data[i]
+              let secNav1 = ''
+              let secNav = ''
+
+              if (item.sorts) {  
+                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
+                  let jtem = item.sorts[j]
+                  secNav1 += '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
+                  secNav += '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
+                }
+              } else {
+                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
+                secNav = '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
+              }
+              html += '<li style="height:'+self.courseobj.zhulnum+'px;">' +
+                   '<h3 class="nav-first">' +
+                   '<a class="first-link" href="/platform-1-0-0.html?pid=' + item.pid + '" title="' + item.pname + '">' + item.pname + '</a></h3>' +
+                   secNav1 +
+                   '<div class="first_li_three_mune">' +
+                   '<h2 class="nav-second">' +
+                   '<a class="second-link" href="/platform-1-0-0.html?pid=2143" title="' + item.pname + '">' + item.pname + '</a>' +
+                   '</h2>' +
+                   secNav +
+                   '</div>' +
+                   '</li>'
+            }
+            html += '<li class="morey" style="height: 65px;"><div class="fosnte"><a href="/platform.html">更多</a></div></li>'
+            $('.addcoursetype').find('.second_mune_ul').html(html)
+        }, function(response) {
+            console.log(response)
+        });
       },
       getcoursesort:function(){
         let self = this
@@ -109,15 +162,15 @@ export default {
               let secNav1 = ''
               let secNav = ''
 
-              if (item.sorts) {
-                secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + item.sorts[0].sid + '" title="' + item.sorts[0].sname + '">' + item.sorts[0].sname + '</a>'
+              if (item.sorts) {  
                 for (let j = 0, jen = item.sorts.length; j < jen; j++) {
                   let jtem = item.sorts[j]
+                  secNav1 += '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
                   secNav += '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '&sid=' + jtem.sid + '" title="' + jtem.sname + '">' + jtem.sname + '</a>'
                 }
               } else {
                 secNav1 = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
-                secNav = '<a class="link-nav-hot" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
+                secNav = '<a class="nav-third_line" href="/platform-1-0-0.html?pid=' + item.pid + '" title="其它课程">其它课程</a>'
               }
               html += '<li style="height:'+self.courseobj.zhulnum+'px;">' +
                    '<h3 class="nav-first">' +
@@ -147,10 +200,11 @@ export default {
     selectpaletter:function(val){
       let self = this
       self.courseobj.classs ='theme_'+val;
-    },
-    show: function (that, element) {
+    },   
+    show: function (that, element, me) {
       let self = this
       self.that = that
+      self.me = me
       self.dialogaddcoursetype = true
       self.addcourse = element     
       let carouseldata = self.addcourse.attr('carouseldata')
@@ -159,25 +213,59 @@ export default {
         type : jsoncarouseldata.type || '1',
         zhuxnum:jsoncarouseldata.zhuxnum ||  50,
         zhulnum:jsoncarouseldata.zhulnum || 50,
-        zhunum:jsoncarouseldata.zhunum || 5,
+        zhunum:jsoncarouseldata.zhunum,
+        pids : jsoncarouseldata.pids || [],
         classs:jsoncarouseldata.classs || 'theme_4'
       }
-      self.getcoursesort()     
+      self.courselist = jsoncarouseldata.courselist || [] 
     },
-    create:function(element){
+    create:function(){
       let self = this
-      console.log('1')
-      self.getcoursesort() 
+      self.that.$refs.hrefdialogp.show('addcoursetype',self.that) 
+    },
+    upy:function(index){
+      let self = this
+      this.courselist[index] = this.courselist.splice(index-1, 1, this.courselist[index])[0];
+    },
+    downy:function(index){
+      let self = this
+      this.courselist[index] = this.courselist.splice(index+1, 1, this.courselist[index])[0];
+    },
+    del:function(index){
+      let self = this
+      this.courselist.splice(index, 1);
+    },
+    edit:function(index){
+      let self = this
+      self.that.$refs.hrefdialogp.show('addcoursetype|'+index+'',self.that)
     },
     editcourselist:function(){
       let self = this
+      //self.getcoursesort()
       self.$refs.courseobj.validate((valid) => {
           if(valid) {
+            let pids = [];
+            
+              /*this.$notify({
+                title: '警告',
+                message: '请添加课程分类',
+                type: 'warning'
+              })
+              return false
+            }else*/
+            if(self.courselist.length){
+              for(var i=0;i<self.courselist.length;i++){
+                pids.push(self.courselist[i].pid)
+              }
+              self.getcourselist(pids);
+            }
             let obj = {
               classs: self.courseobj.classs,
               zhuxnum: self.courseobj.zhuxnum,
               zhulnum:self.courseobj.zhulnum,
-              zhunum :self.courseobj.zhunum,
+              zhunum :self.courselist.length,
+              pids : pids,
+              courselist : self.courselist,
               type : self.courseobj.type
             }
             $('.courseclassification .first_li').css('height', self.courseobj.zhuxnum + 'px')
@@ -187,13 +275,19 @@ export default {
             $('.addcoursetype #coursenav_ul').attr('class', self.courseobj.classs)
             if(self.courseobj.type == '1'){
               $('.courseclassification .second_mune_ul').attr('class','second_mune_ul')
+              let reseizh = self.courseobj.zhuxnum + (self.courselist.length *self.courseobj.zhulnum) + 40
+              $('.addcoursetype .resizeBox').css('height',reseizh + 'px')
+              $('.addcoursetype').css('height',reseizh + 'px')
             }else{
               $('.courseclassification .second_mune_ul').attr('class','second_mune_ul second_mune_ul_none')
+              let reseizh = self.courseobj.zhuxnum + (self.courselist.length *self.courseobj.zhulnum) + 40
+              $('.addcoursetype .resizeBox').css('height',reseizh + 'px')
+              $('.addcoursetype').css('height',reseizh + 'px')
             }
             let str = JSON.stringify(obj)
             $('.on_module').attr('carouselData', str)
             self.dialogaddcoursetype = false
-            self.getcoursesort()
+            //self.getcoursesort()
           } else {
             return false;
           }
@@ -276,5 +370,20 @@ export default {
   .togglePaletteOnly .Paletter .active-icon{
     background: url(../assets/icon/xuanzhong.png) no-repeat;
     background-size: 16px;
+  }
+  .el-dialog--addcoursetype .schoolname{
+    padding: 2px 4px;
+    color: #000;
+    font-weight: 600;
+    border:1px solid #000;
+  }
+  .el-dialog--addcoursetype .coursesort{
+    /* cursor: pointer; */
+  }
+  .el-dialog--addcoursetype .coursesort:hover .editbuttons{
+    display: block;
+  }
+  .el-dialog--addcoursetype .coursesort .editbuttons{
+    display: none;
   }
 </style>

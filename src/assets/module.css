@@ -744,7 +744,7 @@
 /*-----------课程分类---------------*/
 	.addcoursetype{
 		width:200px;
-    height: 340px;
+    height: 90px;
     z-index: 98;
 	}
 	.courseclassification{
@@ -803,6 +803,12 @@
 	/* #app .courseclassification .second_mune_ul{
     display: none;
   } */
+  .on_module .courseclassification .second_mune_ul {
+    display: block;
+  }
+  .on_module .courseclassification .second_mune_ul_none{
+    display: block;
+  }
 	.courseclassification .second_mune_ul li {
 		list-style: none;
 		width: 100%;
@@ -977,8 +983,8 @@
 		font-size: 14px;
 		line-height: normal;
 		float: left;
-		height: 17px;
-		line-height: 17px;
+		height: 18px;
+		line-height: 18px;
 		margin-left: 10px;
 	}
 	
@@ -1016,7 +1022,9 @@
 	.courseclassification #coursenav_ul a.nav-third_line:hover {
 		text-decoration: none;
 	}
-	
+	.addcoursetype .nw,.addcoursetype .sw,.addcoursetype .ne,.addcoursetype .se,.addcoursetype .n,.addcoursetype .s{
+    display: none;
+  }
 	/*分类样式1*/
 	.courseclassification ul.theme_1 li.first_li{background-color:#9b28ae}
 	.courseclassification ul.theme_1 .second_mune_ul li{

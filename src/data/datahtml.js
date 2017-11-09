@@ -373,7 +373,7 @@ var configHtml = {
       if (me.$('.loginbox').length > 3) {
         self.$notify({
           title: '警告',
-          message: '您已经添加过登录组件',
+          message: '您已经添加过登录框',
           type: 'warning'
         })
         element.remove()
@@ -471,7 +471,7 @@ var configHtml = {
     html: '<div class="weather module addmodule" datatext="天气"><div class="weatherCon"></div></div>'
   },
   addcoursetype: {
-    style: 'width: 200px; height: 340px',
+    style: 'width: 200px; height: 90px',
     tool: {
       private: {
         text: '编辑导航',
@@ -488,10 +488,10 @@ var configHtml = {
           })
           element.remove()
       }else{
-        self.$refs.addcoursetype.create(element)
+        //self.$refs.addcoursetype.create(element)
       }
     },
-    html: '<div class="addcoursetype module addmodule" datatext="课程分类"><div class="courseclassification"><div class="nav"><ul id="coursenav_ul" class="theme_4"><li class="first_li"><p class="allcourse">全部课程</p><ul class="second_mune_ul"><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服</a></h3><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><a class="link-nav-hot" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a><div class="first_li_three_mune"><h2 class="nav-second"><a class="second-link" href="/platform-1-0-0.html?pid=2143" title="大黄专属视频课程服务包">大黄专属视频课程服务包</a></h2><a class="nav-third_line" href="/platform-1-0-0.html?pid=2143&amp;sid=3766" title="M3U8切片视频">M3U8切片视频</a></div></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li><h3 class="nav-first"><a class="first-link" href="/platform-1-0-0.html?pid=995" title="本校免费课程艾丝凡">本校免费课程艾丝凡</a></h3></li><li class="morey"><div class="fosnte"><a href="/platform.html">更多</a></div></li></ul></li></ul></div></div></div>'
+    html: '<div class="addcoursetype module addmodule" datatext="课程分类"><div class="courseclassification"><div class="nav"><ul id="coursenav_ul" class="theme_4"><li class="first_li"><p class="allcourse">全部课程</p><ul class="second_mune_ul"><li class="morey"><div class="fosnte"><a href="/platform.html">更多</a></div></li></ul></li></ul></div></div></div>'
   }
   
 }

@@ -152,7 +152,16 @@ var tool = {
     // if (element.hasClass('picture')){ // 禁止图片拉伸
     //   element.find('.resize').hide()
     // }
-
+     // ---------addcoursetype---------------
+    let addcoursetype = me.$('.addcoursetype.on_module')
+    if (addcoursetype.length > 0) {      
+      let allcourse = parseInt(addcoursetype.find('.allcourse').css('height'))
+      let second_mune_ul = parseInt(addcoursetype.find('.second_mune_ul').css('height'))
+      addcoursetype.css('height', allcourse + second_mune_ul)
+      addcoursetype.find('.resizeBox').css('height', allcourse + second_mune_ul)
+      addcoursetype.find('.second_mune_ul').show()
+    }
+    // ---------addcoursetype--------------- 
     self.moduleElement = element
     self.moduleParentElementHeight = parseInt(element.parent().css('height'))
     self.inp_z = parseInt(element.css('zIndex')) || 0
@@ -199,12 +208,29 @@ var tool = {
         me.warp = parseInt(me.top.css('height')) + parseInt(me.body.css('height'))
         break
     } 
-    me.carryUpdateElementStorageEvent(self, element.parent(), element)
+    // ---------addcoursetype---------------
+    if (addcoursetype.length < 1) {
+      me.carryUpdateElementStorageEvent(self, element.parent(), element)
+    }
+    // ---------addcoursetype---------------
   },
   cleanSignEvent: function (self) { // 标记模块并属性还原默认值 注：禁止了图片拉伸
     let me = this
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
+    // ---------addcoursetype---------------
+    let addcoursetype = me.$('.addcoursetype.on_module')
+    if (addcoursetype.length > 0) {      
+      let allcourse = parseInt(addcoursetype.find('.allcourse').css('height'))
+      var carouseldata = addcoursetype.attr('carouseldata')
+      var jsoncarouseldata = me.$.parseJSON(carouseldata)
+      if(jsoncarouseldata.type == '2'){
+        addcoursetype.css('height', allcourse)
+        addcoursetype.find('.second_mune_ul').hide()
+      }
+      me.carryUpdateElementStorageEvent(self, addcoursetype.parent(), addcoursetype)
+    } 
+    // ---------addcoursetype---------------
     me.$('.on_module').removeClass('on_module')
     me.$('.module').parent().unbind('mousemove') // 待定
     // me.$('.module').unbind('mouseup')
@@ -231,7 +257,7 @@ var tool = {
     me.mod.addClass('tl_li_Disable')
     me.brmod.addClass('br-disable')
     self.moduleElementY = false
-    self.moduleElementX = false
+    self.moduleElementX = false    
   },
   carryMenuEvent: function (self) { // 渲染模块菜单
     let me = this
@@ -395,6 +421,7 @@ var tool = {
           }
         }
       }
+      
       getregion.remove()
       let onModule = me.$('.on_module')
       let getElementY = onModule.eq(0)
@@ -1451,9 +1478,7 @@ var tool = {
           })
           break
         case 'st-left st-addcoursetype':
-          self.$refs.addcoursetype.show('addcoursetype', me.$('.on_module'), function (element, data) {           
-            
-          })
+          self.$refs.addcoursetype.show(self, me.$('.on_module'), me)
           break
       }
       return false
