@@ -38,7 +38,7 @@
               <el-input-number v-model="courseobj.zhulnum" :min="50" :max="100"></el-input-number>
             </el-form-item>
             <el-form-item label="添加分类：">
-              <el-col class="coursesort" v-for="(item,index) in courselist">
+              <el-col class="coursesort" v-for="(item,index) in courselist" :key="item.name">
                 <el-col :span="16">
                   <span class="schoolname" :title="item.name">{{item.name}}</span>
                   <span :title="item.pname">{{item.pname}}</span>
@@ -206,18 +206,30 @@ export default {
       self.that = that
       self.me = me
       self.dialogaddcoursetype = true
-      self.addcourse = element     
+      self.addcourse = element        
       let carouseldata = self.addcourse.attr('carouseldata')
-      let jsoncarouseldata = $.parseJSON(carouseldata)
-      self.courseobj = {
-        type : jsoncarouseldata.type || '1',
-        zhuxnum:jsoncarouseldata.zhuxnum ||  50,
-        zhulnum:jsoncarouseldata.zhulnum || 50,
-        zhunum:jsoncarouseldata.zhunum,
-        pids : jsoncarouseldata.pids || [],
-        classs:jsoncarouseldata.classs || 'theme_4'
+      if(carouseldata){
+        let jsoncarouseldata = $.parseJSON(carouseldata)
+        self.courseobj = {
+          type : jsoncarouseldata.type || '1',
+          zhuxnum:jsoncarouseldata.zhuxnum ||  50,
+          zhulnum:jsoncarouseldata.zhulnum || 50,
+          zhunum:jsoncarouseldata.zhunum,
+          pids : jsoncarouseldata.pids || [],
+          classs:jsoncarouseldata.classs || 'theme_4'
+        }
+        self.courselist = jsoncarouseldata.courselist || [] 
+      }else{
+        self.courseobj = {
+          type :'1',
+          zhuxnum:50,
+          zhulnum:50,
+          zhunum:0,
+          pids :  [],
+          classs: 'theme_4'
+        }
+        self.courselist =  [] 
       }
-      self.courselist = jsoncarouseldata.courselist || [] 
     },
     create:function(){
       let self = this
@@ -282,7 +294,7 @@ export default {
               $('.courseclassification .second_mune_ul').attr('class','second_mune_ul second_mune_ul_none')
               let reseizh = self.courseobj.zhuxnum + (self.courselist.length *self.courseobj.zhulnum) + 40
               $('.addcoursetype .resizeBox').css('height',reseizh + 'px')
-              $('.addcoursetype').css('height',reseizh + 'px')
+              $('.addcoursetype').css('height',self.courseobj.zhuxnum + 'px')
             }
             let str = JSON.stringify(obj)
             $('.on_module').attr('carouselData', str)

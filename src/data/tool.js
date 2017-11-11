@@ -223,10 +223,12 @@ var tool = {
     if (addcoursetype.length > 0) {      
       let allcourse = parseInt(addcoursetype.find('.allcourse').css('height'))
       var carouseldata = addcoursetype.attr('carouseldata')
-      var jsoncarouseldata = me.$.parseJSON(carouseldata)
-      if(jsoncarouseldata.type == '2'){
-        addcoursetype.css('height', allcourse)
-        addcoursetype.find('.second_mune_ul').hide()
+      if(carouseldata){
+        var jsoncarouseldata = me.$.parseJSON(carouseldata)
+        if(jsoncarouseldata.type == '2'){
+          addcoursetype.css('height', allcourse)
+          addcoursetype.find('.second_mune_ul').hide()
+        }
       }
       me.carryUpdateElementStorageEvent(self, addcoursetype.parent(), addcoursetype)
     } 

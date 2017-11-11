@@ -745,7 +745,7 @@
 	.addcoursetype{
 		width:200px;
     height: 90px;
-    z-index: 98;
+    /* z-index: 98; */
 	}
 	.courseclassification{
 		width:100%;
@@ -788,7 +788,7 @@
 		text-indent: 40px;
 	}
 	.courseclassification .first_li:hover .second_mune_ul{
-		display: block;
+		display: block!important;
 	}
 	.courseclassification .second_mune_ul {
 		position: absolute;
@@ -2496,6 +2496,7 @@
 	.introduce{
 	  width: 580px;
 	  height: 145px;
+    font-size: 14px;
 	}	
 	.introduce .picBox{
 	  display: block;
@@ -2503,7 +2504,7 @@
 	  height: 100%;
 	  overflow: hidden;
 	  text-indent: 30px;
-	  font-size: 14px;
+	  font-size: inherit;
 	  text-decoration: none;
 	}
 /*weather*/

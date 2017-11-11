@@ -1261,23 +1261,37 @@
     methods: {
       cleanScreenEvent: function () {
         let self = this
-        let head = $('.c_top')
-        let middle = $('.c_body')
-        let foot = $('.c_foot')
-        head.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>')
-        middle.html('')
-        foot.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>')
-        tool.tool.carryLayerEvent(self, head)
-        tool.tool.carryLayerEvent(self, middle)
-        tool.tool.carryLayerEvent(self, foot)
-        tool.tool.carryLineHeightEvent()
-        tool.tool.carryUpdateElementStorageEvent(self, head, $('.module'))
-        tool.tool.carryUpdateElementStorageEvent(self, middle, $('.module'))
-        tool.tool.carryUpdateElementStorageEvent(self, foot, $('.module'))
-        self.elementStorage.c_top = {}
-        self.elementStorage.c_body = {}
-        self.elementStorage.c_foot = {}
-        console.log(self.elementStorage)
+        self.$confirm('此操作将清除页面为空白页, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let head = $('.c_top')
+          let middle = $('.c_body')
+          let foot = $('.c_foot')
+          head.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>')
+          middle.html('')
+          foot.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>')
+          tool.tool.carryLayerEvent(self, head)
+          tool.tool.carryLayerEvent(self, middle)
+          tool.tool.carryLayerEvent(self, foot)
+          tool.tool.carryLineHeightEvent()
+          tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
+          self.elementStorage.c_top = {}
+          self.elementStorage.c_body = {}
+          self.elementStorage.c_foot = {}
+          self.$message({
+            type: 'success',
+            message: '清屏成功!'
+          });
+        }).catch(() => {
+          self.$message({
+            type: 'info',
+            message: '已取消清屏'
+          });          
+        });
       },
       dialogeditlogin(){
         let self = this
