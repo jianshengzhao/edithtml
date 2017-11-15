@@ -293,6 +293,19 @@
             auditions += ','
           }
         }
+        let player = $('.player')
+        let vedioids = []
+        let vedioidObj = {}
+        for (let i = 0, len = player.length; i < len; i++) {
+          let playerData = $.parseJSON(player.eq(i).attr('playerData')).playerData
+          for (let j = 0, jen = playerData.length; j < jen; j++) {
+            let cwid = playerData[j].cwid
+            if (!vedioidObj[cwid]) {
+              vedioids.push(cwid) 
+              vedioidObj[cwid] = true
+            }
+          }
+        }
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -301,7 +314,8 @@
             body: bodyArray,
             settings: strSetting,
             status: 0,
-            auditions: auditions
+            auditions: auditions,
+            vedioids: vedioids
           },
           fun: function (response) {
             let body = response.body

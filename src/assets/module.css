@@ -970,9 +970,9 @@
 	}
 	
 	.courseclassification .wrap-nav-hot {
-		height: 14px;
+		height: 20px;
 		overflow: hidden;
-		padding: 3px 0 5px 12px;
+		padding: 0px 0px 0px 8px;
 	}
 	
 	.courseclassification a.link-nav-hot {
@@ -2357,7 +2357,7 @@
     bottom: 200px;
     width: 36px;
     height: 75px;
-   
+    z-index: 999; 
   }
   .kf-head{
     width:36px;

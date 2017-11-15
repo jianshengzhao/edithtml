@@ -81,11 +81,11 @@ var configHtml = {
         icon: 'imgicon icon-QRcode',
         text: '二维码'
       },
-      {
-        name: 'weather',
-        icon: 'imgicon icon-weather',
-        text: '天气'
-      },
+      // {
+      //   name: 'weather',
+      //   icon: 'imgicon icon-weather',
+      //   text: '天气'
+      // },
       {
         name: 'introduce',
         icon: 'imgicon icon-introduce',

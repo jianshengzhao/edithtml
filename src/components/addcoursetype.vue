@@ -130,9 +130,9 @@ export default {
               }
               html += '<li style="height:'+self.courseobj.zhulnum+'px;">' +
                    '<h3 class="nav-first">' +
-                   '<a class="first-link" href="/platform-1-0-0.html?pid=' + item.pid + '" title="' + item.pname + '">' + item.pname + '</a></h3>' +
+                   '<a class="first-link" href="/platform-1-0-0.html?pid=' + item.pid + '" title="' + item.pname + '">' + item.pname + '</a></h3><div class="wrap-nav-hot" style="height:'+(self.courseobj.zhulnum - 30)+'px;">' +
                    secNav1 +
-                   '<div class="first_li_three_mune">' +
+                   '</div><div class="first_li_three_mune">' +
                    '<h2 class="nav-second">' +
                    '<a class="second-link" href="/platform-1-0-0.html?pid=2143" title="' + item.pname + '">' + item.pname + '</a>' +
                    '</h2>' +
