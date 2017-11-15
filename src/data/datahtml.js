@@ -1,11 +1,11 @@
 var configHtml = {
   config:{
     stretchLimit: false, // 是否开启module拉伸限制
-    moveLimit: false, // 是否开启module移动限制
+    moveLimit: true, // 是否开启module移动限制
     paddingtop: 35, // top栏高度
     paddingleft: 133, // left栏高度
     postop: 80, // editbox  top值
-    posleft: 1000, // editbox  left值
+    posleft: 0, // editbox  left值
     fuzzyVal: 6,// 模糊度
     choiceCon: true // 多选模块： ture 模糊选择，false为全部选中
   },

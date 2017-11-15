@@ -214,7 +214,15 @@
         <div class="header layerhead">模块索引 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>        
+        </div>
+       <!--  <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol elementMain">
+          <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
+        </div>
+        <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
+        <div class="lib_ol elementTail">
+          <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
+        </div>       --> 
       </div>
      <!--  <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
@@ -223,7 +231,13 @@
   <!-- editBox    -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right:314px;">
       <div class="space">       
-        <div class="canvas" >         
+        <div class="canvas grid" >
+          <div class="c_top">            
+          </div>
+         <!--  <div class="c_body">
+          </div>
+          <div class="c_foot">           
+          </div> -->
         </div>
         <div class="row-t line"></div>
         <div class="row-b line"></div> 
@@ -253,10 +267,10 @@
         </ul>
       </div>
     <!-- copyBox  选中的组件容器盒子-->
-    <!--   <div class="copyBox">
+      <div class="copyBox">
         <div class="copyCon">
         </div>
-      </div>   -->
+      </div>  
     </div>
   <!-- dialog弹框 -->
     <el-dialog
@@ -2002,29 +2016,32 @@
       -o-transition: all 400ms;
     }
     .space{
-      margin: 100px auto 50px; 
-      width: 380px;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow:auto;
+    }    
+    .canvas{
+      position: relative;
+      width: 383px;
       height: 667px;
+      margin: 50px auto;     
       overflow-y:scroll;
-
-      background-size:10px 10px; 
-      background-color: transparent;
-    }    
-    .canvas{         
-      width: 375px;
-      height: 1800px;
-      background-color: #fff;      
-      /*box-sizing: border-box;    
-      cursor: default;*/
-    }    
+      background-size:10px 10px;     
+      box-sizing: border-box;
+      /*overflow: hidden;*/
+      cursor: default;
+    } 
+    /*.grid{
+      background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
+    }*/
     .c_top{
       position: absolute;
       top:0;
       left: 0;
-      width: 100%;
-      height: 400px;
-      border-bottom: 1px dashed #d9d9d9;
-      box-sizing: border-box;
+      width: 375px;
+      height: 1800px; 
+      background-color: #fff;     
     }  
     .c_body{
      /* display: none;*/ /*关闭分区*/

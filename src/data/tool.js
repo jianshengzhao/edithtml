@@ -95,12 +95,14 @@ var tool = {
       me.colR.css('left', e.pageX + sLeft - self.paddingleft + w)
     })
   },
-  carryLineEvent: function (self, show) { // 计算参考线函数
+  carryLineEvent: function (self, show) { // 计算参考线函数 wap todo:
     let me = this
-    me.rowT.css('top', self.inp_y + self.postop + me.warp)
-    me.rowB.css('top', self.inp_y + self.postop + self.inp_h + me.warp - 1)
-    me.colL.css('left', self.inp_x + self.posleft)
-    me.colR.css('left', self.inp_x + self.posleft + self.inp_w - 1)
+    let canvasLeft = me.canvas[0].offsetLeft
+    let canvasTop = me.canvas[0].offsetTop
+    me.rowT.css('top', self.inp_y + canvasTop)
+    me.rowB.css('top', self.inp_y + canvasTop + self.inp_h - 1)
+    me.colL.css('left', self.inp_x + canvasLeft - 2)
+    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w - 3)
     if (!show) {
       me.line.show()
     }
@@ -1687,7 +1689,7 @@ var tool = {
         me.lShrink.show()
       })
       // me.carryOutsideLineEvent(self, e) // 辅助线
-      me.editBox.mouseup(function (e) { // 鼠标松开事件
+      me.editBox.mouseup(function (e) { // 鼠标松开事件 // wap todo:
         me.lShrink.show()
         me.editBox.unbind('mousemove mouseup')
         me.libLi.unbind('mousemove mouseup')
@@ -1698,26 +1700,17 @@ var tool = {
         let box
         let x
         let y
-        let sTop = parseInt(me.space.scrollTop()) // 滚动条距顶部高度
-        let sLeft = parseInt(me.space.scrollLeft()) // 滚动条距右边
-        x = e.pageX - self.paddingleft - self.posleft + sLeft
-        me.topRangeY = parseInt(me.top.css('height')) + self.paddingtop + self.postop
-        me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
-        if (e.pageY + sTop < me.topRangeY) {
-          box = me.top
-          y = e.pageY + sTop - self.paddingtop - self.postop
-        } else if (e.pageY + sTop < me.bodyRangeY) {
-          box = me.body
-          y = e.pageY + sTop - me.topRangeY
-        } else {
-          box = me.foot
-          y = e.pageY + sTop - me.bodyRangeY
-        }
+        let sTop = parseInt(me.canvas.scrollTop()) // 滚动条距顶部高度
+        let canvasLeft = me.canvas[0].offsetLeft
+        let canvasTop = me.canvas[0].offsetTop
+        x = e.pageX - self.paddingleft - canvasLeft
+        y = e.pageY + sTop - self.paddingtop - canvasTop
+        box = me.top
         if (self.config.moveLimit) {
           if (x < 0) {
             x = 0
           }
-          let boxLeft = self.inp_width - parseInt(me.copyBox.css('width'))
+          let boxLeft = 375 - parseInt(me.copyBox.css('width'))
           if (x > boxLeft) {
             x = boxLeft
           }
