@@ -37,7 +37,6 @@ var tool = {
     me.todoBox = me.$('.todoBox')
     me.carrytoolbarEvent(self)
     me.carryMenuEvent(self)
-    me.carryLineHeightEvent()
     me.libBox = me.$('.lib_box')
     me.libLi = me.libBox.find('.lib_li')
     me.bindEvent(self)
@@ -70,12 +69,6 @@ var tool = {
       }
     })
   },
-  carryLineHeightEvent: function () { // 计算竖向参考线高度
-    let me = this
-    let scrollHeight = me.space[0].scrollHeight
-    me.colL.css('height', scrollHeight)
-    me.colR.css('height', scrollHeight)
-  },
   carryOutsideLineEvent: function (self, e) { // 画布之外的参考线
     let me = this
     let sTop = parseInt(me.space.scrollTop()) // 当前滚动条高度
@@ -101,8 +94,8 @@ var tool = {
     let canvasTop = me.canvas[0].offsetTop
     me.rowT.css('top', self.inp_y + canvasTop)
     me.rowB.css('top', self.inp_y + canvasTop + self.inp_h - 1)
-    me.colL.css('left', self.inp_x + canvasLeft - 2)
-    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w - 3)
+    me.colL.css('left', self.inp_x + canvasLeft)
+    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w - 1)
     if (!show) {
       me.line.show()
     }
@@ -355,38 +348,68 @@ var tool = {
     let me = this
     me.$('.getRegion').remove()
     me.$('.multiBox').remove()    
-    let spaceTop = me.space.scrollTop()
-    let spaceLeft = me.space.scrollLeft()
+    let canvasScrollTop = me.canvas.scrollTop()
+    let canvasLeft = me.canvas[0].offsetLeft
+    let canvasTop = me.canvas[0].offsetTop
     let startY = e.pageY // Y轴原点
     let startX = e.pageX // X轴原点
     let drawY = 0
     let drawX = 0
-    let postY = e.pageY - self.paddingtop - self.postop + spaceTop
-    let postX = e.pageX - self.paddingleft - self.posleft + spaceLeft
-    let parent
-    if (e.pageY + spaceTop < me.topRangeY ) {
-      parent = 'c_top'
-    } else if (e.pageY + spaceTop < me.bodyRangeY) {
-      postY = e.pageY + spaceTop - me.topRangeY
-      parent = 'c_body'
-    } else {
-      postY = e.pageY + spaceTop - me.bodyRangeY
-      parent = 'c_foot'
-    }
-    me.$('.' + parent).append('<div class="getRegion"></div>')
-    self.moduleParentElementHeight = parseInt(me.$('.' + parent).css('height'))
-    let getregion = me.$('.getRegion') 
-    getregion.css({'top': postY, 'left': postX})
-    me.editBox.on('mousemove', function (e) { // 绘制选区
+    let postY = e.pageY  - self.paddingtop - canvasTop + canvasScrollTop
+    let postX = e.pageX  - self.paddingleft - canvasLeft
+    let parent = 'c_top'
+
+    me.$('.' + parent).append('<div class="getRegion" style="top:' + postY + 'px;left:' + postX +'px;"></div>')
+    let getregion = me.$('.getRegion')
+    me.editBox.on('mousemove', function (e) { // 绘制选区     
       drawY = e.pageY - startY
       drawX = e.pageX - startX
-      if (drawY > 0 && drawX > 0) { // 上下左右四种情况的操作
-        getregion.css({'width': drawX,'height': drawY})
-      } else if (drawY > 0 && drawX < 0) {
+      if (drawY > 0 && drawX > 0) { // // 右下移动
+
+        if ((drawX + postX) > 375) {         
+          drawX = 375 - postX
+        } 
+
+        if ((drawY + postY) > 667) {         
+          drawY = 667 - postY
+        }
+
+        getregion.css({'width': drawX ,'height': drawY}) 
+
+      } else if (drawY > 0 && drawX < 0) { // 左下移动
+
+        if ((drawX + postX) < 0) {         
+          drawX = postX
+        } 
+
+        if ((drawY + postY) > 667) {         
+          drawY = 667 - postY
+        }
+
         getregion.css({'width': - drawX, 'height': drawY, 'left': postX + drawX})
-      } else if (drawY < 0 && drawX > 0) {
+
+      } else if (drawY < 0 && drawX > 0) { // 右上移动
+
+        if ((drawX + postX) > 375) {         
+          drawX = 375 - postX
+        } 
+
+        if ((drawY + postY) < 0) {         
+          drawY = postY
+        }
+
         getregion.css({'width': drawX, 'height': - drawY, 'top': postY + drawY})
-      } else {
+
+      } else { // 左上移动
+
+        if ((drawX + postX) < 0) {         
+          drawX = postX
+        } 
+
+        if ((drawY + postY) < 0) {         
+          drawY = postY
+        }
+
         getregion.css({'width': - drawX, 'height': - drawY, 'left': postX + drawX, 'top': postY + drawY})
       }
     })

@@ -471,17 +471,17 @@
     <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
-    <information ref="information"></information>
-    <weather ref="weather"></weather>
+  <!--   <information ref="information"></information>
+    <weather ref="weather"></weather> -->
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
     <editbutton ref="editbutton"></editbutton>
-    <carousel ref="carousel"></carousel>
+   <!--  <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
     <course ref="course"></course>
     <player ref="player"></player>
-    <addcoursetype ref="addcoursetype"></addcoursetype>      
+    <addcoursetype ref="addcoursetype"></addcoursetype>    -->   
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -493,17 +493,17 @@
   import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
-  import information from '@/components/information'
-  import weather from '@/components/weather'
+  // import information from '@/components/information'
+  // import weather from '@/components/weather'
   import suspend from '@/components/suspend'
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
-  import carousel from '@/components/carousel'
-  import waiter from '@/components/waiter'
-  import advert from '@/components/advert'
-  import course from '@/components/course'
-  import player from '@/components/player'
-  import addcoursetype from '@/components/addcoursetype'
+  // import carousel from '@/components/carousel'
+  // import waiter from '@/components/waiter'
+  // import advert from '@/components/advert'
+  // import course from '@/components/course'
+  // import player from '@/components/player'
+  // import addcoursetype from '@/components/addcoursetype'
   
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
@@ -515,21 +515,21 @@
       ueditor, 
       hrefdialog, 
       myimages,
-      information,
-      weather, 
+      // information,
+      // weather, 
       suspend, 
       shape, 
-      editbutton, 
-      carousel, 
-      waiter, 
-      advert, 
-      course,
-      player,
-      addcoursetype
+      editbutton 
+      // carousel, 
+      // waiter, 
+      // advert, 
+      // course,
+      // player,
+      // addcoursetype
     },
     data: function () {
       return {
-      // ------------ 工具栏add ----------------------
+      // ------------ 工具栏add ----------------- 
         onlybloo: true,
         br_width: '0',
         br_widths: [{
@@ -586,10 +586,10 @@
         inp_blur: '0',
         bw_color: '#ccc',
         editEditor: false,
-      //  ---------------登录框文本----------
+      // ------------ 登录框文本 ---------------- 
         logintext :'',
         dialogedittext:false,
-      // ------------ 基础组件弹框 -------------------
+      // ------------ 基础组件弹框 -------------- 
         dialogscrollanim:false,
         anim:'',
         animtype : 0,
@@ -651,7 +651,7 @@
         moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
-      // ---------- config --------------
+      // ------------ config -------------------- 
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
           moveLimit: config.moveLimit // 是否开启module移动限制
@@ -672,8 +672,9 @@
         elementMain: [],
         elementTail: [],
         datahtml: configData.config,
-      // ------------ common -------------------------
-        httpget: function (getParam) { // 封装的异步请求数据
+        tool: tool,
+      // ------------ 封装的异步请求 ------------ 
+        httpget: function (getParam) { 
           let self = this
           self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -682,7 +683,7 @@
           }).catch(function (response) {
           })
         },
-        httppost: function (getParam) { // 封装的异步请求数据
+        httppost: function (getParam) { 
           let self = this
           self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -690,201 +691,50 @@
             }
           }).catch(function (response) {
           })
-        },
-      // ---------------------------------------------
-        tool: tool,        
-        getcoursecategorys:function(html){
-          let self = this
-          self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
-            params: {
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let datas = response.data
-            if(datas.code == 0) {
-              let packages = datas.data.packages
-              let sorts = datas.data.sorts
-              let packageshtml = ''
-              let sortshtml = ''
-              for(var i=0;i<packages.length;i++){
-                if(packages[i].pid == 0){
-                  packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
-                }else{
-                  if(packages[i].cur){
-                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
-                  }else{
-                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
-                  }
-                }
-              }
-              for(var i=0;i<sorts.length;i++){
-                if(sorts[i].sid == -1){
-                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
-                }else{
-                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
-                }
-              }
-              html.find('.allson').html(packageshtml)
-              html.find('.allsondouble').html(sortshtml)
-            }
-          }, function (response) {
-            console.log(response)
-          })
-        },
-        createmap:function(html){
-          let self = this
-          var	lng = parseFloat(window.roominfo.lng),
-          		lat = parseFloat(window.roominfo.lat),
-           		map = new BMap.Map("schoolmap"),
-          		point = new BMap.Point(lng, lat),
-			  			marker = new BMap.Marker(point),
-			  			top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
-			  			
-			  	map.centerAndZoom(point, 12);  //设置中心点坐标
-			  	map.addOverlay(marker);
-			  	map.addControl(top_right_navigation); 
-			  	map.disableDragging();     
-			  	
-			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>" 
-			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
-			  	var infoWindow = new BMap.InfoWindow(sContent);
-			  	var pointinfo = new BMap.Point(lng, lat+0.01);	
-					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
-        },
-        createqr_logo:function(html){
-        	let self = this
-        	if(html.hasClass("schoolqr")){
-        		html.find("img").attr("src",window.roominfo.wechatimg)
-        	}else{
-        		html.find("img").attr("src",window.roominfo.cface)
-        	}
-        },
-        createintroduce:function(html){
-        	let self = this
-        	html.find(".picBox").html(window.roominfo.summary)
         }
       }
     },
     created: function () {
       var self = this
-      self.$nextTick(function () {
-        let canvas = $('.canvas')
-        let space = $('.space')
-        canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
-        self.inp_width = parseInt(canvas.css('width'))
-        self.inp_height = parseInt(canvas.css('height'))
-        space.scrollLeft(900)
+      self.$nextTick(function () {       
         let head = $('.c_top')
-        let middle = $('.c_body')
-        let foot = $('.c_foot')
-        if (window.saveParams) {
-          let params = window.saveParams
-          let pp = params.page
-          self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
-          self.bgColorVal = pp.bg =='transparent'?null:pp.bg
-          self.fontHoverColorVal = pp.fontHover
-          self.inp_width = parseInt(pp.width)
-          self.inp_height = parseInt(pp.height)
-          self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-          self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-          self.repeatPgValue = pp.pgImage.backgroundRepeat
-          self.attachmentPgValue = pp.pgImage.backgroundAttachment
-          self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
-          self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
-          self.repeatBgValue = pp.bgImage.backgroundRepeat
-          self.attachmentBgValue = pp.bgImage.backgroundAttachment
-          space.css(pp.bgImage)
-          space.css('backgroundColor', pp.bg)
-          canvas.css(pp.pgImage)
-          canvas.css('backgroundColor', pp.pg)
-          canvas.css('width', pp.width)
-          canvas.css('height', pp.height)
-          head.css('height', pp.top)
-          foot.css('height', pp.foot)
-          canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
-          let module = params.module
-          head.html(module.top)
-          middle.html(module.body)
-          foot.html(module.foot)          
-          tool.tool.carryLayerEvent(self, head)
-          tool.tool.carryLayerEvent(self, middle)
-          tool.tool.carryLayerEvent(self, foot)
-          tool.tool.carryLineHeightEvent()
-          tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
-          // 客服     
-          if ($('.waiter').length < 2 && $('.waiter').length > 0) {
-            $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
-            $('.waiter').on('click', function() {
-              self.$refs.waiter.show(self, canvas.find('.waiter'))
-            })
-          } 
-        } else if (false) {
+      // -------- 获取网校信息 ------------- 
           let getParam = {
             url: '/aroomv3/roominfo.html',
             params: {},
             fun: function (response) {
               let crid = response.body.data.crid
               window.roominfo = response.body.data
-              let getParams = {
-                url: '/room/design/getdesign.html',
-                params: {crid: crid},
-                fun: function (response) {
-                  let saveParams = response.body.data                
-                  let headHtml = saveParams.head.replace(/[\\]/g, '')
-                  let bodyHtml = saveParams.body.replace(/[\\]/g, '')
-                  let footHtml = saveParams.foot.replace(/[\\]/g, '')
-                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
-                  self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
-                  self.bgColorVal = pp.bg =='transparent'?null:pp.bg
-                  self.fontHoverColorVal = pp.fontHover||'#333'
-                  self.inp_width = parseInt(pp.width)
-                  self.inp_height = parseInt(pp.height)
-                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-                  self.repeatPgValue = pp.pgImage.backgroundRepeat
-                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
-                  self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
-                  self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
-                  self.repeatBgValue = pp.bgImage.backgroundRepeat
-                  self.attachmentBgValue = pp.bgImage.backgroundAttachment
-                  space.css('backgroundColor', pp.bg)
-                  space.css(pp.bgImage)
-                  canvas.css('backgroundColor', pp.pg)
-                  canvas.css(pp.pgImage)
-                  canvas.css('width', self.inp_width)
-                  canvas.css('height', self.inp_height)
-                  head.css('height', pp.top)
-                  foot.css('height', pp.foot)
-                  canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
-                  head.html(headHtml)
-                  middle.html(bodyHtml)
-                  foot.html(footHtml)
-                  self.moduleElement = $('.on_module')
-                  tool.tool.carryLayerEvent(self, head)
-                  tool.tool.carryLayerEvent(self, middle)
-                  tool.tool.carryLayerEvent(self, foot)
-                  tool.tool.carryLineHeightEvent()
-                  tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
-                  tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
-                  tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
-                  if ($('.waiter').length < 2 && $('.waiter').length > 0) {
-                    $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
-                    $('.waiter').on('click', function() {
-                      self.$refs.waiter.show(self, canvas.find('.waiter'))
-                    })
-                  } 
-                  tool.tool.topRangeY = parseInt(tool.tool.top.css('height')) + self.paddingtop + self.postop // top选区范围
-                  tool.tool.bodyRangeY = parseInt(tool.tool.body.css('height')) + tool.tool.topRangeY // body选区范围
+              // -------- 获取网校页面 -----------
+                let getParams = {
+                  url: '/room/design/getdesign.html',
+                  params: {crid: crid},
+                  fun: function (response) {
+                    let saveParams = response.body.data                
+                    let headHtml = saveParams.head.replace(/[\\]/g, '')              
+                    let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
+                    self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+                    self.fontHoverColorVal = pp.fontHover||'#333'                
+                    self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+                    self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+                    self.repeatPgValue = pp.pgImage.backgroundRepeat
+                    self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                    head.css('backgroundColor', pp.pg)
+                    head.css(pp.pgImage)              
+                    head.css('height', self.inp_height)
+                    head.html(headHtml)
+                    self.moduleElement = $('.on_module')
+                    tool.tool.carryLayerEvent(self, head)
+                    tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+                  }
                 }
-              }
-              self.httppost(getParams)
+                self.httppost(getParams) 
             }
           }
-          self.httpget(getParam)
-        }
-        
+      // self.httpget(getParam)  未有手机版接口     
+      // -------- 工具初始化 ----------------  
         tool.tool.init(self, $)
+      // -------- 工具栏位置自适应调整 ------ 
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
         let $top = $('.top')
@@ -912,9 +762,11 @@
             }     
           }
         }
+
       })
     },
     methods: {
+    // ------------- 清屏 -------------------- 
       cleanScreenEvent: function () {
         let self = this
         self.$confirm('此操作将清除页面为空白页, 是否继续?', '提示', {
@@ -949,39 +801,7 @@
           });          
         });
       },
-      dialogeditlogin(){
-        let self = this
-        self.logintext = ''
-        let type = $('.on_module input').attr('name')
-        switch(type){
-          case 'username':
-            self.logintext = $('.on_module input').attr('placeholder')
-          break
-          case 'password':
-            self.logintext = $('.on_module input').attr('placeholder')
-          break
-          case 'Submit':
-            self.logintext = $('.on_module input').attr('value')
-          break
-        }
-        self.dialogedittext = true
-      },
-      editlogintext(){
-        let self = this
-        let type = $('.on_module input').attr('name')
-        switch(type){
-          case 'username':
-            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
-          break
-          case 'password':
-            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
-          break
-          case 'Submit':
-            self.logintext = $('.on_module input').attr('value',self.logintext)
-          break
-        }
-        self.dialogedittext = false
-      },
+    // ------------- 动画效果 ---------------- 
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -1007,49 +827,29 @@
         a.attr('data-kui-anim',self.anim)
         self.dialogscrollanim = false
       },
-    // ------------- complete ----------------
+    // ------------- 页面设置 ---------------- 
       settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
-      },
-      handleBackdropSuccess: function (res) {
-        let self = this
-        let showurl = res.data.showurl
-        self.bgImageUrl = showurl
       },
       handlePredropSuccess: function (res) {
         let self = this
         let showurl = res.data.showurl       
         self.pgImageUrl = showurl
       },
-      cleanBgEvent: function () {
-        var self = this
-        self.bgImageUrl = ''
-      },
       cleanPgEvent: function () {
         var self = this
         self.pgImageUrl = ''
       },
       dialogPageSettingEvent: function () { // 页面设置弹框保存
-        var self = this
-        let space = $('.space')
-        let canvas = $('.canvas')
-        if (self.bgColorVal) {
-          space.css('backgroundColor', self.bgColorVal)
-        } else {
-          space.css('backgroundColor', 'transparent')
-        }
+        var self = this       
+        let canvas = $('.c_top')
+        
         if (self.prospectColorVal) {
           canvas.css('backgroundColor', self.prospectColorVal)
         } else {
           canvas.css('backgroundColor', 'transparent')
-        }
-        if(self.bgImageUrl){
-          let bgJson = {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue}
-          space.css(bgJson)
-        } else {
-          space.css('backgroundImage','none')
-        }
+        }        
         if(self.pgImageUrl){
           let pgJson = {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue}
           canvas.css(pgJson)
@@ -1059,41 +859,9 @@
         if (self.fontHoverColorVal) {
           $('#fontHover').remove()
           $('head').append('<style id="fontHover">body a[href]:hover{color:' + self.fontHoverColorVal + ';}</style>')
-        }
-        canvas.css('width', self.inp_width)
-        canvas.css('height', self.inp_height)
+        }       
         tool.tool.carryLineHeightEvent()
         self.dialogPageSetting = false
-      },
-      previewEvent: function () { // 预览
-        let self = this
-        tool.tool.cleanSignEvent(self)
-        $('.setInfo').remove()
-        self.$router.push('preview')
-        let params = {}
-        let headArray = $('.c_top').html()
-        let bodyArray = $('.c_body').html()
-        let footArray = $('.c_foot').html()
-        params = {
-          page: {
-            pg: self.prospectColorVal?self.prospectColorVal:'transparent',
-            bg: self.bgColorVal?self.bgColorVal:'transparent',
-            fontHover: self.fontHoverColorVal,
-            pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
-            bgImage: {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue},
-            width: self.inp_width + 'px',
-            height: self.inp_height + 'px',
-            top: $('.c_top').css('height'),
-            body: $('.c_body').css('height'),
-            foot: $('.c_foot').css('height')
-          },
-          module: {
-            top: headArray,
-            body: bodyArray,
-            foot: footArray
-          }
-        }
-        window.saveParams = params
       },
       saveEvent: function () { // 页面保存
         let self = this
@@ -1179,7 +947,7 @@
         }
         self.httppost(param)
       },
-    // ------------- 模块属性控制 ------------
+    // ------------- 模块属性控制 ------------ 
       changeInpZ: function (val) { // z-index 定位
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
@@ -1266,7 +1034,7 @@
         var self = this        
         tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
-    // ------------- 模块操作 ----------------
+    // ------------- 模块操作 ---------------- 
       topAlignEvent: function () { // top 上对齐
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'topAlign')
@@ -1341,7 +1109,7 @@
 </script>
 
 <style>
-  /*header*/
+  /* ------------- header -------------- */
     .el-dialog__header{
       cursor: move;
     }
@@ -1379,7 +1147,7 @@
     #app .propertycolor .disabled{
       border-color: #ccc;
     }
-  /*app*/
+  /* ------------- app ----------------- */
     #app {
       position: relative;
       font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -1394,7 +1162,7 @@
       width: 100%;
       height: 400px;
     }
-  /*top*/
+  /* ------------- top ----------------- */
     #app .upload-demo{
       height: 105px;
       width: 120px;
@@ -1574,7 +1342,7 @@
       z-index: 200;
       background-color: rgba(245, 93, 84, 0.5);
     }
-  /*边框*/
+  /* ------------- 边框 ---------------- */
     .pick{
       width: 20px;
       height: 20px;
@@ -1663,7 +1431,7 @@
       height: 20px;
       opacity: 0;
     }
-  /*tool*/  
+  /* ------------- tool ---------------- */
     .tool{
       padding-top: 2px;
       position: relative;
@@ -1720,7 +1488,7 @@
     .property .is-disabled .el-input__inner{
       background-color: #fff;
     }
-  /*leftlibrary*/
+  /* ------------- leftlibrary --------- */
     .library{
       position: absolute;
       left: 0;
@@ -1918,7 +1686,7 @@
       display: none;
       opacity: 0;
     }
-  /*layer*/
+  /* ------------- layer --------------- */
     .layer{
       position:absolute;
       top:0;
@@ -1994,7 +1762,7 @@
     .layer .lib_ol .ele_li:hover{
       background-color: #eee;
     }
-  /*editBox*/    
+  /* ------------- editBox ------------- */
     #app .module:hover .promptBox{
       display: block;
     }
@@ -2086,7 +1854,7 @@
     .c_foot .hoverbar{
       top:-30px;
     }
-  /*copyBox*/
+  /* ------------- copyBox ------------- */
     .copyBox{
       position: absolute;
       display: block;    
@@ -2103,7 +1871,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 3600px;
+      width: 100%;
       height: 100%;
       border:0;
       border-style:dashed;
@@ -2127,7 +1895,7 @@
       width: 0px;
       border-left-width: 1px;
     }
-  /*module*/
+  /* ------------- module -------------- */
     .editBox .on_module{
       /*border-color: transparent;*/
       box-sizing: border-box;
@@ -2283,7 +2051,7 @@
       -o-transform:translateX(-50%);
       cursor: s-resize;
     }
-  /*contextmenu*/
+  /* ------------- contextmenu --------- */
     .contextmenu{
       position: absolute;
       top:81px;
@@ -2352,21 +2120,89 @@
       margin: 3px 0;
       border-bottom: 1px solid #e5e5e5;
     }
-  /*editor*/   
+  /* ------------- editor -------------- */
     .el-dialog__footer {
       padding: 10px 10px 15px;
+    } 
+  /* ------------- 模块动画 ------------ */
+    .animlist{
+      display: block;
+      width: 74px;
+      height: 88px;
+      text-align: center;
+      float: left;
+      margin: 24px 10px 0 10px;
+      cursor: pointer;
     }
-  /*pageHeader-uploader*/
-    .el-dialog--text{
-      width: 600px;
+    .animlist .animimg{
+      width: 74px;
+      height: 64px;
+      line-height:64px;
+      border: 2px solid #f2f2f2;
+      border-radius: 2px;
+      position: relative;
     }
-    .el-dialog--text .el-row{
-      margin-bottom: 20px;
+    .animlist .animimg:hover{
+      border-color: #7fcc78;
     }
-    .el-dialog--text .el-col{
-      height: 36px;
-      line-height: 36px;
+    .animlist .animimg .animtip{
+      display: none;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      line-height: 16px;
+      background: #7fcc78;
+      color: #fff;
     }
+    .animlist p{
+      line-height: 24px;
+    }
+    .animlist .active{
+      border-color: #7fcc78;
+    }
+    .animlist .active .animtip{
+      display: block;
+    }
+  /* ------------- 模块动画弹窗 -------- */
+    .animlist img{
+      margin-top: 14px; 
+    }
+  /* ------------- 登录框编辑文本弹窗 -- */
+    .el-dialog--edittext{
+      width: 500px;
+    }
+    .pitchIcon {
+      display:none; 
+      position: absolute;
+      bottom: 0;
+      right:0;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      color: #fff;
+      background-color: #20a0ff;
+    }
+    .is-active .pitchIcon {
+      display: block;
+    }
+    .ele_li:hover .deleteLayer {
+      display: block;
+    }
+    .deleteLayer{
+      display: none;
+      float: right;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 16px;
+    }
+    input:-webkit-autofill {
+      background-color: #FAFFBD;
+      background-image: none;
+      color: #000;
+    } 
+  /* ------------- 页面设置 ------------ */
     .el-dialog--pageSet{
       width: 500px;
     }
@@ -2405,77 +2241,4 @@
       height: auto;
       display: block;
     }
-  /* 模块动画 */
-  .animlist{
-    display: block;
-    width: 74px;
-    height: 88px;
-    text-align: center;
-    float: left;
-    margin: 24px 10px 0 10px;
-    cursor: pointer;
-  }
-  .animlist .animimg{
-    width: 74px;
-    height: 64px;
-    line-height:64px;
-    border: 2px solid #f2f2f2;
-    border-radius: 2px;
-    position: relative;
-  }
-  .animlist .animimg:hover{
-    border-color: #7fcc78;
-  }
-  .animlist .animimg .animtip{
-    display: none;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    line-height: 16px;
-    background: #7fcc78;
-    color: #fff;
-  }
-  .animlist p{
-    line-height: 24px;
-  }
-  .animlist .active{
-    border-color: #7fcc78;
-  }
-  .animlist .active .animtip{
-    display: block;
-  }
-  /* 模块动画弹窗 */
-  .animlist img{
-    margin-top: 14px; 
-  }
-  /* 登录框编辑文本弹窗 */
-  .el-dialog--edittext{
-    width: 500px;
-  }
-  .pitchIcon {
-    display:none; 
-    position: absolute;
-    bottom: 0;
-    right:0;
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
-    color: #fff;
-    background-color: #20a0ff;
-  }
-  .is-active .pitchIcon {
-    display: block;
-  }
-  .ele_li:hover .deleteLayer {
-    display: block;
-  }
-  .deleteLayer{
-    display: none;
-    float: right;
-    font-size: 16px;
-    font-weight: 600;
-    margin-right: 16px;
-  }
 </style>
