@@ -85,7 +85,7 @@ export default {
       playerData: []
     }
   },
-  created: function () {   
+  created: function () {
   },
   methods: { 
     show: function (that, element, me) { // 初始化调用弹出框

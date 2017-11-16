@@ -16,11 +16,11 @@ var configHtml = {
         icon: 'imgicon icon-rectangle',
         text: '矩形'
       },
-      {
-        name: 'radius',
-        icon: 'imgicon icon-round',
-        text: '圆形'
-       },
+      // {
+      //   name: 'radius',
+      //   icon: 'imgicon icon-round',
+      //   text: '圆形'
+      //  },
       {
         name: 'editor',
         icon: 'imgicon icon-text',
@@ -41,93 +41,93 @@ var configHtml = {
         icon: 'imgicon icon-level_Line',
         text: '横线'
       },
-      {
-        name: 'sline',
-        icon: 'imgicon icon-vertical_Line',
-        text: '竖线'
-      },
-      {
-        name: 'taxonomy',
-        icon: 'imgicon icon-classify',
-        text: '分类'
-      },
-      {
-        name: 'loginbox',
-        icon: 'imgicon icon-login',
-        text: '登录框'
-      },      
-      {
-        name: 'waiter',
-        icon: 'imgicon icon-waiter',
-        text: '客服'
-      },
-      {
-        name: 'player',
-        icon: 'imgicon icon-player',
-        text: '播放器'
-      },
-      {
-        name: 'schoollogo',
-        icon: 'imgicon icon-logo',
-        text: 'LOGO'
-      },
-      {
-        name: 'schoolmap',
-        icon: 'imgicon icon-map',
-        text: '地图'
-      },
-      {
-        name: 'schoolqr',
-        icon: 'imgicon icon-QRcode',
-        text: '二维码'
-      },
+      // {
+      //   name: 'sline',
+      //   icon: 'imgicon icon-vertical_Line',
+      //   text: '竖线'
+      // },
+      // {
+      //   name: 'taxonomy',
+      //   icon: 'imgicon icon-classify',
+      //   text: '分类'
+      // },
+      // {
+      //   name: 'loginbox',
+      //   icon: 'imgicon icon-login',
+      //   text: '登录框'
+      // },      
+      // {
+      //   name: 'waiter',
+      //   icon: 'imgicon icon-waiter',
+      //   text: '客服'
+      // },
+      // {
+      //   name: 'player',
+      //   icon: 'imgicon icon-player',
+      //   text: '播放器'
+      // },
+      // {
+      //   name: 'schoollogo',
+      //   icon: 'imgicon icon-logo',
+      //   text: 'LOGO'
+      // },
+      // {
+      //   name: 'schoolmap',
+      //   icon: 'imgicon icon-map',
+      //   text: '地图'
+      // },
+      // {
+      //   name: 'schoolqr',
+      //   icon: 'imgicon icon-QRcode',
+      //   text: '二维码'
+      // },
       // {
       //   name: 'weather',
       //   icon: 'imgicon icon-weather',
       //   text: '天气'
       // },
-      {
-        name: 'introduce',
-        icon: 'imgicon icon-introduce',
-        text: '网校介绍'
-      }
+      // {
+      //   name: 'introduce',
+      //   icon: 'imgicon icon-introduce',
+      //   text: '网校介绍'
+      // }
     ],
     online: [
-      {
-        name: 'carousel',
-        icon: 'imgicon icon-carousel',
-        text: '轮播'
-      },
-      {
-        name: 'advert',
-        icon: 'imgicon icon-advert',
-        text: '悬浮广告'
-      },      
-      {
-        name: 'teacher',
-        icon: 'imgicon icon-teacher',
-        text: '教师'
-      },     
-      {
-        name: 'audition',
-        icon: 'imgicon icon-audition',
-        text: '试听'
-      },      
-      {
-        name: 'course',
-        icon: 'imgicon icon-course',
-        text: '课程'
-      },
-      {
-        name: 'information',
-        icon: 'imgicon icon-information',
-        text: '资讯'
-      },
-      {
-        name: 'addcoursetype',
-        icon: 'imgicon icon-addcoursetype',
-        text: '课程导航'
-      }
+      // {
+      //   name: 'carousel',
+      //   icon: 'imgicon icon-carousel',
+      //   text: '轮播'
+      // },
+      // {
+      //   name: 'advert',
+      //   icon: 'imgicon icon-advert',
+      //   text: '悬浮广告'
+      // },      
+      // {
+      //   name: 'teacher',
+      //   icon: 'imgicon icon-teacher',
+      //   text: '教师'
+      // },     
+      // {
+      //   name: 'audition',
+      //   icon: 'imgicon icon-audition',
+      //   text: '试听'
+      // },      
+      // {
+      //   name: 'course',
+      //   icon: 'imgicon icon-course',
+      //   text: '课程'
+      // },
+      // {
+      //   name: 'information',
+      //   icon: 'imgicon icon-information',
+      //   text: '资讯'
+      // },
+      // {
+      //   name: 'addcoursetype',
+      //   icon: 'imgicon icon-addcoursetype',
+      //   text: '课程导航'
+      // }
     ],
     todo: [],
     expect: []
