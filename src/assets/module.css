@@ -1,21 +1,18 @@
-  input:-webkit-autofill {
-    background-color: #FAFFBD;
-    background-image: none;
-    color: #000;
-  } 
+  
 /* ------------- module ----------------- */
   .module{
     position: absolute;    
     z-index: 49;
     box-sizing: border-box;
+    line-height: 0.48rem;
   }
   #app .module{
     overflow: visible;
   }
 /* ------------- rectangle -------------- */
   .rectangle{
-    width: 200px;
-    height: 50px;
+    width: 3rem;
+    height: 1rem;
     box-sizing: border-box;
     border: 1px solid #ccc;
   }
@@ -27,9 +24,9 @@
 /* ------------- editor ----------------- */
   .editor{
     box-sizing: border-box;
-    padding: 8px;
-    width: 400px;
-    height: 200px;
+    padding: 0.2rem;
+    width: 10rem;
+    height: 5rem;
     word-break:break-all;
     word-wrap:break-word;
     border:1px solid #ccc;
@@ -47,8 +44,8 @@
   }
 /* ------------- picture ---------------- */
   .picture {
-    width: 243px;
-    height: 144px;  
+    width: 5rem;
+    height: 2.88rem;  
   }
   .picBox{
     display: block;
@@ -57,15 +54,16 @@
     overflow: hidden;
   }
   .picture img{
+    width: 100%;
     min-height: 100%;   
   }
 /* ------------- button ----------------- */
   .button{
-    width: 80px;
-    height: 30px;
+    width: 2rem;
+    height: 0.8rem;
     border: 1px solid #bbbbbb;
     border-radius: 4px;
-    line-height: 28px;
+    line-height: 0.8rem;
     text-align: center;
     cursor: pointer;
     box-sizing: border-box;
@@ -82,7 +80,7 @@
   }
 /* ------------- line ------------------- */
   .hline{
-    width: 200px;  
+    width: 10rem;  
     max-height: 0px;
     height: 0!important;   
     border: 0;
@@ -328,7 +326,7 @@
   /* editbutton */
   .button_radius{
     background: #4AB344;
-    border-radius: 3px;
+    border-radius: 0.08rem;
     border:none;
   }
   .button_rightangle{
@@ -344,7 +342,7 @@
     background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
     background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
-    border-radius: 3px;
+    border-radius: 0.08rem;
     box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
     border-width: 0;
   }
@@ -353,7 +351,7 @@
     background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
     background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
-    border-radius: 3px;
+    border-radius: 0.08rem;
     border:1px solid #4AB344;
   }
 

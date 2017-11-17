@@ -581,7 +581,7 @@ var tool = {
         self.inp_x = val
         part = function (ele) {          
           let nowX = moveX + parseInt(ele.css('left'))
-          ele.css('left', nowX + 'px')
+          ele.css('left', nowX / 37.5 + 'rem')
         }
         break
       case 'top':
@@ -607,7 +607,7 @@ var tool = {
         self.inp_y = val
         part = function (ele) {          
           let nowY = moveY + parseInt(ele.css('top'))
-          ele.css('top', nowY + 'px')
+          ele.css('top', nowY / 37.5 + 'rem')
         }
         break
       case 'width':
@@ -619,11 +619,11 @@ var tool = {
           let tw = self.inp_width - parseInt(ele.css('left')) 
           if (!ele.hasClass('picture') && !ele.hasClass('sline')) { // 禁止图片拉伸
             if (val > tw && self.config.stretchLimit) {
-              ele.css('width', tw + 'px')
+              ele.css('width', tw / 37.5 + 'rem')
               ele.find('.multiBox').css('width',tw + 'px')
               ele.find('.resizeBox').css('width',tw + 'px')
             } else {
-              ele.css('width', val + 'px')
+              ele.css('width', val / 37.5 + 'rem')
               ele.find('.multiBox').css('width',val + 'px')
               ele.find('.resizeBox').css('width',val + 'px')
             } 
@@ -639,11 +639,11 @@ var tool = {
           let th = self.moduleParentElementHeight - parseInt(ele.css('top'))
           if (!ele.hasClass('picture') && !ele.hasClass('hline')) {
             if (val > th && self.config.stretchLimit) {
-              ele.css('height', th + 'px')
+              ele.css('height', th / 37.5 + 'rem')
               ele.find('.multiBox').css('height',th + 'px')
               ele.find('.resizeBox').css('height',th + 'px')
             } else {
-              ele.css('height', val + 'px')
+              ele.css('height', val / 37.5 + 'rem')
               ele.find('.multiBox').css('height',val + 'px')
               ele.find('.resizeBox').css('height',val + 'px')
             }
@@ -660,7 +660,7 @@ var tool = {
         break
       case 'lineHeight':
         part = function (ele) {
-          ele.css('lineHeight', val + 'px')          
+          ele.css('lineHeight', val / 37.5 + 'rem')          
         } 
         break
       case 'color':
@@ -748,7 +748,7 @@ var tool = {
         if (onModules.length > 1) {
           let topY = parseInt(self.moduleElementY.css('top'))
           part = function (ele) {
-            ele.css('top',topY)
+            ele.css('top', topY / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
@@ -762,12 +762,12 @@ var tool = {
           self.inp_y = parseInt(self.moduleElementB.css('top'))
           let bottomY = self.inp_y + parseInt(self.moduleElementB.css('height'))
           part = function (ele) {
-            ele.css('top', bottomY - parseInt(ele.css('height')))
+            ele.css('top', (bottomY - parseInt(ele.css('height'))) / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
             let bottom = self.moduleParentElementHeight - parseInt(ele.css('height'))
-            ele.css('top', bottom)
+            ele.css('top', bottom / 37.5 + 'rem')
             self.inp_y = bottom
           }
         }
@@ -776,7 +776,7 @@ var tool = {
         if (onModules.length > 1) {
           let leftX = parseInt(self.moduleElementX.css('left'))
           part = function (ele) {
-            ele.css('left', leftX)
+            ele.css('left', leftX / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
@@ -790,12 +790,12 @@ var tool = {
           self.inp_x = parseInt(self.moduleElementR.css('left'))
           let rightX = self.inp_x + parseInt(self.moduleElementB.css('width'))
           part = function (ele) {
-            ele.css('left', rightX - parseInt(ele.css('width')))
+            ele.css('left', (rightX - parseInt(ele.css('width'))) / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
             let x = self.inp_width - parseInt(ele.css('width'))
-            ele.css('left', x)
+            ele.css('left', x / 37.5 + 'rem')
             self.inp_x = x
           }
         }
@@ -805,12 +805,12 @@ var tool = {
           self.inp_x = (self.inp_width - parseInt(self.moduleElementY.css('width'))) / 2     
           part = function (ele) {
             let x = (self.inp_width - parseInt(ele.css('width'))) / 2
-            ele.css('left', x)
+            ele.css('left', x / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
             let x = (self.inp_width - parseInt(ele.css('width'))) / 2
-            ele.css('left', x)
+            ele.css('left', x / 37.5 + 'rem')
             self.inp_x = x
           }
         }
@@ -821,12 +821,12 @@ var tool = {
           self.inp_y = midY - (parseInt(self.moduleElementY.css('height'))/2)
           part = function (ele) {
             let mid = midY - (parseInt(ele.css('height')) / 2)
-            ele.css('top', mid)
+            ele.css('top', mid / 37.5 + 'rem')
           }
         } else {
           part = function (ele) {
             let mid = (self.moduleParentElementHeight - parseInt(ele.css('height'))) / 2
-            ele.css('top', mid)
+            ele.css('top', mid / 37.5 + 'rem')
             self.inp_y = mid
           }
         }
@@ -973,7 +973,7 @@ var tool = {
             ele.attr('id',eIds + 'th' + eId)
             let eley = parseInt(ele.css('top')) + shiftY
             let elex = parseInt(ele.css('left')) + shiftX
-            ele.css({'top': eley, 'left': elex})
+            ele.css({'top': eley / 37.5 + 'rem', 'left': elex / 37.5 + 'rem'})
           }
         }
         break
@@ -1164,11 +1164,11 @@ var tool = {
       let ws = self.inp_w
       let hs = self.inp_h
       let warp = me.warp
-      let areaB = self.moduleParentElementHeight
-      let areaR = parseInt(self.inp_width)
+      let areaB = 667
+      let areaR = 375
      // me.carryLineEvent(self)
       let part
-      switch ($this.attr('class')) {
+      switch ($this.attr('class')) { // wap todolist:
         case 'resize e':
           part = function (e) {
             let xx = self.inp_x + self.posleft + ws + e.pageX - x
@@ -1182,11 +1182,8 @@ var tool = {
             if (xx < xs + self.posleft) {
               xx = xs + self.posleft
               self.inp_w = 0
-            }
-            parent.css('width', self.inp_w)
-            // if(ingbloo) {
-            //   picimg.css('width', self.inp_w)
-            // }
+            }          
+            parent.css('width', self.inp_w / 37.5 + 'rem')
           }
           break
         case 'resize s':
@@ -1203,7 +1200,7 @@ var tool = {
               yy = ys + self.postop + warp
               self.inp_h = 0
             }
-            parent.css('height', self.inp_h)
+            parent.css('height', self.inp_h / 37.5 + 'rem')
           }
           break
         case 'resize w':
@@ -1223,7 +1220,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'width': self.inp_w, 'left': self.inp_x})
+            parent.css({'width': self.inp_w / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
           }
           break
         case 'resize n':
@@ -1243,7 +1240,7 @@ var tool = {
               self.inp_y = ys + hs
               self.inp_h = 0
             }
-            parent.css({'height': self.inp_h, 'top': self.inp_y})
+            parent.css({'height': self.inp_h / 37.5 + 'rem', 'top': self.inp_y / 37.5 + 'rem'})
           }
           break
         case 'resize ne':
@@ -1273,7 +1270,7 @@ var tool = {
               self.inp_y = ys + hs
               self.inp_h = 0
             }
-            parent.css({'height': self.inp_h, 'width': self.inp_w, 'top': self.inp_y})
+            parent.css({'height': self.inp_h / 37.5 + 'rem', 'width': self.inp_w, 'top': self.inp_y / 37.5 + 'rem'})
           }
           break
         case 'resize nw':
@@ -1306,7 +1303,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'height': self.inp_h, 'top': self.inp_y, 'width': self.inp_w, 'left': self.inp_x})
+            parent.css({'height': self.inp_h / 37.5 + 'rem', 'top': self.inp_y / 37.5 + 'rem', 'width': self.inp_w / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
           }
           break
         case 'resize se':
@@ -1333,7 +1330,7 @@ var tool = {
               xx = self.inp_x + self.posleft
               self.inp_w = 0
             }
-            parent.css({'width': self.inp_w, 'height': self.inp_h})
+            parent.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem'})
           }
           break
         case 'resize sw':
@@ -1363,7 +1360,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'width': self.inp_w, 'height': self.inp_h, 'left': self.inp_x})
+            parent.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
           }
           break
       }
@@ -1753,7 +1750,7 @@ var tool = {
         } 
         for (let i = 0,len = AddElement.length; i < len; i++) {
           let yg = y + i * marginT
-          AddElement.eq(i).css({'top': yg, 'left': x})
+          AddElement.eq(i).css({'top': yg / 37.5 + 'rem', 'left': x / 37.5 + 'rem'})
         }
         me.$('.addmodule').removeClass('addmodule')
         if (dataCon.createEvent) {

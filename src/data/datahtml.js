@@ -1,6 +1,6 @@
 var configHtml = {
   config:{
-    stretchLimit: false, // 是否开启module拉伸限制
+    stretchLimit: true, // 是否开启module拉伸限制
     moveLimit: true, // 是否开启module移动限制
     paddingtop: 35, // top栏高度
     paddingleft: 133, // left栏高度
@@ -141,7 +141,7 @@ var configHtml = {
   },
   // 模块配置项
   rectangle: {
-    style: 'width: 200px; height: 50px',
+    style: 'width: 3rem; height: 1rem',
     tool: {
       private: {
         text: '',
@@ -163,7 +163,7 @@ var configHtml = {
     html: '<div class="radius module addmodule"  datatext="圆形"><a></a></div>'
   },
   editor: {
-    style: 'width:400px; height:200px',
+    style: 'width:10rem; height:5rem',
     tool: {
       private: {
         text: '编辑文本',
@@ -174,7 +174,7 @@ var configHtml = {
     html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
   picture: {
-    style: 'width:243px; height:144px',
+    style: 'width:5rem; height:2.88rem',
     tool: {
       private: {
         text: '编辑图片',
@@ -185,7 +185,7 @@ var configHtml = {
     html: '<div class="picture module addmodule"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
   },
   button: {
-    style: 'width:80px; height:30px',
+    style: 'width:2rem; height:0.8rem',
     tool: {
       private: {
         text: '设置样式',
@@ -325,7 +325,7 @@ var configHtml = {
     html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
   },
   hline: {
-    style: 'width:200px; height:1px',
+    style: 'width:10rem; height:1px',
     tool: {
       private: {
         text: '',

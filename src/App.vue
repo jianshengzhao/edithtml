@@ -277,147 +277,63 @@
       title="页面设置"
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
-      <el-tabs v-model="activeSetting" type="card" >
-        <el-tab-pane label="页面设置" name="first" >
-        <!--   <el-row>
-            <el-col :span="5" class="tit">背景色</el-col>
-            <el-col :span="7">
-              <el-color-picker v-model="bgColorVal"></el-color-picker>
-              <colorPicker v-model="bgColorVal" ></colorPicker>
-            </el-col>
-          </el-row> -->
-          <el-row>
-            <el-col :span="5" class="tit">前景色</el-col>
-            <el-col :span="7">
-             <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
-              <colorPicker v-model="prospectColorVal" ></colorPicker>
-            </el-col>
-          </el-row>
-         <!--  <el-row>
-            <el-col :span="5" class="tit">文字链接hover</el-col>
-            <el-col :span="7">
-              <el-color-picker v-model="fontHoverColorVal" ></el-color-picker>
-              <colorPicker v-model="fontHoverColorVal" ></colorPicker>
-            </el-col>
-          </el-row>       -->   
-         <!--  <el-row>
-            <el-col :span="5" class="tit">页宽</el-col>
-            <el-col :span="7">
-              <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
-            </el-col>
-          </el-row> -->
-          <el-row>
-            <el-col :span="5" class="tit">页高</el-col>          
-            <el-col :span="7">          
-              <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
-            </el-col>
-          </el-row>
-        </el-tab-pane>        
-      <!--   <el-tab-pane label="背景图设置" name="second">
-          <el-row>
-            <el-col :span="4" class="tit">背景图</el-col>
-            <el-col :span="7">
-              <el-upload
-                class="upload-demo"
-                name="upfile"
-                action="/uploadv2/image.html"
-                :show-file-list="false"
-                :on-success="handleBackdropSuccess"
-                :before-upload="beforePictureUpload">
-                <img v-if="bgImageUrl" :src="bgImageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-col>
-            <el-col :span="6">
-              <el-button size="small" @click="cleanBgEvent">清除背景图</el-button>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">显示（%）</el-col>
-            <el-col :span="10">
-              <el-input-number v-model="inp_percent" :step="2" size="small" :min="0" :max="100"></el-input-number>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">平铺模式</el-col>
-            <el-col :span="10">
-              <el-select v-model="repeatBgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in repeatOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">固定背景</el-col>
-            <el-col :span="10">
-              <el-select v-model="attachmentBgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in attachmentOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-        </el-tab-pane> -->
-        <el-tab-pane label="前景图设置" name="third">
-          <el-row>
-            <el-col :span="4" class="tit">前景图</el-col>
-            <el-col :span="7">
-              <el-upload
-                class="upload-demo"
-                name="upfile"
-                action="/uploadv2/image.html"
-                :show-file-list="false"
-                :on-success="handlePredropSuccess"
-                :before-upload="beforePictureUpload">
-                <img v-if="pgImageUrl" :src="pgImageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-col>
-            <el-col :span="6">
-              <el-button size="small" @click="cleanPgEvent">清除前景图</el-button>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">显示（%）</el-col>
-            <el-col :span="10">
-              <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">平铺模式</el-col>
-            <el-col :span="10">
-              <el-select v-model="repeatPgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in repeatOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4" class="tit">固定背景</el-col>
-            <el-col :span="10">
-              <el-select v-model="attachmentPgValue" placeholder="请选择">
-                <el-option
-                  v-for="item in attachmentOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-        </el-tab-pane>
-      </el-tabs>
+      <el-row>
+        <el-col :span="5" class="tit">前景色</el-col>
+        <el-col :span="7">
+         <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
+          <colorPicker v-model="prospectColorVal" ></colorPicker>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">前景图</el-col>
+        <el-col :span="7">
+          <el-upload
+            class="upload-demo"
+            name="upfile"
+            action="/uploadv2/image.html"
+            :show-file-list="false"
+            :on-success="handlePredropSuccess"
+            :before-upload="beforePictureUpload">
+            <img v-if="pgImageUrl" :src="pgImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-col>
+        <el-col :span="6">
+          <el-button size="small" @click="cleanPgEvent">清除前景图</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">显示（%）</el-col>
+        <el-col :span="10">
+          <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">平铺模式</el-col>
+        <el-col :span="10">
+          <el-select v-model="repeatPgValue" placeholder="请选择">
+            <el-option
+              v-for="item in repeatOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">固定背景</el-col>
+        <el-col :span="10">
+          <el-select v-model="attachmentPgValue" placeholder="请选择">
+            <el-option
+              v-for="item in attachmentOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>      
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
         <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
@@ -630,8 +546,8 @@
         pgImageUrl: '',
         inp_percent: '100',
         inp_pgPercent: '100',
-        inp_width: 1200,
-        inp_height: 1600,
+        inp_width: 375,
+        inp_height: 667,
         disabled: true,
         rightButton: false,
         inp_z: '',
@@ -1112,6 +1028,11 @@
   /* ------------- header -------------- */
     .el-dialog__header{
       cursor: move;
+    }
+    .el-dialog--pageSet .el-dialog__header{
+      cursor: move;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ccc;
     }
     .el-dialog--scrollanim{
       width: 510px;
