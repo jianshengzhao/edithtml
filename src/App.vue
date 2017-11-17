@@ -11,21 +11,22 @@
           <i class="iconfont icon-save" title="保存"></i>
           <span>保存</span>
         </div>
-      <!--   <div class="tl_li" @click="previewEvent" title="预览">
+        <div class="tl_li" @click="previewEvent" title="预览">
           <i class="iconfont icon-preview"></i>
           <span>预览</span>
-        </div> -->
+        </div>
        <!--  <div class="tl_li" title="量尺">
           <i class="iconfont icon-scale"></i>
           <span>量尺</span>
         </div> -->
-       <!--  <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
+        <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
           <i class="iconfont icon-gridlines"></i>
           <span>格线</span>
-        </div> -->
-        <!-- <div class="tl_li tl_mod tl_li_Disable" >
+        </div>
+        <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-align-left"></i>
-          <div class="doll"></div>         
+          <div class="doll"></div>
+          <!-- <span>对齐</span> -->
           <ul class="toolbar">
             <li @click="topAlignEvent"><i class="iconfont icon-align-up"></i>上对齐</li>
             <li @click="bottomAlignEvent"><i class="iconfont icon-align-down"></i>下对齐</li>
@@ -37,7 +38,8 @@
         </div>
         <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-layer"></i>
-          <div class="doll"></div>         
+          <div class="doll"></div>
+          <!-- <span>图层</span> -->
           <ul class="toolbar">
             <li @click="topFloorEvent"><i class="iconfont icon-layer-top"></i>置于顶层</li>
             <li @click="bottomFloorEvent"><i class="iconfont icon-layer-bottom"></i>置于底层</li>
@@ -47,14 +49,15 @@
         </div>
         <div class="tl_li tl_mod tl_li_Disable" >
           <i class="iconfont icon-copy"></i>
-          <div class="doll"></div>        
+          <div class="doll"></div>
+          <!-- <span>操作</span> -->
           <ul class="toolbar" >
             <li @click="shearEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="iconfont icon-shear"></i>剪切</li>
             <li @click="copyEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="iconfont icon-copy"></i>复制</li>
             <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="iconfont icon-paste"></i>粘贴</li>
             <li @click="deleteEvent" ><i class="iconfont icon-delete"></i>删除</li>
           </ul>
-        </div> -->
+        </div>
       </div>
       <!-- module attribute -->
      <!--  <div class="toolBox"> -->
@@ -202,42 +205,45 @@
         <div class="lib_ol onlineBox"></div>
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
-        <div class="header">敬请期待。。。</div>
+        <!--<div class="header">敬请期待。。。</div>-->
       </div>      
     </div>
-  <!--   <div class="shrink libshrink">
+    <div class="shrink libshrink">
       <i class="el-icon-arrow-left"></i>
-    </div> -->
+    </div>
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
-        <div class="header layerhead">模块索引 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead">页头 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
         </div>
-       <!--  <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
+        <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementMain">
           <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
         </div>
         <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementTail">
           <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>       --> 
+        </div>       
       </div>
-     <!--  <div class="shrink shrinkout">
+      <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
-      </div> -->
+      </div>
     </div>
   <!-- editBox    -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right:314px;">
-      <div class="space">       
-        <div class="canvas grid" >
-          <div class="c_top">            
+      <div class="space" >
+        <div class="scrollcanvas"></div>
+        <div class="canvas grid">
+          <div class="c_top">
+            <div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>
           </div>
-         <!--  <div class="c_body">
+          <div class="c_body">
           </div>
-          <div class="c_foot">           
-          </div> -->
+          <div class="c_foot">
+            <div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>
+          </div>
         </div>
         <div class="row-t line"></div>
         <div class="row-b line"></div> 
@@ -251,12 +257,12 @@
           <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
             <i class="el-icon-caret-bottom"></i>
             <ol>
-           <!--    <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
-              <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li> -->
+              <li @click="topAlignEvent" v-if="rightButton"><i class="iconfont icon-align-up"></i>上对齐</li>
+              <li @click="bottomAlignEvent" v-if="rightButton"><i class="iconfont icon-align-down"></i>下对齐</li>
               <li @click="leftAlignEvent" v-if="rightButton"><i class="iconfont icon-align-left"></i>左对齐</li>
               <li @click="rightAlignEvent" v-if="rightButton"><i class="iconfont icon-align-right"></i>右对齐</li>
               <li @click="centerAlignEvent" v-if="rightButton"><i class="iconfont icon-align-center"></i>水平居中</li>
-            <!--   <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li> -->
+              <li @click="middleAlignEvent" v-if="rightButton"><i class="iconfont icon-align-middle"></i>垂直居中</li>
             </ol>
           </li>
           <div class="divider" v-if="rightButton"></div>
@@ -277,66 +283,282 @@
       title="页面设置"
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
-      <el-row>
-        <el-col :span="5" class="tit">前景色</el-col>
-        <el-col :span="7">
-         <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
-          <colorPicker v-model="prospectColorVal" ></colorPicker>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="tit">前景图</el-col>
-        <el-col :span="7">
-          <el-upload
-            class="upload-demo"
-            name="upfile"
-            action="/uploadv2/image.html"
-            :show-file-list="false"
-            :on-success="handlePredropSuccess"
-            :before-upload="beforePictureUpload">
-            <img v-if="pgImageUrl" :src="pgImageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-col>
-        <el-col :span="6">
-          <el-button size="small" @click="cleanPgEvent">清除前景图</el-button>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="tit">显示（%）</el-col>
-        <el-col :span="10">
-          <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="tit">平铺模式</el-col>
-        <el-col :span="10">
-          <el-select v-model="repeatPgValue" placeholder="请选择">
-            <el-option
-              v-for="item in repeatOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="tit">固定背景</el-col>
-        <el-col :span="10">
-          <el-select v-model="attachmentPgValue" placeholder="请选择">
-            <el-option
-              v-for="item in attachmentOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-      </el-row>      
+      <el-tabs v-model="activeSetting" type="card" >
+        <el-tab-pane label="页面设置" name="first" >
+          <el-row>
+            <el-col :span="5" class="tit">背景色</el-col>
+            <el-col :span="7">
+              <!-- <el-color-picker v-model="bgColorVal"></el-color-picker> -->
+              <colorPicker v-model="bgColorVal" ></colorPicker>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="5" class="tit">前景色</el-col>
+            <el-col :span="7">
+             <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
+              <colorPicker v-model="prospectColorVal" ></colorPicker>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="5" class="tit">文字链接hover</el-col>
+            <el-col :span="7">
+              <!-- <el-color-picker v-model="fontHoverColorVal" ></el-color-picker> -->
+              <colorPicker v-model="fontHoverColorVal" ></colorPicker>
+            </el-col>
+          </el-row>         
+          <el-row>
+            <el-col :span="5" class="tit">页宽</el-col>
+            <el-col :span="7">
+              <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="5" class="tit">页高</el-col>          
+            <el-col :span="7">          
+              <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
+            </el-col>
+          </el-row>
+        </el-tab-pane>        
+        <el-tab-pane label="背景图设置" name="second">
+          <el-row>
+            <el-col :span="4" class="tit">背景图</el-col>
+            <el-col :span="7">
+              <el-upload
+                class="upload-demo"
+                name="upfile"
+                action="/uploadv2/image.html"
+                :show-file-list="false"
+                :on-success="handleBackdropSuccess"
+                :before-upload="beforePictureUpload">
+                <img v-if="bgImageUrl" :src="bgImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-col>
+            <el-col :span="6">
+              <el-button size="small" @click="cleanBgEvent">清除背景图</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">显示（%）</el-col>
+            <el-col :span="10">
+              <el-input-number v-model="inp_percent" :step="2" size="small" :min="0" :max="100"></el-input-number>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">平铺模式</el-col>
+            <el-col :span="10">
+              <el-select v-model="repeatBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in repeatOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">固定背景</el-col>
+            <el-col :span="10">
+              <el-select v-model="attachmentBgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in attachmentOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="前景图设置" name="third">
+          <el-row>
+            <el-col :span="4" class="tit">前景图</el-col>
+            <el-col :span="7">
+              <el-upload
+                class="upload-demo"
+                name="upfile"
+                action="/uploadv2/image.html"
+                :show-file-list="false"
+                :on-success="handlePredropSuccess"
+                :before-upload="beforePictureUpload">
+                <img v-if="pgImageUrl" :src="pgImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-col>
+            <el-col :span="6">
+              <el-button size="small" @click="cleanPgEvent">清除前景图</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">显示（%）</el-col>
+            <el-col :span="10">
+              <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">平铺模式</el-col>
+            <el-col :span="10">
+              <el-select v-model="repeatPgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in repeatOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4" class="tit">固定背景</el-col>
+            <el-col :span="10">
+              <el-select v-model="attachmentPgValue" placeholder="请选择">
+                <el-option
+                  v-for="item in attachmentOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
         <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="编辑文本"
+      :visible.sync="dialogText"
+      size="text">
+      <el-row>
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入文字"
+          v-model="textarea">
+        </el-input>
+      </el-row>
+      <el-row>
+        <el-col :span="3" style="text-align: right">链接类型：</el-col>
+        <el-col :span="17">
+          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
+            <el-option
+              v-for="item in linkTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>  
+      </el-row>
+      <el-row v-if="linkType == 'online'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'news'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择资讯"
+            :options="selectNewsOptions"
+            v-model="selectNews"
+            @change="selectNewsChange"
+            @active-item-change="handleNewsItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'coruse'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择课程"
+            :options="selectCoruseOptions"
+            v-model="selectCoruse"
+            @change="selectCoruseChange"
+            @active-item-change="handleCoruseItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogText = false">取 消</el-button>
+        <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
+      </span>
+    </el-dialog>
+   <!--  <el-dialog
+      title="富文本"
+      :visible.sync="dialogEditor"
+      size="small" class="ueditor">
+      <div ref="ueditor" class='editorC'></div>    
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogEditor = false">取 消</el-button>
+        <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
+      </span>
+    </el-dialog> -->
+    <el-dialog
+      title="修改图片 ( 点击添加 )"
+      :visible.sync="dialogPicture"
+      size="picture" class="diaheader diapicture">
+      <el-upload
+        class="picture-uploader"
+        name="upfile"
+        action="/uploadv2/image.html"
+        :show-file-list="false"
+        :on-success="handlePictureSuccess"
+        :before-upload="beforePictureUpload">
+        <img v-if="pictureUrl" :src="pictureUrl" class="pictureMod">
+        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
+      </el-upload>
+      <el-row>
+        <el-col :span="3" style="text-align: right">链接类型：</el-col>
+        <el-col :span="17">
+          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
+            <el-option
+              v-for="item in linkTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>  
+      </el-row>
+      <el-row v-if="linkType == 'online'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'news'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择资讯"
+            :options="selectNewsOptions"
+            v-model="selectNews"
+            @change="selectNewsChange"
+            @active-item-change="handleNewsItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <el-row v-if="linkType == 'coruse'">
+        <el-col :span="3" style="text-align: right">链接地址：</el-col>
+        <el-col :span="17">
+          <el-cascader
+            placeholder="请选择课程"
+            :options="selectCoruseOptions"
+            v-model="selectCoruse"
+            @change="selectCoruseChange"
+            @active-item-change="handleCoruseItemChange">
+          </el-cascader>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogPicture = false">取 消</el-button>
+        <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
     </el-dialog>
   <!-- 网校模块   -->    
@@ -382,22 +604,38 @@
         <el-button @click="dialogscrollanim = false">取 消</el-button>
         <el-button @click="editanimate()" type="primary">确 定</el-button>
       </span>
-    </el-dialog>  
+    </el-dialog>
+    <el-dialog
+      title="编辑文本"
+      :visible.sync="dialogedittext"
+      :close-on-click-modal="false"
+      size="edittext">
+      <el-row>
+        <el-col>
+          <el-input v-model="logintext"></el-input>
+        </el-col>
+        
+      </el-row>
+      <span slot="footer" class="dialog-footer">        
+        <el-button @click="dialogedittext = false">取 消</el-button>
+        <el-button @click="editlogintext()" type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
   <!-- dialog弹框 -->
     <ueditor ref="ueditor" v-model="editEditor"></ueditor>
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
-  <!--   <information ref="information"></information>
-    <weather ref="weather"></weather> -->
+    <information ref="information"></information>
+    <weather ref="weather"></weather>
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
     <editbutton ref="editbutton"></editbutton>
-   <!--  <carousel ref="carousel"></carousel>
+    <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
     <course ref="course"></course>
     <player ref="player"></player>
-    <addcoursetype ref="addcoursetype"></addcoursetype>    -->   
+    <addcoursetype ref="addcoursetype"></addcoursetype>      
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
@@ -409,17 +647,17 @@
   import ueditor from '@/components/ueditor'
   import hrefdialog from '@/components/hrefdialog'
   import myimages from '@/components/myimages'
-  // import information from '@/components/information'
-  // import weather from '@/components/weather'
+  import information from '@/components/information'
+  import weather from '@/components/weather'
   import suspend from '@/components/suspend'
   import shape from '@/components/shape'
   import editbutton from '@/components/editbutton'
-  // import carousel from '@/components/carousel'
-  // import waiter from '@/components/waiter'
-  // import advert from '@/components/advert'
-  // import course from '@/components/course'
-  // import player from '@/components/player'
-  // import addcoursetype from '@/components/addcoursetype'
+  import carousel from '@/components/carousel'
+  import waiter from '@/components/waiter'
+  import advert from '@/components/advert'
+  import course from '@/components/course'
+  import player from '@/components/player'
+  import addcoursetype from '@/components/addcoursetype'
   
   /*import effect from '@/components/effect'*/
   import '@/assets/animate.min.css'
@@ -431,21 +669,21 @@
       ueditor, 
       hrefdialog, 
       myimages,
-      // information,
-      // weather, 
+      information,
+      weather, 
       suspend, 
       shape, 
-      editbutton 
-      // carousel, 
-      // waiter, 
-      // advert, 
-      // course,
-      // player,
-      // addcoursetype
+      editbutton, 
+      carousel, 
+      waiter, 
+      advert, 
+      course,
+      player,
+      addcoursetype
     },
     data: function () {
       return {
-      // ------------ 工具栏add ----------------- 
+      // ------------ 工具栏add ----------------------
         onlybloo: true,
         br_width: '0',
         br_widths: [{
@@ -502,14 +740,72 @@
         inp_blur: '0',
         bw_color: '#ccc',
         editEditor: false,
-      // ------------ 登录框文本 ---------------- 
+      //  ---------------登录框文本----------
         logintext :'',
         dialogedittext:false,
-      // ------------ 基础组件弹框 -------------- 
+      // ------------ 基础组件弹框 -------------------
         dialogscrollanim:false,
         anim:'',
         animtype : 0,
+        dialogText: false,
+        dialogEditor: false,
+        dialogPicture: false,
+        dialogButton: false,
         dialogPageSetting: false,
+        dialogCarousel: false,
+        linkType: 'none',
+        linkTypeOptions: [{
+          value: 'none',
+          label: '无链接'
+        }, {
+          value: 'online',
+          label: '外部链接'
+        }, {
+          value: 'news',
+          label: '资讯链接'
+        }, {
+          value: 'coruse',
+          label: '课程链接'
+        }, {
+          value: 'login',
+          label: '登录弹框'
+        }],
+        inpOnline: '',
+        selectNews: [],
+        selectNewsOptions: [],
+        selectCoruse: [],
+        selectCoruseOptions: [],
+      // ------------ 轮播设置 -----------------------
+        inputBtnText: '',
+        inputBtnHref: '',
+        imageUrl: '',
+        pictureUrl: '',
+        textarea: '',
+        activeName: 'first',
+        activeNav: 'first',
+        carouselData: [{
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
+          clickurl: ''
+        }, {
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg',
+          clickurl: ''
+        }, {
+          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg',
+          clickurl: ''
+        }],
+        showTime: 5,
+        transitionTime: 0.6,
+        showWidth: 1200,
+        carouselTit: '轮播图 ( 图片尺寸 1200 * 320 )',
+        animStyle: [{
+          value: false,
+          label: '滚动'
+        }, {
+          value: true,
+          label: '渐显'
+        }],
+        changeStyle: false,
+      // ------------ 工具栏+全局设置+右侧元素图层 ---
         attachmentPgValue: 'scroll',
         attachmentBgValue: 'scroll',
         attachmentOptions: [{
@@ -546,8 +842,8 @@
         pgImageUrl: '',
         inp_percent: '100',
         inp_pgPercent: '100',
-        inp_width: 375,
-        inp_height: 667,
+        inp_width: 1200,
+        inp_height: 1600,
         disabled: true,
         rightButton: false,
         inp_z: '',
@@ -567,7 +863,7 @@
         moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
-      // ------------ config -------------------- 
+      // ---------- config --------------
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
           moveLimit: config.moveLimit // 是否开启module移动限制
@@ -588,9 +884,8 @@
         elementMain: [],
         elementTail: [],
         datahtml: configData.config,
-        tool: tool,
-      // ------------ 封装的异步请求 ------------ 
-        httpget: function (getParam) { 
+      // ------------ common -------------------------
+        httpget: function (getParam) { // 封装的异步请求数据
           let self = this
           self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -599,7 +894,7 @@
           }).catch(function (response) {
           })
         },
-        httppost: function (getParam) { 
+        httppost: function (getParam) { // 封装的异步请求数据
           let self = this
           self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -607,50 +902,333 @@
             }
           }).catch(function (response) {
           })
+        },
+      // ---------------------------------------------
+        tool: tool,
+        // { /* 工具箱事件 */
+        // // --------------- complete ------------------
+        //   // getAlignmentElement: function (self) { // 触碰
+        //   //   let parent = self.moduleElement.parent()
+        //   //   let arrEle
+        //   //   let item = {
+        //   //     x: parseInt(self.moduleElement.css('left')),
+        //   //     x1: parseInt(self.moduleElement.css('left')) + parseInt(self.moduleElement.css('width')),
+        //   //     y: parseInt(self.moduleElement.css('top')),
+        //   //     y1: parseInt(self.moduleElement.css('top')) + parseInt(self.moduleElement.css('height'))
+        //   //   }
+        //   //   let w = parseInt(self.moduleElement.css('width'))
+        //   //   let h = parseInt(self.moduleElement.css('height'))
+        //   //   switch (parent.attr('class')) {
+        //   //     case 'c_top':
+        //   //       arrEle = self.elementHead
+        //   //       break
+        //   //     case 'c_body':
+        //   //       arrEle = self.elementMain
+        //   //       break
+        //   //     case 'c_foot':
+        //   //       arrEle = self.elementTail
+        //   //       break
+        //   //   }
+        //   //   $('.touch_module').removeClass('touch_module')
+        //   //   let mohubloo = true
+        //   //   let line = $('.line')
+        //   //   // line.hide()
+        //   //   for (let i = 0, len = arrEle.length; i < len; i++) { // todo:校准
+        //   //     let ele = arrEle[i]
+        //   //     if (ele.x === item.x || ele.x === item.x1 || ele.x1 === item.x || ele.x1 === item.x1 || ele.y === item.y || ele.y === item.y1 || ele.y1 === item.y || ele.y1 === item.y1) {
+        //   //       ele.ele.addClass('touch_module')
+        //   //     }
+        //   //     // if (mohubloo) { // 模糊校准
+        //   //     //   self.tool.changeMoveEvents(warp)
+        //   //     //   if (Math.abs(ele.x - item.x) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x - item.x1) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x - w) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x1 - item.x) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x1) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.x1 - item.x1) < 10){
+        //   //     //     self.moduleElement.css('left', Math.abs(ele.x1 - w) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y - item.y) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y - item.y1) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y - h) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y1 - item.y) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y1) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   } else if (Math.abs(ele.y1 - item.y1) < 10){
+        //   //     //     self.moduleElement.css('top', Math.abs(ele.y1 - h) + 'px')
+        //   //     //     mohubloo = false
+        //   //     //     line.show()
+        //   //     //   }
+        //   //     // }
+        //   //     // if(!mohubloo){
+        //   //     //   ele.ele.addClass('touch_module')
+        //   //     // }
+        //   //   }
+        //   // },       
+        //   // switchModuleEvent: function (type, onthis, self) {
+        //   //   let w
+        //   //   let getParam
+        //   //   let oa
+        //   //   switch (type) {
+        //   //     case 'picture':
+        //   //       self.linkType = 'none'
+        //   //       self.inpOnline = ''
+        //   //       self.selectNews = []
+        //   //       self.selectCoruse = []
+        //   //       self.pictureUrl = onthis.find('img').attr('src')
+        //   //       // self.dialogPicture = true
+		      //   //     self.$refs.myimages.show();
+        //   //       oa = onthis.find('.picBox')
+        //   //       self.linkType = oa.attr('linkType') || 'none'
+        //   //       switch (self.linkType) {
+        //   //         case 'online':
+        //   //           self.getNewsCategorysData()
+        //   //           self.inpOnline = oa.attr('href')
+        //   //           break
+        //   //         case 'news':
+        //   //           self.getNewsCategorysData()
+        //   //           self.selectNews = oa.attr('selectNews').split(',')
+        //   //           break
+        //   //         case 'coruse':
+        //   //            self.courseSortData()
+        //   //           self.selectCoruse = oa.attr('selectCoruse').split(',')
+        //   //           break
+        //   //       }
+        //   //       break
+        //   //     case 'button':
+        //   //       self.dialogButton = true
+        //   //       self.inputBtnText = onthis.find('a').text()
+        //   //       self.inputBtnHref = onthis.find('a').attr('href')
+        //   //       break
+        //   //     case 'carousel':
+        //   //       self.dialogCarousel = true
+        //   //       let carouselData = $('.on_module').attr('carouselData')
+        //   //       let hs = parseInt($('.screenBox').css('height'))
+        //   //       let ws = parseInt($('.screenBox').css('width'))
+        //   //       self.carouselTit = '轮播图 ( 图片尺寸 ' + self.showWidth + ' * ' + hs + ')'
+        //   //       self.showWidth = ws
+        //   //       if (carouselData) {
+        //   //         let data = $.parseJSON(carouselData)
+        //   //         self.showWidth = data.showWidth
+        //   //         self.carouselData = data.carouselData
+        //   //         self.showTime = data.showTime
+        //   //         self.transitionTime = data.transitionTime
+        //   //         self.changeStyle = data.changeStyle
+        //   //       }
+        //   //       break
+        //   //     default:
+        //   //       console.log('module')
+        //   //       break
+        //   //   }
+        //   // }
+        // },
+      // ---------------------------------------------
+        getcoursecategorys:function(html){
+          let self = this
+          self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
+            params: {
+            }
+          }, {emulateJSON: true}).then(function (response) {
+            let datas = response.data
+            if(datas.code == 0) {
+              let packages = datas.data.packages
+              let sorts = datas.data.sorts
+              let packageshtml = ''
+              let sortshtml = ''
+              for(var i=0;i<packages.length;i++){
+                if(packages[i].pid == 0){
+                  packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
+                }else{
+                  if(packages[i].cur){
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
+                  }else{
+                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
+                  }
+                }
+              }
+              for(var i=0;i<sorts.length;i++){
+                if(sorts[i].sid == -1){
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
+                }else{
+                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
+                }
+              }
+              html.find('.allson').html(packageshtml)
+              html.find('.allsondouble').html(sortshtml)
+            }
+          }, function (response) {
+            console.log(response)
+          })
+        },
+        createmap:function(html){
+          let self = this
+          var	lng = parseFloat(window.roominfo.lng),
+          		lat = parseFloat(window.roominfo.lat),
+           		map = new BMap.Map("schoolmap"),
+          		point = new BMap.Point(lng, lat),
+			  			marker = new BMap.Marker(point),
+			  			top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+			  			
+			  	map.centerAndZoom(point, 12);  //设置中心点坐标
+			  	map.addOverlay(marker);
+			  	map.addControl(top_right_navigation); 
+			  	map.disableDragging();     
+			  	
+			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>" 
+			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
+			  	var infoWindow = new BMap.InfoWindow(sContent);
+			  	var pointinfo = new BMap.Point(lng, lat+0.01);	
+					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
+        },
+        createqr_logo:function(html){
+        	let self = this
+        	if(html.hasClass("schoolqr")){
+        		html.find("img").attr("src",window.roominfo.wechatimg)
+        	}else{
+        		html.find("img").attr("src",window.roominfo.cface)
+        	}
+        },
+        createintroduce:function(html){
+        	let self = this
+        	html.find(".picBox").html(window.roominfo.summary)
         }
       }
     },
     created: function () {
       var self = this
-      self.$nextTick(function () {       
+      self.$nextTick(function () {
+        let canvas = $('.canvas')
+        let space = $('.space')
+        canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
+        self.inp_width = parseInt(canvas.css('width'))
+        self.inp_height = parseInt(canvas.css('height'))
+        space.scrollLeft(900)
         let head = $('.c_top')
-      // -------- 获取网校信息 ------------- 
+        let middle = $('.c_body')
+        let foot = $('.c_foot')
+        if (window.saveParams) {
+          let params = window.saveParams
+          let pp = params.page
+          self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+          self.bgColorVal = pp.bg =='transparent'?null:pp.bg
+          self.fontHoverColorVal = pp.fontHover
+          self.inp_width = parseInt(pp.width)
+          self.inp_height = parseInt(pp.height)
+          self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+          self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+          self.repeatPgValue = pp.pgImage.backgroundRepeat
+          self.attachmentPgValue = pp.pgImage.backgroundAttachment
+          self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+          self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
+          self.repeatBgValue = pp.bgImage.backgroundRepeat
+          self.attachmentBgValue = pp.bgImage.backgroundAttachment
+          space.css(pp.bgImage)
+          space.css('backgroundColor', pp.bg)
+          canvas.css(pp.pgImage)
+          canvas.css('backgroundColor', pp.pg)
+          canvas.css('width', pp.width)
+          canvas.css('height', pp.height)
+          head.css('height', pp.top)
+          foot.css('height', pp.foot)
+          canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
+          let module = params.module
+          head.html(module.top)
+          middle.html(module.body)
+          foot.html(module.foot)          
+          tool.tool.carryLayerEvent(self, head)
+          tool.tool.carryLayerEvent(self, middle)
+          tool.tool.carryLayerEvent(self, foot)
+          tool.tool.carryLineHeightEvent()
+          tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
+          tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
+          // 客服     
+          if ($('.waiter').length < 2 && $('.waiter').length > 0) {
+            $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+            $('.waiter').on('click', function() {
+              self.$refs.waiter.show(self, canvas.find('.waiter'))
+            })
+          } 
+        } else {
           let getParam = {
             url: '/aroomv3/roominfo.html',
             params: {},
             fun: function (response) {
               let crid = response.body.data.crid
               window.roominfo = response.body.data
-              // -------- 获取网校页面 -----------
-                let getParams = {
-                  url: '/room/design/getdesign.html',
-                  params: {crid: crid},
-                  fun: function (response) {
-                    let saveParams = response.body.data                
-                    let headHtml = saveParams.head.replace(/[\\]/g, '')              
-                    let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
-                    self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
-                    self.fontHoverColorVal = pp.fontHover||'#333'                
-                    self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-                    self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-                    self.repeatPgValue = pp.pgImage.backgroundRepeat
-                    self.attachmentPgValue = pp.pgImage.backgroundAttachment
-                    head.css('backgroundColor', pp.pg)
-                    head.css(pp.pgImage)              
-                    head.css('height', self.inp_height)
-                    head.html(headHtml)
-                    self.moduleElement = $('.on_module')
-                    tool.tool.carryLayerEvent(self, head)
-                    tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
-                  }
+              let getParams = {
+                url: '/room/design/getdesign.html',
+                params: {crid: crid},
+                fun: function (response) {
+                  let saveParams = response.body.data                
+                  let headHtml = saveParams.head.replace(/[\\]/g, '')
+                  let bodyHtml = saveParams.body.replace(/[\\]/g, '')
+                  let footHtml = saveParams.foot.replace(/[\\]/g, '')
+                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
+                  self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+                  self.bgColorVal = pp.bg =='transparent'?null:pp.bg
+                  self.fontHoverColorVal = pp.fontHover||'#333'
+                  self.inp_width = parseInt(pp.width)
+                  self.inp_height = parseInt(pp.height)
+                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+                  self.repeatPgValue = pp.pgImage.backgroundRepeat
+                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                  self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+                  self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
+                  self.repeatBgValue = pp.bgImage.backgroundRepeat
+                  self.attachmentBgValue = pp.bgImage.backgroundAttachment
+                  space.css('backgroundColor', pp.bg)
+                  space.css(pp.bgImage)
+                  canvas.css('backgroundColor', pp.pg)
+                  canvas.css(pp.pgImage)
+                  canvas.css('width', self.inp_width)
+                  canvas.css('height', self.inp_height)
+                  head.css('height', pp.top)
+                  foot.css('height', pp.foot)
+                  canvas.css({'paddingTop': pp.top, 'paddingBottom': pp.foot})
+                  head.html(headHtml)
+                  middle.html(bodyHtml)
+                  foot.html(footHtml)
+                  self.moduleElement = $('.on_module')
+                  tool.tool.carryLayerEvent(self, head)
+                  tool.tool.carryLayerEvent(self, middle)
+                  tool.tool.carryLayerEvent(self, foot)
+                  tool.tool.carryLineHeightEvent()
+                  tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
+                  tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
+                  if ($('.waiter').length < 2 && $('.waiter').length > 0) {
+                    $('.editBox').append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+                    $('.waiter').on('click', function() {
+                      self.$refs.waiter.show(self, canvas.find('.waiter'))
+                    })
+                  } 
+                  tool.tool.topRangeY = parseInt(tool.tool.top.css('height')) + self.paddingtop + self.postop // top选区范围
+                  tool.tool.bodyRangeY = parseInt(tool.tool.body.css('height')) + tool.tool.topRangeY // body选区范围
                 }
-                self.httppost(getParams) 
+              }
+              self.httppost(getParams)
             }
           }
-      // self.httpget(getParam)  未有手机版接口     
-      // -------- 工具初始化 ----------------  
+          self.httpget(getParam)
+        }
+        
         tool.tool.init(self, $)
-      // -------- 工具栏位置自适应调整 ------ 
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
         let $top = $('.top')
@@ -678,11 +1256,9 @@
             }     
           }
         }
-
       })
     },
     methods: {
-    // ------------- 清屏 -------------------- 
       cleanScreenEvent: function () {
         let self = this
         self.$confirm('此操作将清除页面为空白页, 是否继续?', '提示', {
@@ -717,7 +1293,39 @@
           });          
         });
       },
-    // ------------- 动画效果 ---------------- 
+      dialogeditlogin(){
+        let self = this
+        self.logintext = ''
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder')
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value')
+          break
+        }
+        self.dialogedittext = true
+      },
+      editlogintext(){
+        let self = this
+        let type = $('.on_module input').attr('name')
+        switch(type){
+          case 'username':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'password':
+            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
+          break
+          case 'Submit':
+            self.logintext = $('.on_module input').attr('value',self.logintext)
+          break
+        }
+        self.dialogedittext = false
+      },
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -743,29 +1351,50 @@
         a.attr('data-kui-anim',self.anim)
         self.dialogscrollanim = false
       },
-    // ------------- 页面设置 ---------------- 
+    // ------------- complete ----------------
       settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
       },
+      handleBackdropSuccess: function (res) {
+        let self = this
+        let showurl = res.data.showurl
+        self.bgImageUrl = showurl
+      },
       handlePredropSuccess: function (res) {
         let self = this
-        let showurl = res.data.showurl       
+        let showurl = res.data.showurl
         self.pgImageUrl = showurl
+      },
+      cleanBgEvent: function () {
+        var self = this
+        self.bgImageUrl = ''
       },
       cleanPgEvent: function () {
         var self = this
         self.pgImageUrl = ''
       },
       dialogPageSettingEvent: function () { // 页面设置弹框保存
-        var self = this       
-        let canvas = $('.c_top')
-        
+        var self = this
+        let space = $('.space')
+        let canvas = $('.canvas')
+        if (self.bgColorVal) {
+          space.css('backgroundColor', self.bgColorVal)
+        } else {
+          space.css('backgroundColor', 'transparent')
+        }
         if (self.prospectColorVal) {
           canvas.css('backgroundColor', self.prospectColorVal)
         } else {
           canvas.css('backgroundColor', 'transparent')
-        }        
+        }
+        if(self.bgImageUrl){
+          let bgJson = {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue}
+          space.css(bgJson)
+        } else {
+          space.css('backgroundImage','none')
+        }
+
         if(self.pgImageUrl){
           let pgJson = {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue}
           canvas.css(pgJson)
@@ -775,9 +1404,53 @@
         if (self.fontHoverColorVal) {
           $('#fontHover').remove()
           $('head').append('<style id="fontHover">body a[href]:hover{color:' + self.fontHoverColorVal + ';}</style>')
-        }       
+        }
+        canvas.css('width', self.inp_width)
+        canvas.css('height', self.inp_height)
         tool.tool.carryLineHeightEvent()
         self.dialogPageSetting = false
+      },
+      previewEvent: function () { // 预览
+        let self = this
+        tool.tool.cleanSignEvent(self)
+        $('.setInfo').remove()
+        self.$router.push('preview')
+        let params = {}
+        let headArray = $('.c_top').html()
+        let bodyArray = $('.c_body').html()
+        let footArray = $('.c_foot').html()
+        params = {
+          page: {
+            pg: self.prospectColorVal?self.prospectColorVal:'transparent',
+            bg: self.bgColorVal?self.bgColorVal:'transparent',
+            fontHover: self.fontHoverColorVal,
+            pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
+            bgImage: {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue},
+            width: self.inp_width + 'px',
+            height: self.inp_height + 'px',
+            top: $('.c_top').css('height'),
+            body: $('.c_body').css('height'),
+            foot: $('.c_foot').css('height')
+          },
+          module: {
+            top: headArray,
+            body: bodyArray,
+            foot: footArray
+          }
+        }
+        window.saveParams = params
+      },
+      gridHangle: function (e) { // 格线开关
+        let $gridli = $('.gridli')
+        let bloo = $gridli.hasClass('tl_li_on')
+        let canvas = $('.canvas')
+        if (bloo) {
+          $gridli.removeClass('tl_li_on')
+          canvas.removeClass('grid')
+        } else {
+          $gridli.addClass('tl_li_on')
+          canvas.addClass('grid')
+        }
       },
       saveEvent: function () { // 页面保存
         let self = this
@@ -863,7 +1536,7 @@
         }
         self.httppost(param)
       },
-    // ------------- 模块属性控制 ------------ 
+    // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
@@ -950,7 +1623,7 @@
         var self = this        
         tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
-    // ------------- 模块操作 ---------------- 
+    // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'topAlign')
@@ -1006,7 +1679,50 @@
       deleteEvent: function () { // 删除
         let self = this
         tool.tool.carryModuleOperationEvent(self, 'delete')
-      },    
+      },
+    // ------------- 基础模块 ----------------
+      dialogTextEvent: function () { // 编辑文本窗口
+        let self = this
+        let a = self.moduleElement.find('a')
+        a.text(self.textarea)
+        a.attr('linkType', self.linkType)
+        switch (self.linkType) {
+          case 'none':
+            a.removeAttr('href')
+            break
+          case 'online':
+            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+            if (reg.test(self.inpOnline)) {
+              a.attr('href', self.inpOnline)
+            } else {
+              self.$notify({
+                title: '警告',
+                message: '请输入正确完整的跳转链接',
+                type: 'warning'
+              })
+              return
+            }
+            break
+          case 'news':            
+            let itemid = self.selectNews[2]
+            a.attr('href', '/dyinformation/' + itemid + '.html')
+            a.attr('selectNews', self.selectNews)
+            break
+          case 'coruse':
+            let folderid = self.selectCoruse[2]
+            a.attr('href', '/courseinfo/' + folderid + '.html')
+            a.attr('selectCoruse', self.selectCoruse)
+            break
+          case 'login':
+            a.removeAttr('href')
+            self.moduleElement.addClass('loginEvent')
+            break
+        }
+        if (self.linkType !== 'login') {
+          self.moduleElement.removeClass('loginEvent')
+        }
+        self.dialogText = false
+      },     
       beforePictureUpload: function (file) {
         let self = this
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
@@ -1019,20 +1735,284 @@
           })
           return false
         }
+      },
+      handlePageHeaderSuccess: function (res, file) {
+        let self = this
+        let code = res.code
+        if (code === 0) {
+          self.imageUrl = res.data.showurl
+        } else {
+          self.$notify({
+            title: '警告',
+            message: res.msg,
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+        }
+      },
+    // ------------- 图片基础组件 ------------
+      handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
+        let self = this
+        let code = res.code
+        if (code === 0) {
+          self.pictureUrl = res.data.showurl
+        } else {
+          self.$notify({
+            title: '警告',
+            message: res.msg,
+            type: 'warning',
+            offset: 50,
+            duration: 4000
+          })
+        }
+      },
+      dialogPictureEvent: function () { // 保存图片
+        let self = this
+        self.dialogPicture = false
+        self.moduleElement.find('img').attr('src', self.pictureUrl)
+        let a = self.moduleElement.find('.picBox')
+        a.attr('linkType', self.linkType)
+        switch (self.linkType) {
+          case 'none':
+            self.moduleElement.find('.picBox').removeAttr('href')
+            break
+          case 'online':
+            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
+            if (reg.test(self.inpOnline)) {
+              self.moduleElement.find('.picBox').attr('href', self.inpOnline)
+            } else {
+              self.$notify({
+                title: '警告',
+                message: '请输入正确完整的跳转链接',
+                type: 'warning'
+              })
+              return
+            }
+            break
+          case 'news':
+            let itemid = self.selectNews[2]
+            a.attr('href', '/dyinformation/' + itemid + '.html')
+            a.attr('selectNews', self.selectNews)
+            break
+          case 'coruse':
+            let folderid = self.selectCoruse[2]
+            a.attr('href', '/courseinfo/' + folderid + '.html')
+            a.attr('selectCoruse', self.selectCoruse)
+            break
+          case 'login':
+            self.moduleElement.addClass('loginEvent')
+            a.removeAttr('href')
+            break
+        }
+        if (self.linkType !== 'login') {
+          self.moduleElement.removeClass('loginEvent')
+        }
+      },
+      linkTypeChangeEvent: function (value) {
+        let self = this
+        switch (value) {
+          case 'news':
+            self.getNewsCategorysData()
+            break
+          case 'coruse':
+            self.courseSortData()
+            break
+        }
+        // self.selectNewsOptions
+        // self.courseSortData()
+      },
+      selectNewsChange: function () {
+      },
+      getNewsCategorysData: function () {
+        let self = this
+        let param = {
+          url: '/aroomv3/news/getNewsCategorys.html',
+          params: {},
+          fun: function (response) {
+            let navList = response.body.data
+            let obj = []
+            for (let i = 0, len = navList.length; i < len; i++) {
+              let item = navList[i]
+              if (item.code.length < 4 || item.code === 'news') {
+                let items = {
+                  label: item.name,
+                  value: item.code,
+                  children: []
+                }
+                if (item.subnav) {
+                  for (let j = 0, jen = item.subnav.length; j < jen; j++) {
+                    let jtem = item.subnav[j]
+                    let jtems = {
+                      label: jtem.name,
+                      value: jtem.code,
+                      children: []
+                    }
+                    items.children.push(jtems)
+                  }
+                }
+                items.children.push({label: '其它', value: item.code, children: []})
+                obj.push(items)
+              }
+            }
+            self.selectNewsOptions = obj
+          }
+        }
+        self.httpget(param)
+      },
+      handleNewsItemChange: function (arr) {
+        let self = this
+        let code = arr[1]
+        if (arr.length < 2) {
+          return false
+        }
+        let param = {
+          url: '/aroomv3/news.html',
+          params: {
+            navcode: code,
+            pagesize: 100,
+            page: 1
+          },
+          fun: function (response) {
+            let newsList = response.body.data
+            for (let i = 0, len = self.selectNewsOptions.length; i < len; i++) {
+              let item = self.selectNewsOptions[i]
+              if (item.value === code || item.value === code.split('s')[0]) {
+                for (let j = 0, jen = item.children.length; j < jen; j++) {
+                  let jtem = item.children[j]
+                  if (jtem.value === code) {
+                    let arrFolder = []
+                    for (let z = 0, zen = newsList.length; z < zen; z++) {
+                      let zitem = newsList[z]
+                      arrFolder.push({
+                        label: zitem.subject,
+                        value: zitem.itemid
+                      })
+                    }
+                    jtem.children = arrFolder
+                    break
+                  }
+                }
+                break
+              }
+            }
+          }
+        }
+        self.httpget(param)
+      },
+      selectCoruseChange: function () {},
+      handleCoruseItemChange: function (arr) {
+        let self = this
+        let pid = arr[0].split('|')[1]
+        let sid = ''
+        let csid = ''
+        if (arr.length < 2) return false
+        if (arr[1].split('|')[0] === 'pid') {
+          pid = arr[1].split('|')[1]
+          csid = pid
+        } else {
+          sid = arr[1].split('|')[1]
+          csid = sid
+        }
+        let param = {
+          url: '/aroomv3/course/courselist.html',
+          params: {
+            pid: pid,
+            sid: sid,
+            pagesize: 100,
+            page: 1
+          },
+          fun: function (response) {
+            let courselist = response.body.data.courselist
+            console.log(courselist, 11)
+            for (let i = 0, len = self.selectCoruseOptions.length; i < len; i++) {
+              let item = self.selectCoruseOptions[i]
+              if (item.pid === pid) {
+                for (let j = 0, jen = item.children.length; j < jen; j++) {
+                  let jtem = item.children[j]
+                  if (jtem.sid === csid) {
+                    let arrFolder = []
+                    for (let z = 0, zen = courselist.length; z < zen; z++) {
+                      let zitem = courselist[z]
+                      if (sid === '' && zitem.sid < 1) {
+                        arrFolder.push({
+                          label: zitem.foldername,
+                          value: zitem.itemid
+                        })
+                      } else if (sid !== '') {
+                        arrFolder.push({
+                          label: zitem.foldername,
+                          value: zitem.itemid
+                        })
+                      }
+                    }
+                    jtem.children = arrFolder
+                    break
+                  }
+                }
+                break
+              }
+            }
+            console.log(self.selectCoruseOptions)
+          }
+        }
+        self.httpget(param)
+      },
+      courseSortData: function () { // 选择课程 cascader
+        let self = this
+        let param = {
+          url: '/aroomv3/course/coursesort.html',
+          params: {
+            showbysort: 0
+          },
+          fun: function (response) {
+            let arr = response.body.data
+            let obj = []
+            for (let i = 0, len = arr.length; i < len; i++) {
+              let item = arr[i]
+              let itemcountP = parseInt(item.itemcount, 10)
+              let items = {
+                label: item.pname,
+                value: 'pid|' + item.pid,
+                children: [],
+                pid: item.pid
+              }
+              if (item.sorts) {
+                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
+                  let jtem = item.sorts[j]
+                  itemcountP = itemcountP - parseInt(jtem.itemcount, 10)
+                  let jtems = {
+                    label: jtem.sname,
+                    value: 'sid|' + jtem.sid,
+                    children: [],
+                    sid: jtem.sid
+                  }
+                  if (jtem.itemcount > 0) {
+                    items.children.push(jtems)
+                  }
+                }
+              }
+              if (itemcountP > 0) {
+                items.children.push({label: '其它', value: 'pid|' + item.pid, children: [], sid: item.pid})
+              }
+              if (item.itemcount > 0) {
+                obj.push(items)
+              }
+            }
+            self.selectCoruseOptions = obj
+          }
+        }
+        if (self.selectCoruseOptions.length < 1) {
+          self.httpget(param)
+        }
       }
     }
   }
 </script>
 
 <style>
-  /* ------------- header -------------- */
     .el-dialog__header{
       cursor: move;
-    }
-    .el-dialog--pageSet .el-dialog__header{
-      cursor: move;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #ccc;
     }
     .el-dialog--scrollanim{
       width: 510px;
@@ -1068,7 +2048,7 @@
     #app .propertycolor .disabled{
       border-color: #ccc;
     }
-  /* ------------- app ----------------- */
+  /*app*/
     #app {
       position: relative;
       font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -1083,7 +2063,7 @@
       width: 100%;
       height: 400px;
     }
-  /* ------------- top ----------------- */
+  /*top*/
     #app .upload-demo{
       height: 105px;
       width: 120px;
@@ -1263,7 +2243,7 @@
       z-index: 200;
       background-color: rgba(245, 93, 84, 0.5);
     }
-  /* ------------- 边框 ---------------- */
+  /*边框*/
     .pick{
       width: 20px;
       height: 20px;
@@ -1352,7 +2332,7 @@
       height: 20px;
       opacity: 0;
     }
-  /* ------------- tool ---------------- */
+  /*tool*/  
     .tool{
       padding-top: 2px;
       position: relative;
@@ -1409,7 +2389,7 @@
     .property .is-disabled .el-input__inner{
       background-color: #fff;
     }
-  /* ------------- leftlibrary --------- */
+  /*leftlibrary*/
     .library{
       position: absolute;
       left: 0;
@@ -1607,7 +2587,7 @@
       display: none;
       opacity: 0;
     }
-  /* ------------- layer --------------- */
+  /*layer*/
     .layer{
       position:absolute;
       top:0;
@@ -1683,7 +2663,7 @@
     .layer .lib_ol .ele_li:hover{
       background-color: #eee;
     }
-  /* ------------- editBox ------------- */
+  /*editBox*/    
     #app .module:hover .promptBox{
       display: block;
     }
@@ -1709,28 +2689,37 @@
       width: 100%;
       height: 100%;
       overflow:auto;
-    }    
+    }
+    .scrollcanvas {
+      width: 3600px;
+      height: 1px;
+    }
     .canvas{
-      position: relative;
-      width: 383px;
-      height: 667px;
-      margin: 50px auto;     
-      overflow-y:scroll;
-      background-size:10px 10px;     
+      position:absolute;
+      top: 50px;
+      left: 50px;
+      padding: 400px 0 200px 0;
+      margin-bottom: 100px;
+      width: 1200px;
+      height: 1800px;
+      background-color: #fff;
+      background-size:10px 10px;
+      box-shadow: 0 0 0 1px #d9d9d9;
       box-sizing: border-box;
       /*overflow: hidden;*/
       cursor: default;
     } 
-    /*.grid{
+    .grid{
       background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
-    }*/
+    }
     .c_top{
       position: absolute;
       top:0;
       left: 0;
-      width: 375px;
-      height: 1800px; 
-      background-color: #fff;     
+      width: 100%;
+      height: 400px;
+      border-bottom: 1px dashed #d9d9d9;
+      box-sizing: border-box;
     }  
     .c_body{
      /* display: none;*/ /*关闭分区*/
@@ -1775,7 +2764,7 @@
     .c_foot .hoverbar{
       top:-30px;
     }
-  /* ------------- copyBox ------------- */
+  /*copyBox*/
     .copyBox{
       position: absolute;
       display: block;    
@@ -1792,7 +2781,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 3600px;
       height: 100%;
       border:0;
       border-style:dashed;
@@ -1816,7 +2805,7 @@
       width: 0px;
       border-left-width: 1px;
     }
-  /* ------------- module -------------- */
+  /*module*/
     .editBox .on_module{
       /*border-color: transparent;*/
       box-sizing: border-box;
@@ -1972,7 +2961,7 @@
       -o-transform:translateX(-50%);
       cursor: s-resize;
     }
-  /* ------------- contextmenu --------- */
+  /*contextmenu*/
     .contextmenu{
       position: absolute;
       top:81px;
@@ -2041,89 +3030,25 @@
       margin: 3px 0;
       border-bottom: 1px solid #e5e5e5;
     }
-  /* ------------- editor -------------- */
+  /*editor*/
+    .editorC{
+      margin: 0 auto;
+      min-height: 400px 
+    }
     .el-dialog__footer {
       padding: 10px 10px 15px;
-    } 
-  /* ------------- 模块动画 ------------ */
-    .animlist{
-      display: block;
-      width: 74px;
-      height: 88px;
-      text-align: center;
-      float: left;
-      margin: 24px 10px 0 10px;
-      cursor: pointer;
     }
-    .animlist .animimg{
-      width: 74px;
-      height: 64px;
-      line-height:64px;
-      border: 2px solid #f2f2f2;
-      border-radius: 2px;
-      position: relative;
+  /*pageHeader-uploader*/
+    .el-dialog--text{
+      width: 600px;
     }
-    .animlist .animimg:hover{
-      border-color: #7fcc78;
+    .el-dialog--text .el-row{
+      margin-bottom: 20px;
     }
-    .animlist .animimg .animtip{
-      display: none;
-      width: 16px;
-      height: 16px;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      line-height: 16px;
-      background: #7fcc78;
-      color: #fff;
+    .el-dialog--text .el-col{
+      height: 36px;
+      line-height: 36px;
     }
-    .animlist p{
-      line-height: 24px;
-    }
-    .animlist .active{
-      border-color: #7fcc78;
-    }
-    .animlist .active .animtip{
-      display: block;
-    }
-  /* ------------- 模块动画弹窗 -------- */
-    .animlist img{
-      margin-top: 14px; 
-    }
-  /* ------------- 登录框编辑文本弹窗 -- */
-    .el-dialog--edittext{
-      width: 500px;
-    }
-    .pitchIcon {
-      display:none; 
-      position: absolute;
-      bottom: 0;
-      right:0;
-      width: 14px;
-      height: 14px;
-      line-height: 14px;
-      color: #fff;
-      background-color: #20a0ff;
-    }
-    .is-active .pitchIcon {
-      display: block;
-    }
-    .ele_li:hover .deleteLayer {
-      display: block;
-    }
-    .deleteLayer{
-      display: none;
-      float: right;
-      font-size: 16px;
-      font-weight: 600;
-      margin-right: 16px;
-    }
-    input:-webkit-autofill {
-      background-color: #FAFFBD;
-      background-image: none;
-      color: #000;
-    } 
-  /* ------------- 页面设置 ------------ */
     .el-dialog--pageSet{
       width: 500px;
     }
@@ -2162,4 +3087,113 @@
       height: auto;
       display: block;
     }
+  /*carousel*/
+  
+  /*picture*/
+    .el-dialog--picture{
+      width: 750px;
+    }
+    .picture-uploader .el-upload{
+      display: block;
+      margin:0 auto; 
+      border: 1px dashed #d9d9d9;
+    }
+    .pictureMod {    
+      max-width: 100%;
+      display: block;
+      margin:0 auto;
+    }
+    .diapicture .el-col{
+      height: 36px;
+      line-height: 36px;
+    }
+    .diapicture .el-row{
+      margin-top: 20px;
+    }
+    .diapicture .el-select{
+      width: 320px;
+    }
+  /*button*/
+    .dialogbutton .el-row{
+      margin-top: 10px;
+    }
+    .dialogbutton .el-col-3{
+      margin-right: 20px;
+      height: 36px;
+      text-align: right;
+      line-height: 36px;
+    }
+/* 模块动画 */
+  .animlist{
+    display: block;
+    width: 74px;
+    height: 88px;
+    text-align: center;
+    float: left;
+    margin: 24px 10px 0 10px;
+    cursor: pointer;
+  }
+  .animlist .animimg{
+    width: 74px;
+    height: 64px;
+    line-height:64px;
+    border: 2px solid #f2f2f2;
+    border-radius: 2px;
+    position: relative;
+  }
+  .animlist .animimg:hover{
+    border-color: #7fcc78;
+  }
+  .animlist .animimg .animtip{
+    display: none;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    line-height: 16px;
+    background: #7fcc78;
+    color: #fff;
+  }
+  .animlist p{
+    line-height: 24px;
+  }
+  .animlist .active{
+    border-color: #7fcc78;
+  }
+  .animlist .active .animtip{
+    display: block;
+  }
+  /* 模块动画弹窗 */
+  .animlist img{
+    margin-top: 14px; 
+  }
+  /* 登录框编辑文本弹窗 */
+  .el-dialog--edittext{
+    width: 500px;
+  }
+  .pitchIcon {
+    display:none; 
+    position: absolute;
+    bottom: 0;
+    right:0;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
+    background-color: #20a0ff;
+  }
+  .is-active .pitchIcon {
+    display: block;
+  }
+  .ele_li:hover .deleteLayer {
+    display: block;
+  }
+  .deleteLayer{
+    display: none;
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 16px;
+  }
 </style>

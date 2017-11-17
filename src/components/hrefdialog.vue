@@ -154,7 +154,7 @@
                     <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" name="fourcourse" type="radio" value="" />
                     <a @click="parameter.thatName == 'course' ? infolderid = item.folderid  : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
-                      <div style="text-align: center;width: 121px;">
+                      <div style="text-align: center;width: 140px;">
                         <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
                         <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
                       </div>
@@ -263,6 +263,10 @@
                       <input code="login"  name="oneinlineschool" type="radio" value="" />
                       <a @click="getmorelogin()" class="vc-font2"><span class="vc-inner">登录(<span style="color: red;"> 4 </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                     </div>
+                    <label class="inlineschoolradio">
+                      <input code="index"  name="oneinlineschool" type="radio" value="" />
+                      <a class="vc-font2"><span class="vc-inner">主页</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                    </label>
                     <input type="reset" class="oneselinlineschoolReset" style="display: none;" value="Reset">
                   </form>
                   <form class="twoselinlineschool" style="display: none;">
@@ -1078,6 +1082,9 @@
               break
               case 'WeChat':
                 a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)    
+              break
+              case 'index':
+                a.attr('href', 'http://'+ window.roominfo.domain)    
               break
             }
 
@@ -2087,25 +2094,26 @@
   }
   .hrefdialog  .courselist input{
     position: absolute;
-    left: 20px;
+    left: 5px;
     top: 28%;
   }
   .hrefdialog  .courselist a{
-    width: 120px;
-    height: 100px;
+    width: 148px;
+    height: 120px;
     text-align: center;
     overflow: hidden;
     display: inline-block;
-    margin-left: 40px;
+    margin-left: 20px;
     cursor: pointer;
     /* border:1px solid #fff; */
+
   }
   .hrefdialog  .courselist a:hover{
     text-decoration: none;
   }
   .hrefdialog  .courselist a img{
-    width: 110px;
-    height: 65px;
+    width: 135px;
+    height: 80px;
   }
   .hrefdialog  .courselist a h3{
     display:inline-block;
@@ -2115,9 +2123,11 @@
   }
   .hrefdialog .courselist a h3{
     max-width: 120px;
+    font-size: 12px;
+    font-weight: 500;
   }
   .hrefdialog  .courselist a h3.coursetitle{
-    max-width: 84px;
+    max-width: 104px;
   }
   
   

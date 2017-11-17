@@ -175,36 +175,55 @@
 					if(datas.code == 0){
 						if(self.num1 <= datas.data.count){
 							var inforhtml = "";
-							for (var i in datas.data.newslist){ 
-								datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
-								inforhtml += '<div class="infor-wrap">'
-								inforhtml += 	'<div class="infor-cont">'
-								inforhtml += 		'<p class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
-								if(self.infortype == 1 && datas.data.newslist[i].thumb != ""){
-									inforhtml += '<div class="infor-img">'
-									inforhtml += '<img src="'+datas.data.newslist[i].thumb+'" />'
-									inforhtml += '<div class="infor-desc">'
-								}else{
-									inforhtml += '<div class="infor-desc-text">'
-									inforhtml += '<div class="infor-desc-no">'
+							if(self.infortype == 1){
+								for(var i in datas.data.newslist){
+									datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
+									inforhtml += '<div class="infor-wrap">'
+									inforhtml += 	'<div class="infor-cont">'
+									inforhtml += 		'<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><p class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p></a>'
+									if(datas.data.newslist[i].thumb != ""){
+										inforhtml += '<div class="infor-img">'
+										inforhtml += '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
+										inforhtml += '<div class="infor-desc">'
+									}else{
+										inforhtml += '<div class="infor-desc-text">'
+										inforhtml += '<div class="infor-desc-no">'
+									}
+									inforhtml += 				'<p class="infor-conc" title='+datas.data.newslist[i].note+'>'+datas.data.newslist[i].note+'</p>'
+									inforhtml += 				'<div class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</div>'
+									inforhtml += 			'</div>'
+									inforhtml += 		'</div>'
+									inforhtml += 	'</div>'
+									inforhtml += '</div>'
 								}
-								
-								inforhtml += 				'<p class="infor-conc" title='+datas.data.newslist[i].note+'>'+datas.data.newslist[i].note+'</p>'
-								inforhtml += 				'<div class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</div>'
-								inforhtml += 			'</div>'
-								inforhtml += 		'</div>'
-								inforhtml += 	'</div>'
-								inforhtml += '</div>'
+								self.currentEle_info.find(".inforCon").html(inforhtml);
+								self.dialogInformation = false;
+								self.currentEle_info.ready(function() {
+									self.currentEle_info.css("background-color","#FFFFFF");
+							        self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
+							        self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
+							        self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
+							        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
+								})
+							}else{
+								for(var i in datas.data.newslist){
+									datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
+									inforhtml += '<div class="infor-wrap" style="height:40px;padding:0;">'
+									inforhtml += 	'<div class="infor-cont" style="border:0 none;height:40px;">'
+									inforhtml += 		'<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><p style="text-indent:10px;" class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p></a>'
+									inforhtml += 	'</div>'
+									inforhtml += '</div>'
+								}
+								self.currentEle_info.find(".inforCon").html(inforhtml);
+								self.dialogInformation = false;
+								self.currentEle_info.ready(function() {
+									self.currentEle_info.css("background-color","#FFFFFF");
+							        self.currentEle_info.css('height',datas.data.newslist.length * 40 + 'px')
+							        self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
+							        self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
+							        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 40 + 'px')
+								})
 							}
-							self.currentEle_info.find(".inforCon").html(inforhtml);
-							self.dialogInformation = false;
-							self.currentEle_info.ready(function() {
-								self.currentEle_info.css("background-color","#FFFFFF");
-						        self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
-						        self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
-						        self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
-						        self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
-							})
 						}else{
 							self.$notify({
 								title: '提示',

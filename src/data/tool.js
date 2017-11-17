@@ -37,6 +37,7 @@ var tool = {
     me.todoBox = me.$('.todoBox')
     me.carrytoolbarEvent(self)
     me.carryMenuEvent(self)
+    me.carryLineHeightEvent()
     me.libBox = me.$('.lib_box')
     me.libLi = me.libBox.find('.lib_li')
     me.bindEvent(self)
@@ -69,6 +70,12 @@ var tool = {
       }
     })
   },
+  carryLineHeightEvent: function () { // 计算竖向参考线高度
+    let me = this
+    let scrollHeight = me.space[0].scrollHeight
+    me.colL.css('height', scrollHeight)
+    me.colR.css('height', scrollHeight)
+  },
   carryOutsideLineEvent: function (self, e) { // 画布之外的参考线
     let me = this
     let sTop = parseInt(me.space.scrollTop()) // 当前滚动条高度
@@ -88,14 +95,12 @@ var tool = {
       me.colR.css('left', e.pageX + sLeft - self.paddingleft + w)
     })
   },
-  carryLineEvent: function (self, show) { // 计算参考线函数 wap todo:
+  carryLineEvent: function (self, show) { // 计算参考线函数
     let me = this
-    let canvasLeft = me.canvas[0].offsetLeft
-    let canvasTop = me.canvas[0].offsetTop
-    me.rowT.css('top', self.inp_y + canvasTop)
-    me.rowB.css('top', self.inp_y + canvasTop + self.inp_h - 1)
-    me.colL.css('left', self.inp_x + canvasLeft)
-    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w - 1)
+    me.rowT.css('top', self.inp_y + self.postop + me.warp)
+    me.rowB.css('top', self.inp_y + self.postop + self.inp_h + me.warp - 1)
+    me.colL.css('left', self.inp_x + self.posleft)
+    me.colR.css('left', self.inp_x + self.posleft + self.inp_w - 1)
     if (!show) {
       me.line.show()
     }
@@ -348,68 +353,38 @@ var tool = {
     let me = this
     me.$('.getRegion').remove()
     me.$('.multiBox').remove()    
-    let canvasScrollTop = me.canvas.scrollTop()
-    let canvasLeft = me.canvas[0].offsetLeft
-    let canvasTop = me.canvas[0].offsetTop
+    let spaceTop = me.space.scrollTop()
+    let spaceLeft = me.space.scrollLeft()
     let startY = e.pageY // Y轴原点
     let startX = e.pageX // X轴原点
     let drawY = 0
     let drawX = 0
-    let postY = e.pageY  - self.paddingtop - canvasTop + canvasScrollTop
-    let postX = e.pageX  - self.paddingleft - canvasLeft
-    let parent = 'c_top'
-
-    me.$('.' + parent).append('<div class="getRegion" style="top:' + postY + 'px;left:' + postX +'px;"></div>')
-    let getregion = me.$('.getRegion')
-    me.editBox.on('mousemove', function (e) { // 绘制选区     
+    let postY = e.pageY - self.paddingtop - self.postop + spaceTop
+    let postX = e.pageX - self.paddingleft - self.posleft + spaceLeft
+    let parent
+    if (e.pageY + spaceTop < me.topRangeY ) {
+      parent = 'c_top'
+    } else if (e.pageY + spaceTop < me.bodyRangeY) {
+      postY = e.pageY + spaceTop - me.topRangeY
+      parent = 'c_body'
+    } else {
+      postY = e.pageY + spaceTop - me.bodyRangeY
+      parent = 'c_foot'
+    }
+    me.$('.' + parent).append('<div class="getRegion"></div>')
+    self.moduleParentElementHeight = parseInt(me.$('.' + parent).css('height'))
+    let getregion = me.$('.getRegion') 
+    getregion.css({'top': postY, 'left': postX})
+    me.editBox.on('mousemove', function (e) { // 绘制选区
       drawY = e.pageY - startY
       drawX = e.pageX - startX
-      if (drawY > 0 && drawX > 0) { // // 右下移动
-
-        if ((drawX + postX) > 375) {         
-          drawX = 375 - postX
-        } 
-
-        if ((drawY + postY) > 667) {         
-          drawY = 667 - postY
-        }
-
-        getregion.css({'width': drawX ,'height': drawY}) 
-
-      } else if (drawY > 0 && drawX < 0) { // 左下移动
-
-        if ((drawX + postX) < 0) {         
-          drawX = postX
-        } 
-
-        if ((drawY + postY) > 667) {         
-          drawY = 667 - postY
-        }
-
+      if (drawY > 0 && drawX > 0) { // 上下左右四种情况的操作
+        getregion.css({'width': drawX,'height': drawY})
+      } else if (drawY > 0 && drawX < 0) {
         getregion.css({'width': - drawX, 'height': drawY, 'left': postX + drawX})
-
-      } else if (drawY < 0 && drawX > 0) { // 右上移动
-
-        if ((drawX + postX) > 375) {         
-          drawX = 375 - postX
-        } 
-
-        if ((drawY + postY) < 0) {         
-          drawY = postY
-        }
-
+      } else if (drawY < 0 && drawX > 0) {
         getregion.css({'width': drawX, 'height': - drawY, 'top': postY + drawY})
-
-      } else { // 左上移动
-
-        if ((drawX + postX) < 0) {         
-          drawX = postX
-        } 
-
-        if ((drawY + postY) < 0) {         
-          drawY = postY
-        }
-
+      } else {
         getregion.css({'width': - drawX, 'height': - drawY, 'left': postX + drawX, 'top': postY + drawY})
       }
     })
@@ -581,7 +556,7 @@ var tool = {
         self.inp_x = val
         part = function (ele) {          
           let nowX = moveX + parseInt(ele.css('left'))
-          ele.css('left', nowX / 37.5 + 'rem')
+          ele.css('left', nowX + 'px')
         }
         break
       case 'top':
@@ -607,7 +582,7 @@ var tool = {
         self.inp_y = val
         part = function (ele) {          
           let nowY = moveY + parseInt(ele.css('top'))
-          ele.css('top', nowY / 37.5 + 'rem')
+          ele.css('top', nowY + 'px')
         }
         break
       case 'width':
@@ -619,11 +594,11 @@ var tool = {
           let tw = self.inp_width - parseInt(ele.css('left')) 
           if (!ele.hasClass('picture') && !ele.hasClass('sline')) { // 禁止图片拉伸
             if (val > tw && self.config.stretchLimit) {
-              ele.css('width', tw / 37.5 + 'rem')
+              ele.css('width', tw + 'px')
               ele.find('.multiBox').css('width',tw + 'px')
               ele.find('.resizeBox').css('width',tw + 'px')
             } else {
-              ele.css('width', val / 37.5 + 'rem')
+              ele.css('width', val + 'px')
               ele.find('.multiBox').css('width',val + 'px')
               ele.find('.resizeBox').css('width',val + 'px')
             } 
@@ -639,11 +614,11 @@ var tool = {
           let th = self.moduleParentElementHeight - parseInt(ele.css('top'))
           if (!ele.hasClass('picture') && !ele.hasClass('hline')) {
             if (val > th && self.config.stretchLimit) {
-              ele.css('height', th / 37.5 + 'rem')
+              ele.css('height', th + 'px')
               ele.find('.multiBox').css('height',th + 'px')
               ele.find('.resizeBox').css('height',th + 'px')
             } else {
-              ele.css('height', val / 37.5 + 'rem')
+              ele.css('height', val + 'px')
               ele.find('.multiBox').css('height',val + 'px')
               ele.find('.resizeBox').css('height',val + 'px')
             }
@@ -660,7 +635,7 @@ var tool = {
         break
       case 'lineHeight':
         part = function (ele) {
-          ele.css('lineHeight', val / 37.5 + 'rem')          
+          ele.css('lineHeight', val + 'px')          
         } 
         break
       case 'color':
@@ -748,7 +723,7 @@ var tool = {
         if (onModules.length > 1) {
           let topY = parseInt(self.moduleElementY.css('top'))
           part = function (ele) {
-            ele.css('top', topY / 37.5 + 'rem')
+            ele.css('top',topY)
           }
         } else {
           part = function (ele) {
@@ -762,12 +737,12 @@ var tool = {
           self.inp_y = parseInt(self.moduleElementB.css('top'))
           let bottomY = self.inp_y + parseInt(self.moduleElementB.css('height'))
           part = function (ele) {
-            ele.css('top', (bottomY - parseInt(ele.css('height'))) / 37.5 + 'rem')
+            ele.css('top', bottomY - parseInt(ele.css('height')))
           }
         } else {
           part = function (ele) {
             let bottom = self.moduleParentElementHeight - parseInt(ele.css('height'))
-            ele.css('top', bottom / 37.5 + 'rem')
+            ele.css('top', bottom)
             self.inp_y = bottom
           }
         }
@@ -776,7 +751,7 @@ var tool = {
         if (onModules.length > 1) {
           let leftX = parseInt(self.moduleElementX.css('left'))
           part = function (ele) {
-            ele.css('left', leftX / 37.5 + 'rem')
+            ele.css('left', leftX)
           }
         } else {
           part = function (ele) {
@@ -790,12 +765,12 @@ var tool = {
           self.inp_x = parseInt(self.moduleElementR.css('left'))
           let rightX = self.inp_x + parseInt(self.moduleElementB.css('width'))
           part = function (ele) {
-            ele.css('left', (rightX - parseInt(ele.css('width'))) / 37.5 + 'rem')
+            ele.css('left', rightX - parseInt(ele.css('width')))
           }
         } else {
           part = function (ele) {
             let x = self.inp_width - parseInt(ele.css('width'))
-            ele.css('left', x / 37.5 + 'rem')
+            ele.css('left', x)
             self.inp_x = x
           }
         }
@@ -805,12 +780,12 @@ var tool = {
           self.inp_x = (self.inp_width - parseInt(self.moduleElementY.css('width'))) / 2     
           part = function (ele) {
             let x = (self.inp_width - parseInt(ele.css('width'))) / 2
-            ele.css('left', x / 37.5 + 'rem')
+            ele.css('left', x)
           }
         } else {
           part = function (ele) {
             let x = (self.inp_width - parseInt(ele.css('width'))) / 2
-            ele.css('left', x / 37.5 + 'rem')
+            ele.css('left', x)
             self.inp_x = x
           }
         }
@@ -821,12 +796,12 @@ var tool = {
           self.inp_y = midY - (parseInt(self.moduleElementY.css('height'))/2)
           part = function (ele) {
             let mid = midY - (parseInt(ele.css('height')) / 2)
-            ele.css('top', mid / 37.5 + 'rem')
+            ele.css('top', mid)
           }
         } else {
           part = function (ele) {
             let mid = (self.moduleParentElementHeight - parseInt(ele.css('height'))) / 2
-            ele.css('top', mid / 37.5 + 'rem')
+            ele.css('top', mid)
             self.inp_y = mid
           }
         }
@@ -973,7 +948,7 @@ var tool = {
             ele.attr('id',eIds + 'th' + eId)
             let eley = parseInt(ele.css('top')) + shiftY
             let elex = parseInt(ele.css('left')) + shiftX
-            ele.css({'top': eley / 37.5 + 'rem', 'left': elex / 37.5 + 'rem'})
+            ele.css({'top': eley, 'left': elex})
           }
         }
         break
@@ -1164,11 +1139,11 @@ var tool = {
       let ws = self.inp_w
       let hs = self.inp_h
       let warp = me.warp
-      let areaB = 667
-      let areaR = 375
+      let areaB = self.moduleParentElementHeight
+      let areaR = parseInt(self.inp_width)
      // me.carryLineEvent(self)
       let part
-      switch ($this.attr('class')) { // wap todolist:
+      switch ($this.attr('class')) {
         case 'resize e':
           part = function (e) {
             let xx = self.inp_x + self.posleft + ws + e.pageX - x
@@ -1182,8 +1157,11 @@ var tool = {
             if (xx < xs + self.posleft) {
               xx = xs + self.posleft
               self.inp_w = 0
-            }          
-            parent.css('width', self.inp_w / 37.5 + 'rem')
+            }
+            parent.css('width', self.inp_w)
+            // if(ingbloo) {
+            //   picimg.css('width', self.inp_w)
+            // }
           }
           break
         case 'resize s':
@@ -1200,7 +1178,7 @@ var tool = {
               yy = ys + self.postop + warp
               self.inp_h = 0
             }
-            parent.css('height', self.inp_h / 37.5 + 'rem')
+            parent.css('height', self.inp_h)
           }
           break
         case 'resize w':
@@ -1220,7 +1198,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'width': self.inp_w / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
+            parent.css({'width': self.inp_w, 'left': self.inp_x})
           }
           break
         case 'resize n':
@@ -1240,7 +1218,7 @@ var tool = {
               self.inp_y = ys + hs
               self.inp_h = 0
             }
-            parent.css({'height': self.inp_h / 37.5 + 'rem', 'top': self.inp_y / 37.5 + 'rem'})
+            parent.css({'height': self.inp_h, 'top': self.inp_y})
           }
           break
         case 'resize ne':
@@ -1270,7 +1248,7 @@ var tool = {
               self.inp_y = ys + hs
               self.inp_h = 0
             }
-            parent.css({'height': self.inp_h / 37.5 + 'rem', 'width': self.inp_w, 'top': self.inp_y / 37.5 + 'rem'})
+            parent.css({'height': self.inp_h, 'width': self.inp_w, 'top': self.inp_y})
           }
           break
         case 'resize nw':
@@ -1303,7 +1281,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'height': self.inp_h / 37.5 + 'rem', 'top': self.inp_y / 37.5 + 'rem', 'width': self.inp_w / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
+            parent.css({'height': self.inp_h, 'top': self.inp_y, 'width': self.inp_w, 'left': self.inp_x})
           }
           break
         case 'resize se':
@@ -1330,7 +1308,7 @@ var tool = {
               xx = self.inp_x + self.posleft
               self.inp_w = 0
             }
-            parent.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem'})
+            parent.css({'width': self.inp_w, 'height': self.inp_h})
           }
           break
         case 'resize sw':
@@ -1360,7 +1338,7 @@ var tool = {
               self.inp_w = 0
               self.inp_x = xs + ws
             }
-            parent.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem', 'left': self.inp_x / 37.5 + 'rem'})
+            parent.css({'width': self.inp_w, 'height': self.inp_h, 'left': self.inp_x})
           }
           break
       }
@@ -1709,7 +1687,7 @@ var tool = {
         me.lShrink.show()
       })
       // me.carryOutsideLineEvent(self, e) // 辅助线
-      me.editBox.mouseup(function (e) { // 鼠标松开事件 // wap todo:
+      me.editBox.mouseup(function (e) { // 鼠标松开事件
         me.lShrink.show()
         me.editBox.unbind('mousemove mouseup')
         me.libLi.unbind('mousemove mouseup')
@@ -1720,17 +1698,26 @@ var tool = {
         let box
         let x
         let y
-        let sTop = parseInt(me.canvas.scrollTop()) // 滚动条距顶部高度
-        let canvasLeft = me.canvas[0].offsetLeft
-        let canvasTop = me.canvas[0].offsetTop
-        x = e.pageX - self.paddingleft - canvasLeft
-        y = e.pageY + sTop - self.paddingtop - canvasTop
-        box = me.top
+        let sTop = parseInt(me.space.scrollTop()) // 滚动条距顶部高度
+        let sLeft = parseInt(me.space.scrollLeft()) // 滚动条距右边
+        x = e.pageX - self.paddingleft - self.posleft + sLeft
+        me.topRangeY = parseInt(me.top.css('height')) + self.paddingtop + self.postop
+        me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
+        if (e.pageY + sTop < me.topRangeY) {
+          box = me.top
+          y = e.pageY + sTop - self.paddingtop - self.postop
+        } else if (e.pageY + sTop < me.bodyRangeY) {
+          box = me.body
+          y = e.pageY + sTop - me.topRangeY
+        } else {
+          box = me.foot
+          y = e.pageY + sTop - me.bodyRangeY
+        }
         if (self.config.moveLimit) {
           if (x < 0) {
             x = 0
           }
-          let boxLeft = 375 - parseInt(me.copyBox.css('width'))
+          let boxLeft = self.inp_width - parseInt(me.copyBox.css('width'))
           if (x > boxLeft) {
             x = boxLeft
           }
@@ -1750,7 +1737,7 @@ var tool = {
         } 
         for (let i = 0,len = AddElement.length; i < len; i++) {
           let yg = y + i * marginT
-          AddElement.eq(i).css({'top': yg / 37.5 + 'rem', 'left': x / 37.5 + 'rem'})
+          AddElement.eq(i).css({'top': yg, 'left': x})
         }
         me.$('.addmodule').removeClass('addmodule')
         if (dataCon.createEvent) {

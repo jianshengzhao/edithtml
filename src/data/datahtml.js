@@ -1,11 +1,11 @@
 var configHtml = {
   config:{
-    stretchLimit: true, // 是否开启module拉伸限制
-    moveLimit: true, // 是否开启module移动限制
+    stretchLimit: false, // 是否开启module拉伸限制
+    moveLimit: false, // 是否开启module移动限制
     paddingtop: 35, // top栏高度
     paddingleft: 133, // left栏高度
     postop: 80, // editbox  top值
-    posleft: 0, // editbox  left值
+    posleft: 1000, // editbox  left值
     fuzzyVal: 6,// 模糊度
     choiceCon: true // 多选模块： ture 模糊选择，false为全部选中
   },
@@ -16,11 +16,11 @@ var configHtml = {
         icon: 'imgicon icon-rectangle',
         text: '矩形'
       },
-      // {
-      //   name: 'radius',
-      //   icon: 'imgicon icon-round',
-      //   text: '圆形'
-      //  },
+      {
+        name: 'radius',
+        icon: 'imgicon icon-round',
+        text: '圆形'
+       },
       {
         name: 'editor',
         icon: 'imgicon icon-text',
@@ -41,93 +41,93 @@ var configHtml = {
         icon: 'imgicon icon-level_Line',
         text: '横线'
       },
-      // {
-      //   name: 'sline',
-      //   icon: 'imgicon icon-vertical_Line',
-      //   text: '竖线'
-      // },
-      // {
-      //   name: 'taxonomy',
-      //   icon: 'imgicon icon-classify',
-      //   text: '分类'
-      // },
-      // {
-      //   name: 'loginbox',
-      //   icon: 'imgicon icon-login',
-      //   text: '登录框'
-      // },      
-      // {
-      //   name: 'waiter',
-      //   icon: 'imgicon icon-waiter',
-      //   text: '客服'
-      // },
-      // {
-      //   name: 'player',
-      //   icon: 'imgicon icon-player',
-      //   text: '播放器'
-      // },
-      // {
-      //   name: 'schoollogo',
-      //   icon: 'imgicon icon-logo',
-      //   text: 'LOGO'
-      // },
-      // {
-      //   name: 'schoolmap',
-      //   icon: 'imgicon icon-map',
-      //   text: '地图'
-      // },
-      // {
-      //   name: 'schoolqr',
-      //   icon: 'imgicon icon-QRcode',
-      //   text: '二维码'
-      // },
+      {
+        name: 'sline',
+        icon: 'imgicon icon-vertical_Line',
+        text: '竖线'
+      },
+      {
+        name: 'taxonomy',
+        icon: 'imgicon icon-classify',
+        text: '分类'
+      },
+      {
+        name: 'loginbox',
+        icon: 'imgicon icon-login',
+        text: '登录框'
+      },      
+      {
+        name: 'waiter',
+        icon: 'imgicon icon-waiter',
+        text: '客服'
+      }
+    ],
+    online: [
+      {
+        name: 'carousel',
+        icon: 'imgicon icon-carousel',
+        text: '轮播'
+      },
+      {
+        name: 'advert',
+        icon: 'imgicon icon-advert',
+        text: '悬浮广告'
+      },      
+      {
+        name: 'teacher',
+        icon: 'imgicon icon-teacher',
+        text: '教师'
+      },     
+      {
+        name: 'audition',
+        icon: 'imgicon icon-audition',
+        text: '试听'
+      },      
+      {
+        name: 'course',
+        icon: 'imgicon icon-course',
+        text: '课程'
+      },
+      {
+        name: 'information',
+        icon: 'imgicon icon-information',
+        text: '资讯'
+      },
+      {
+        name: 'addcoursetype',
+        icon: 'imgicon icon-addcoursetype',
+        text: '课程导航'
+      },
+      {
+        name: 'player',
+        icon: 'imgicon icon-player',
+        text: '播放器'
+      },
+      {
+        name: 'schoollogo',
+        icon: 'imgicon icon-logo',
+        text: 'LOGO'
+      },
+      {
+        name: 'schoolmap',
+        icon: 'imgicon icon-map',
+        text: '地图'
+      },
+      {
+        name: 'schoolqr',
+        icon: 'imgicon icon-QRcode',
+        text: '二维码'
+      },
       // {
       //   name: 'weather',
       //   icon: 'imgicon icon-weather',
       //   text: '天气'
       // },
-      // {
-      //   name: 'introduce',
-      //   icon: 'imgicon icon-introduce',
-      //   text: '网校介绍'
-      // }
-    ],
-    online: [
-      // {
-      //   name: 'carousel',
-      //   icon: 'imgicon icon-carousel',
-      //   text: '轮播'
-      // },
-      // {
-      //   name: 'advert',
-      //   icon: 'imgicon icon-advert',
-      //   text: '悬浮广告'
-      // },      
-      // {
-      //   name: 'teacher',
-      //   icon: 'imgicon icon-teacher',
-      //   text: '教师'
-      // },     
-      // {
-      //   name: 'audition',
-      //   icon: 'imgicon icon-audition',
-      //   text: '试听'
-      // },      
-      // {
-      //   name: 'course',
-      //   icon: 'imgicon icon-course',
-      //   text: '课程'
-      // },
-      // {
-      //   name: 'information',
-      //   icon: 'imgicon icon-information',
-      //   text: '资讯'
-      // },
-      // {
-      //   name: 'addcoursetype',
-      //   icon: 'imgicon icon-addcoursetype',
-      //   text: '课程导航'
-      // }
+      {
+        name: 'introduce',
+        icon: 'imgicon icon-introduce',
+        text: '网校介绍'
+      }
     ],
     todo: [],
     expect: []
@@ -141,7 +141,7 @@ var configHtml = {
   },
   // 模块配置项
   rectangle: {
-    style: 'width: 3rem; height: 1rem',
+    style: 'width: 200px; height: 50px',
     tool: {
       private: {
         text: '',
@@ -163,7 +163,7 @@ var configHtml = {
     html: '<div class="radius module addmodule"  datatext="圆形"><a></a></div>'
   },
   editor: {
-    style: 'width:10rem; height:5rem',
+    style: 'width:400px; height:200px',
     tool: {
       private: {
         text: '编辑文本',
@@ -174,7 +174,7 @@ var configHtml = {
     html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
   },
   picture: {
-    style: 'width:5rem; height:2.88rem',
+    style: 'width:243px; height:144px',
     tool: {
       private: {
         text: '编辑图片',
@@ -185,7 +185,7 @@ var configHtml = {
     html: '<div class="picture module addmodule"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
   },
   button: {
-    style: 'width:2rem; height:0.8rem',
+    style: 'width:80px; height:30px',
     tool: {
       private: {
         text: '设置样式',
@@ -325,7 +325,7 @@ var configHtml = {
     html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
   },
   hline: {
-    style: 'width:10rem; height:1px',
+    style: 'width:200px; height:1px',
     tool: {
       private: {
         text: '',
