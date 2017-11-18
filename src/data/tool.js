@@ -1543,11 +1543,11 @@ var tool = {
       let supendTools = me.$('.supendTools')
       let currScrollTop = me.canvas.scrollTop()
       let scrollPageY = e.pageY
-      supendTools.hide()
+      supendTools.hide()     
       me.editBox.mousemove(function (e) {
         scrollPageY = e.pageY
         let left = xs + e.pageX - x
-        let top = ys + e.pageY - y
+        let top = ys + e.pageY - y + me.canvas.scrollTop() - currScrollTop
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
         me.carrySupendToolsPositionEvent(self)
