@@ -278,7 +278,13 @@
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
       <el-row>
-        <el-col :span="5" class="tit">前景色</el-col>
+        <el-col :span="4" class="tit">页高</el-col>          
+        <el-col :span="7">          
+          <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4" class="tit">前景色</el-col>
         <el-col :span="7">
          <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
           <colorPicker v-model="prospectColorVal" ></colorPicker>
@@ -383,59 +389,75 @@
         <el-button @click="editanimate()" type="primary">确 定</el-button>
       </span>
     </el-dialog>  
-  <!-- dialog弹框 -->
-    <ueditor ref="ueditor" v-model="editEditor"></ueditor>
+  <!-- dialog弹框 suspendTools-->    
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
-  <!--   <information ref="information"></information>
-    <weather ref="weather"></weather> -->
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
+  <!-- dialog弹框 modules-->
+    <rectangle ref="rectangle"></rectangle>
+    <ueditor ref="ueditor"></ueditor>
     <editbutton ref="editbutton"></editbutton>
-   <!--  <carousel ref="carousel"></carousel>
+    <picture ref="picture"></picture>
+    <hline ref="hline"></hline>
+    <sline ref="sline"></sline>
+   <!--  <information ref="information"></information>
+    <weather ref="weather"></weather> 
+    <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
     <advert ref="advert"></advert> 
     <course ref="course"></course>
     <player ref="player"></player>
-    <addcoursetype ref="addcoursetype"></addcoursetype>    -->   
+    <addcoursetype ref="addcoursetype"></addcoursetype>   -->    
   <!--<effect ref="effect"></effect> -->
   </div>
 </template>
 <script>  
   import $ from 'jquery' 
-  import configData from '@/data/datahtml.js'
+  import configData from '@/data/configData.js'
   import tool from '@/data/tool.js'
-  import colorPicker from '@/components/colorPicker'
-  import ueditor from '@/components/ueditor'
-  import hrefdialog from '@/components/hrefdialog'
-  import myimages from '@/components/myimages'
-  // import information from '@/components/information'
-  // import weather from '@/components/weather'
-  import suspend from '@/components/suspend'
-  import shape from '@/components/shape'
-  import editbutton from '@/components/editbutton'
-  // import carousel from '@/components/carousel'
-  // import waiter from '@/components/waiter'
-  // import advert from '@/components/advert'
-  // import course from '@/components/course'
-  // import player from '@/components/player'
-  // import addcoursetype from '@/components/addcoursetype'
+  import colorPicker from '@/components/supendTools/colorPicker'
+  import hrefdialog from '@/components/supendTools/hrefdialog'
+  import myimages from '@/components/supendTools/myimages'
+  import suspend from '@/components/supendTools/suspend'
+  import shape from '@/components/supendTools/shape'
+ 
   
-  /*import effect from '@/components/effect'*/
+  import rectangle from '@/components/modules/rectangle'
+  import ueditor from '@/components/modules/ueditor'
+  import editbutton from '@/components/modules/editbutton'
+  import picture from '@/components/modules/picture'
+  import hline from '@/components/modules/hline'
+  import sline from '@/components/modules/sline'
+
+  // import information from '@/components/modules/information'
+  // import weather from '@/components/modules/weather'
+  // import carousel from '@/components/modules/carousel'
+  // import waiter from '@/components/modules/waiter'
+  // import advert from '@/components/modules/advert'
+  // import course from '@/components/modules/course'
+  // import player from '@/components/modules/player'
+  // import addcoursetype from '@/components/modules/addcoursetype'
+  
+  /*import effect from '@/components/modules/effect'*/
   import '@/assets/animate.min.css'
   let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
     components: {
-      colorPicker, 
-      ueditor, 
+      colorPicker,
       hrefdialog, 
       myimages,
-      // information,
-      // weather, 
       suspend, 
-      shape, 
-      editbutton 
+      shape,
+      rectangle,
+      ueditor, 
+      editbutton,           
+      picture,
+      hline,
+      sline
+      // information,
+      // weather,
       // carousel, 
       // waiter, 
       // advert, 
@@ -448,52 +470,53 @@
       // ------------ 工具栏add ----------------- 
         onlybloo: true,
         br_width: '0',
-        br_widths: [{
-          value: '0',
-          label: '0'
-        },{
-          value: '1',
-          label: '1'
-        },{
-          value: '2',
-          label: '2'
-        },{
-          value: '3',
-          label: '3'
-        },{
-          value: '4',
-          label: '4'
-        },{
-          value: '5',
-          label: '5'
-        }],
+        br_widths: [
+          {
+            value: '0',
+            label: '0'
+          },{
+            value: '1',
+            label: '1'
+          },{
+            value: '2',
+            label: '2'
+          },{
+            value: '3',
+            label: '3'
+          },{
+            value: '4',
+            label: '4'
+          },{
+            value: '5',
+            label: '5'
+          }],
         br_style: 'solid',
-        br_styles: [{
-          value: 'solid',
-          label: 'solid'
-        },{
-          value: 'double',
-          label: 'double'
-        },{
-          value: 'dotted',
-          label: 'dotted'
-        },{
-          value: 'dashed',
-          label: 'dashed'
-        },{
-          value: 'groove',
-          label: 'groove'
-        },{
-          value: 'ridge',
-          label: 'ridge'
-        },{
-          value: 'inset',
-          label: 'inset'
-        },{
-          value: 'outset',
-          label: 'outset'
-        }
-        ],
+        br_styles: [
+          {
+            value: 'solid',
+            label: 'solid'
+          },{
+            value: 'double',
+            label: 'double'
+          },{
+            value: 'dotted',
+            label: 'dotted'
+          },{
+            value: 'dashed',
+            label: 'dashed'
+          },{
+            value: 'groove',
+            label: 'groove'
+          },{
+            value: 'ridge',
+            label: 'ridge'
+          },{
+            value: 'inset',
+            label: 'inset'
+          },{
+            value: 'outset',
+            label: 'outset'
+          }],
         br_color: '#ccc',
         inp_opacity: '',        
         check_shadow: false,
@@ -512,32 +535,34 @@
         dialogPageSetting: false,
         attachmentPgValue: 'scroll',
         attachmentBgValue: 'scroll',
-        attachmentOptions: [{
-          value: 'scroll',
-          label: '滚动'
-        },
-        {
-          value: 'fixed',
-          label: '固定'
-        }],
+        attachmentOptions: [
+          {
+            value: 'scroll',
+            label: '滚动'
+          },
+          {
+            value: 'fixed',
+            label: '固定'
+          }],
         repeatPgValue: 'no-repeat',
         repeatBgValue: 'no-repeat',
-        repeatOptions: [{
-          value: 'no-repeat',
-          label: '不平铺'
-        },
-        {
-          value: 'repeat-y',
-          label: 'Y 轴平铺'
-        },
-        {
-          value: 'repeat-x',
-          label: 'X 轴平铺'
-        },
-        {
-          value: 'repeat',
-          label: '平铺'
-        }],
+        repeatOptions: [
+          {
+            value: 'no-repeat',
+            label: '不平铺'
+          },
+          {
+            value: 'repeat-y',
+            label: 'Y 轴平铺'
+          },
+          {
+            value: 'repeat-x',
+            label: 'X 轴平铺'
+          },
+          {
+            value: 'repeat',
+            label: '平铺'
+          }],
         activeSetting: 'first',
         prospectColorVal: '#fff',
         bgColorVal: '#F5F5F5',
@@ -547,7 +572,7 @@
         inp_percent: '100',
         inp_pgPercent: '100',
         inp_width: 375,
-        inp_height: 667,
+        inp_height: 1800,
         disabled: true,
         rightButton: false,
         inp_z: '',
@@ -587,7 +612,7 @@
         elementHead: [],
         elementMain: [],
         elementTail: [],
-        datahtml: configData.config,
+        moduleData: configData.config,
         tool: tool,
       // ------------ 封装的异步请求 ------------ 
         httpget: function (getParam) { 
@@ -610,9 +635,10 @@
         }
       }
     },
-    created: function () {
-      var self = this
-      self.$nextTick(function () {       
+    created: function () {      
+      var self = this     
+      self.moduleData['toallGroup']['basic'] = []
+      self.$nextTick(function () {        
         let head = $('.c_top')
       // -------- 获取网校信息 ------------- 
           let getParam = {
@@ -622,29 +648,29 @@
               let crid = response.body.data.crid
               window.roominfo = response.body.data
               // -------- 获取网校页面 -----------
-                let getParams = {
-                  url: '/room/design/getdesign.html',
-                  params: {crid: crid},
-                  fun: function (response) {
-                    let saveParams = response.body.data                
-                    let headHtml = saveParams.head.replace(/[\\]/g, '')              
-                    let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
-                    self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
-                    self.fontHoverColorVal = pp.fontHover||'#333'                
-                    self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-                    self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-                    self.repeatPgValue = pp.pgImage.backgroundRepeat
-                    self.attachmentPgValue = pp.pgImage.backgroundAttachment
-                    head.css('backgroundColor', pp.pg)
-                    head.css(pp.pgImage)              
-                    head.css('height', self.inp_height)
-                    head.html(headHtml)
-                    self.moduleElement = $('.on_module')
-                    tool.tool.carryLayerEvent(self, head)
-                    tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
-                  }
+              let getParams = {
+                url: '/room/design/getdesign.html',
+                params: {crid: crid},
+                fun: function (response) {
+                  let saveParams = response.body.data                
+                  let headHtml = saveParams.head.replace(/[\\]/g, '')              
+                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
+                  self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
+                  self.fontHoverColorVal = pp.fontHover||'#333'                
+                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+                  self.repeatPgValue = pp.pgImage.backgroundRepeat
+                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                  head.css('backgroundColor', pp.pg)
+                  head.css(pp.pgImage)              
+                  head.css('height', self.inp_height)
+                  head.html(headHtml)
+                  self.moduleElement = $('.on_module')
+                  tool.tool.carryLayerEvent(self, head)
+                  tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
                 }
-                self.httppost(getParams) 
+              }
+              self.httppost(getParams) 
             }
           }
       // self.httpget(getParam)  未有手机版接口     
@@ -693,19 +719,10 @@
           let head = $('.c_top')
           let middle = $('.c_body')
           let foot = $('.c_foot')
-          head.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页头选区高度</div>')
-          middle.html('')
-          foot.html('<div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>')
+          head.html('')
           tool.tool.carryLayerEvent(self, head)
-          tool.tool.carryLayerEvent(self, middle)
-          tool.tool.carryLayerEvent(self, foot)
-          tool.tool.carryLineHeightEvent()
           tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, middle, middle.find('.module'))
-          tool.tool.carryUpdateElementStorageEvent(self, foot, foot.find('.module'))
           self.elementStorage.c_top = {}
-          self.elementStorage.c_body = {}
-          self.elementStorage.c_foot = {}
           self.$message({
             type: 'success',
             message: '清屏成功!'
@@ -761,6 +778,7 @@
         var self = this       
         let canvas = $('.c_top')
         
+        canvas.css('height', self.inp_height)
         if (self.prospectColorVal) {
           canvas.css('backgroundColor', self.prospectColorVal)
         } else {
@@ -775,8 +793,7 @@
         if (self.fontHoverColorVal) {
           $('#fontHover').remove()
           $('head').append('<style id="fontHover">body a[href]:hover{color:' + self.fontHoverColorVal + ';}</style>')
-        }       
-        tool.tool.carryLineHeightEvent()
+        }
         self.dialogPageSetting = false
       },
       saveEvent: function () { // 页面保存
@@ -1122,7 +1139,7 @@
     }
     .t_left{
       float: left;
-      width: 380px;  
+      width: 150px;  
       height: 28px;
     }
     .tl_li{
@@ -1827,7 +1844,7 @@
     }
     .supendTools{
       position: absolute;
-      top:-45px;
+      margin-top:-45px;
       left: 0px;
       height: 36px;       
       box-sizing: border-box;
@@ -1835,6 +1852,7 @@
       background-color: #fff;
       white-space: nowrap;
       cursor: default;
+      z-index: 999;
     }
     .supendTools li {
       display: inline-block;

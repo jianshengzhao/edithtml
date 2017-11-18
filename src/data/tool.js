@@ -92,10 +92,11 @@ var tool = {
     let me = this
     let canvasLeft = me.canvas[0].offsetLeft
     let canvasTop = me.canvas[0].offsetTop
-    me.rowT.css('top', self.inp_y + canvasTop)
-    me.rowB.css('top', self.inp_y + canvasTop + self.inp_h - 1)
+    let scrollTop = me.canvas.scrollTop()
+    me.rowT.css('top', self.inp_y + canvasTop - scrollTop)
+    me.rowB.css('top', self.inp_y + canvasTop + self.inp_h - scrollTop - 1)
     me.colL.css('left', self.inp_x + canvasLeft)
-    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w - 1)
+    me.colR.css('left', self.inp_x + canvasLeft + self.inp_w)
     if (!show) {
       me.line.show()
     }
@@ -109,8 +110,8 @@ var tool = {
     let cName = element.attr('class').split(' ')[0]
     // console.log(cName)
     let thtml = ''
-    let tool = self.datahtml[cName].tool
-    let toolClass = self.datahtml['supendTools']
+    let tool = self.moduleData[cName].tool
+    let toolClass = self.moduleData['supendTools']
     if (tool.private.text !==''|| tool.public.length > 0) {
       thtml = '<div class="supendTools">'
       if (tool.private.text !=='') {
@@ -120,34 +121,26 @@ var tool = {
         thtml += '<li class="' + toolClass[tool.public[i]][0] + '" title="' + toolClass[tool.public[i]][1] + '"></li>'
       }
       thtml += '</div>'
-    }                     
-    if(cName == "information"){
-    	var resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
-                              '<div class="resize e"></div>' +
-                              '<div class="resize w"></div>' +
-                            '</div>'
-    }else{
-    	var resizeBox = thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
-                              '<div class="resize nw"></div>' +
-                              '<div class="resize sw"></div>' +
-                              '<div class="resize ne"></div>' +
-                              '<div class="resize se"></div>' +
-                              '<div class="resize e"></div>' +
-                              '<div class="resize n"></div>' +
-                              '<div class="resize w"></div>' +
-                              '<div class="resize s"></div>' +
-                            '</div>'
     }
+
+  	var resizeBox = '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">' +
+                      '<div class="resize nw"></div>' +
+                      '<div class="resize sw"></div>' +
+                      '<div class="resize ne"></div>' +
+                      '<div class="resize se"></div>' +
+                      '<div class="resize e"></div>' +
+                      '<div class="resize n"></div>' +
+                      '<div class="resize w"></div>' +
+                      '<div class="resize s"></div>' +
+                    '</div>'
+    
     me.$('.on_module').removeClass('on_module')
     me.$('.resizeBox').remove()
     me.$('.supendTools').remove()
     me.$('.multiBox').remove()
     element.addClass('on_module')
-    element.append(resizeBox)
-    // if (element.hasClass('picture')){ // 禁止图片拉伸
-    //   element.find('.resize').hide()
-    // }
-     // ---------addcoursetype---------------
+    element.append(resizeBox)   
+    // ---------addcoursetype---------------
     let addcoursetype = me.$('.addcoursetype.on_module')
     if (addcoursetype.length > 0) {      
       let allcourse = parseInt(addcoursetype.find('.allcourse').css('height'))
@@ -162,6 +155,8 @@ var tool = {
     self.inp_z = parseInt(element.css('zIndex')) || 0
     self.inp_x = parseInt(element.css('left'))
     self.inp_y = parseInt(element.css('top'))
+    me.top.append(thtml)
+    me.carrySupendToolsPositionEvent(self)   
     self.inp_w = parseInt(element.css('width'))
     self.inp_h = parseInt(element.css('height'))
     self.inp_size = parseInt(element.css('fontSize'))
@@ -258,7 +253,7 @@ var tool = {
   },
   carryMenuEvent: function (self) { // 渲染模块菜单
     let me = this
-    let group = self.datahtml.toallGroup
+    let group = self.moduleData.toallGroup
     let bhtm = ''
     let ohtm = ''
     let thtm = ''
@@ -450,55 +445,59 @@ var tool = {
       }
       
       getregion.remove()
-      let onModule = me.$('.on_module')
-      let getElementY = onModule.eq(0)
-      let getElementX = onModule.eq(0)
-      let getElementR = onModule.eq(0)
-      let getElementB = onModule.eq(0)
-      for(let i = 1,len = onModule.length; i < len; i ++) { // 选出特殊用途的元素
-        let item = onModule.eq(i)
-        let itemTop = parseInt(item.css('top'))
-        let eleTop = parseInt(getElementY.css('top'))        
-        if (eleTop >= itemTop) { // 最上边的元素
-          if (eleTop == itemTop) {
-            if (parseInt(getElementY.css('left')) > parseInt(item.css('left'))) {
-              getElementY = item
-            }
-          } else {
-            getElementY = item
-          }          
-        }
-
-        let itemBottom = parseInt(item.css('top')) + parseInt(item.css('height'))
-        let eleBottom = parseInt(getElementB.css('top')) + parseInt(getElementB.css('height'))
-        if (itemBottom >= eleBottom) { // 最下边的元素
-          getElementB = item
-        }
-
-        let itemLeft = parseInt(item.css('left'))
-        let eleLeft = parseInt(getElementX.css('left'))
-        if (eleLeft >= itemLeft) { // 最左边的元素
-          getElementX = item
-        }
-
-        let itemRight = parseInt(item.css('left')) + parseInt(item.css('width'))
-        let eleRight = parseInt(getElementR.css('left')) + parseInt(getElementR.css('width'))
-        if (itemRight >= eleRight) { // 最右边的元素
-          getElementR = item
-        }
-      }
-      self.moduleElement = getElementY
-      self.moduleElementY = getElementY
-      self.moduleElementX = getElementX
-      self.moduleElementR = getElementR
-      self.moduleElementB = getElementB
-      if (onModule.length == 1){
-        me.$('.multiBox').remove()
-        me.carrySignEvent(self, getElementY)
-      } else if(onModule.length > 1){ 
-        me.carryRegionChoiceSignEvent(self, getElementY, getElementX)
-      }     
+      me.carrySignMultiBoxEvent(self)        
     })     
+  },
+  carrySignMultiBoxEvent: function (self) { // 多选模块初始化
+    let me = this
+    let onModule = me.$('.on_module')
+    let getElementY = onModule.eq(0)
+    let getElementX = onModule.eq(0)
+    let getElementR = onModule.eq(0)
+    let getElementB = onModule.eq(0)
+    for(let i = 1,len = onModule.length; i < len; i ++) { // 选出特殊用途的元素
+      let item = onModule.eq(i)
+      let itemTop = parseInt(item.css('top'))
+      let eleTop = parseInt(getElementY.css('top'))        
+      if (eleTop >= itemTop) { // 最上边的元素
+        if (eleTop == itemTop) {
+          if (parseInt(getElementY.css('left')) > parseInt(item.css('left'))) {
+            getElementY = item
+          }
+        } else {
+          getElementY = item
+        }          
+      }
+
+      let itemBottom = parseInt(item.css('top')) + parseInt(item.css('height'))
+      let eleBottom = parseInt(getElementB.css('top')) + parseInt(getElementB.css('height'))
+      if (itemBottom >= eleBottom) { // 最下边的元素
+        getElementB = item
+      }
+
+      let itemLeft = parseInt(item.css('left'))
+      let eleLeft = parseInt(getElementX.css('left'))
+      if (eleLeft >= itemLeft) { // 最左边的元素
+        getElementX = item
+      }
+
+      let itemRight = parseInt(item.css('left')) + parseInt(item.css('width'))
+      let eleRight = parseInt(getElementR.css('left')) + parseInt(getElementR.css('width'))
+      if (itemRight >= eleRight) { // 最右边的元素
+        getElementR = item
+      }
+    }
+    self.moduleElement = getElementY
+    self.moduleElementY = getElementY
+    self.moduleElementX = getElementX
+    self.moduleElementR = getElementR
+    self.moduleElementB = getElementB
+    if (onModule.length == 1 && !me.ctrl){
+      me.$('.multiBox').remove()
+      me.carrySignEvent(self, getElementY)
+    } else if(onModule.length > 1 || me.ctrl){ 
+      me.carryRegionChoiceSignEvent(self, getElementY, getElementX)
+    }
   },
   carryRegionChoiceSignEvent: function (self, element, elementX) { // 标记模块并属性初始化 (多选模块)
     let me = this
@@ -592,9 +591,9 @@ var tool = {
         let maxY
         let moveY = val
         if (onModules.length > 1){
-          maxY = parseInt(onModules.parent().css('height')) - (parseInt(self.moduleElementB.css('top')) + parseInt(self.moduleElementB.css('height')) - parseInt(self.moduleElementY.css('top')))
+          maxY = self.inp_height - (parseInt(self.moduleElementB.css('top')) + parseInt(self.moduleElementB.css('height')) - parseInt(self.moduleElementY.css('top')))
         } else {          
-          maxY = parseInt(onModules.parent().css('height')) - self.inp_h
+          maxY = self.inp_height - self.inp_h
         }        
         if (val > maxY) {
           val = maxY
@@ -1093,6 +1092,24 @@ var tool = {
       }      
     }
   },
+  carrySupendToolsPositionEvent: function (self) { // 悬浮工具栏位置优化
+    let me = this
+    let top = self.inp_y
+    let left = self.inp_x
+    let supendTools = me.$('.supendTools')
+    let minY = me.canvas.scrollTop() + 45
+    if (top < minY) {
+      top = minY
+    } 
+    let maxX = 375 - parseInt(supendTools.css('width'))
+    if (left > maxX) {
+      left = maxX
+    } 
+    me.$('.supendTools').css({
+      top: top,
+      left: left
+    })
+  },
   bindEvent: function (self) { // 绑定选中模块绑定事件事件
     let me = this
   // ------------- element 弹框拖拽 ------------
@@ -1524,17 +1541,27 @@ var tool = {
       let height = self.inp_h
       let width = self.inp_w
       let supendTools = me.$('.supendTools')
+      let currScrollTop = me.canvas.scrollTop()
+      let scrollPageY = e.pageY
       supendTools.hide()
       me.editBox.mousemove(function (e) {
+        scrollPageY = e.pageY
         let left = xs + e.pageX - x
         let top = ys + e.pageY - y
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
-        me.carryFuzzyCalibrationEvent(self, parentClass, id, left, top, height, width, self.moduleElement)
+        me.carrySupendToolsPositionEvent(self)
+        me.carryFuzzyCalibrationEvent(self, parentClass, id, self.inp_x, self.inp_y, height, width, self.moduleElement)
         return false
+      })
+      me.canvas.scroll(function () {        
+        me.line.hide()
+        let top = ys + scrollPageY - y + me.canvas.scrollTop() - currScrollTop
+        me.carryModuleOperationEvent(self, 'top', top)
       })
       me.editBox.mouseup(function () {
         me.editBox.unbind('mousemove mouseup')
+        me.canvas.unbind('scroll')
         me.$('.fuzzybox').remove()
         me.line.hide()
         supendTools.show()    
@@ -1552,19 +1579,25 @@ var tool = {
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
-      let ys = self.inp_y
+      let ys = self.inp_y 
+      let scrollPageY =  e.pageY
+      let currScrollTop = me.canvas.scrollTop() 
       me.editBox.mousemove(function (e) {
+        scrollPageY = e.pageY
         let left = xs + e.pageX - x
-        let top = ys + e.pageY - y
+        let top = ys + e.pageY - y      
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
         return false
       })
+      me.canvas.scroll(function () {        
+        me.line.hide()
+        let top = ys + scrollPageY - y + me.canvas.scrollTop() - currScrollTop
+        me.carryModuleOperationEvent(self, 'top', top)
+      })
       me.editBox.mouseup(function () {
         me.editBox.unbind('mousemove mouseup')
-        // me.line.hide()
-        // me.$('.touch_module').removeClass('touch_module')
-        // me.carryLayerEvent(self, $this.parent())
+        me.canvas.unbind('scroll')     
         return false
       })
       return false
@@ -1579,7 +1612,10 @@ var tool = {
         '40': [true, 'top', 1, 'inp_y'],
         '37': [true, 'left', -1, 'inp_x'],
         '39': [true, 'left', 1, 'inp_x']
-      }     
+      }
+      if (!me.ctrl && e.keyCode == 17) {
+        me.ctrl = true
+      }
       if (len > 0) {
         let key = keyObj[e.keyCode]    
         if (key) {         
@@ -1590,13 +1626,13 @@ var tool = {
         }
         if (e.keyCode == 46) {
           if (me.$(e.target).get(0).tagName == 'BODY' || me.$(e.target).parent().hasClass('loginbox')) {
-            // let original = module.parent()
-            // module.remove()
             me.carryModuleOperationEvent(self, 'delete')
-            // me.carryLayerEvent(self, original)
           }
         }
       }             
+    })
+    me.doc.keyup(function () {
+      me.ctrl = false
     })
   // ------------- 右键菜单栏 ------------------
     me.canvas.bind('contextmenu', function () { // 清除canvas原有的contextmenu事件
@@ -1619,7 +1655,6 @@ var tool = {
         } else {
           self.onlybloo = true
         }
-        console.log(self.onlybloo)
         if (module.length > 0) {
           if (!module.hasClass('on_module')) {
             me.carrySignEvent(self, module)
@@ -1682,7 +1717,7 @@ var tool = {
       me.lShrink.hide()
       let that = me.$(this)
       let modType = me.$(this).attr('dataHtml')
-      let dataCon = self.datahtml[modType]
+      let dataCon = self.moduleData[modType]
       
       if(that.hasClass("onlyone")){ //只能添加一个模块
       	me.libLi.unbind('mousemove mouseup')
@@ -1831,12 +1866,22 @@ var tool = {
         }
       }
     })
-    me.elementHead.on('click', '.ele_li', function (e) {
+    me.elementHead.on('click', '.ele_li', function (e) { // 选中模块
       let index = me.$(this).attr('dataIndex')
-      let ele = self.elementHead[index].ele     
-      me.carrySignEvent(self, ele)
+      let item = self.elementHead[index]
+      let ele = item.ele 
+      let scrTop = parseInt(ele.css('top')) - 200 < 0 ? 0 : parseInt(ele.css('top')) - 200
+      me.canvas.animate({ scrollTop: scrTop }, 200)      
+      if (me.ctrl) { // todo:
+        me.$('.supendTools').remove()
+        me.$('.resizeBox').remove()
+        ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
+        me.carrySignMultiBoxEvent(self)  
+      } else {
+        me.carrySignEvent(self, ele)
+      }
     })
-    me.elementHead.on('click', '.deleteLayer', function (e) {      
+    me.elementHead.on('click', '.deleteLayer', function (e) { // close 删除模块
       let index = me.$(this).attr('dataIndex') 
       if (self.elementHead[index].text == '客服') {
         me.$('.waiter').remove()
@@ -1845,70 +1890,6 @@ var tool = {
       self.elementHead.splice(index,1)
       return false
       // me.carrySignEvent(self, ele) waiter 
-    })    
-    me.elementMain.on('click', '.ele_li', function (e) {
-      let index = me.$(this).attr('dataIndex')
-      let ele = self.elementMain[index].ele
-      me.carrySignEvent(self, ele)
-    })
-    me.elementMain.on('click', '.deleteLayer', function (e) {      
-      let index = me.$(this).attr('dataIndex') 
-      if (self.elementMain[index].text == '客服') {
-        me.$('.waiter').remove()
-      }      
-      self.elementMain[index].ele.remove()
-      self.elementMain.splice(index,1)
-      return false
-      // me.carrySignEvent(self, ele)
-    })
-    me.elementTail.on('click', '.ele_li', function (e) {
-      let index = me.$(this).attr('dataIndex')
-      let ele = self.elementTail[index].ele
-      me.carrySignEvent(self, ele)
-    })
-    me.elementTail.on('click', '.deleteLayer', function (e) {      
-      let index = me.$(this).attr('dataIndex') 
-      if (self.elementTail[index].text == '客服') {
-        me.$('.waiter').remove()
-      }           
-      self.elementTail[index].ele.remove()
-      self.elementTail.splice(index,1)
-      return false
-      // me.carrySignEvent(self, ele)
-    })
-  // ------------- 模块双击设置 ----------------
-    let preTime = 0
-    me.editBox.on('mousedown', '.resizeBox', function (e) { // 模块双击操作
-      // let interval = (Date.parse(new Date()) - preTime) / 1000 
-      // if (interval < 1) {
-      //   let type = self.moduleElement.attr('class').split(' ')[0]       
-      //   switch (type) {
-      //     case 'course': 
-      //       self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {
-      //         let courseHtm = '<div class="imgbox">'
-      //                       + '<div class="listBox">'
-      //                       + '<a target="_blank" class="animateBox">课程</a>'
-      //                       + '<img src="'+ data.img +'">'
-      //                       + '<a target="_blank" class="openState openState_djbmbg1"></a>'
-      //                       + '</div>'
-      //                       + '</div>'
-      //                       + '<div class="courseTit">'+ data.foldername +'</div>'
-      //                       + '<div class="speak">讲师</div>'
-      //                       + '<div class="popularity">'+ data.viewnum+'</div>'
-      //                       + '<div class="number">'+ data.studynum +'</div>'
-      //         element.attr('datacoruse', data.itemid)
-      //         element.find('.editCourse').remove()
-      //         element.append(courseHtm)
-      //       })
-      //       break
-      //     case 'player': 
-      //       self.$refs.player.show()
-      //       break
-      //     }
-      //   return false
-      // } else {
-      //   preTime = Date.parse(new Date())
-      // }     
     })  
   }
 }
