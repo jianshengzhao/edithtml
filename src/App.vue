@@ -389,18 +389,20 @@
         <el-button @click="editanimate()" type="primary">确 定</el-button>
       </span>
     </el-dialog>  
-  <!-- dialog弹框 suspendTools-->    
+  <!-- dialog弹框 suspendTools -->    
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
     <suspend ref="suspend"></suspend>
     <shape ref="shape"></shape>
-  <!-- dialog弹框 modules-->
+  <!-- dialog弹框 modules 基本组件 -->
     <rectangle ref="rectangle"></rectangle>
     <ueditor ref="ueditor"></ueditor>
     <editbutton ref="editbutton"></editbutton>
     <picture ref="picture"></picture>
     <hline ref="hline"></hline>
     <sline ref="sline"></sline>
+  <!-- dialog弹框 modules 网校组件 -->  
+    <menubar ref="menubar"></menubar>
    <!--  <information ref="information"></information>
     <weather ref="weather"></weather> 
     <carousel ref="carousel"></carousel>
@@ -420,8 +422,7 @@
   import hrefdialog from '@/components/supendTools/hrefdialog'
   import myimages from '@/components/supendTools/myimages'
   import suspend from '@/components/supendTools/suspend'
-  import shape from '@/components/supendTools/shape'
- 
+  import shape from '@/components/supendTools/shape' 
   
   import rectangle from '@/components/modules/rectangle'
   import ueditor from '@/components/modules/ueditor'
@@ -430,6 +431,7 @@
   import hline from '@/components/modules/hline'
   import sline from '@/components/modules/sline'
 
+  import menubar from '@/components/modules/menubar'
   // import information from '@/components/modules/information'
   // import weather from '@/components/modules/weather'
   // import carousel from '@/components/modules/carousel'
@@ -455,7 +457,8 @@
       editbutton,           
       picture,
       hline,
-      sline
+      sline,
+      menubar
       // information,
       // weather,
       // carousel, 
@@ -638,6 +641,7 @@
     created: function () {      
       var self = this     
       self.moduleData['toallGroup']['basic'] = []
+      self.moduleData['toallGroup']['online'] = []
       self.$nextTick(function () {        
         let head = $('.c_top')
       // -------- 获取网校信息 ------------- 

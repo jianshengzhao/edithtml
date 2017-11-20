@@ -912,6 +912,7 @@ svg.icon {
 .icon-course { background-image: url(../newslibIcon/course.png); background-size: 28px auto; }
 .icon-teacher { background-image: url(../newslibIcon/teacher.png); background-size: 28px auto; }
 .icon-audition { background-image: url(../newslibIcon/audition.png); background-size: 28px auto; }
+.icon-menubar { background-image: url(../newslibIcon/menu.png); background-size: 20px auto; }
 @font-face {
 	font-family:Material Icons;font-style:normal;font-weight:400;src:local("Material Icons"),local("MaterialIcons-Regular"),url(material.570eb83859dc23dd0eec423a49e147fe.woff2) format("woff2"),url(material.012cf6a10129e2275d79d6adac7f3b02.woff) format("woff"),url(material.a37b0c01c0baf1888ca812cc0508f6e2.ttf) format("truetype")
 }

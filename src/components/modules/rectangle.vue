@@ -29,7 +29,7 @@ export default {
           text: '',
           class: ''
         }, // 私有工具
-        public: [ 'd', 'e'] // 公有工具
+        public: ['e'] // 公有工具
       },
       html: '<div class="rectangle module addmodule" datatext="矩形"><a></a></div>'
     }

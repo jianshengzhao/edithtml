@@ -1521,6 +1521,9 @@ var tool = {
         case 'st-left st-addcoursetype':
           self.$refs.addcoursetype.show(self, me.$('.on_module'), me)
           break
+        case 'st-left st-menubar':
+          self.$refs.menubar.show(self, me.$('.on_module'), me)
+          break
       }
       return false
     })

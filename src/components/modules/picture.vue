@@ -29,7 +29,7 @@ export default {
           text: '编辑图片',
           class: 'st-picture'
         },
-        public: ['b', 'c', 'd', 'e']
+        public: ['e']
       },
       html: '<div class="picture module addmodule"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
     }
