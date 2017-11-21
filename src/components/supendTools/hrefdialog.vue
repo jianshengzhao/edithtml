@@ -151,7 +151,7 @@
                     <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                   </div> -->
                   <div  class="courselist" v-for="(item,index) in courselist">
-                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" name="fourcourse" type="radio" value="" />
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" :iprice="item.iprice" name="fourcourse" type="radio" value="" />
                     <a @click="parameter.thatName == 'course' ? infolderid = item.folderid  : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
                       <div style="text-align: center;width: 121px;">
@@ -1208,6 +1208,7 @@
               courseactive = 4;
               let sourceid = self.sourceid?self.sourceid:'0';
               let sid = self.sid?self.sid:'0';
+              let courseradio = $("input[folderid='"+fourcourseradio+"']")
               obj = {
                 course : 4,
                 sourceid: self.sourceid,
@@ -1218,12 +1219,13 @@
                 pname : $("input[pid='"+self.pid+"']").attr('pname'),
                 folderid : fourcourseradio,
                 itemid : itemid,
-                foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
+                foldername : courseradio.attr('foldername'),
                 // ----------- update start------------ 
-                summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
-                img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
-                studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
-                viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
+                summary: courseradio.attr('summary'),
+                img: courseradio.attr('img'),
+                studynum: courseradio.attr('studynum'),
+                viewnum: courseradio.attr('viewnum'),
+                iprice: courseradio.attr('iprice'),
                 // ----------- update end------------ 
                 folderq : self.folderq,
                 folderpage : self.folderpage,
@@ -1249,6 +1251,7 @@
               courseactive = 5;
               let sourceid = self.sourceid?self.sourceid:'0';
               let sid = self.sid?self.sid:'0';
+              let inpcwid = $("input[cwid='"+fivecourseradio+"']")
               obj = {
                 course : 5,
                 sourceid: self.sourceid,
@@ -1267,13 +1270,13 @@
                 cwid:fivecourseradio,
               // ----------- update start------------  
                 cwpay: cwpay,
-                thumb: $("input[cwid='"+fivecourseradio+"']").attr('thumb'),
-                cwsize: $("input[cwid='"+fivecourseradio+"']").attr('cwsize'),
-                logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
-                viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
-                summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
+                thumb: inpcwid.attr('thumb'),
+                cwsize: inpcwid.attr('cwsize'),
+                logo: inpcwid.attr('logo'),
+                viewnum: inpcwid.attr('viewnum'),
+                summary: inpcwid.attr('summary'),
               // ----------- update end------------  
-                cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
+                cwname : inpcwid.attr('cwname'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
                 cwpagesize : self.cwpagesize

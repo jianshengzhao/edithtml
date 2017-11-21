@@ -1,4 +1,6 @@
-  
+a{
+  text-decoration: none;
+}
 /* ------------- module ----------------- */
   .module{
     position: absolute;    
@@ -125,7 +127,7 @@
     margin-left: -6px;
     box-sizing: content-box;
   }  
-/* ------------- menubar ------------------- */
+/* ------------- menubar ---------------- */
   .menubar{
     width: 1.33rem;
     height: 1.33rem;
@@ -139,7 +141,211 @@
     background-position: center;
     background-repeat: no-repeat;
   }
+/* ------------- editAdd ---------------- */
+  .module .editAdd{
+    width: 100%;
+    height: 100%;
+  }
+  .module .editAdd .add-icon{
+    width: 100%;
+    height: 100%;
+    background: url(icon/addmodule.png) center center no-repeat;   
+    border:1px solid #c0c0c0;
+    box-sizing: border-box;
+    background-color: #F2F2F2;
+  }
+  .module .editAdd .add-icon:hover{
+    background-color: #169BD5;
+  }
+/* ------------- course ----------------- */
+  .course{
+    width: 4.4rem;
+    height: 4rem;   
+    cursor: pointer; 
+    background-color: #fff;       
+  }
+  .course .imgbox {
+    height: 2.48rem;
+    min-height: 2.48rem;    
+  }
+  .course .listBox{    
+     position: relative;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+  }  
+  .course .imgbox img{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .course .courseTit{  
+    height: 0.533rem;
+    line-height: 0.533rem;
+    font-size: 0.4rem;
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .course .speak, .course .number, .course .popularity,.course .price{
+    float: left;
+    width: 2.2rem;
+    font-size: 0.32rem;
+    line-height: 0.48rem;
+    height: 0.48rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+  }
+  .course .price{
+    color: #FF6600;
+  }
+  .course .number i{    
+    display: inline-block;
+    margin-right: 0.2rem;
+    width: 0.32rem;
+    height: 0.32rem;
+    line-height: 0.48rem;
+    background: url(http://static.ebanhui.com/design/image/man.png) no-repeat left center;
+    background-size: auto 100%;
+  }
+  .course .popularity i{
+    display: inline-block;
+     margin-right: 0.1rem;
+    width: 0.32rem;
+    height: 0.32rem;
+    background: url(http://static.ebanhui.com/design/image/time.png) no-repeat left center;
+    background-size: auto 100%;
+  }
+  .editAdd div:nth-child(4){
+    text-align: right;
+  }
+  .editAdd div:nth-child(6){
+    text-align: right;
+  }
+/* ------------- audition --------------- */
+  .audition {
+    width: 4.4rem;
+    height: 3.6rem;
+    cursor: pointer;
+  }
+   .audition .editAdd{
+    width: 100%;
+    height: 100%;
+  }
+  .audition a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+  .audition img {
+    width: 4.4rem;
+    height: 2.48rem;
+  }
+  .audiTit{
+    float: left;
+    width: 100%;
+    display: inline-block;
+    height: 0.48rem;
+    line-height: 0.48rem;
+    font-size: 0.4rem;
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }   
+  .audition .speak, .audition .number{
+    float: left;
+    width: 2.2rem;
+    font-size: 0.32rem;
+    line-height: 0.48rem;
+    height: 0.48rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999999;
+  }
+  .audition .number i{    
+    display: inline-block;
+    margin-right: 0.2rem;
+    width: 0.32rem;
+    height: 0.32rem;
+    line-height: 0.48rem;
+    background: url(http://static.ebanhui.com/design/image/man.png) no-repeat left center;
+    background-size: auto 100%;
+  }
+/* ------------- teacher ---------------- */
+  .teacher{
+    width: 4.4rem;
+    height: 5.73rem;
+  } 
+  .teacher .editAdd{
+    width: 100%;
+    height: 100%;
+  }
+  .teacher .addtea-icon{
+    width: 100%;
+    height: 100%;
+    background: url(icon/addtea.png) center center no-repeat;
+    background-size: auto 100% ;
+  }
+  .teacher .editAdd .team_bk {
+    width: 100%;
+    height: 100%;
 
+  }    
+  .teacher .editAdd  .team_hbj {
+      height:4.26rem;
+      width:100%;
+      padding-top:1px;
+  }
+  .teacher .editAdd  .team_hbj img {
+    border-radius:100%;
+    margin:0 auto;
+    display: block;
+    width:2.61rem;
+    height:2.61rem;
+  }
+  .teacher .editAdd  .team_h3 {
+    display: inline-block;
+    font-size:0.4rem;
+    line-height: 0.7rem;
+    text-align:center;
+    width:100%;
+    overflow:hidden;
+    color:#333
+  }
+  .teacher .editAdd  .team_p1 {
+    display: inline-block;
+    color:#999;
+    text-align:center;
+    width:100%;
+    overflow:hidden;
+    font-size:0.32rem;   
+    height: 0.7rem;
+    line-height: 0.7rem;
+  }
+  .teacher .editAdd .team_p2 {
+    display: inline-block;   
+    width:100%;
+    height: 1.44rem;
+    text-align:left;
+    color:#333;
+    font-size:0.32rem;
+    line-height:0.48rem;
+    overflow: hidden;  
+  }
+/* ------------- footernav -------------- */
+  .footernav{
+    position:fixed;
+    left:0;
+    bottom: 0;   
+    width:10rem;
+    height:1.5rem;
+  }
 /* ------------- 悬浮特效 --------------- */
   .enlarge img{
     transition: transform 0.3s;

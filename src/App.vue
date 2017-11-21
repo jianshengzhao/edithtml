@@ -403,12 +403,13 @@
     <sline ref="sline"></sline>
   <!-- dialog弹框 modules 网校组件 -->  
     <menubar ref="menubar"></menubar>
+    <course ref="course"></course>
+    <footernav ref="footernav"></footernav>
    <!--  <information ref="information"></information>
     <weather ref="weather"></weather> 
     <carousel ref="carousel"></carousel>
     <waiter ref="waiter"></waiter>
-    <advert ref="advert"></advert> 
-    <course ref="course"></course>
+    <advert ref="advert"></advert>
     <player ref="player"></player>
     <addcoursetype ref="addcoursetype"></addcoursetype>   -->    
   <!--<effect ref="effect"></effect> -->
@@ -432,12 +433,14 @@
   import sline from '@/components/modules/sline'
 
   import menubar from '@/components/modules/menubar'
+  import course from '@/components/modules/course'
+  import footernav from '@/components/modules/footernav'
   // import information from '@/components/modules/information'
   // import weather from '@/components/modules/weather'
   // import carousel from '@/components/modules/carousel'
   // import waiter from '@/components/modules/waiter'
   // import advert from '@/components/modules/advert'
-  // import course from '@/components/modules/course'
+  
   // import player from '@/components/modules/player'
   // import addcoursetype from '@/components/modules/addcoursetype'
   
@@ -458,7 +461,9 @@
       picture,
       hline,
       sline,
-      menubar
+      menubar,
+      course,
+      footernav
       // information,
       // weather,
       // carousel, 

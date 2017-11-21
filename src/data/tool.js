@@ -61,10 +61,12 @@ var tool = {
         me.layer.css('paddingTop', '68px')        
         me.editBox.css('paddingTop', '68px')
         self.paddingtop = 68;
+        me.space.addClass('spaceon')
       } else {
         me.library.css('paddingTop', '35px')
         me.layer.css('paddingTop', '35px')        
         me.editBox.css('paddingTop', '35px')
+        me.space.removeClass('spaceon')
         self.paddingtop = 35;
       }
     })
@@ -1049,39 +1051,39 @@ var tool = {
         //   item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
         // }        
         if (Math.abs(item.xt - xL) <= fv) {
-          ele.css({'left': item.xt})
+          ele.css({'left': item.xt / 37.5 + "rem"})
           self.inp_x = item.xt
         }
         if (Math.abs(item.xt - xR) <= fv) {
           let fLeftR = item.xt - width
-          ele.css({'left': fLeftR})
+          ele.css({'left': fLeftR / 37.5 + "rem"})
           self.inp_x = fLeftR
         }
         if (Math.abs(item.xb - xR) <= fv) {
           let fLeft = item.xb - width
-          ele.css({'left': fLeft})
+          ele.css({'left': fLeft / 37.5 + "rem"})
           self.inp_x = fLeft            
         }
         if (Math.abs(item.xb - xL) <= fv) {
-          ele.css({'left': item.xb})
+          ele.css({'left': item.xb / 37.5 + "rem"})
           self.inp_x = item.xb            
         }
         if (Math.abs(item.yt - yT) <= fv) {
-          ele.css({'top': item.yt}) 
+          ele.css({'top': item.yt / 37.5 + "rem"}) 
           self.inp_y = item.yt
         }
         if (Math.abs(item.yt - yB) <= fv) {
           let fTopB = item.yt - height
-          ele.css({'top': fTopB})
+          ele.css({'top': fTopB / 37.5 + "rem"})
           self.inp_y = fTopB            
         }
         if (Math.abs(item.yb - yB) <= fv) {
           let fTop = item.yb - height
-          ele.css({'top': fTop})
+          ele.css({'top': fTop / 37.5 + "rem"})
           self.inp_y = fTop            
         }
         if (Math.abs(item.yb - yT) <= fv) {
-          ele.css({'top': item.yb})
+          ele.css({'top': item.yb / 37.5 + "rem"})
           self.inp_y = item.yb            
         }
         if (Math.abs(item.xt - xL) <= fv || Math.abs(item.xt - xR) <= fv || Math.abs(item.xb - xR) <= fv || Math.abs(item.xb - xL) <= fv || Math.abs(item.yt - yT) <= fv || Math.abs(item.yt - yB) <= fv || Math.abs(item.yb - yB) <= fv || Math.abs(item.yb - yT) <= fv) {
@@ -1435,7 +1437,7 @@ var tool = {
     me.editBox.on('mousedown', '.supendTools', function (e) { // 模块工具栏
       let el_dialog = me.$('.el-dialog')
       el_dialog.removeAttr('style').css('top', '15%')      
-      let classname = me.$(e.target).attr('class')
+      let classname = me.$(e.target).attr('class')      
       switch (classname) {
         case 'st-left st-text':
           self.$refs.ueditor.show()
@@ -1483,29 +1485,45 @@ var tool = {
           self.$refs.player.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-course':
-          self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) {           
+          self.$refs.hrefdialogp.show('course', me.$('.on_module'), function (element, data) { 
             data.summary = data.summary || '--'
             data.foldername = data.foldername || '--'
             data.viewnum = data.viewnum || 0
-            data.studynum = data.studynum || 0            
+            data.studynum = data.studynum || 0
+            data.iprice = data.iprice || 0
+            let dataarray = me.$.parseJSON(element.attr('dataarray'))           
             let courseHtm = '<div class="imgbox">'
-                          + '<div class="listBox">'
-                          + '<a target="_blank" class="animateBox" >'+ data.summary +'</a>'
+                          + '<div class="listBox">'                       
                           + '<img src="'+ data.img +'">'
-                          + '<a target="_blank" class="openState openState_djbmbg1"></a>'
                           + '</div>'
                           + '</div>'
                           + '<div class="courseTit">'+ data.foldername +'</div>'
-                          + '<div class="speak">讲师</div>'
-                          + '<div class="popularity">'+ data.viewnum+'</div>'
-                          + '<div class="number">'+ data.studynum +'</div>'
+            if (dataarray.checkedTeacher) {
+              courseHtm += '<div class="speak">讲师:</div>'
+            }              
+            if (dataarray.checkedTime) {
+              courseHtm += '<div class="popularity"><i></i>'+ data.viewnum+'</div>'
+            }
+            if (dataarray.checkedPopul) {
+              courseHtm += '<div class="number"><i></i>'+ data.studynum +'</div>'
+            }        
+            if (dataarray.checkedPrice) {
+              courseHtm += '<div class="price">￥'+ data.iprice +'</div>'
+            }
             element.attr('datacoruse', data.itemid)
             element.find('.editAdd').html(courseHtm)
           })
           break
         case 'st-left st-audition':
-          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {            
-            let auditionHtm = '<a href ="/course/' + data.cwid + '.html" target="_blank"><img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) { 
+            let dataarray = me.$.parseJSON(element.attr('dataarray'))                 
+            let auditionHtm = '<img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div>'
+            if (dataarray.checkedTeacher) {
+              auditionHtm += '<div class="speak">讲师:</div>'
+            }
+            if (dataarray.checkedPopul) {
+              auditionHtm += '<div class="number"><i></i>'+ data.viewnum +'</div>'
+            }
             element.attr('auditionid', data.cwid)
             element.find('.editAdd').html(auditionHtm)
           })
@@ -1514,7 +1532,16 @@ var tool = {
           self.$refs.hrefdialogp.show('teacher', me.$('.on_module'), function (element, data) {           
             data.profile = data.profile || '暂无简介'
             data.professionaltitle = data.professionaltitle || '暂无职称'
-            let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '"><a class="team_mask" href="/master/' + data.teauid + '.html" target="_blank">' + data.profile + '</a><a href="/master/' + data.teauid + '.html" target="_blank"><div class="team_hbj"><img src="' + data.face + '"><h3 class="team_h3">' + data.realname + '</h3><p class="team_p1">' + data.professionaltitle + '</p></div><p class="team_p2">' + data.profile + '</p></a></div>'
+            let teacherHtm = '<div class="team_bk" tid="' + data.teauid + '">'
+                            +'<a href="/master/' + data.teauid + '.html" target="_blank">'
+                            + '<div class="team_hbj">'
+                            +  '<img src="' + data.face + '">'
+                            +  '<h3 class="team_h3">' + data.realname + '</h3>'
+                            +  '<p class="team_p1">' + data.professionaltitle + '</p>'
+                            + '</div>'
+                            + '<p class="team_p2">' + data.profile + '</p>'
+                            +'</a>'
+                            +'</div>'
             element.find('.editAdd').html(teacherHtm)
           })
           break

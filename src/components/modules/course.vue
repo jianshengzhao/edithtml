@@ -4,12 +4,11 @@
       :title="title"
       :visible.sync="dialogCourse"
       size="course" 
-      @close="beforeCloseEvent"
-      >
+      @close="beforeCloseEvent">
       <el-row>
         <el-col :span="4" class="right">单行显示：</el-col>
         <el-col :span="18">
-          <el-input-number size="small" v-model="col_num" :min="1" :max="8"></el-input-number>个<span>（建议最大值不超过{{type=="audition" ? '6' : '4'}}个）</span>
+          <el-input-number size="small" v-model="col_num" :min="1" :max="2"></el-input-number>个
         </el-col>
       </el-row>
       <el-row>
@@ -17,6 +16,21 @@
         <el-col :span="18">
           <el-input-number size="small" v-model="row_num" :min="1" :max="10"></el-input-number>行
         </el-col>       
+      </el-row>
+      <el-row v-if="type != 'teacher'">
+        <el-col :span="4" class="right">附加信息：</el-col>
+        <el-col :span="4">          
+          <el-checkbox v-model="checkedTeacher" >讲师</el-checkbox>
+        </el-col>
+        <el-col :span="4" v-if="type == 'course'">
+          <el-checkbox v-model="checkedTime">学时</el-checkbox>
+        </el-col>
+        <el-col :span="4">
+          <el-checkbox v-model="checkedPopul">人气</el-checkbox>
+        </el-col>
+        <el-col :span="4" v-if="type == 'course'">
+          <el-checkbox v-model="checkedPrice">价格</el-checkbox>
+        </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">        
         <el-button @click="dialogCourse = false">取 消</el-button>
@@ -32,21 +46,87 @@ export default {
   data () {
     return {
       title:'',
-      col_num:1,
-      row_num:1,
+      col_num:2,
+      row_num:2,
       type:'',
-      dialogCourse: false
+      dialogCourse: false,
+      checkedTeacher: true,
+      checkedTime:true,
+      checkedPopul:true,
+      checkedPrice:true
     }
   },
   created: function () {
-    // let self = this 
+    let self = this
+    let moduleData = self.$parent.moduleData
+    // 注入左侧图标
+    moduleData['toallGroup']['online'].push({
+      name: 'course',
+      icon: 'imgicon icon-course',
+      text: '课程'
+    })
+
+    moduleData['toallGroup']['online'].push({
+      name: 'audition',
+      icon: 'imgicon icon-audition',
+      text: '试听'
+    })
+
+    moduleData['toallGroup']['online'].push({
+      name: 'teacher',
+      icon: 'imgicon icon-teacher',
+      text: '教师'
+    })
+    // 配置模块参数   
+    moduleData['course'] = {
+      style: 'width:4.4rem; height:4rem',
+      tool: {
+        private: {
+          text: '编辑课程',
+          class: 'st-course'
+        }, 
+        public: []
+      },
+      createEvent: function (self, element, me) {      
+        self.$refs.course.show(self, element, me, 'course')      
+      },
+      html: '<div class="course module addmodule" datatext="课程"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }
+    moduleData['audition'] = {
+      style: 'width:4.4rem; height:3.6rem',
+      tool: {
+        private: {
+          text: '编辑试听',
+          class: 'st-audition'
+        }, 
+        public: []
+      },
+      createEvent: function (self, element, me) {      
+        self.$refs.course.show(self, element, me, 'audition')      
+      },
+      html: '<div class="audition module addmodule"  datatext="免费试听"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }
+    moduleData['teacher'] = {
+      style: 'width:4.4rem; height:5.73rem',
+      tool: {
+        private: {
+          text: '编辑教师',
+          class: 'st-teacher'
+        }, 
+        public: []
+      },
+      createEvent: function (self, element, me) {      
+        self.$refs.course.show(self, element, me, 'teacher')      
+      },
+      html: '<div class="teacher module addmodule"  datatext="教师"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }
   },
   methods: {     
     dialogCourseEvent: function () {
       let self = this
       self.dialogCourse = false
       let parentBox = self.element.parent()
-      let x = parseInt(self.element.css('left'))
+      let x = 15
       let y = parseInt(self.element.css('top'))    
       let copyNum = self.row_num * self.col_num
       let copyhtml = '' 
@@ -54,35 +134,69 @@ export default {
       let h
       let ml
       let mt 
-      let htmFun     
+      let htmFun 
+      let revealData = {}
+      let revealStr = ''
       switch (self.type) {
-        case 'course':          
-          w = 260
-          h = 220          
-          ml = 30
-          mt = 20
+        case 'course':
+          w = 165
+          h = 151          
+          ml = 15
+          mt = 10
+          revealData = {
+            checkedTeacher: true,
+            checkedTime: true,
+            checkedPopul: true,
+            checkedPrice: true
+          }
+          if (!self.checkedTeacher) {
+            revealData.checkedTeacher = false
+          }
+          if (!self.checkedTime) {
+            revealData.checkedTime = false
+          }
+          if (!self.checkedPopul) {
+            revealData.checkedPopul = false
+          }
+          if (!self.checkedPrice) {
+            revealData.checkedPrice = false
+          }
+          revealStr = window.JSON.stringify(revealData)
+          self.element.attr('dataarray', revealStr)
           htmFun = function (x,y) {
-            let html = '<div class="course module addmodule" datatext="课程" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            let html = '<div class="course module addmodule" datatext="课程" dataarray="' + revealStr + '" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
             return html
           }
           break
-        case 'audition':          
-          w = 190
-          h = 120          
+        case 'audition':
+          w = 165
+          h = 135          
+          ml = 15
+          mt = 10
+           revealData = {
+            checkedTeacher: true,
+            checkedPopul: true
+          }
+          if (!self.checkedTeacher) {
+            revealData.checkedTeacher = false
+          }
+          if (!self.checkedPopul) {
+            revealData.checkedPopul = false
+          }
+          revealStr = window.JSON.stringify(revealData)
+          self.element.attr('dataarray', revealStr)
+          htmFun = function (x,y) {
+            let html = '<div class="audition module addmodule"  datatext="免费试听"  dataarray="' + revealStr + '" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            return html
+          }
+          break
+        case 'teacher':
+          w = 165
+          h = 215          
           ml = 15
           mt = 10
           htmFun = function (x,y) {
-            let html = '<div class="audition module addmodule"  datatext="免费试听" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
-            return html
-          }
-          break
-        case 'teacher':          
-          w = 274
-          h = 228          
-          ml = 50
-          mt = 15
-          htmFun = function (x,y) {
-            let html = '<div class="teacher module addmodule"  datatext="教师" style="left:' + x + 'px;top:' + y + 'px;"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            let html = '<div class="teacher module addmodule"  datatext="教师" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem;"><div class="editAdd"><div class="add-icon"></div></div></div>'
             return html
           }
           break          
@@ -99,9 +213,9 @@ export default {
         let yi = y + (h + mt) * parseInt(i / self.col_num)
         let AddElement = copyElement.eq(i - 1)
         self.me.carryAddElementStorageEvent(self.that, parentBox, AddElement, yi, xi, 0)
-      }
+      }    
       $('.addmodule').removeClass('addmodule')      
-      self.element.show()
+      self.element.css('left', '0.4rem').show()
       self.addstate = true
       self.that.tool.tool.carryLayerEvent(self.that, parentBox) // 更新图层
     },
@@ -115,23 +229,28 @@ export default {
       switch (type) {
         case 'course':
           self.title = '课程'
-          self.col_num = 4
-          self.row_num = 3
+          self.col_num = 2
+          self.row_num = 2
+          self.checkedTeacher = true
+          self.checkedTime = true
+          self.checkedPopul = true
+          self.checkedPrice = true
           break
         case 'audition':
           self.title = '试听'
-          self.col_num = 6
-          self.row_num = 3
+          self.col_num = 2
+          self.row_num = 2
+          self.checkedTeacher = true
+          self.checkedPopul = true
           break
         case 'teacher':
           self.title = '教师'
-          self.col_num = 4
-          self.row_num = 3
+          self.col_num = 2
+          self.row_num = 2
           break
       }
       self.type = type
       self.dialogCourse = true
-      // me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT)
     },
     beforeCloseEvent: function () {
       let self = this      
@@ -156,10 +275,7 @@ export default {
     height: 30px;
     line-height: 30px;
     margin-right: 5px;
-  }
-  #course .el-col span{
-    color: #999;
-  }
+  } 
   #course .el-input-number{
     margin-right: 5px;
   }
@@ -173,5 +289,10 @@ export default {
   #course .el-dialog__body{
     padding: 20px 30px 10px;
   }
-
+  .course .resize, .audition .resize, .teacher .resize{
+    display: none;
+  }
+ /* .course .w,.course .e{
+    display: block;
+  }*/
 </style>
