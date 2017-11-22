@@ -54,6 +54,7 @@ var tool = {
       me.layer.css('paddingTop', '68px')
       me.editBox.css('paddingTop', '68px')
       self.paddingtop = 68;
+      me.space.addClass('spaceon')
     }
     me.$(window).resize(function() {
       if (parseInt(me.wtop.css('height')) > 36) {
@@ -1098,7 +1099,7 @@ var tool = {
     let me = this
     let top = self.inp_y
     let left = self.inp_x
-    let supendTools = me.$('.supendTools')
+    let supendTools = me.$('.supendTools')   
     let minY = me.canvas.scrollTop() + 45
     if (top < minY) {
       top = minY
@@ -1551,6 +1552,9 @@ var tool = {
         case 'st-left st-menubar':
           self.$refs.menubar.show(self, me.$('.on_module'), me)
           break
+        case 'st-left st-footernav':
+          self.$refs.footernav.show(me.$('.on_module'), me)
+          break
       }
       return false
     })
@@ -1558,6 +1562,10 @@ var tool = {
     me.editBox.on('mousedown', '.module', function (e) { // 点击选中模块事件
       let $this = me.$(this)
       me.carrySignEvent(self, $this)
+      me.$('.supendTools').removeClass('onsupendTools')
+      if (self.moduleElement.hasClass('footernav')) {
+        me.$('.supendTools').addClass('onsupendTools')
+      }
       return false
     })
 
@@ -1573,6 +1581,9 @@ var tool = {
       let supendTools = me.$('.supendTools')
       let currScrollTop = me.canvas.scrollTop()
       let scrollPageY = e.pageY
+      if (self.moduleElement.hasClass('footernav')) {
+        return false 
+      }
       supendTools.hide()     
       me.editBox.mousemove(function (e) {
         scrollPageY = e.pageY
