@@ -92,12 +92,7 @@ var configHtml = {
       //   name: 'course',
       //   icon: 'imgicon icon-course',
       //   text: '课程'
-      // },
-      // {
-      //   name: 'information',
-      //   icon: 'imgicon icon-information',
-      //   text: '资讯'
-      // },
+      // },      
       // {
       //   name: 'addcoursetype',
       //   icon: 'imgicon icon-addcoursetype',
@@ -153,20 +148,6 @@ var configHtml = {
       self.$refs.advert.show(self, element)
     },
     html: '<div class="advert module addmodule"  datatext="悬浮广告"><div class="advCon"></div></div>'
-  },
-  information: {
-    style: 'width:1200px;',
-    tool: {
-      private: {
-        text: '编辑资讯',
-        class: 'st-information'
-      }, 
-      public: []
-    },
-    createEvent: function (self, element, me) {      
-      self.$refs.information.show(self,element)
-    },
-    html: '<div class="information module addmodule" datatext="资讯"><div class="inforCon"></div></div>'
   },
   waiter: {
     style: 'width:50px; height:50px',

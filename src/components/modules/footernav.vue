@@ -157,7 +157,7 @@ export default {
           self.$refs.footernav.show(element, me)      
         }       
       },
-      html: '<div class="footernav module addmodule"  datatext="竖线"><div class="click-sline"></div></div>'
+      html: '<div class="footernav module addmodule"  datatext="底部导航"><div class="editbox"></div></div>'
     }
   },
   methods: {
@@ -165,15 +165,63 @@ export default {
       let self = this
       self.element = element
       self.dialogFooterNav = true
+      let navData = self.element.attr('navData')
+      if (navData) {
+        self.footerData = $.parseJSON(navData)
+      }
       if ($('.footernav').length < 1) { // 判断是否已设置过导航
         self.addstate = true
       }
     },
     dialogFooterEvent: function () { // 导航设置完成
       let self = this
-      self.element.show()
-      self.addstate = false
-      self.dialogFooterNav = false
+      let selectLen = 0
+      let arrdata = []
+      let navhtml = '' 
+      for (let i = 0, len = self.footerData.length; i < len; i++) {
+        let item = self.footerData[i]
+        if (item.enable) {
+          selectLen++
+          arrdata.push(item)
+        }
+      }
+      if (selectLen > 5) {
+        self.$notify({
+          title: '警告',
+          message: '最多只能勾选5个导航',
+          type: 'warning'
+        })
+      } else {
+        self.element.show()
+        self.addstate = false
+        self.dialogFooterNav = false
+        let strData = window.JSON.stringify(self.footerData)
+        self.element.attr('navData', strData)
+        let arrLen = arrdata.length
+        let classname = ''
+        switch(arrLen) {
+          case 1:
+            classname = 'one'
+          break
+          case 2:
+            classname = 'two'
+          break
+          case 3:
+            classname = 'three'
+          break
+          case 4:
+            classname = 'four'
+          break
+          case 5:
+            classname = 'five'
+          break
+        }
+        for (let i = 0, len = arrLen; i < len; i++) {
+          let item = arrdata[i]
+          navhtml += '<li class="' + classname + '"><a href="' + item.url + '"><img src="' + item.before + '"><img src="' + item.after + '"><span>' + item.navname + '</span></a></li>'
+        }
+        self.element.find('.editbox').html(navhtml)
+      }
     },
     beforeCloseEvent: function () { // 导航弹框关闭执行事件
       let self = this
@@ -266,13 +314,13 @@ export default {
         type: 'warning'
       })      
     },
-    imagesEvent: function (seat) {
+    imagesEvent: function (seat) { // 添加图片
       let self = this
       self.$parent.$refs.myimages.show('footer', self, function (self, data, imgSize) { 
         self[seat] = data
       })
     },
-    hrefsEvent: function () {
+    hrefsEvent: function () { // 添加链接
       let self = this
       self.$parent.$refs.hrefdialogp.show('carousel', self, function (self, data, linkType) {
         let urlType = ''
@@ -414,7 +462,7 @@ export default {
         self.urlHref = urlHref
       })
     },
-    deleteHrefsEvent: function () {
+    deleteHrefsEvent: function () { // 删除链接
       let self = this
       self.urlHref = ''
     }

@@ -405,14 +405,16 @@
     <menubar ref="menubar"></menubar>
     <course ref="course"></course>
     <footernav ref="footernav"></footernav>
-   <!--  <information ref="information"></information>
-    <weather ref="weather"></weather> 
+    <information ref="information"></information>
     <carousel ref="carousel"></carousel>
-    <waiter ref="waiter"></waiter>
-    <advert ref="advert"></advert>
-    <player ref="player"></player>
-    <addcoursetype ref="addcoursetype"></addcoursetype>   -->    
-  <!--<effect ref="effect"></effect> -->
+  
+  <!-- <weather ref="weather"></weather> 
+       <carousel ref="carousel"></carousel>
+       <waiter ref="waiter"></waiter>
+       <advert ref="advert"></advert>
+       <player ref="player"></player>
+       <addcoursetype ref="addcoursetype"></addcoursetype>
+       <effect ref="effect"></effect> -->
   </div>
 </template>
 <script>  
@@ -435,16 +437,15 @@
   import menubar from '@/components/modules/menubar'
   import course from '@/components/modules/course'
   import footernav from '@/components/modules/footernav'
-  // import information from '@/components/modules/information'
-  // import weather from '@/components/modules/weather'
-  // import carousel from '@/components/modules/carousel'
+  import information from '@/components/modules/information'
+  import carousel from '@/components/modules/carousel'
+
+  // import weather from '@/components/modules/weather' 
   // import waiter from '@/components/modules/waiter'
-  // import advert from '@/components/modules/advert'
-  
+  // import advert from '@/components/modules/advert'  
   // import player from '@/components/modules/player'
-  // import addcoursetype from '@/components/modules/addcoursetype'
-  
-  /*import effect from '@/components/modules/effect'*/
+  // import addcoursetype from '@/components/modules/addcoursetype'  
+  // import effect from '@/components/modules/effect'
   import '@/assets/animate.min.css'
   let config = configData.config.config
   export default { // todo: 本地操作保存
@@ -463,8 +464,9 @@
       sline,
       menubar,
       course,
-      footernav
-      // information,
+      footernav,
+      information,
+      carousel
       // weather,
       // carousel, 
       // waiter, 

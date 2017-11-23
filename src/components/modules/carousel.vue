@@ -2,13 +2,8 @@
   <div id="carousel">
     <el-dialog :title="carouselTit" :visible.sync="dialogCarousel" size="carousel" @close="beforeCloseEvent">
       <div class="scrollBox">
-        <el-row>
-          <el-col :span="2">自适应：</el-col>
-          <el-col :span="5">
-            <el-radio class="radio" v-model="showSuit" label="true">是</el-radio>
-            <el-radio class="radio" v-model="showSuit" label="false">否</el-radio>
-          </el-col>
-         <!--  <el-col :span="2">切换方式：</el-col>
+       <!--  <el-row>
+         <el-col :span="2">切换方式：</el-col>
           <el-col :span="5">
             <el-select v-model="changeStyle" placeholder="请选择">
               <el-option
@@ -18,19 +13,19 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-col> -->
-        </el-row>
+          </el-col>
+        </el-row> -->
         <el-row>
-          <el-col :span="3">展示时间（s）：</el-col>
-          <el-col :span="8">
-            <el-input-number v-model="showTime" :min="1" :max="99"></el-input-number>
+          <el-col :span="5">展示时间（s）：</el-col>
+          <el-col :span="14">
+            <el-input-number v-model="showTime" :min="1" :max="99"  size="small"></el-input-number>
             <span style="color: #999;">（1~99）</span>
           </el-col>
          </el-row>
          <el-row>
-          <el-col :span="3">切换速度（s）：</el-col>
-          <el-col :span="8">
-            <el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.5"></el-input-number>
+          <el-col :span="5">切换速度（s）：</el-col>
+          <el-col :span="14">
+            <el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.5" size="small"></el-input-number>
              <span style="color: #999;">（0.5~5）</span>
           </el-col>
         </el-row>
@@ -96,8 +91,7 @@ export default {
       dialogCarousel: false,
       carouselData: [],
       showTime: 3,
-      transitionTime: 1.5,
-      showSuit: 'false',
+      transitionTime: 1.5,     
       showWidth: 1200,
       carouselTit: '轮播图',
       animStyle: [{
@@ -110,6 +104,28 @@ export default {
   },
   created: function () {
     let self = this
+    let moduleData = self.$parent.moduleData
+      // 注入左侧图标
+      moduleData['toallGroup']['online'].push({
+        name: 'carousel',
+        icon: 'imgicon icon-carousel',
+        text: '轮播'
+      })
+      // 配置模块参数   
+      moduleData['carousel'] = {
+        style: 'width:10rem; height:4.53rem',
+        tool: {
+          private: {
+            text: '编辑轮播',
+            class: 'st-carousel'
+          }, 
+          public: []
+        },
+        createEvent: function (self, element, me) {      
+          self.$refs.carousel.show(self, element)
+        },
+        html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'      
+      }
   },
   methods: { 
     show: function (that, element) { 
@@ -121,8 +137,7 @@ export default {
       let cData = element.attr('carouseldata')
       if (cData) {
         cData = $.parseJSON(cData)
-        self.changeStyle = cData.changeStyle
-        self.showSuit = cData.showSuit
+        self.changeStyle = cData.changeStyle   
         self.showTime = cData.showTime
         self.transitionTime = cData.transitionTime
         self.carouselData = cData.carouselData
@@ -168,6 +183,7 @@ export default {
       let maxW = 0 // 最大值
       let maxH = 0 // 最大值
       let maxI = 0
+      let barHtm = ''
       for(let i = 0, len = self.carouselData.length; i < len; i++) {
         let item = self.carouselData[i]
         if (item.imgW && parseInt(item.imgW) > maxW) {
@@ -175,24 +191,25 @@ export default {
           maxH = parseInt(item.imgh)
           maxI = i
         }
+        barHtm += '<li></li>'
       }
+      self.element.find('.barbox').html(barHtm)
       if (maxW > 0) {
-        self.element.css({
-          width: maxW,
-          height: maxH
+        self.element.css({         
+          height: (maxH / maxW) * 10 + 'rem'
+        })
+        
+        self.element.find('.img_li').css({
+           width: '10rem',
+           height: (maxH / maxW) * 10 + 'rem'
         })
         self.element.find('.resizeBox').css({
-          width: maxW,
-          height: maxH
-        })
-        if (maxW < 110) {
-          self.element.find('.barbox').hide()
-        }
-      }      
-      
+           height: (maxH / maxW) * 10 + 'rem'
+        })        
+      }
+
       let obj = {
         changeStyle: self.changeStyle,
-        showSuit: self.showSuit,
         showTime: self.showTime,
         transitionTime: self.transitionTime,
         carouselData: self.carouselData
@@ -389,25 +406,25 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+    .carousel .resize{
+      display: none;
+    }
+    .carousel .n, .carousel .s{
+      display: block;
+    }
     #carousel .el-dialog__header{
       border-bottom: 1px solid #CECECE;
       height: 30px;
+    } 
+    #carousel .el-dialog--carousel{
+      width: 660px;
     }
-    .carousel .el-dialog__header {
-      border-bottom: 1px solid #CECECE;
-      height: 40px;
-    }
-    .el-dialog--carousel{
-      width: 1000px;
-    }
-    .el-dialog--carousel{
-      width: 980px;
-    }
-    .scrollBox{
+    #carousel .el-dialog__body{
+      padding: 10px 20px;
     }
     .selectBox{
-      margin-top: 20px;
-      height: 500px;
+      margin-top: 10px;
+      height: 360px;
       overflow-y:auto;
       border: 1px solid #d1dbe5;      
     }
@@ -418,15 +435,15 @@ export default {
     .diaimg_li {
       position:relative;    
       width: 100%;
-      height: 86px;
+      height: 80px;
       border-bottom: 1px solid #e3e3e3;
     }
     .diaimg_li .carImgBox{
       float: left;
       position: relative;
       margin: 10px;
-      width: 480px;
-      height: 66px;
+      width: 160px;
+      height: 60px;
     }
     .diaimg_li .carImgBox .update{
       display: none;
@@ -437,7 +454,7 @@ export default {
       height: 24px;
       cursor: pointer;
       background-color: #20a1ff;
-      background-image: url(../assets/newslibIcon/update.png);
+      background-image: url(../../assets/newslibIcon/update.png);
       background-position: center;
       background-repeat: no-repeat;
     }
@@ -453,7 +470,7 @@ export default {
       height: 24px;
       cursor: pointer;
       background-color: #f92121;
-      background-image: url(../assets/newslibIcon/delete.png);
+      background-image: url(../../assets/newslibIcon/delete.png);
       background-position: center;
       background-repeat: no-repeat;
     }
@@ -461,8 +478,8 @@ export default {
       display: block;
     }
     .diaimg_li img{
-      width: 480px;
-      height: 66px;
+      width: 160px;
+      height: 60px;
     }
     .selectBox .handleList .el-row{
       margin-bottom: 0;
@@ -545,7 +562,7 @@ export default {
       color: #e3e3e3;
     }  
     .scrollBox .el-row{
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
     .scrollBox .el-col{
       height: 36px;

@@ -21,7 +21,7 @@
             </ul>                      
           </el-row>
           <el-row class="menu-head">
-            <el-col :span="6">模块形状：</el-col>
+            <el-col :span="5">模块形状：</el-col>
             <el-col :span="6">
               <el-radio class="radio" v-model="radioshape" label="1">方形</el-radio>
             </el-col>
@@ -29,8 +29,29 @@
               <el-radio class="radio" v-model="radioshape" label="2">圆形</el-radio>
             </el-col>
           </el-row>
+          <el-row>
+            <el-col :span="5">选择图标：</el-col>
+            <el-col :span="12">
+            <div class="menuicon" :style="'background-image: url('+ beforeImg +');'"></div>
+            <span class="updateicon" @click="imagesEvent('beforeImg')">修改</span>
+            <span class="updateicon" @click="normalEvent('beforeImg')">使用默认图</span>
+            </el-col>
+          </el-row>
         </el-tab-pane>
-        <el-tab-pane label="菜单管理" name="second">菜单管理</el-tab-pane>       
+        <el-tab-pane label="菜单管理" name="second">
+          <el-row class="menu-head">
+            <el-col :span="5" class="right">模块颜色：</el-col>
+            <el-col :span="6"><colorPicker v-model="prospectColorVal" ></colorPicker></el-col>
+          </el-row>
+          <el-row class="menu-head">
+            <el-col :span="5" class="right">文字颜色：</el-col>
+            <el-col :span="6"></el-col>
+          </el-row>
+          <el-row class="menu-head">
+            <el-col :span="5" class="right">单菜单高度：</el-col>
+            <el-col :span="6"></el-col>
+          </el-row>
+        </el-tab-pane>       
       </el-tabs>      
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -42,13 +63,19 @@
 
 <script>
   import $ from 'jquery'
+  import colorPicker from '../supendTools/colorPicker'
   export default {
     name: 'menubar',
+    components:{
+      colorPicker
+    },
     data () {
       return { 
         dialogMenubar: false,
         activeName: 'first',
-        radioshape: '1'
+        radioshape: '1',
+        beforeImg: 'http://static.ebanhui.com/design/image/menu.png',
+        prospectColorVal:'#404248'
       }
     },
     created: function () {
@@ -87,12 +114,25 @@
       show: function () {
         let self = this 
         self.dialogMenubar = true
+      },
+      imagesEvent: function (seat) {
+        let self = this
+        self.$parent.$refs.myimages.show('footer', self, function (self, data, imgSize) { 
+          self[seat] = data
+        })
+      },
+      normalEvent: function (seat) {
+        let self = this
+        self[seat] = 'http://static.ebanhui.com/design/image/menu.png'
       }
     }
   }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+  .right {
+    text-align: right;
+  }
 /* ------- 控制模块是否可以拉伸 ------- */
   .menubar .resize{
     display: none;
@@ -103,7 +143,7 @@
   }
 /* ------- 弹框样式 ------- */
   .menu-head{
-    margin-bottom: 5px;
+    margin-bottom: 15px;
   }
   .menu-head .el-col{
     height: 24px;
@@ -130,13 +170,13 @@
     right: 0;
     width: 16px;
     height: 16px;
-    background-color: #169BD5;
+    background-color: #20a0ff;
     color: #fff;
     text-align: center;
     line-height: 16px;
   }
   li.on .imgbox{
-    border:1px solid #169BD5;
+    border:1px solid #20a0ff;
   }
   li.on .animtip {
     display: block;
@@ -153,5 +193,21 @@
     height: 24px;
     line-height: 24px;
     text-align: center;
+  }
+  .menuicon{
+    float: left;
+    width: 40px;
+    height: 40px;
+    background-image: url(http://static.ebanhui.com/design/image/menu.png);
+    background-size: 0.427rem 0.384rem ;
+    background-position: center;
+    background-repeat: no-repeat;
+    border:1px solid #ccc;
+  }
+  .updateicon{
+    color: #20A0FF;
+    line-height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
   }
 </style>
