@@ -368,8 +368,8 @@ var tool = {
           drawX = 375 - postX
         } 
 
-        if ((drawY + postY) > 667) {         
-          drawY = 667 - postY
+        if ((drawY + postY) > 629) {         
+          drawY = 629 - postY
         }
 
         getregion.css({'width': drawX ,'height': drawY}) 
@@ -380,8 +380,8 @@ var tool = {
           drawX = postX
         } 
 
-        if ((drawY + postY) > 667) {         
-          drawY = 667 - postY
+        if ((drawY + postY) > 629) {         
+          drawY = 629 - postY
         }
 
         getregion.css({'width': - drawX, 'height': drawY, 'left': postX + drawX})
@@ -1184,7 +1184,7 @@ var tool = {
       let ws = self.inp_w
       let hs = self.inp_h
       let warp = me.warp
-      let areaB = 667
+      let areaB = 629
       let areaR = 375
      // me.carryLineEvent(self)
       let part

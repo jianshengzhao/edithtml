@@ -527,9 +527,10 @@ export default {
     color: #FF0000;
   }  
   .footernav{
+    width: 380px;
     left:50%!important;
-    top: 696px!important;
-    margin-left: -215px;
+    top: 718px!important;
+    margin-left: -214px;
     display: none;
   }
   .spaceon .footernav{

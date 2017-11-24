@@ -1738,17 +1738,23 @@
       width: 100%;
       height: 100%;
       overflow:auto;
+      background-image: url(assets/iphone.png);
+      background-size: 396px 792px;
+      background-repeat: no-repeat;
+      background-position: center 20px;      
     }    
     .canvas{
-      position: relative;
-      width: 383px;
-      height: 667px;
-      margin: 50px auto;     
+      position: relative; 
+      left:3px;     
+      width: 380px;
+      height: 629px;
+      margin: 109px auto;     
       overflow-y:scroll;
       background-size:10px 10px;     
       box-sizing: border-box;
       /*overflow: hidden;*/
       cursor: default;
+   /*   outline: 1px solid #ccc;*/
     } 
     /*.grid{
       background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
