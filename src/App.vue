@@ -401,13 +401,13 @@
     <picture ref="picture"></picture>
     <hline ref="hline"></hline>
     <sline ref="sline"></sline>
-  <!-- dialog弹框 modules 网校组件 -->  
+  <!-- dialog弹框 modules 网校组件 -->
+    <headers ref="headers"></headers>  
     <menubar ref="menubar"></menubar>
-    <course ref="course"></course>
-    <footernav ref="footernav"></footernav>
-    <information ref="information"></information>
     <carousel ref="carousel"></carousel>
-  
+    <course ref="course"></course>
+    <information ref="information"></information>
+    <footernav ref="footernav"></footernav>
   <!-- <weather ref="weather"></weather> 
        <carousel ref="carousel"></carousel>
        <waiter ref="waiter"></waiter>
@@ -439,7 +439,7 @@
   import footernav from '@/components/modules/footernav'
   import information from '@/components/modules/information'
   import carousel from '@/components/modules/carousel'
-
+  import headers from '@/components/modules/header'
   // import weather from '@/components/modules/weather' 
   // import waiter from '@/components/modules/waiter'
   // import advert from '@/components/modules/advert'  
@@ -466,7 +466,8 @@
       course,
       footernav,
       information,
-      carousel
+      carousel,
+      headers
       // weather,
       // carousel, 
       // waiter, 

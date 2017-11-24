@@ -15,7 +15,7 @@
         <el-col :span="4">图标（操作后）</el-col>
         <el-col :span="10">操作</el-col>
       </el-row>
-      <el-row class="footer-tr" v-for="(item, index) in footerData">
+      <el-row class="footer-tr" v-for="(item, index) in footerData" :key='index'>
         <el-col :span="2" class="center"><el-checkbox v-model="item.enable"></el-checkbox></el-col>
         <el-col :span="3">{{item.navname}}</el-col>
         <el-col :span="4" class="center"><img :src="item.before" alt=""></el-col>
@@ -27,13 +27,13 @@
           <span class="down" v-if="index!= footerData.length - 1" @click="downEvent(index)">下移</span>
         </el-col>
       </el-row>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFooterNav = false">取 消</el-button>
         <el-button type="primary" @click="dialogFooterEvent">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog
-      title="新增导航"
+      :title="title"
       :visible.sync="dialogAddNav"
       size="nav">
       <el-row>
@@ -60,7 +60,7 @@
         </el-col>
         <el-col></el-col>
       </el-row>
-      <el-row>
+      <el-row v-if="navcode!='index'">
         <el-col :span="7" class="right">链接：</el-col>
         <el-col :span="17" class="con">
           <span v-if="urlHref!=''">{{urlType}}:</span>
@@ -252,6 +252,7 @@ export default {
         self.index = index
         self.title = '编辑菜单'
         let item = self.footerData[index]
+        self.enable = item.enable
         self.navname = item.navname
         self.navcode = item.navcode
         self.beforeImg = item.before
@@ -279,10 +280,10 @@ export default {
         message = '你还未添加图标（操作前）'
       } else if (self.afterImg == '') {
         message = '你还未添加图标（操作后）'
-      } else if (self.urlHref == '') {
+      } else if (self.urlHref == '' && self.navcode != 'index') {
         message = '你还未添加链接'
       } else {
-        if (self.index == '') {
+        if (self.index == undefined) {
           self.footerData.push({
             enable: false,
             navname: self.navname,
@@ -295,7 +296,7 @@ export default {
           })
         } else {
           self.footerData[self.index] = {
-            enable: false,
+            enable: self.enable,
             navname: self.navname,
             navcode: self.navcode,
             before: self.beforeImg,

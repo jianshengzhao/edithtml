@@ -1550,7 +1550,7 @@ var tool = {
           self.$refs.addcoursetype.show(self, me.$('.on_module'), me)
           break
         case 'st-left st-menubar':
-          self.$refs.menubar.show(self, me.$('.on_module'), me)
+          self.$refs.menubar.show(me.$('.on_module'), me)
           break
         case 'st-left st-footernav':
           self.$refs.footernav.show(me.$('.on_module'), me)
