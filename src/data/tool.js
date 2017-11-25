@@ -418,7 +418,7 @@ var tool = {
     let gh
     let sy
     let ey
-    let obj = self.elementStorage[parent]
+    let obj = self.elementStorage[parent]   
     me.editBox.on('mouseup', function (e) {
       me.editBox.unbind('mousemove mouseup')
       gx = parseInt(getregion.css('left')) // 获得选区X坐标
@@ -436,7 +436,7 @@ var tool = {
       
       for (let i in obj) { // 判断是否在选区内
         let item = obj[i]
-        if (self.choiceCon) { // 判断选择条件 (算法有bug)
+        if (self.choiceCon) { // 判断选择条件 
           if ((gx + gw > item.xt && item.xb > gx && gy + gh > item.yt && item.yb > gy) ) {
             item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
           }

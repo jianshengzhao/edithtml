@@ -31,6 +31,16 @@ export default {
         }, 
         public: []
       },
+      createEvent: function (self, element, me) {  
+        if (me.top.find('.headers').length > 1) {
+          self.$notify({
+            title: '警告',
+            message: '您已经添加过头部公共区域',
+            type: 'warning'
+          }) 
+          element.remove()
+        }     
+      },
       html: '<div class="headers module addmodule"  datatext="头部"></div>'
     }
   },

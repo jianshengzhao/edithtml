@@ -218,7 +218,7 @@ export default {
         }
         for (let i = 0, len = arrLen; i < len; i++) {
           let item = arrdata[i]
-          navhtml += '<li class="' + classname + '"><a href="' + item.url + '"><img src="' + item.before + '"><img src="' + item.after + '"><span>' + item.navname + '</span></a></li>'
+          navhtml += '<li class="' + classname + '"><a hrefD="' + item.url + '"><img src="' + item.before + '"><img src="' + item.after + '"><span>' + item.navname + '</span></a></li>'
         }
         self.element.find('.editbox').html(navhtml)
       }
@@ -527,23 +527,23 @@ export default {
     color: #FF0000;
   }  
   .footernav{
-    width: 380px;
+    width: 375px;
     left:50%!important;
     top: 718px!important;
-    margin-left: -214px;
+    margin-left: -212px;
     display: none;
   }
   .spaceon .footernav{
-    top: 729px!important;
+    top: 751px!important;
   }
   .onsupendTools{
     position: fixed;
     left:50%!important;
-    top: 696px!important;
+    top: 718px!important;
     margin-left: -215px;
   }
   .spaceon .onsupendTools{
-    top: 729px!important; 
+    top: 750px!important; 
   }
   .footernav .resize{
     display: none;

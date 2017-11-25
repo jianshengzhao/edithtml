@@ -140,7 +140,7 @@
             before: '',     
             Type: '',
             Route: '',
-            url:''
+            url:'/'
           },
           {
             enable: false,
@@ -597,8 +597,8 @@
   }
   .space .menu-fixed {    
     position: absolute;
-    height: 667px;
-    top: 50px;
+    height: 630px;
+    top: 108px;
     left: 50%;
     margin-left:-5rem;  
     z-index: 99

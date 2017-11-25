@@ -90,7 +90,7 @@ export default {
       createEvent: function (self, element, me) {      
         self.$refs.course.show(self, element, me, 'course')      
       },
-      html: '<div class="course module addmodule" datatext="课程"><div class="editAdd"><div class="add-icon"></div></div></div>'
+      html: '<div class="course module addmodule" datatext="课程"><a class="coursehref"><div class="editAdd"><div class="add-icon"></div></div></a></div>'
     }
     moduleData['audition'] = {
       style: 'width:4.4rem; height:3.6rem',

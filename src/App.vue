@@ -662,10 +662,13 @@
               // -------- 获取网校页面 -----------
               let getParams = {
                 url: '/room/design/getdesign.html',
-                params: {crid: crid},
+                params: {
+                  crid: crid,
+                  clientType: 1
+                },
                 fun: function (response) {
-                  let saveParams = response.body.data                
-                  let headHtml = saveParams.head.replace(/[\\]/g, '')              
+                  let saveParams = response.body.data
+                  let headHtml = saveParams.body.replace(/[\\]/g, '')              
                   let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
                   self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
                   self.fontHoverColorVal = pp.fontHover||'#333'                
@@ -685,7 +688,7 @@
               self.httppost(getParams) 
             }
           }
-      // self.httpget(getParam)  未有手机版接口     
+        self.httpget(getParam) 
       // -------- 工具初始化 ----------------  
         tool.tool.init(self, $)
       // -------- 工具栏位置自适应调整 ------ 
@@ -810,30 +813,45 @@
       },
       saveEvent: function () { // 页面保存
         let self = this
+        $('.resizeBox').remove()
+      // ------------- setting -------------------- 
         let setting = {
           pg: self.prospectColorVal?self.prospectColorVal:'transparent',
-          bg: self.bgColorVal?self.bgColorVal:'transparent',
-          fontHover: self.fontHoverColorVal,
-          pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
-          bgImage: {'backgroundImage': 'url(' + self.bgImageUrl + ')', 'backgroundSize': self.inp_percent + '% auto', 'backgroundRepeat': self.repeatBgValue,'backgroundAttachment': self.attachmentBgValue},
-          width: self.inp_width + 'px',
-          height: self.inp_height + 'px',
-          top: $('.c_top').css('height'),
-          body: $('.c_body').css('height'),
-          foot: $('.c_foot').css('height')
+          pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},     
+          height: self.inp_height / 37.5 ,
+          top: parseInt($('.headers').css('height'))/37.5,
+          body: parseInt($('.c_top').css('height'))/37.5,
+          foot: parseInt($('.footernav').css('height'))/37.5
         }
         let strSetting = window.JSON.stringify(setting)
-        let headArray = $('.c_top').html()
-        let bodyArray = $('.c_body').html()
+      // ------------- gethtml -------------------- 
+        let headHtm = ''
+
+        if ($('.headers').length > 0) {
+          let obj = self.elementStorage['c_top']
+          let headH = parseInt($('.headers').css('height'))
+          for (let i in obj) { // 判断是否在选区内
+            let item = obj[i]         
+            if (item.xt >= 0 && item.xb <= 375 && item.yt >= 0 && item.yb <= headH) {
+              headHtm += item['ele'][0]['outerHTML']
+            }
+          }
+        }
+        if ($('.footernav ').length > 0) {
+          headHtm += $('.footernav')[0]['outerHTML']
+        }       
+        let headArray = headHtm // todolist:        
+        let bodyArray = $('.c_top').html()
         if (bodyArray == '') {
           self.$notify({
             title: '警告',
-            message: 'body主体内容不能为空',
+            message: '主体内容不能为空',
             type: 'warning'
           })
           return false
         }
-        let footArray = $('.c_foot').html()
+        let footArray = '00'
+      // ------------- audition ------------------- 
         let audition = $('.audition ')
         let auditions = ''
         let auditionArr = {}
@@ -847,6 +865,7 @@
           }
         }
         auditions = auditions.substring(0, auditions.length - 1)
+      // ------------- player --------------------- 
         let player = $('.player')
         let vedioids = []
         let vedioidObj = {}
@@ -859,7 +878,8 @@
               vedioidObj[cwid] = true
             }
           }
-        }       
+        }  
+      // ------------- save ----------------------- 
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -869,7 +889,8 @@
             settings: strSetting,
             status: 0,
             auditions: auditions,
-            vedioids: vedioids
+            vedioids: vedioids,
+            clientType: 1
           },
           fun: function (response) {
             let body = response.body
@@ -1739,7 +1760,7 @@
       height: 100%;
       overflow:auto;
       background-image: url(assets/iphone.png);
-      background-size: 396px 792px;
+      background-size: 395px 792px;
       background-repeat: no-repeat;
       background-position: center 20px;      
     }    
@@ -1753,13 +1774,12 @@
       background-size:10px 10px;     
       box-sizing: border-box;
       /*overflow: hidden;*/
-      cursor: default;
-   /*   outline: 1px solid #ccc;*/
-    } 
+      cursor: default;      
+    }     
     /*.grid{
       background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
     }*/
-    .c_top{
+    .c_top{     
       position: absolute;
       top:0;
       left: 0;
