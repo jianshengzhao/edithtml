@@ -355,45 +355,45 @@ var tool = {
     let drawX = 0
     let postY = e.pageY  - self.paddingtop - canvasTop + canvasScrollTop
     let postX = e.pageX  - self.paddingleft - canvasLeft
+    console.log(postX)
     let parent = 'c_top'
-
     me.$('.' + parent).append('<div class="getRegion" style="top:' + postY + 'px;left:' + postX +'px;"></div>')
     let getregion = me.$('.getRegion')
     me.editBox.on('mousemove', function (e) { // 绘制选区     
       drawY = e.pageY - startY
       drawX = e.pageX - startX
-      if (drawY > 0 && drawX > 0) { // // 右下移动
+      if (drawY >= 0 && drawX > 0) { // 右下移动****
 
         if ((drawX + postX) > 375) {         
           drawX = 375 - postX
         } 
 
-        if ((drawY + postY) > 629) {         
+        if ((drawY + postY) > (629 + canvasScrollTop)) {         
           drawY = 629 - postY
         }
 
         getregion.css({'width': drawX ,'height': drawY}) 
 
-      } else if (drawY > 0 && drawX < 0) { // 左下移动
+      } else if (drawY > 0 && drawX <= 0) { // 左下移动 ****
 
         if ((drawX + postX) < 0) {         
-          drawX = postX
+          drawX = - postX
         } 
 
-        if ((drawY + postY) > 629) {         
+        if ((drawY + postY) > (629 + canvasScrollTop)) {         
           drawY = 629 - postY
         }
-
+       
         getregion.css({'width': - drawX, 'height': drawY, 'left': postX + drawX})
 
-      } else if (drawY < 0 && drawX > 0) { // 右上移动
+      } else if (drawY <= 0 && drawX > 0) { // 右上移动
 
         if ((drawX + postX) > 375) {         
           drawX = 375 - postX
         } 
 
         if ((drawY + postY) < 0) {         
-          drawY = postY
+          drawY = -postY
         }
 
         getregion.css({'width': drawX, 'height': - drawY, 'top': postY + drawY})
@@ -401,11 +401,11 @@ var tool = {
       } else { // 左上移动
 
         if ((drawX + postX) < 0) {         
-          drawX = postX
+          drawX = -postX
         } 
 
         if ((drawY + postY) < 0) {         
-          drawY = postY
+          drawY = -postY
         }
 
         getregion.css({'width': - drawX, 'height': - drawY, 'left': postX + drawX, 'top': postY + drawY})
@@ -654,9 +654,9 @@ var tool = {
         break
       case 'fontSize':
         part = function (ele) {
-          ele.css('fontSize', val + 'px')
+          ele.css('fontSize', val / 37.5 + 'rem')
           if(parseInt(ele.css('lineHeight')) < val) {
-            ele.css('lineHeight', val + 'px')
+            ele.css('lineHeight', val / 37.5 + 'rem')
           }
         } 
         break

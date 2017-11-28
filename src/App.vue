@@ -669,7 +669,8 @@
                 fun: function (response) {
                   let saveParams = response.body.data
                   let headHtml = saveParams.body.replace(/[\\]/g, '')              
-                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
+                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))                 
+                  self.inp_height = pp.body * 37.5
                   self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
                   self.fontHoverColorVal = pp.fontHover||'#333'                
                   self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
@@ -812,7 +813,8 @@
         self.dialogPageSetting = false
       },
       saveEvent: function () { // 页面保存
-        let self = this
+        let self = this        
+        $('.supendTools').remove()
         $('.resizeBox').remove()
       // ------------- setting -------------------- 
         let setting = {
@@ -1766,7 +1768,7 @@
     }    
     .canvas{
       position: relative; 
-      left:3px;     
+      left:2px;     
       width: 380px;
       height: 629px;
       margin: 109px auto;     
@@ -2217,5 +2219,9 @@
       width: 100%;
       height: auto;
       display: block;
+    }
+    .c_top{
+      box-shadow:1px 1px 0px #d2d2d2;
+      overflow: hidden;
     }
 </style>

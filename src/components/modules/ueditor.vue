@@ -63,7 +63,13 @@ export default {
         let content = self.editor.getContent()
         let h = $('.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
-        $('.on_module').find('.editorCon').html(content)
+        let element = $('.on_module')
+        let editorCon = element.find('.editorCon')
+        editorCon.html(content)
+        let editheight = parseInt(editorCon.css('height')) / 37.5 + 0.6
+
+        element.css('height', editheight + 'rem')
+        element.find('.resizeBox').css('height', editheight + 'rem')
     },
     show: function () {
       let self = this 

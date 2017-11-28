@@ -93,7 +93,7 @@ export default {
           after: '',
           Type: '',
           Route: '',
-          url:''
+          url:'/'
         },
         {
           enable: false,
@@ -168,16 +168,48 @@ export default {
       let navData = self.element.attr('navData')
       if (navData) {
         self.footerData = $.parseJSON(navData)
+      } else {
+        self.footerData =[
+          {
+            enable: true,
+            navname: '首页',
+            navcode: 'index',
+            before: '',
+            after: '',
+            Type: '',
+            Route: '',
+            url:'/'
+          },
+          {
+            enable: false,
+            navname: '其它',
+            navcode: '',
+            before: '',
+            after: '',
+            Type: '',
+            Route: '',
+            url:''
+          },
+          {
+            enable: true,
+            navname: '其它',
+            navcode: '',
+            before: '',
+            after: '',
+            Type: '',
+            Route: '',
+            url:''
+          }]
       }
       if ($('.footernav').length < 1) { // 判断是否已设置过导航
         self.addstate = true
-      }
+      }     
     },
     dialogFooterEvent: function () { // 导航设置完成
       let self = this
       let selectLen = 0
       let arrdata = []
-      let navhtml = '' 
+      let navhtml = ''      
       for (let i = 0, len = self.footerData.length; i < len; i++) {
         let item = self.footerData[i]
         if (item.enable) {
