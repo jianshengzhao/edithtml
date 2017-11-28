@@ -55,7 +55,7 @@ var configHtml = {
         name: 'loginbox',
         icon: 'imgicon icon-login',
         text: '登录框'
-      },      
+      },
       {
         name: 'waiter',
         icon: 'imgicon icon-waiter',
@@ -72,17 +72,17 @@ var configHtml = {
         name: 'advert',
         icon: 'imgicon icon-advert',
         text: '悬浮广告'
-      },      
+      },
       {
         name: 'teacher',
         icon: 'imgicon icon-teacher',
         text: '教师'
-      },     
+      },
       {
         name: 'audition',
         icon: 'imgicon icon-audition',
         text: '试听'
-      },      
+      },
       {
         name: 'course',
         icon: 'imgicon icon-course',
@@ -171,7 +171,7 @@ var configHtml = {
       },
       public: ['e']
     },
-    html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
+    html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon">请输入内容</div></a></div>'
   },
   picture: {
     style: 'width:243px; height:144px',
@@ -190,7 +190,7 @@ var configHtml = {
       private: {
         text: '设置样式',
         class: 'st-style'
-      }, 
+      },
       public: ['e']
     },
     html: '<div class="button module addmodule"  datatext="按钮"><a target="_blank">按钮</a></div>'
@@ -201,10 +201,10 @@ var configHtml = {
       private: {
         text: '编辑轮播',
         class: 'st-carousel'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {
       self.$refs.carousel.show(self, element)
     },
     html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
@@ -215,10 +215,10 @@ var configHtml = {
       private: {
         text: '编辑广告',
         class: 'st-advert'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {
       self.$refs.advert.show(self, element)
     },
     html: '<div class="advert module addmodule"  datatext="悬浮广告"><div class="advCon"></div></div>'
@@ -229,10 +229,10 @@ var configHtml = {
       private: {
         text: '编辑资讯',
         class: 'st-information'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {
       self.$refs.information.show(self,element)
     },
     html: '<div class="information module addmodule" datatext="资讯"><div class="inforCon"></div></div>'
@@ -243,10 +243,10 @@ var configHtml = {
       private: {
         text: '编辑客服',
         class: 'st-waiter'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {          
+    createEvent: function (self, element, me) {
       self.$refs.waiter.show(self, element)
       if (me.$('.waiter').length < 3) {
         me.editBox.append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
@@ -255,7 +255,7 @@ var configHtml = {
         })
       } else {
         element.remove()
-      }     
+      }
     },
     html: '<div class="waiter module addmodule" style="display:none;" datatext="客服"><div class="kf-head"></div><div class="kf-top"></div></div>'
   },
@@ -265,11 +265,11 @@ var configHtml = {
       private: {
         text: '编辑课程',
         class: 'st-course'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
-      self.$refs.course.show(self, element, me, 'course')      
+    createEvent: function (self, element, me) {
+      self.$refs.course.show(self, element, me, 'course')
     },
     html: '<div class="course module addmodule" datatext="课程"><div class="editAdd"><div class="add-icon"></div></div></div>'
   },
@@ -279,11 +279,11 @@ var configHtml = {
       private: {
         text: '编辑试听',
         class: 'st-audition'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
-      self.$refs.course.show(self, element, me, 'audition')      
+    createEvent: function (self, element, me) {
+      self.$refs.course.show(self, element, me, 'audition')
     },
     html: '<div class="audition module addmodule"  datatext="免费试听"><div class="editAdd"><div class="add-icon"></div></div></div>'
   },
@@ -293,11 +293,11 @@ var configHtml = {
       private: {
         text: '编辑教师',
         class: 'st-teacher'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
-      self.$refs.course.show(self, element, me, 'teacher')      
+    createEvent: function (self, element, me) {
+      self.$refs.course.show(self, element, me, 'teacher')
     },
     html: '<div class="teacher module addmodule"  datatext="教师"><div class="editAdd"><div class="add-icon"></div></div></div>'
   },
@@ -307,20 +307,20 @@ var configHtml = {
       private: {
         text: '编辑视频',
         class: 'st-player'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) { 
+    createEvent: function (self, element, me) {
       if (me.$('.player').length > 1) {
         self.$notify({
           title: '警告',
           message: '您已经添加过播放器',
           type: 'warning'
-        }) 
+        })
         element.remove()
       } else {
         self.$refs.player.show(self, element, me)
-      }     
+      }
     },
     html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
   },
@@ -330,7 +330,7 @@ var configHtml = {
       private: {
         text: '',
         class: ''
-      }, 
+      },
       public: []
     },
     html: '<div class="hline module addmodule"  datatext="横线"><div class="click-hline"></div></div>'
@@ -341,7 +341,7 @@ var configHtml = {
       private: {
         text: '',
         class: ''
-      }, 
+      },
       public: []
     },
     html: '<div class="sline module addmodule"  datatext="竖线"><div class="click-sline"></div></div>'
@@ -352,7 +352,7 @@ var configHtml = {
       private: {
         text: '',
         class: ''
-      }, 
+      },
       public: []
     },
     createEvent: function (self, element, me) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
@@ -366,10 +366,10 @@ var configHtml = {
       private: {
         text: '编辑文本',
         class: 'st-logintext'
-      }, 
+      },
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {
       if (me.$('.loginbox').length > 3) {
         self.$notify({
           title: '警告',
@@ -414,7 +414,7 @@ var configHtml = {
       },
       public: []
     },
-    createEvent: function (self, element, me) {   
+    createEvent: function (self, element, me) {
     	if (me.$('.schoolmap').length > 1) {
 	        self.$notify({
 	          title: '警告',
@@ -465,7 +465,7 @@ var configHtml = {
       },
       public: []
     },
-    createEvent: function (self, element, me) {      
+    createEvent: function (self, element, me) {
       self.$refs.weather.show(self,element)
     },
     html: '<div class="weather module addmodule" datatext="天气"><div class="weatherCon"></div></div>'
@@ -493,6 +493,6 @@ var configHtml = {
     },
     html: '<div class="addcoursetype module addmodule" datatext="课程分类"><div class="courseclassification"><div class="nav"><ul id="coursenav_ul" class="theme_4"><li class="first_li"><p class="allcourse">全部课程</p><ul class="second_mune_ul"><li class="morey"><div class="fosnte"><a href="/platform.html">更多</a></div></li></ul></li></ul></div></div></div>'
   }
-  
+
 }
 exports.config = configHtml

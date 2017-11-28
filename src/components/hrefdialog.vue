@@ -31,7 +31,7 @@
               </div>
               <div class="hrefcont">
                 <el-col style="text-align: left;font-size: 14px;margin-bottom: 10px ">链接地址：
-                </el-col>     
+                </el-col>
                 <el-col>
                   <el-input type="text" size="small" placeholder="请输入链接地址" v-model="edithref"></el-input>
                 </el-col>
@@ -39,10 +39,10 @@
                   显示方式：
                   <el-radio class="radio" v-model="showtype" label="1">新窗口</el-radio>
                   <!-- <el-radio class="radio" v-model="showtype" label="2">弹出层</el-radio> -->
-                </el-col>       
-              </div> 
+                </el-col>
+              </div>
             </div>
-            <div class="tab-content-active tab-content"> 
+            <div class="tab-content-active tab-content">
                   <div class="newsmbx mbx">
                       <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                       <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
@@ -78,7 +78,7 @@
                               <div style="display: inline-block;" >
                                 {{item.dateline | time}}
                               </div>
-                              
+
                             </el-radio>
                           </el-radio-group>
                         </el-col>
@@ -144,7 +144,7 @@
                   <input type="reset" class="courseradiothreereset" style="display: none;" value="Reset">
                 </form>
                 <form class="fourselcourse" style="display: none;">
-                 
+
                   <div class="nodata" v-if="!courselist.length"></div>
                   <!-- <div class="courseradio" v-for="(item,index) in courselist">
                     <input :folderid="item.folderid"  name="fourcourse" type="radio" value="" />
@@ -159,7 +159,7 @@
                         <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
                       </div>
                     </a>
-                  </div> 
+                  </div>
                  <!--  @click="getcwlistall(item.folderid,item.foldername)" -->
                   <div style="clear: both;"></div>
                   <input type="reset" class="courseradiofourreset" style="display: none;" value="Reset">
@@ -176,7 +176,7 @@
                     </el-col>
                 </form>
                 <form class="fiveselcourse" style="display: none;">
-                
+
                   <div class="nodata" v-if="!cwlist.length"></div>
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
@@ -186,13 +186,13 @@
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
                       </a>
-                    </label> 
+                    </label>
                     <!-- <div class="courseradio" v-for="(items,indexs) in item.cwlist">
                       <input :cwid="items.cwid"  name="fivecourse" type="radio" value="" />
                       <a  class="vc-font2"><span class="vc-inner">{{items.title}}</span><span class="vc-fix">此标签不能换行</span></a>
                     </div> -->
                   </el-col>
-                  
+
                   <div style="clear: both;"></div>
                   <el-col v-if="cwcount > cwpagesize" style="text-align: right;margin-top: 10px;">
                       <el-pagination
@@ -223,7 +223,7 @@
                         <h3 :title="item.realname">{{item.realname}}</h3>
                       </a>
                     </label>
-                    <input type="reset" class="teacherradioreset" style="display: none;" value="Reset"> 
+                    <input type="reset" class="teacherradioreset" style="display: none;" value="Reset">
                   </form>
                 </el-col>
               </div>
@@ -292,6 +292,11 @@
             </div>
           </div>
         </div>
+        <el-col v-if="newschoolactive" style="text-align: left;font-size: 14px;margin-top: 20px;margin-left:20px;">
+          打开方式：
+          <el-radio class="radio" v-model="showtype1" label="1">本窗口打开</el-radio>
+          <el-radio class="radio" v-model="showtype1" label="2">打开新页面</el-radio>
+        </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="indexinit(1)">重 置</el-button>
@@ -314,6 +319,8 @@
         mecoursenum : 0,
         edithref:'',
         showtype:'1',
+        showtype1:'1',
+        newschoolactive:false,
         newsradio:'',
         newsq : '',
         NewsOptions : [],
@@ -350,7 +357,7 @@
         cwlistpagesize:30,
         folderq :'',
         folderpagesize : 30,
-        folderpage:1, 
+        folderpage:1,
         foldercount : 0,
         cwq : '',
         cwcount:0,
@@ -382,6 +389,7 @@
               $("input[name='twocourse']").removeAttr('checked');
               $("input[name='threecourse']").removeAttr('checked');
               $("input[name='teacher']").removeAttr('checked');
+              $("input[name='onenews']").removeAttr('checked');
               $('.courseradioreset').click()
               $('.courseradiotworeset').click()
               $('.courseradiothreereset').click()
@@ -391,10 +399,10 @@
               $('.newsradiotworeset').click()
               $('.twoselinlineschoolReset').click()
               $('.oneselinlineschoolReset').click()
-              self.inpid = 'eeeee'; 
+              self.inpid = 'eeeee';
               self.insid = 'eeeee';
               self.infolderid = 'eeeee';
-              self.incwid = 'eeeee';              
+              self.incwid = 'eeeee';
           })
           $('.newstwombx a,.newsthreembx a').text('');
           $('.newsthreembx a,.newsthreembx a').attr('code','')
@@ -404,6 +412,7 @@
           $('.twoselinlineschool').hide()
           $('.oneselcourse').show();
           $('.twoselcourse,.coursetwombx,.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide();
+          self.newschoolactive = false;
         },
         hrefgetealist: function () {
           let self = this
@@ -470,7 +479,7 @@
                 if(linkobj.course > 2){
                   self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
                   self.insid = linkobj.sid;
-                } 
+                }
               }
              })
           }, function (response) {
@@ -482,7 +491,7 @@
           for(var i=0;i<self.schsourcelist.length;i++){
             if(self.schsourcelist[i].sourcecrid == sourceid){
               self.coursesort = self.schsourcelist[i].packages;
-              
+
             }
           }
           self.$nextTick( () => {
@@ -490,7 +499,7 @@
               if(linkobj.course > 2){
                 self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
                 self.insid = linkobj.sid;
-              } 
+              }
             }
            })
           /*self.$http.get(window.host + '/aroomv3/schsource/itemlist.html', {
@@ -509,7 +518,7 @@
                 if(linkobj.course > 2){
                   self.getsidcourse(linkobj.pid,linkobj.pname,linkobj)
                   self.insid = linkobj.sid;
-                } 
+                }
               }
              })
           }, function (response) {
@@ -535,7 +544,7 @@
                 }
               }
             }
-            
+
             self.courselist = list;
             self.foldercount   =  parseInt(response.data.data.coursecount)
             setTimeout(function(){
@@ -550,7 +559,7 @@
                  self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid)
                  self.incwid = linkobj.cwid;
                  $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
-                } 
+                }
               }
              })
           }, function (response) {
@@ -581,7 +590,7 @@
 
             self.courselist = list;
             self.foldercount   =  parseInt(response.data.data.count)
-            
+
             setTimeout(function(){
               $('.courseradiothreereset').click()
             },0)
@@ -595,7 +604,7 @@
                  self.incwid = linkobj.cwid;
                  $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
 
-                } 
+                }
               }
              })
           }, function (response) {
@@ -613,7 +622,7 @@
               crid: sourceid || 0
             }
           }, {emulateJSON: true}).then(function (response) {
-            let list = response.data.data.cwlist;           
+            let list = response.data.data.cwlist;
             for (var i = 0; i < list.length; i++) {
               if (list[i].cwlist) {
                 for (var j = 0; j < list[i].cwlist.length; j++) {
@@ -659,31 +668,35 @@
             params: {}
           }, {emulateJSON: true}).then(function (response) {
             if (response.data.code === 0) {
-              
+
               let navList = response.data.data
               let obj = []
               for (let i = 0, len = navList.length; i < len; i++) {
-                let item = navList[i]
-                if (item.code.length < 4 || item.code === 'news') {
-                  let items = {
-                    label: item.name,
-                    value: item.code,
-                    newsCount : item.newsCount,
-                    children: []
-                  }
-                  if (item.subnav) {
-                    for (let j = 0, jen = item.subnav.length; j < jen; j++) {
-                      let jtem = item.subnav[j]
-                      let jtems = {
-                        label: jtem.name,
-                        value: jtem.code,
-                        newsCount : jtem.newsCount,
-                        children: []
+                if(navList[i].value !='news'){
+                  let item = navList[i]
+                  if (item.code.length < 4 || item.code === 'news') {
+                    let items = {
+                      label: item.name,
+                      value: item.code,
+                      newsCount : item.newsCount,
+                      children: []
+                    }
+                    if (item.subnav) {
+                      for (let j = 0, jen = item.subnav.length; j < jen; j++) {
+                        let jtem = item.subnav[j]
+                        let jtems = {
+                          label: jtem.name,
+                          value: jtem.code,
+                          newsCount : jtem.newsCount,
+                          children: []
+                        }
+                        items.children.push(jtems)
                       }
-                      items.children.push(jtems)
+                    }
+                    if(items.value != 'news'){
+                      obj.push(items)
                     }
                   }
-                  obj.push(items)
                 }
               }
               self.NewsOptions = obj
@@ -704,7 +717,7 @@
               pagenum: self.newspage
             }
           }, {emulateJSON: true}).then(function (response) {
-            if (response.data.code === 0) {        
+            if (response.data.code === 0) {
               self.newslist = response.data.data
               if(self.newslist.length){
                 self.threenewsradio = self.newscode;
@@ -740,9 +753,9 @@
         }
       }
     },
-    created:function(){ 
+    created:function(){
       this.getNewsData()
-      this.hrefgetealist() 
+      this.hrefgetealist()
       this.geschsource()
     },
     methods:{
@@ -751,44 +764,44 @@
         self.visdialog = true;
         self.$nextTick( () => {
           let linktype = $('.on_module a').attr('linktype');
-          let linkobj =  $('.on_module a').attr('linkobj');          
-          linkobj = linkobj?$.parseJSON(linkobj):''; 
+          let linkobj =  $('.on_module a').attr('linkobj');
+          linkobj = linkobj?$.parseJSON(linkobj):'';
           let tCP = $('.tabs-content-placeholder')
           tCP.attr('class', 'tabs-content-placeholder')
         // ----------- update start------------
           self.parameter = ''
-          if (thatName) { 
-            let saveparam = false            
+          if (thatName) {
+            let saveparam = false
             switch(thatName.split('|')[0]){
               case 'course':
                 linktype = 'course'
                 saveparam = true
-                tCP.addClass('inputCoruse') 
+                tCP.addClass('inputCoruse')
                 self.indexinit()
                 /*let names = thatName.split('|')[1]
                 if(names == 'addcoursetype'){
                     self.addcoursetype = true
                     let index = thatName.split('|')[2]
                     saveparam = false
-                    self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index}   
+                    self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index}
                 }*/
 
-                // self.coursebxinit(4)               
+                // self.coursebxinit(4)
                 break
               case 'addcoursetype':
                 linktype = 'course'
                 saveparam = true
-                tCP.addClass('inputAddcoursetype') 
+                tCP.addClass('inputAddcoursetype')
                 self.indexinit()
                 self.addcoursetype = true
                 let index = thatName.split('|')[1]
                 saveparam = false
                 if(index){
-                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index} 
+                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf,index:index}
                 }else{
-                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf} 
+                  self.parameter = {thatName : 'addcoursetype',linktype: 'course',thatSelf: thatSelf}
                 }
-                // self.coursebxinit(4)               
+                // self.coursebxinit(4)
                 break
               case 'coursecw':
                 linktype = 'course'
@@ -804,10 +817,10 @@
                 linktype = 'online'
                 saveparam = true
                 break
-              case 'advert':                
+              case 'advert':
                 saveparam = true
                 break
-              case 'carousel':                
+              case 'carousel':
                 saveparam = true
                 break
             }
@@ -824,6 +837,16 @@
 
           $('ul.tabsul li a').removeClass('tab-active')
           $('.tabs-content-placeholder .tab-content').removeClass('tab-content-active')
+          if(linkobj.newschoolactive){
+            self.newschoolactive = true;
+            if(linkobj.newschoolactive == '1'){
+              self.showtype1 = '1';
+            }else{
+              self.showtype1 = '2';
+            }
+          }else{
+            self.newschoolactive = false;
+          }
           if(linktype == 'news'){
             $('ul.tabsul li a[data-index=1]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(1).addClass('tab-content-active')
@@ -848,7 +871,7 @@
               self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
               setTimeout(function(){
                   $("input[code='"+linkobj.newscode+"']").attr('checked','true');
-              },0)        
+              },0)
             }else{
               $("input[code='"+linkobj.newscode+"']").attr('checked','true');
             }
@@ -878,10 +901,11 @@
             this.hrefgetealist();
             $("input[code='"+linkobj.teauid+"']").attr('checked','true');
           }else if(linktype == 'onlineschool'){
+
             $('ul.tabsul li a[data-index=4]').addClass('tab-active')
             $('.tabs-content-placeholder .tab-content').eq(4).addClass('tab-content-active')
-            if(linkobj.oneinlineschool == 'QQ' || linkobj.oneinlineschool == 'WeChat' || linkobj.oneinlineschool == 'weibo'){ 
-                self.getmorelogin()       
+            if(linkobj.oneinlineschool == 'QQ' || linkobj.oneinlineschool == 'WeChat' || linkobj.oneinlineschool == 'weibo'){
+                self.getmorelogin()
             }
             $("input[code='"+linkobj.oneinlineschool+"']").attr('checked','true');
           }else {
@@ -893,14 +917,30 @@
           let tabs = widget.find('ul.tabsul'),
           content = widget.find('.tabs-content-placeholder > div');
           $('.teaflowx').scrollTop(0);
-          tabs.on('click','a', function (e) {           
+          tabs.on('click','a', function (e) {
             e.preventDefault();
-            let index = $(this).data('index');           
+            let index = $(this).data('index');
             tabs.find('a').removeClass('tab-active');
             content.removeClass('tab-content-active');
             $(this).addClass('tab-active');
             content.eq(index).addClass('tab-content-active');
             self.init()
+          });
+          $('input:radio[name="onenews"]').change(function(){
+            if($(this).is(":checked")){
+              self.newschoolactive = true;
+            }
+          });
+          $('input:radio[name="oneinlineschool"]').change(function(){
+            if($(this).is(":checked")){
+              var code =   $(this).attr('code');
+              if(code == 'summary' || code == 'course' || code == 'contact' || code == 'index' ){
+                self.newschoolactive = true;
+              }else{
+                self.newschoolactive = false;
+              }
+              
+            }
           });
         })
       },
@@ -908,23 +948,23 @@
         let self = this;
         let obj;
         let linkType
-        let a 
+        let a
         let origin
       // ----------- update start------------
         let parameter = self.parameter
         if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
-          linkType = parameter.linktype         
+          linkType = parameter.linktype
         } else {
           origin = window.location.origin
-          a = $('.on_module').find('a');          
+          a = $('.on_module').find('a');
           linkType = $('a.tab-active').attr('type')
           a.removeClass('registerEvent')
           a.removeClass('getUserNameEvent')
           a.removeClass('loginEvent')
-        }       
-      // ----------- update end------------        
+        }
+      // ----------- update end------------
         switch (linkType) {
-          case 'none':            
+          case 'none':
             a.removeAttr('href')
           break
           case 'online':
@@ -934,12 +974,12 @@
                 href : self.edithref,
                 opentype : self.showtype
               }
-              // ----------- update start------------ 
-              if (!parameter) { 
+              // ----------- update start------------
+              if (!parameter) {
                 a.attr('href', self.edithref)
                 a.attr('linkobj', JSON.stringify(obj))
               }
-              // ----------- update end------------ 
+              // ----------- update end------------
             } else {
               self.$notify({
                 title: '警告',
@@ -966,16 +1006,16 @@
               let twonewsChecked = $("input[name='twonews']:checked")
               news = twonewsChecked.attr('code');
               self.newsobj['label1'] = twonewsChecked.attr('newsname')
-              num = 2;              
+              num = 2;
             }else if(!threenews){
-              news = self.threenewsradio;             
+              news = self.threenewsradio;
               for (let i = 0, len = self.newslist.length; i < len; i++) {
                 let itemNews = self.newslist[i]
                 if (itemNews.itemid == self.threenewsradio) {
                   newsTitle = itemNews.subject
                 }
-              }              
-              num = 3;              
+              }
+              num = 3;
             }
             if(news == undefined || news == 'undefined' || !news) {
               this.$notify({
@@ -1005,7 +1045,7 @@
               }
             }else if(num == 3){
               url = '/dyinformation/' + news + '.html'
-              
+
             }
             if(num == 3){
               obj = {
@@ -1018,23 +1058,38 @@
                 q : self.newsq
               }
             }else{
-              obj = {
-                active : num,
-                newscode : news,
-                news : self.newsobj
+              if(num == 1){
+                obj = {
+                  active : num,
+                  newscode : news,
+                  news : self.newsobj,
+                  newschoolactive : self.showtype1
+                }
+                if(self.showtype1 == '1'){
+                  a.removeAttr('target')
+                }else{
+                  a.attr('target', '_blank')
+                }
+              }else{
+                obj = {
+                  active : num,
+                  newscode : news,
+                  news : self.newsobj
+                }
               }
+              
             }
-            a.attr('linkobj', JSON.stringify(obj)) 
-            a.attr('href', url)   
+            a.attr('linkobj', JSON.stringify(obj))
+            a.attr('href', url)
           break
           case 'onlineschool':
             let oneinlineschool;
             let oneschool = $('.oneselinlineschool').is(':hidden');
             let twoschool = $('.twoselinlineschool').is(':hidden');
             if(!oneschool){
-              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');                
+              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');
             }else if(!twoschool){
-              oneinlineschool =  $("input[name='logintype']:checked").attr('code');                
+              oneinlineschool =  $("input[name='logintype']:checked").attr('code');
             }
             if(oneinlineschool == undefined ||  oneinlineschool == 'undefined' || !oneinlineschool) {
               this.$notify({
@@ -1060,7 +1115,7 @@
                 a.addClass('registerEvent')
               break
               case 'password':
-                a.attr('href', '/forget.html')  
+                a.attr('href', '/forget.html')
               break
               case 'username':
                 a.removeAttr('href')
@@ -1081,19 +1136,30 @@
                 a.attr('href', 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin)
               break
               case 'WeChat':
-                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)    
+                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)
               break
               case 'index':
-                a.attr('href', 'http://'+ window.roominfo.domain)    
+                a.attr('href', 'http://'+ window.roominfo.domain)
               break
             }
-
-            obj = {
-              oneinlineschool : oneinlineschool
-
+            if(oneinlineschool == 'summary' || oneinlineschool == 'course'  || oneinlineschool == 'contact'  || oneinlineschool == 'index' ){
+              obj = {
+                oneinlineschool : oneinlineschool,
+                newschoolactive : self.showtype1
+              }
+              if(self.showtype1 == '1'){
+                a.removeAttr('target')
+              }else{
+                a.attr('target', '_blank')
+              }
+            }else{
+              obj = {
+                oneinlineschool : oneinlineschool
+              }
             }
+            
             a.attr('linkobj', JSON.stringify(obj))
-            a.attr('href', url)   
+            a.attr('href', url)
           break
           case 'teacher':
             let face = $("input[name='teacher']:checked").attr('face');
@@ -1111,29 +1177,29 @@
             }
             obj = {
               teauid: teauid,
-              face: face,            
+              face: face,
               profile: profile,
               realname: realname,
               professionaltitle: professionaltitle,
               q :self.hrefteaq
             }
-            // ----------- update start------------ 
-            if (!parameter) { 
+            // ----------- update start------------
+            if (!parameter) {
               a.attr('linkobj', JSON.stringify(obj))
               a.attr('href', '/master/'+teauid+'.html')
             }
-            // ----------- update end------------ 
-          break  
+            // ----------- update end------------
+          break
           case 'course':
             let courseactive;
             let onecourse = $('.oneselcourse').is(':hidden');
             let twocourse = $('.twoselcourse').is(':hidden');
             let threecourse = $('.threeselcourse').is(':hidden');
             let fourcourse = $('.fourselcourse').is(':hidden');
-            let fivecourse = $('.fiveselcourse').is(':hidden');           
+            let fivecourse = $('.fiveselcourse').is(':hidden');
             if (!onecourse) {
-              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');             
-              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');             
+              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');
+              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');
               if(onecourseradio == undefined || onecourseradio == '' || onecourseradio == 'undefined'){
                 this.$notify({
                   title: '警告',
@@ -1171,7 +1237,7 @@
                 pname : pname
               }
               a.attr('linkobj', JSON.stringify(obj))
-              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio)              
+              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio)
             } else if (!threecourse) {
               let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
               let sname = $("input[name='threecourse']:checked").attr('sname');
@@ -1203,7 +1269,7 @@
             } else if (!fourcourse) {
               let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
               let itemid = $("input[name='fourcourse']:checked").attr('itemid');
-              
+
               if(fourcourseradio == undefined ||fourcourseradio == 'undefined' || fourcourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -1226,22 +1292,22 @@
                 folderid : fourcourseradio,
                 itemid : itemid,
                 foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
-                // ----------- update start------------ 
+                // ----------- update start------------
                 summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
                 img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
                 studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
                 viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
-                // ----------- update end------------ 
+                // ----------- update end------------
                 folderq : self.folderq,
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize
               }
-              // ----------- update start------------ 
+              // ----------- update start------------
               if (!parameter) {
                 a.attr('linkobj', JSON.stringify(obj))
                 a.attr('href','/courseinfo/' + itemid + '.html')
               }
-              // ----------- update end------------ 
+              // ----------- update end------------
             } else if (!fivecourse) {
               let fivecourseradio = $("input[name='fivecourse']:checked").attr('cwid');
               let cwpay = $("input[name='fivecourse']:checked").attr('cwpay');
@@ -1272,21 +1338,21 @@
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize,
                 cwid:fivecourseradio,
-              // ----------- update start------------  
+              // ----------- update start------------
                 cwpay: cwpay,
                 thumb: $("input[cwid='"+fivecourseradio+"']").attr('thumb'),
                 cwsize: $("input[cwid='"+fivecourseradio+"']").attr('cwsize'),
                 logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
                 viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
                 summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
-              // ----------- update end------------  
+              // ----------- update end------------
                 cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
                 cwpagesize : self.cwpagesize
               }
-            // ----------- update start------------  
-              if (!parameter) { 
+            // ----------- update start------------
+              if (!parameter) {
                 a.attr('linkobj', JSON.stringify(obj))
                 if(cwpay == '1'){
                     a.attr('href','/ibuy.html?cwid='+fivecourseradio)
@@ -1294,18 +1360,18 @@
                     a.attr('href','/courseinfo/' + self.itemid + '.html')
                 }
               }
-            // ----------- update end------------  
+            // ----------- update end------------
             }
-          break  
+          break
         }
         // ----------- update start------------
-        if (parameter) {          
-          parameter.Callback(parameter.thatSelf, obj, linkType)        
+        if (parameter) {
+          parameter.Callback(parameter.thatSelf, obj, linkType)
         } else {
           a.attr('linktype',linkType)
-          a.attr('target','_blank')
+          //a.attr('target','_blank')
         }
-        // ----------- update end------------ 
+        // ----------- update end------------
         self.visdialog = false
       },
     // -------------------
@@ -1313,23 +1379,23 @@
         let self = this;
         let obj;
         let linkType
-        let a 
+        let a
         let origin
       // ----------- update start------------
         let parameter = self.parameter
         if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
-          linkType = parameter.linktype         
+          linkType = parameter.linktype
         } else {
           origin = window.location.origin
-          a = $('.on_module').find('a');          
+          a = $('.on_module').find('a');
           linkType = $('a.tab-active').attr('type')
           a.removeClass('registerEvent')
           a.removeClass('getUserNameEvent')
           a.removeClass('loginEvent')
-        }       
-      // ----------- update end------------        
+        }
+      // ----------- update end------------
         switch (linkType) {
-          case 'none':            
+          case 'none':
             a.removeAttr('href')
           break
           case 'online':
@@ -1339,12 +1405,12 @@
                 href : self.edithref,
                 opentype : self.showtype
               }
-              // ----------- update start------------ 
-              if (!parameter) { 
+              // ----------- update start------------
+              if (!parameter) {
                 a.attr('href', self.edithref)
                 a.attr('linkobj', JSON.stringify(obj))
               }
-              // ----------- update end------------ 
+              // ----------- update end------------
             } else {
               self.$notify({
                 title: '警告',
@@ -1371,16 +1437,16 @@
               let twonewsChecked = $("input[name='twonews']:checked")
               news = twonewsChecked.attr('code');
               self.newsobj['label1'] = twonewsChecked.attr('newsname')
-              num = 2;              
+              num = 2;
             }else if(!threenews){
-              news = self.threenewsradio;             
+              news = self.threenewsradio;
               for (let i = 0, len = self.newslist.length; i < len; i++) {
                 let itemNews = self.newslist[i]
                 if (itemNews.itemid == self.threenewsradio) {
                   newsTitle = itemNews.subject
                 }
-              }              
-              num = 3;              
+              }
+              num = 3;
             }
             if(news == undefined || news == 'undefined' || !news) {
               this.$notify({
@@ -1410,7 +1476,7 @@
               }
             }else if(num == 3){
               url = '/dyinformation/' + news + '.html'
-              
+
             }
             if(num == 3){
               obj = {
@@ -1429,17 +1495,17 @@
                 news : self.newsobj
               }
             }
-            a.attr('linkobj', JSON.stringify(obj)) 
-            a.attr('href', url)   
+            a.attr('linkobj', JSON.stringify(obj))
+            a.attr('href', url)
           break
           case 'onlineschool':
             let oneinlineschool;
             let oneschool = $('.oneselinlineschool').is(':hidden');
             let twoschool = $('.twoselinlineschool').is(':hidden');
             if(!oneschool){
-              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');                
+              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');
             }else if(!twoschool){
-              oneinlineschool =  $("input[name='logintype']:checked").attr('code');                
+              oneinlineschool =  $("input[name='logintype']:checked").attr('code');
             }
             if(oneinlineschool == undefined ||  oneinlineschool == 'undefined' || !oneinlineschool) {
               this.$notify({
@@ -1465,7 +1531,7 @@
                 a.addClass('registerEvent')
               break
               case 'password':
-                a.attr('href', '/forget.html')  
+                a.attr('href', '/forget.html')
               break
               case 'username':
                 a.removeAttr('href')
@@ -1486,16 +1552,14 @@
                 a.attr('href', 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin)
               break
               case 'WeChat':
-                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)    
+                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)
               break
             }
-
-            obj = {
+            obj = { 
               oneinlineschool : oneinlineschool
-
             }
             a.attr('linkobj', JSON.stringify(obj))
-            a.attr('href', url)   
+            a.attr('href', url)
           break
           case 'teacher':
             let face = $("input[name='teacher']:checked").attr('face');
@@ -1513,29 +1577,29 @@
             }
             obj = {
               teauid: teauid,
-              face: face,            
+              face: face,
               profile: profile,
               realname: realname,
               professionaltitle: professionaltitle,
               q :self.hrefteaq
             }
-            // ----------- update start------------ 
-            if (!parameter) { 
+            // ----------- update start------------
+            if (!parameter) {
               a.attr('linkobj', JSON.stringify(obj))
               a.attr('href', '/master/'+teauid+'.html')
             }
-            // ----------- update end------------ 
-          break  
+            // ----------- update end------------
+          break
           case 'course':
             let courseactive;
             let onecourse = $('.oneselcourse').is(':hidden');
             let twocourse = $('.twoselcourse').is(':hidden');
             let threecourse = $('.threeselcourse').is(':hidden');
             let fourcourse = $('.fourselcourse').is(':hidden');
-            let fivecourse = $('.fiveselcourse').is(':hidden');           
+            let fivecourse = $('.fiveselcourse').is(':hidden');
             if (!onecourse) {
-              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');             
-              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');             
+              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');
+              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');
               if(onecourseradio == undefined || onecourseradio == '' || onecourseradio == 'undefined'){
                 this.$notify({
                   title: '警告',
@@ -1588,7 +1652,7 @@
                  }
                 }
               }
-              
+
               if(index){
                 courselist.splice(parseInt(index),1,obj)
               }else{
@@ -1607,7 +1671,7 @@
               }
 
              /* a.attr('linkobj', JSON.stringify(obj))
-              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio) */             
+              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio) */
             } else if (!threecourse) {
               let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
               let sname = $("input[name='threecourse']:checked").attr('sname');
@@ -1639,7 +1703,7 @@
             } else if (!fourcourse) {
               let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
               let itemid = $("input[name='fourcourse']:checked").attr('itemid');
-              
+
               if(fourcourseradio == undefined ||fourcourseradio == 'undefined' || fourcourseradio == ''){
                 this.$notify({
                   title: '警告',
@@ -1662,25 +1726,25 @@
                 folderid : fourcourseradio,
                 itemid : itemid,
                 foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
-                // ----------- update start------------ 
+                // ----------- update start------------
                 summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
                 img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
                 studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
                 viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
-                // ----------- update end------------ 
+                // ----------- update end------------
                 folderq : self.folderq,
                 folderpage : self.folderpage,
                 folderpagesize: self.folderpagesize
               }
-              
-              // ----------- update start------------ 
+
+              // ----------- update start------------
               /*if (!parameter) {
                 a.attr('linkobj', JSON.stringify(obj))
                 a.attr('href','/courseinfo/' + itemid + '.html')
               }*/
-              // ----------- update end------------ 
+              // ----------- update end------------
             }
-          break  
+          break
         }
         self.visdialog = false
       },
@@ -1699,7 +1763,7 @@
           $('.newsthreembx').show()
           self.newsobj.code1 = code;
           self.newsobj.son1 = son;
-          self.newsobj.label1 = label; 
+          self.newsobj.label1 = label;
         }else{
           for(var i=0;i<self.NewsOptions.length;i++){
             if(code == self.NewsOptions[i].value){
@@ -1728,6 +1792,7 @@
           self.newsobj.son = son;
           self.newsobj.label = label;
         }
+        self.newschoolactive = false;
       },
       handleIconClick(){
         let self = this;
@@ -1736,7 +1801,7 @@
       },
       handleIconteaClick(){
         let self = this;
-        self.hrefgetealist() 
+        self.hrefgetealist()
       },
       handleIconfolderClick(){
         let self = this;
@@ -1745,7 +1810,7 @@
           self.getcourselist(self.pid,self.sid)
         }else{
           self.getitemcourselist(self.sourceid,self.pid,self.sid)
-        } 
+        }
       },
       handleIconcwClick(){
         let self = this;
@@ -1806,7 +1871,7 @@
           a.removeAttr('target');
           a.removeClass('registerEvent')
           a.removeClass('getUserNameEvent')
-          a.removeClass('loginEvent')         
+          a.removeClass('loginEvent')
         }
       },
       newsmbxinit(num){
@@ -1844,6 +1909,7 @@
         let self = this
         $('.oneselinlineschool').hide();
         $('.twoselinlineschool,.inlineschooltwombx').show();
+        self.newschoolactive = false;
       },
       getsoncourse(sourceid,name,linkobj){
         let self = this;
@@ -1851,7 +1917,7 @@
         if(id == 0){
           self.getcoursesort(linkobj)
         }else{
-          self.getitemlist(id,'','',linkobj) 
+          self.getitemlist(id,'','',linkobj)
         }
         $('.oneselcourse').hide();
         $('.twoselcourse').show();
@@ -1866,7 +1932,7 @@
       },
       getsidcourse(pid,name,linkobj){
          let self = this;
-         
+
          let list = self.coursesort;
          //let item = self.itemlist;
          let sidlist  = [];
@@ -1960,7 +2026,7 @@
     /*height: 720px;*/
   }
   .hrefdialog .el-dialog--hrefs .el-dialog__body{
-    padding: 5px 0px; 
+    padding: 5px 0px;
   }
  .hrefdialog .tabs-vertical{
     background-color: #fff;
@@ -1981,8 +2047,8 @@
     line-height: 41px;
     padding-left: 15px;
     display:block;
-    white-space:nowrap; 
-    overflow:hidden; 
+    white-space:nowrap;
+    overflow:hidden;
     text-overflow:ellipsis;
     box-sizing:border-box;
   }
@@ -1991,8 +2057,8 @@
     display: inline-block;
     max-width: 160px;
     white-space:nowrap;
-    overflow:hidden; 
-    text-overflow:ellipsis;    
+    overflow:hidden;
+    text-overflow:ellipsis;
     float: left;
 
   }
@@ -2002,7 +2068,7 @@
   }
   .hrefdialog .tabs-vertical .coursembx a{
     max-width: 160px;
-  } 
+  }
   .hrefdialog .tabs-vertical .mbx span{
     display: inline-block;
     float: left;
@@ -2119,7 +2185,7 @@
     display:inline-block;
     white-space:nowrap;
     overflow:hidden;
-    text-overflow:ellipsis;  
+    text-overflow:ellipsis;
   }
   .hrefdialog .courselist a h3{
     max-width: 120px;
@@ -2129,8 +2195,8 @@
   .hrefdialog  .courselist a h3.coursetitle{
     max-width: 104px;
   }
-  
-  
+
+
 /* The tabs */
 
 .hrefdialog .tabs-vertical ul.tabsul{
@@ -2183,7 +2249,7 @@
     height: 100%
 }
 
-.hrefdialog .tabs-vertical .tabs-content-placeholder div.tab-content{   
+.hrefdialog .tabs-vertical .tabs-content-placeholder div.tab-content{
     display: none;
 }
 .hrefdialog .tabs-vertical .tabs-content-placeholder div.tab-content-href{
@@ -2204,7 +2270,7 @@
 
 .hrefdialog .tabs-vertical .tabs-content-placeholder div img{
     max-width: 100%;
-    margin-top:5px; 
+    margin-top:5px;
 }
 .hrefdialog .el-dialog__body{
   padding: 5px 10px
@@ -2218,7 +2284,7 @@
   box-sizing: border-box;
   height: 100px;
 }
-/* update 隐藏选中框*/ 
+/* update 隐藏选中框*/
 .hrefdialog .inputCoruse input[name='onecourse'],
 .hrefdialog .inputCoruse input[name='twocourse'],
 .hrefdialog .inputCoruse input[name='threecourse']{

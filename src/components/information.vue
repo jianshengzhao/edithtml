@@ -183,7 +183,7 @@
 									inforhtml += 		'<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><p class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p></a>'
 									if(datas.data.newslist[i].thumb != ""){
 										inforhtml += '<div class="infor-img">'
-										inforhtml += '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
+										inforhtml += '<a class="infor-img-a" style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
 										inforhtml += '<div class="infor-desc">'
 									}else{
 										inforhtml += '<div class="infor-desc-text">'

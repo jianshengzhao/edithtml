@@ -4,8 +4,8 @@
       title="文本"
       :visible.sync="dialogEditor"
       size="small" class="ueditor">
-      <div ref="ueditor" class='editorC'></div>    
-      <span slot="footer" class="dialog-footer">        
+      <div ref="ueditor" class='editorC'></div>
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogEditor = false">取 消</el-button>
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
@@ -25,7 +25,7 @@ export default {
   name: 'ueditor',
   data () {
     return {
-      dialogEditor: false,      
+      dialogEditor: false,
       editorConfig: {
         zIndex: 3000,
         toolbars: [[
@@ -35,22 +35,28 @@ export default {
     }
   },
   created: function () {
-    let self = this    
-    self.ueditorid = guidGenerator()    
+    let self = this
+    self.ueditorid = guidGenerator()
   },
-  methods: { 
+  methods: {
     dialogEditorEvent: function () {
         let self = this
         let content = self.editor.getContent()
         let h = $('.ueditor .edui-editor-iframeholder').css('height')
         self.dialogEditor = false
         $('.on_module').find('.editorCon').html(content)
+        let textw = $('.on_module').innerWidth()
+        let texth = $('.on_module').innerHeight()
+        $('.on_module .resizeBox').css({
+          'width':textw,
+          'height':texth
+        })
     },
     show: function () {
-      let self = this 
+      let self = this
       let html = $('.on_module').find('.editorCon').html()
       self.dialogEditor = true
-      self.$nextTick(function () {      
+      self.$nextTick(function () {
       self.$refs.ueditor.id = self.ueditorid
       // $('.ueditor .el-dialog').css('width', w + 40)
       // $('.ueditor .edui-editor,.ueditor .edui-editor-iframeholder').css('width', w)
@@ -68,7 +74,7 @@ export default {
 
   .editorC{
     margin: 0 auto;
-    min-height: 400px 
+    min-height: 400px
   }
   .el-dialog__footer {
     padding: 10px 10px 15px;

@@ -20,6 +20,24 @@ svg.icon {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale
 }
+.icon-spacing-center {
+  display: block;
+  margin:0 auto;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../icon/spacingcenter.png); }
+
+.icon-spacing-middle {
+  display: block;
+  margin:0 auto;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../icon/spacingmiddle.png); }
+
 
 .icon-align-center:before {
 	content: "\E900"
