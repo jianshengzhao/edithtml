@@ -232,17 +232,17 @@ export default {
           self.title = '课程'
           self.col_num = 2
           self.row_num = 2
-          self.checkedTeacher = true
-          self.checkedTime = true
-          self.checkedPopul = true
-          self.checkedPrice = true
+          self.checkedTeacher = false
+          self.checkedTime = false
+          self.checkedPopul = false
+          self.checkedPrice = false
           break
         case 'audition':
           self.title = '试听'
           self.col_num = 2
           self.row_num = 2
-          self.checkedTeacher = true
-          self.checkedPopul = true
+          self.checkedTeacher = false
+          self.checkedPopul = false
           break
         case 'teacher':
           self.title = '教师'

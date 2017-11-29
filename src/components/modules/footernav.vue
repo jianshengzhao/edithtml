@@ -6,7 +6,7 @@
       size="footer" 
       @close="beforeCloseEvent">
       <el-row class="newnav">
-        <el-button type="primary" size="small" @click="addnavEvent('')">新增导航</el-button>
+        <el-button type="primary" size="small" @click="addnavEvent('add')">新增导航</el-button>
       </el-row>
       <el-row class="footer-th">
         <el-col :span="2" class="center">启用</el-col>
@@ -280,9 +280,9 @@ export default {
     },
     addnavEvent: function (index) { // 新增导航
       let self = this
-      if (index !== '') {
+      if (index != 'add') {
         self.index = index
-        self.title = '编辑菜单'
+        self.title = '编辑导航'
         let item = self.footerData[index]
         self.enable = item.enable
         self.navname = item.navname
@@ -293,7 +293,7 @@ export default {
         self.urlRoute = item.Route
         self.urlHref = item.url
       } else {
-        self.index = undefined
+        self.index = 'add'
         self.title = '新增导航' 
         self.navname = ''
         self.navcode = ''
@@ -305,6 +305,7 @@ export default {
     },
     dialogAddNavEvent: function () { // 新增导航确定
       let self = this
+      console.log(self.index)
       let message = ''
       if (self.navname == '') {
         message = '你还未填写导航名称'
@@ -315,7 +316,7 @@ export default {
       } else if (self.urlHref == '' && self.navcode != 'index') {
         message = '你还未添加链接'
       } else {
-        if (self.index == undefined) {
+        if (self.index == 'add') {
           self.footerData.push({
             enable: false,
             navname: self.navname,

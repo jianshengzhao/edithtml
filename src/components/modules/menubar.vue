@@ -55,14 +55,14 @@
             <el-button type="primary" size="small" @click="addnavEvent('add')">新增菜单</el-button>
           </el-row>
           <el-row class="footer-th">
-            <el-col :span="4" class="center">启用</el-col>
-            <el-col :span="6">菜单名称</el-col>
+            <el-col :span="3" class="center">启用</el-col>
+            <el-col :span="7">菜单名称</el-col>
             <el-col :span="3">图标</el-col>            
             <el-col :span="11">操作</el-col>
           </el-row>
           <el-row class="footer-tr" v-for="(item, index) in footerData" :key='index'>
-            <el-col :span="4" class="center"><el-checkbox v-model="item.enable"></el-checkbox></el-col>
-            <el-col :span="6">{{item.navname}}</el-col>
+            <el-col :span="3" class="center"><el-checkbox v-model="item.enable"></el-checkbox></el-col>
+            <el-col :span="7">{{item.navname}}</el-col>
             <el-col :span="3"><img :src="item.before" alt=""></el-col>          
             <el-col :span="11">
               <span class="edit" @click="addnavEvent(index)">编辑</span>
