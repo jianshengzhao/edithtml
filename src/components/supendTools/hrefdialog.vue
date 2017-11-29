@@ -151,7 +151,7 @@
                     <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                   </div> -->
                   <div  class="courselist" v-for="(item,index) in courselist">
-                    <input :folderid="item.folderid" :itemid="item.itemid"  :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" :iprice="item.iprice" name="fourcourse" type="radio" value="" />
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :coursewarenum="item.coursewarenum" :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" :iprice="item.iprice" name="fourcourse" type="radio" value="" />
                     <a @click="parameter.thatName == 'course' ? infolderid = item.folderid  : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
                       <div style="text-align: center;width: 121px;">
@@ -181,7 +181,7 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition'||parameter.thatName == 'carousel' ? false : items.ism3u8=='1' ? false:true"/>
+                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :speaker= "items.user.realname" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition'||parameter.thatName == 'carousel' ? false : items.ism3u8=='1' ? false:true"/>
                       <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition'||parameter.thatName == 'carousel'  ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
@@ -1223,7 +1223,7 @@
                 // ----------- update start------------ 
                 summary: courseradio.attr('summary'),
                 img: courseradio.attr('img'),
-                studynum: courseradio.attr('studynum'),
+                coursewarenum: courseradio.attr('coursewarenum'),
                 viewnum: courseradio.attr('viewnum'),
                 iprice: courseradio.attr('iprice'),
                 // ----------- update end------------ 
@@ -1277,6 +1277,7 @@
                 summary: inpcwid.attr('summary'),
               // ----------- update end------------  
                 cwname : inpcwid.attr('cwname'),
+                speaker: inpcwid.attr('speaker'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
                 cwpagesize : self.cwpagesize

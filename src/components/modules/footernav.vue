@@ -293,7 +293,7 @@ export default {
         self.urlRoute = item.Route
         self.urlHref = item.url
       } else {
-        self.index = ''
+        self.index = undefined
         self.title = '新增导航' 
         self.navname = ''
         self.navcode = ''
@@ -562,8 +562,9 @@ export default {
     width: 375px;
     left:50%!important;
     top: 718px!important;
-    margin-left: -212px;
+    margin-left: -211px;
     display: none;
+    z-index: 100;
   }
   .spaceon .footernav{
     top: 751px!important;

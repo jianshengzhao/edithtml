@@ -681,7 +681,7 @@ var tool = {
         break
       case 'borderWidth':      
         part = function (ele) {
-          ele.css('borderWidth', val)
+          ele.css('borderWidth', val )
           let w = parseInt(ele.css('width'))
           let h = parseInt(ele.css('height'))
           if (ele.hasClass('sline')){
@@ -721,28 +721,28 @@ var tool = {
             self.inp_weight_x = 1
             self.inp_weight_y = 1
             self.inp_blur = 1
-            ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+            ele.css('boxShadow', (self.inp_weight_x / 37.5) + 'rem ' + (self.inp_weight_y / 37.5) + 'rem ' + (self.inp_blur / 37.5) + 'rem ' + self.bw_color)
           }
         }
         break
       case 'boxShadowX':
         part = function (ele) {
-          ele.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+          ele.css('boxShadow', (val / 37.5) + 'rem ' + (self.inp_weight_y / 37.5) + 'rem ' + (self.inp_blur / 37.5) + 'rem ' + self.bw_color)
         }
         break
       case 'boxShadowY':
         part = function (ele) {
-          ele.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+          ele.css('boxShadow', (self.inp_weight_x / 37.5) + 'rem ' + (val / 37.5) + 'rem ' + (self.inp_blur / 37.5) + 'rem ' + self.bw_color)
         }
         break
       case 'boxShadowBlur':
         part = function (ele) {
-          ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
+          ele.css('boxShadow', (self.inp_weight_x / 37.5) + 'rem ' + (self.inp_weight_y / 37.5) + 'rem ' + (val / 37.5) + 'rem ' + self.bw_color)
         }
         break
       case 'boxShadowColor':
         part = function (ele) {
-          ele.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
+          ele.css('boxShadow', (self.inp_weight_x / 37.5) + 'rem ' + (self.inp_weight_y / 37.5) + 'rem ' + (self.inp_blur / 37.5) + 'rem ' + val)
         }
         break
     // ------------- 快捷工具 -----------------
@@ -1183,10 +1183,9 @@ var tool = {
       let ys = self.inp_y
       let ws = self.inp_w
       let hs = self.inp_h
-      let warp = me.warp
-      let areaB = 629
+      let warp = self.inp_height
+      let areaB = 629 + me.canvas.scrollTop()
       let areaR = 375
-     // me.carryLineEvent(self)
       let part
       switch ($this.attr('class')) { // wap todolist:
         case 'resize e':
@@ -1207,8 +1206,8 @@ var tool = {
           }
           break
         case 'resize s':
-          part = function (e) {
-            let yy = ys + self.postop + warp + hs + e.pageY - y
+          part = function (e) {         
+            let yy = ys + self.postop + warp + hs + e.pageY - y           
             self.inp_h = hs + e.pageY - y
             if (self.config.stretchLimit) {
               if ((self.inp_h + self.inp_y) > areaB) {
@@ -1389,31 +1388,31 @@ var tool = {
         part(e)
         
         if(parent.hasClass('information')){
-					resizeBox.css({'width': self.inp_w + 'px','height': inforheight + 'px'})
+					resizeBox.css({'width': self.inp_w / 37.5 + 'rem','height': inforheight / 37.5 + 'rem'})
 					//资讯拉伸规则
-	        inforCon.css({'width': self.inp_w + 'px'})
+	        inforCon.css({'width': self.inp_w / 37.5 + 'rem'})
 	        var infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60
-	        infor_wrap.css({'width': infor_wrap_width + 'px'})
+	        infor_wrap.css({'width': infor_wrap_width / 37.5 + 'rem'})
 	       	var infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
-	        infor_desc.css({'width': infor_desc_width + 'px'})//资讯拉伸规则  
+	        infor_desc.css({'width': infor_desc_width / 37.5 + 'rem'})//资讯拉伸规则  
 	      }else if(parent.hasClass('weather')){
-	      	weatherCon.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
-	      	resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+	      	weatherCon.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
+	      	resizeBox.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
 	      }else{
-	      	resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+	      	resizeBox.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem'})
 	      }
 	      
         me.carryUpdateElementStorageEvent(self, parent.parent(), parent)
         if(imgbloo) {
           if (picBox.hasClass('round')||picBox.hasClass('square')) {
             if(self.inp_h < self.inp_w) {
-              picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+              picBox.css({'width': self.inp_h / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
             } else {
-              picBox.css({'width': self.inp_w + 'px','height': self.inp_w + 'px'})
+              picBox.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_w / 37.5 + 'rem'})
             }
           } else {
             if(imgbloo) {
-              picimg.css('width', self.inp_w)
+              picimg.css('width', self.inp_w / 37.5 + 'rem')
             }
           }
         }
@@ -1491,7 +1490,7 @@ var tool = {
             data.foldername = data.foldername || '--'
             data.viewnum = data.viewnum || 0
             data.studynum = data.studynum || 0
-            data.iprice = data.iprice || 0
+            data.iprice = data.iprice || 0          
             let dataarray = me.$.parseJSON(element.attr('dataarray'))           
             let courseHtm = '<div class="imgbox">'
                           + '<div class="listBox">'                       
@@ -1503,10 +1502,10 @@ var tool = {
               courseHtm += '<div class="speak">讲师:</div>'
             }              
             if (dataarray.checkedTime) {
-              courseHtm += '<div class="popularity"><i></i>'+ data.viewnum+'</div>'
+              courseHtm += '<div class="popularity"><i></i>'+ data.coursewarenum+'</div>'
             }
             if (dataarray.checkedPopul) {
-              courseHtm += '<div class="number"><i></i>'+ data.studynum +'</div>'
+              courseHtm += '<div class="number"><i></i>'+ data.viewnum +'</div>'
             }        
             if (dataarray.checkedPrice) {
               courseHtm += '<div class="price">￥'+ data.iprice +'</div>'
@@ -1516,11 +1515,11 @@ var tool = {
           })
           break
         case 'st-left st-audition':
-          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) { 
+          self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {           
             let dataarray = me.$.parseJSON(element.attr('dataarray'))                 
             let auditionHtm = '<img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div>'
             if (dataarray.checkedTeacher) {
-              auditionHtm += '<div class="speak">讲师:</div>'
+              auditionHtm += '<div class="speak">讲师:' + data.speaker + '</div>'
             }
             if (dataarray.checkedPopul) {
               auditionHtm += '<div class="number"><i></i>'+ data.viewnum +'</div>'

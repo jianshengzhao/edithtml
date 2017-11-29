@@ -230,7 +230,8 @@
     </div>
   <!-- editBox    -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right:314px;">
-      <div class="space">       
+      <div class="space">  
+        <div class="canvasbg"></div>     
         <div class="canvas grid" >
           <div class="c_top">            
           </div>
@@ -238,7 +239,7 @@
           </div>
           <div class="c_foot">           
           </div> -->
-        </div>
+        </div>        
         <div class="row-t line"></div>
         <div class="row-b line"></div> 
         <div class="col-l line"></div>
@@ -1760,11 +1761,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      overflow:auto;
-      background-image: url(assets/iphone.png);
-      background-size: 395px 792px;
-      background-repeat: no-repeat;
-      background-position: center 20px;      
+      overflow:auto;      
     }    
     .canvas{
       position: relative; 
@@ -1776,7 +1773,21 @@
       background-size:10px 10px;     
       box-sizing: border-box;
       /*overflow: hidden;*/
-      cursor: default;      
+      cursor: default;  
+      z-index: 2;    
+    }
+    .canvasbg{
+      position: absolute;
+      top: 0;
+      left:50%;      
+      margin-left: -198px;
+      width: 396px;
+      height: 860px;
+       z-index: 1;
+      background-image: url(assets/iphone.png);
+      background-size: 395px 792px;
+      background-repeat: no-repeat;
+      background-position: center 20px;     
     }     
     /*.grid{
       background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
@@ -2219,6 +2230,9 @@
       width: 100%;
       height: auto;
       display: block;
+    }
+    .canvas{
+      border-left:1px solid #d2d2d2;
     }
     .c_top{
       box-shadow:1px 1px 0px #d2d2d2;

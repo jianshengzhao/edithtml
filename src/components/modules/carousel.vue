@@ -193,6 +193,7 @@ export default {
         }
         barHtm += '<li></li>'
       }
+      console.log(maxH)
       self.element.find('.barbox').html(barHtm)
       if (maxW > 0) {
         self.element.css({         
@@ -524,8 +525,7 @@ export default {
     }
     .handleList .urlRoute{
       width: 330px;
-      display: inline-block;
-      margin-top: 6px;
+      display: inline-block;     
       font-size: 14px;
       line-height: 16px;
       padding-left: 5px;
@@ -580,5 +580,13 @@ export default {
     }
     .scrollBox .el-select{
       width: 180px;
+    }
+    #carousel .el-input{
+      height: 31px;
+      line-height: 31px;
+      overflow: hidden;
+    }
+    #carousel .el-input-number__decrease, #carousel .el-input-number__increase{
+      height: 28px;
     }
 </style>

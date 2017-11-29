@@ -50,10 +50,10 @@ export default {
       row_num:2,
       type:'',
       dialogCourse: false,
-      checkedTeacher: true,
-      checkedTime:true,
-      checkedPopul:true,
-      checkedPrice:true
+      checkedTeacher: false,
+      checkedTime:false,
+      checkedPopul:false,
+      checkedPrice:false
     }
   },
   created: function () {
@@ -164,7 +164,7 @@ export default {
           revealStr = window.JSON.stringify(revealData)
           self.element.attr('dataarray', revealStr)
           htmFun = function (x,y) {
-            let html = '<div class="course module addmodule" datatext="课程" dataarray="' + revealStr + '" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            let html = '<div class="course module addmodule" datatext="课程" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
             return html
           }
           break
@@ -186,7 +186,7 @@ export default {
           revealStr = window.JSON.stringify(revealData)
           self.element.attr('dataarray', revealStr)
           htmFun = function (x,y) {
-            let html = '<div class="audition module addmodule"  datatext="免费试听"  dataarray="' + revealStr + '" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            let html = '<div class="audition module addmodule"  datatext="免费试听" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
             return html
           }
           break
@@ -208,6 +208,7 @@ export default {
       }
       parentBox.append(copyhtml)      
       let copyElement = parentBox.children('.addmodule')
+      copyElement.attr('dataarray', revealStr)
       for (let i = 1; i < copyNum; i++) {
         let xi = x + (w + ml) * (i % self.col_num)
         let yi = y + (h + mt) * parseInt(i / self.col_num)

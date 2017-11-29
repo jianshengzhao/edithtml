@@ -52,19 +52,19 @@
             <el-col :span="12"><el-input-number size="small" v-model="menuH"></el-input-number></el-col>
           </el-row>
           <el-row class="newnav">
-            <el-button type="primary" size="small" @click="addnavEvent('')">新增导航</el-button>
+            <el-button type="primary" size="small" @click="addnavEvent('add')">新增菜单</el-button>
           </el-row>
           <el-row class="footer-th">
             <el-col :span="4" class="center">启用</el-col>
-            <el-col :span="5">菜单名称</el-col>
+            <el-col :span="6">菜单名称</el-col>
             <el-col :span="3">图标</el-col>            
-            <el-col :span="12">操作</el-col>
+            <el-col :span="11">操作</el-col>
           </el-row>
           <el-row class="footer-tr" v-for="(item, index) in footerData" :key='index'>
             <el-col :span="4" class="center"><el-checkbox v-model="item.enable"></el-checkbox></el-col>
-            <el-col :span="5">{{item.navname}}</el-col>
+            <el-col :span="6">{{item.navname}}</el-col>
             <el-col :span="3"><img :src="item.before" alt=""></el-col>          
-            <el-col :span="12">
+            <el-col :span="11">
               <span class="edit" @click="addnavEvent(index)">编辑</span>
               <span class="delete" v-if="item.navcode!='index'"  @click="deleteEvent(index)">删除</span>          
               <span class="up" v-if="index!=0" @click="upEvent(index)">上移</span>
@@ -74,7 +74,7 @@
         </el-tab-pane>       
       </el-tabs>      
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="dialogMenubar = false">取 消</el-button>
         <el-button type="primary" @click="dialogMenubarEvent">确 定</el-button>
       </span>
     </el-dialog>
@@ -83,10 +83,10 @@
       :visible.sync="dialogAddNav"
       size="nav">
       <el-row>
-        <el-col :span="7" class="right">导航名称：</el-col>
+        <el-col :span="7" class="right">菜单名称：</el-col>
         <el-col :span="17" class="con">
-          <el-input v-model="navname" placeholder="请输入导航名称" size="mini" :maxlength="4"></el-input>
-          <span class="tip">最多不超过四个字</span>
+          <el-input v-model="navname" placeholder="请输入导航名称" size="mini" :maxlength="6"></el-input>
+          <span class="tip">最多不超过6个字</span>
         </el-col>
       </el-row>
       <el-row>
@@ -167,7 +167,7 @@
         urlType: '',
         urlRoute: '',
         urlHref: '',
-        title:'新增导航'
+        title:'新增菜单'
       }
     },
     created: function () {
@@ -237,6 +237,7 @@
         } else {
           self.element.css('borderRadius', '0')
         }
+        self.element.find('.menubar-icon').css('backgroundImage', 'url(' + self.beforebg + ')')
         $('.menu-fixed').remove()
         let lihtm = ''
         for (let i = 0, len = self.footerData.length; i < len; i++) {
@@ -273,7 +274,7 @@
       },
       addnavEvent: function (index) { // 新增导航
         let self = this
-        if (index != undefined) {
+        if (index != 'add') {
           self.index = index
           self.title = '编辑菜单'
           let item = self.footerData[index]
@@ -285,8 +286,8 @@
           self.urlRoute = item.Route
           self.urlHref = item.url
         } else {
-          self.index = ''
-          self.title = '新增导航' 
+          self.index = 'add'
+          self.title = '新增菜单' 
           self.navname = ''
           self.navcode = ''
           self.beforeImg = ''    
@@ -312,13 +313,13 @@
         let self = this
         let message = ''
         if (self.navname == '') {
-          message = '你还未填写导航名称'
+          message = '你还未填写菜单名称'
         } else if (self.beforeImg == '') {
           message = '你还未添加图标（操作前）'
         } else if (self.urlHref == '' && self.navcode != 'index') {
           message = '你还未添加链接'
         } else {
-          if (self.index == undefined) {
+          if (self.index == 'add') {
             self.footerData.push({
               enable: false,
               navname: self.navname,

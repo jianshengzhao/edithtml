@@ -41,7 +41,7 @@
       </div>      
       <div class="contentrange-wrap">
         <div class="infordesc">内容区间：</div>
-        <el-input-number v-model="num1" :min="count - 5" :max="count"></el-input-number>&nbsp;~&nbsp;
+        <el-input-number v-model="num1" :min="num1 > 0 ? 1 : 0" :max="count"></el-input-number>&nbsp;~&nbsp;
         <el-input-number v-model="num2" :min="num1" :max="count"></el-input-number>&nbsp;条
       </div>
       <p class="infrotips">（选择后显示已选择分类下对应位置资讯）</p>
@@ -282,8 +282,9 @@
             }
           }
         } 
-        self.num2 = self.count
-        self.num1 = self.count > 0 ? self.count > 5 ? self.count - 5 : 1 : 0
+        console.log(self.count)
+        self.num2 = self.count > 0 ? self.count > 5 ?  5 : self.count : 0
+        self.num1 = self.count > 0 ? 1 : 0
       },
       deteleEvent: function (seat) {
         let self = this
