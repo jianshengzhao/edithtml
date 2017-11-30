@@ -68,8 +68,8 @@
         },
         beforeImg:'',
         selectedclassify: [],
-        num1: 0,
-        num2: 0,
+        num1: 1,
+        num2: 5,
         count: 0,
         currTit: '',
         getinfordesc:function(){
@@ -133,7 +133,7 @@
         } else {
           self.currentEle_info = element
         } 
-        self.count = 0  
+        self.count = 5  
         self.openInformation()       
       },      
       openInformation:function(){
@@ -150,11 +150,11 @@
         } else {
           self.infortype = 1;
           self.selectedclassify = [];
-          self.num1 = 0;
-          self.num2 = 0;
+          self.num1 = 1;
+          self.num2 = 5;
           self.currTit = '';
           self.beforeImg = ''
-          self.count = 0
+          self.count = 5
         }
         $(".img-wrap").css("border-color","#FFFFFF");
         $($(".img-wrap")[self.infortype - 1]).css("border-color","#557CE1");
@@ -246,7 +246,7 @@
                 lih = 2.25
               } else {
                 inforhtml += '<li class="news-text">'
-                          +    (self.beforeImg == '' ? '' : '<img scr="' + self.beforeImg + '">')
+                          +    (self.beforeImg == '' ? '' : '<img src="' + self.beforeImg + '">')
                           +    '<div class="title">' + item.subject + '</div>'                         
                           +  '</li>'
                 lih = 0.854

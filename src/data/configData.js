@@ -10,12 +10,7 @@ var configHtml = {
     choiceCon: true // 多选模块： ture 模糊选择，false为全部选中
   },
   toallGroup: { // 左侧菜单配置
-    basic: [
-      // {
-      //   name: 'radius',
-      //   icon: 'imgicon icon-round',
-      //   text: '圆形'
-      //  }, 
+    basic: [      
       // {
       //   name: 'sline',
       //   icon: 'imgicon icon-vertical_Line',
@@ -121,20 +116,20 @@ var configHtml = {
     },
     html: '<div class="radius module addmodule"  datatext="圆形"><a></a></div>'
   }, 
-  carousel: {
-    style: 'width:1200px; height:320px',
-    tool: {
-      private: {
-        text: '编辑轮播',
-        class: 'st-carousel'
-      }, 
-      public: []
-    },
-    createEvent: function (self, element, me) {      
-      self.$refs.carousel.show(self, element)
-    },
-    html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
-  },
+  // carousel: {
+  //   style: 'width:1200px; height:320px',
+  //   tool: {
+  //     private: {
+  //       text: '编辑轮播',
+  //       class: 'st-carousel'
+  //     }, 
+  //     public: []
+  //   },
+  //   createEvent: function (self, element, me) {      
+  //     self.$refs.carousel.show(self, element)
+  //   },
+  //   html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src=""></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+  // },
   advert: {
     style: 'width:300px; height:150px',
     tool: {

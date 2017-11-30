@@ -196,37 +196,7 @@
     -webkit-transform:translate(-50%,-50%) scale(1.2,1.2); /* Safari 和 Chrome */
     -o-transform:translate(-50%,-50%) scale(1.2,1.2);
   }  
-  /* editbutton */
-  .button_radius{
-    background: #4AB344;
-    border-radius: 0.08rem;
-    border:none;
-  }
-  .button_rightangle{
-    background: #4AB344;
-    border:none;
-    border-radius: 0px;
-  }
-  .button_border{
-    border:1px solid #4AB344;
-  }
-  .button_gradients{
-    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
-    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
-    border-radius: 0.08rem;
-    box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
-    border-width: 0;
-  }
-  .button_gradients_border{
-    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
-    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
-    border-radius: 0.08rem;
-    border:1px solid #4AB344;
-  }
+  
 
   input::-webkit-input-placeholder{color: inherit;font-size: inherit;}    /* 使用webkit内核的浏览器 */
   input:-moz-placeholder{color: inherit;font-size: inherit;}                  /* Firefox版本4-18 */
@@ -257,16 +227,29 @@ a{
     width: 100%;
     height: 100%;
   }
+/* ------------- radius ----------------- */
+  .radius a{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .radius {
+    width: 2.667rem;
+    height: 2.667rem;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+  }
 /* ------------- editor ----------------- */
-  #app .editor{
+  .editor{
     box-sizing: border-box;
     padding: 0.2rem;
-    width: 10rem;
-    height: 5rem;
+    width:2.1rem;
+    height:0.9rem;
     word-break:break-all;
     word-wrap:break-word;    
   }
-  #app .editor a{
+  .editor a{
     display: block;
     width: 100%;
     height: 100%;
@@ -288,6 +271,7 @@ a{
   .picture {
     width: 5rem;
     height: 2.88rem; 
+    border-width: 0;
     border-style: solid;
     border-color: #000;  
   }
@@ -305,8 +289,8 @@ a{
   .button{
     width: 2rem;
     height: 0.8rem;
-    border: 1px solid #bbbbbb;
-    border-radius: 4px;
+    border: 0.0267rem solid #bbbbbb;
+    border-radius: 0.1067rem;
     line-height: 0.8rem;
     text-align: center;
     cursor: pointer;
@@ -321,6 +305,37 @@ a{
     line-height: inherit;
     overflow: hidden;
     color: inherit;
+  }
+  .button_radius{
+    background: #4AB344;
+    border-radius: 0.08rem;
+    border:none;
+  }
+  .button_rightangle{
+    background: #4AB344;
+    border:none;
+    border-radius: 0;
+  }
+  .button_border{
+    border-radius: 0;
+    border:0.0267rem solid #4AB344;
+  }
+  .button_gradients{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 0.08rem;
+    box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
+    border-width: 0;
+  }
+  .button_gradients_border{
+    background: -webkit-linear-gradient(#A5D9A2, #4BB345); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#A5D9A2, #4BB345); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#A5D9A2, #4BB345); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#A5D9A2, #4BB345); /* 标准的语法 */
+    border-radius: 0.08rem;
+    border:1px solid #4AB344;
   }
 /* ------------- line ------------------- */
   .hline{
@@ -430,12 +445,24 @@ a{
 /* ------------- course ----------------- */
   .course{
     width: 4.4rem;
+    min-width: 4.4rem;
     height: 4rem;   
     cursor: pointer; 
     background-color: #fff;       
   }
-  .course .imgbox {
-    height: 2.48rem;
+  .course .resizeBox{
+    min-width: 4.4rem;
+  }
+  .course .editAdd{
+    height:auto;
+    min-height: 4rem;
+    overflow: hidden;
+  }
+  .course .editAdd .add-icon{
+    height: 4rem;
+  }
+  .course .imgbox {    
+    /*height: 2.48rem;*/
     min-height: 2.48rem;    
   }
   .course .listBox{    
@@ -483,27 +510,55 @@ a{
   }
   .course .popularity i{
     display: inline-block;
-     margin-right: 0.1rem;
+    margin-right: 0.1rem;
     width: 0.32rem;
     height: 0.32rem;
     background: url(http://static.ebanhui.com/design/image/time.png) no-repeat left center;
     background-size: auto 100%;
   }
-  .editAdd div:nth-child(4){
-    text-align: right;
+  .editAdd.two .speak, .editAdd.two .popularity, .editAdd.two .number, .editAdd.two .price{
+    width: 50%;
+  } 
+  .editAdd.two div:nth-child(4){
+    text-align: right;   
   }
-  .editAdd div:nth-child(6){
-    text-align: right;
+  .editAdd.two div:nth-child(6){  
+    text-align: right;   
   }
+  .editAdd.three .speak, .editAdd.three .popularity, .editAdd.three .number, .editAdd.three .price{
+    width: 33.3%;
+  }
+  .editAdd.three div:nth-child(4){
+    text-align: center;   
+  }
+  .editAdd.three div:nth-child(5){
+    text-align: right;   
+  }  
+  .editAdd.four .speak, .editAdd.four .popularity, .editAdd.four .number, .editAdd.four .price{
+    width: 25%;    
+  }
+  .editAdd.four div:nth-child(5){
+    text-align: right;   
+  }
+  .editAdd.four div:nth-child(6){  
+    text-align: right;   
+  }
+  
 /* ------------- audition --------------- */
   .audition {
+    min-width: 4.4rem;
     width: 4.4rem;
     height: 3.6rem;
     cursor: pointer;
   }
    .audition .editAdd{
     width: 100%;
-    height: 100%;
+    height: auto;
+    min-height: 3.6rem;
+    overflow: hidden;
+  }
+  .audition .resizeBox{
+    min-width: 4.4rem;
   }
   .audition a{
     display: block;
@@ -512,8 +567,11 @@ a{
     text-decoration: none;
   }
   .audition img {
-    width: 4.4rem;
-    height: 2.48rem;
+    width: 100%;
+    min-height: 2.48rem;
+  }
+  .audition .editAdd .add-icon{
+    height: 3.6rem;
   }
   .audiTit{
     float: left;
@@ -529,7 +587,7 @@ a{
   }   
   .audition .speak, .audition .number{
     float: left;
-    width: 2.2rem;
+    width: 50%;
     font-size: 0.32rem;
     line-height: 0.48rem;
     height: 0.48rem;
@@ -537,6 +595,10 @@ a{
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #999999;
+  }
+  .audition div:nth-child(4){
+    float: right;
+    text-align: right;
   }
   .audition .number i{    
     display: inline-block;
@@ -546,6 +608,9 @@ a{
     line-height: 0.48rem;
     background: url(http://static.ebanhui.com/design/image/man.png) no-repeat left center;
     background-size: auto 100%;
+  }
+  .audition .resizeBox .w, .audition .resizeBox .e{
+    display: block;
   }
 /* ------------- teacher ---------------- */
   .teacher{
@@ -680,11 +745,12 @@ a{
   }
   .information li .title{
     float: left;
+    margin-bottom: 0.1rem;
     width: 5.867rem;
-    height: 1.6rem;
+    height: 1.59rem;
     color: #777;
     font-size: 0.48rem;
-    line-height: 0.53rem;
+    line-height: 0.534rem;
     word-break:break-all;
     overflow: hidden;
   }

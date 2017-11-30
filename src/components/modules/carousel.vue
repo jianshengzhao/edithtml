@@ -124,7 +124,7 @@ export default {
         createEvent: function (self, element, me) {      
           self.$refs.carousel.show(self, element)
         },
-        html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'      
+        html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src=""></div></div><div class="barbox"></div></div></div>'      
       }
   },
   methods: { 
@@ -585,6 +585,9 @@ export default {
       height: 31px;
       line-height: 31px;
       overflow: hidden;
+    }
+    #carousel .el-input-number{
+      float: left;
     }
     #carousel .el-input-number__decrease, #carousel .el-input-number__increase{
       height: 28px;

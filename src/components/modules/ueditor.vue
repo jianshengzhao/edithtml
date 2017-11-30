@@ -29,7 +29,7 @@ export default {
       editorConfig: {
         zIndex: 3000,
         toolbars: [[
-          'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
+          'undo', 'redo', 'customstyle', 'paragraph', 'fontfamily', 'forecolor', 'backcolor', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'simpleupload', 'emotion', 'spechars', '|', 'selectall', 'removeformat'
         ]]
       }
     }
@@ -45,7 +45,7 @@ export default {
     })
     // 配置模块参数
     moduleData['editor'] = {
-      style: 'width:10rem; height:5rem',
+      style: 'width:2.1rem; height:0.9rem',
       tool: {
         private: {
           text: '编辑文本',
@@ -53,7 +53,7 @@ export default {
         },
         public: ['e']
       },
-      html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon"></div></a></div>'
+      html: '<div class="editor module addmodule"  datatext="富文本"><a><div class="editorCon">请输入内容</div></a></div>'
     }
     self.ueditorid = guidGenerator()
   },

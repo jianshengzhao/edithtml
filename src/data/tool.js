@@ -681,7 +681,7 @@ var tool = {
         break
       case 'borderWidth':      
         part = function (ele) {
-          ele.css('borderWidth', val )
+          ele.css('borderWidth', val/37.5 + 'rem' )
           let w = parseInt(ele.css('width'))
           let h = parseInt(ele.css('height'))
           if (ele.hasClass('sline')){
@@ -904,25 +904,17 @@ var tool = {
         }
         break
       case 'paste':
-        if (self.clipboard) {
+        if (self.clipboard) { // todowap:
           me.$(".on_module").removeClass('on_module')
-          let sTop = parseInt(me.space.scrollTop())
-          let sLeft = parseInt(me.space.scrollLeft())           
-          let menuY = parseInt(me.contextmenu.css('top')) - me.space.scrollTop() + self.paddingtop
-          let menuX = parseInt(me.contextmenu.css('left')) - me.space.scrollLeft()         
+          let sTop = parseInt(me.canvas.scrollTop())        
+          let sLeft = parseInt(me.space.scrollLeft())
+          let menuY = parseInt(me.contextmenu.css('top'))
+          let menuX = parseInt(me.contextmenu.css('left')) - me.canvas[0].offsetLeft
           switch (self.original.attr('class')) {
             case 'c_top':
               menuY = menuY - (self.paddingtop + self.postop) + sTop
-              menuX = menuX - self.posleft + sLeft
-              break
-            case 'c_body':
-              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt(me.$('.c_top').css('height'))
-              menuX = menuX - self.posleft + sLeft
-              break
-            case 'c_foot':
-              menuY = menuY - (self.paddingtop + self.postop) + sTop - parseInt(me.$('.c_top').css('height')) - parseInt($('.c_body').css('height'))
-              menuX = menuX - self.posleft + sLeft
-              break
+              menuX = menuX - self.posleft 
+              break           
           }
           self.original.append(self.clipboard)
           onModules = me.$(".on_module")
@@ -1098,11 +1090,12 @@ var tool = {
   carrySupendToolsPositionEvent: function (self) { // 悬浮工具栏位置优化
     let me = this
     let top = self.inp_y
+    let h = self.inp_h
     let left = self.inp_x
     let supendTools = me.$('.supendTools')   
     let minY = me.canvas.scrollTop() + 45
     if (top < minY) {
-      top = minY
+      top = top + self.inp_h + 60
     } 
     let maxX = 375 - parseInt(supendTools.css('width'))
     if (left > maxX) {
@@ -1173,8 +1166,7 @@ var tool = {
     	var inforCon = parent.find('.inforCon')
       var infor_wrap = parent.find('.infor-wrap')
       var infor_desc = parent.find('.infor-desc')
-      var inforheight = parseInt(parent.css('height'))
-      
+      var inforheight = parseInt(parent.css('height'))      
       var weatherCon = parent.find('.weatherCon')      
       
       let x = e.pageX
@@ -1398,7 +1390,25 @@ var tool = {
 	      }else if(parent.hasClass('weather')){
 	      	weatherCon.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
 	      	resizeBox.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
-	      }else{
+	      }else if (parent.hasClass('course') || parent.hasClass('audition')) {
+          let editAdd = parent.find('.editAdd')
+          let editAddH = parseInt(editAdd.css('height'))
+          self.inp_h = editAddH        
+          parent.css('height', self.inp_h)
+          if (parent.hasClass('course')) {
+             if((self.inp_w / 37.5) >= 6.6 && (self.inp_w / 37.5) < 8.8) {
+              editAdd.attr('class', 'editAdd three')
+            } else if((self.inp_w / 37.5) >= 8.8) {
+              editAdd.attr('class', 'editAdd four')
+            } else {
+              editAdd.attr('class', 'editAdd two')
+            }
+          }
+          resizeBox.css({'width': self.inp_w / 37.5 + 'rem','height': self.inp_h / 37.5 + 'rem'})
+        }else if (parent.hasClass('carousel')) {
+          parent.find('.img_li').css('height', self.inp_h)
+          resizeBox.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem'})
+        }else{
 	      	resizeBox.css({'width': self.inp_w / 37.5 + 'rem', 'height': self.inp_h / 37.5 + 'rem'})
 	      }
 	      
@@ -1511,7 +1521,11 @@ var tool = {
               courseHtm += '<div class="price">￥'+ data.iprice +'</div>'
             }
             element.attr('datacoruse', data.itemid)
-            element.find('.editAdd').html(courseHtm)
+            let editAdd = element.find('.editAdd')
+            editAdd.html(courseHtm)
+            let eh = parseInt(editAdd.css('height')) / 37.5
+            element.css('height', eh + 'rem')
+            element.find('.resizeBox').css('height', eh + 'rem')
           })
           break
         case 'st-left st-audition':
@@ -1524,7 +1538,8 @@ var tool = {
             if (dataarray.checkedPopul) {
               auditionHtm += '<div class="number"><i></i>'+ data.viewnum +'</div>'
             }
-            element.attr('auditionid', data.cwid)
+            element.attr('auditionid', )
+            element.find('.auditionhref').attr('href', '/course/' + data.cwid + '.html')          
             element.find('.editAdd').html(auditionHtm)
           })
           break

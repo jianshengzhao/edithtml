@@ -21,6 +21,12 @@ export default {
       icon: 'imgicon icon-rectangle',
       text: '矩形'
     })
+
+    moduleData['toallGroup']['basic'].push({
+      name: 'radius',
+      icon: 'imgicon icon-round',
+      text: '圆形'
+     })
     // 配置模块参数   
     moduleData['rectangle'] = {
       style: 'width: 3rem; height: 1rem',
@@ -32,6 +38,17 @@ export default {
         public: ['e'] // 公有工具
       },
       html: '<div class="rectangle module addmodule" datatext="矩形"><a></a></div>'
+    }
+    moduleData['radius'] = {
+      style: 'width: 2.667rem; height: 2.667rem',
+      tool: {
+        private: {
+          text: '',
+          class: ''
+        }, // 私有工具
+        public: ['e'] // 公有工具
+      },
+      html: '<div class="radius module addmodule"  datatext="圆形"><a></a></div>'
     }
   },
   methods: {}
