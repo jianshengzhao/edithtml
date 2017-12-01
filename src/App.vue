@@ -2238,4 +2238,8 @@
       box-shadow:1px 1px 0px #d2d2d2;
       overflow: hidden;
     }
+    #app .el-input--small .el-input__inner {
+      height: 32px;
+      display: block;
+    }
 </style>

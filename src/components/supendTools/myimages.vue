@@ -808,17 +808,17 @@
 	      			let picBox = mod.find('.picBox')
 	      			img.attr('src',checkimg);
 	      			let imgSrc = img.attr("src");      			
-					self.getImageWidth(imgSrc,function(w,h){
-						mod.css({'width': w, 'height': h})
-						mod.find('.resizeBox').css({'width': w, 'height': h})
-						if(picBox.hasClass('round') || picBox.hasClass('square')){						
-							if (parseInt(w) > parseInt(h)) {
-								picBox.css({'width': h, 'height': h})
-							} else {
-								picBox.css({'width': w, 'height': w})
-							}
-						}					
-					})					
+					// self.getImageWidth(imgSrc,function(w,h){
+					// 	mod.css({'width': w, 'height': h})
+					// 	mod.find('.resizeBox').css({'width': w, 'height': h})
+					// 	if(picBox.hasClass('round') || picBox.hasClass('square')){						
+					// 		if (parseInt(w) > parseInt(h)) {
+					// 			picBox.css({'width': h, 'height': h})
+					// 		} else {
+					// 			picBox.css({'width': w, 'height': w})
+					// 		}
+					// 	}					
+					// })					
 				}
 				self.dialogmyPicture = false;
       		},

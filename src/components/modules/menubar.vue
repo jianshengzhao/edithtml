@@ -314,8 +314,6 @@
         let message = ''
         if (self.navname == '') {
           message = '你还未填写菜单名称'
-        } else if (self.beforeImg == '') {
-          message = '你还未添加图标（操作前）'
         } else if (self.urlHref == '' && self.navcode != 'index') {
           message = '你还未添加链接'
         } else {
