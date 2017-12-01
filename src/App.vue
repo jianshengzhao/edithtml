@@ -205,9 +205,6 @@
        <!--  <div class="header">敬请期待。。。</div> -->
       </div>      
     </div>
-  <!--   <div class="shrink libshrink">
-      <i class="el-icon-arrow-left"></i>
-    </div> -->
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
@@ -420,8 +417,8 @@
 </template>
 <script>  
   import $ from 'jquery' 
-  import configData from '@/data/configData.js'
-  import tool from '@/data/tool.js'
+  import configData from '@/js/config/configData.js'
+  import tool from '@/js/tool/tool.js'
   import colorPicker from '@/components/supendTools/colorPicker'
   import hrefdialog from '@/components/supendTools/hrefdialog'
   import myimages from '@/components/supendTools/myimages'
@@ -625,7 +622,7 @@
         elementMain: [],
         elementTail: [],
         moduleData: configData.config,
-        tool: tool,
+        tool: {tool:tool},
       // ------------ 封装的异步请求 ------------ 
         httpget: function (getParam) { 
           let self = this
@@ -683,8 +680,8 @@
                   head.css('height', self.inp_height)
                   head.html(headHtml)
                   self.moduleElement = $('.on_module')
-                  tool.tool.carryLayerEvent(self, head)
-                  tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+                  tool.carryLayerEvent(self, head)
+                  tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
                 }
               }
               self.httppost(getParams) 
@@ -692,7 +689,7 @@
           }
         self.httpget(getParam) 
       // -------- 工具初始化 ----------------  
-        tool.tool.init(self, $)
+        tool.init(self, $)
       // -------- 工具栏位置自适应调整 ------ 
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
@@ -737,8 +734,8 @@
           let middle = $('.c_body')
           let foot = $('.c_foot')
           head.html('')
-          tool.tool.carryLayerEvent(self, head)
-          tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
+          tool.carryLayerEvent(self, head)
+          tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
           self.elementStorage.c_top = {}
           self.$message({
             type: 'success',
@@ -919,49 +916,49 @@
     // ------------- 模块属性控制 ------------ 
       changeInpZ: function (val) { // z-index 定位
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
+        tool.carryModuleOperationEvent(self, 'zIndex', val)
       },
       changeInpX: function (val) { // left 定位
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'left', val)
+        tool.carryModuleOperationEvent(self, 'left', val)
       },
       changeInpY: function (val) { // top 定位
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'top', val)
+        tool.carryModuleOperationEvent(self, 'top', val)
       },
       changeInpW: function (val) { // width 宽度
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'width', val)       
+        tool.carryModuleOperationEvent(self, 'width', val)       
       },
       changeInpH: function (val) { // height 高度
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'height', val)       
+        tool.carryModuleOperationEvent(self, 'height', val)       
       },
       changeInpSize: function (val) { // font-size 字体大小
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'fontSize', val) 
+        tool.carryModuleOperationEvent(self, 'fontSize', val) 
       },
       changeInpLine: function (val) { // line-height 行高
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'lineHeight', val)
+        tool.carryModuleOperationEvent(self, 'lineHeight', val)
       },
       changeColorFont: function (val) { // font-color 字体颜色
         var self = this       
-        tool.tool.carryModuleOperationEvent(self, 'color', val)
+        tool.carryModuleOperationEvent(self, 'color', val)
       },
       changeColorBg: function (val) { // background-color 背景颜色
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'backgroundColor', val)
+        tool.carryModuleOperationEvent(self, 'backgroundColor', val)
       },
       changeBorderWidth: function (val) { // 边框宽度（粗细）
         var self = this
         let mods = $('.on_module')
         if (mods.length > 1){
           if (parseInt(self.moduleElementY.css('border-left-width'))!== val){
-            tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+            tool.carryModuleOperationEvent(self, 'borderWidth', val)
           }
         }else if(mods.length!= 0){
-          tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
+          tool.carryModuleOperationEvent(self, 'borderWidth', val)
         }        
       },
       changeBorderStyle: function (val) { // 边框样式
@@ -969,96 +966,96 @@
         let mods = $('.on_module')
         if (mods.length > 1){
           if (self.moduleElementY.css('border-left-style')!== val){
-            tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+            tool.carryModuleOperationEvent(self, 'borderStyle', val)
           }
         }else if(mods.length!= 0){          
-          tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
+          tool.carryModuleOperationEvent(self, 'borderStyle', val)
         }        
       },
       changeBorderColor: function (val) { // 边框颜色
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'borderColor', val)
+        tool.carryModuleOperationEvent(self, 'borderColor', val)
       },
       changeOpacity: function (val) { // 透明度
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'opacity', val)
+        tool.carryModuleOperationEvent(self, 'opacity', val)
       },
       changeShadow: function (val) { // 阴影开关
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)        
+        tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)        
       },
       changHShadow: function (val) { // 水平偏移阴影
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowX', val)        
+        tool.carryModuleOperationEvent(self, 'boxShadowX', val)        
       },
       changVShadow: function (val) { // 垂直偏移阴影
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowY', val)        
+        tool.carryModuleOperationEvent(self, 'boxShadowY', val)        
       },
       changBlurShadow: function (val) { // 阴影模糊
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
+        tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
       },
       changColorShadow: function (val) { // 阴影颜色
         var self = this        
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
+        tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
     // ------------- 模块操作 ---------------- 
       topAlignEvent: function () { // top 上对齐
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'topAlign')
+        tool.carryModuleOperationEvent(self, 'topAlign')
       },
       bottomAlignEvent: function () { // top 下对齐
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'bottomAlign')
+        tool.carryModuleOperationEvent(self, 'bottomAlign')
       },
       leftAlignEvent: function () { // left 左对齐
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'leftAlign')
+        tool.carryModuleOperationEvent(self, 'leftAlign')
       },
       rightAlignEvent: function () { // left 右对齐
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'rightAlign')
+        tool.carryModuleOperationEvent(self, 'rightAlign')
       },
       centerAlignEvent: function () { // left 水平居中
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'centerAlign')
+        tool.carryModuleOperationEvent(self, 'centerAlign')
       },
       middleAlignEvent: function () { // top 垂直居中
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'middleAlign')
+        tool.carryModuleOperationEvent(self, 'middleAlign')
       },
       topFloorEvent: function () { // 图层置顶
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'topFloor')
+        tool.carryModuleOperationEvent(self, 'topFloor')
       },
       bottomFloorEvent: function () { // 图层置底
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'bottomFloor')
+        tool.carryModuleOperationEvent(self, 'bottomFloor')
       },
       upFloorEvent: function () { // 图层上移一层
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'upFloor')       
+        tool.carryModuleOperationEvent(self, 'upFloor')       
       },
       downFloorEvent: function () { // 图层下移一层
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'downFloor')
+        tool.carryModuleOperationEvent(self, 'downFloor')
       },
       shearEvent: function () { // 剪切
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'shear')
+        tool.carryModuleOperationEvent(self, 'shear')
       },
       copyEvent: function () { // 复制
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'copy')
+        tool.carryModuleOperationEvent(self, 'copy')
       },
       pasteEvent: function () { // 粘贴
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'paste')
+        tool.carryModuleOperationEvent(self, 'paste')
       },
       deleteEvent: function () { // 删除
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'delete')
+        tool.carryModuleOperationEvent(self, 'delete')
       },    
       beforePictureUpload: function (file) {
         let self = this
