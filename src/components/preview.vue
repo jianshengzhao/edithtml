@@ -3,11 +3,11 @@
     <div class="top">
       <div class="t_right">
         <div class="tl_li" style="margin-left:50px;" @click="saveEvent">
-          <i class="iconfont icon-save"></i>
+          <i class="tImgicon icon-save"></i>
           <span>保存</span>
         </div>
         <div class="tl_li" @click='returnEvent'>
-          <i class="iconfont icon-undo"></i>
+          <i class="tImgicon icon-exits"></i>
           <span>返回</span>
         </div>
       </div> 
@@ -25,6 +25,7 @@
     name: 'preview',
     data: function () {
       return {
+        did: 0,
         carInter: '',
         httppost: function (getParam) { // 封装的异步请求数据
           let self = this
@@ -225,14 +226,37 @@
     },
     created: function () { // 增加白名单，各模块所加载的js
       let self = this
+      let hash = window.location.hash
+      let paramArr = hash.split('?')      
+      if (paramArr.length > 1) {
+        let paramdid = paramArr[1].split('&')
+        for (let i = 0, len = paramdid.length; i < len; i++) {
+          let item = paramdid[i]
+          if (item.indexOf('did=') > -1) {
+            self.did = item.split('=')[1]
+            break
+          }
+        }       
+      }
       $('#previewStyle').remove()
       if (!window.saveParams) return false
       let params = window.saveParams
       let pp = params.page
+      console.log(params)
       let style = '<style id="previewStyle">' +
                   'body a[href]:hover{color:' + pp.fontHover + ';}' +
-                  'body,#preview{background-color:' + pp.bg + '}' +
-                  '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + '}' +
+                  'body,#preview{background-color:' + pp.bg + ';' +
+                    'background-attachment:' + pp.bgImage.backgroundAttachment + ';' +
+                    'background-image:' + pp.bgImage.backgroundImage + ';' +
+                    'background-repeat:' + pp.bgImage.backgroundRepeat + ';' +
+                    'background-size:' + pp.bgImage.backgroundSize + ';' +
+                  '}' +
+                  '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + ';' + 
+                    'background-attachment:' + pp.pgImage.backgroundAttachment + ';' +
+                    'background-image:' + pp.pgImage.backgroundImage + ';' +
+                    'background-repeat:' + pp.pgImage.backgroundRepeat + ';' +
+                    'background-size:' + pp.pgImage.backgroundSize + ';' +
+                  '}' +
                   '.head{height:' + pp.top + ';}' +
                   '.middle{height:' + pp.body + ';}' +
                   '.foot{height:' + pp.foot + ';}' +
@@ -263,7 +287,7 @@
         for (let i = 0, len = carousel.length; i < len; i++) {
           clearInterval(self['carInter' + i])
         }
-        self.$router.push('/')
+        self.$router.push('/?did='+ self.did)
       },
       saveEvent: function () { // 页面保存
         let self = this
@@ -315,7 +339,9 @@
             settings: strSetting,
             status: 0,
             auditions: auditions,
-            vedioids: vedioids
+            vedioids: vedioids,
+            clientType: 0,
+            did: self.did
           },
           fun: function (response) {
             let body = response.body

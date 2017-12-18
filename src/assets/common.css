@@ -33,19 +33,19 @@
       width: 4px;
       height: 12px;
   }
-  ::-webkit-scrollbar-track-piece{      
-      background-color: transparent;
+  ::-webkit-scrollbar-track-piece{
+      background-color: #fff;
     /*  -webkit-border-radius: 6px;*/
   }
   ::-webkit-scrollbar-thumb:vertical{
       height: 8px;
-      width: 3px;     
-      background-color: rgba(0,0,0,0.2);
+      width: 3px;
+      background-color: #c9c9c9;
       -webkit-border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:horizontal{
       width: 4px;
-      background-color: #c9c9c9;      
+      background-color: #c9c9c9;
      /* -webkit-border-radius: 6px;*/
   }
   Pseudo ::scrollbar-corner element
@@ -55,12 +55,11 @@
   Pseudo ::scrollbar-thumb element
   ::-webkit-scrollbar-thumb {
       background-color: #c9c9c9;
-    
       border-radius: 4px;
   }
   Pseudo ::scrollbar-track element
   ::-webkit-scrollbar-track {
-      background-color: #c9c9c9;     
+      background-color: #c9c9c9;
   }
   input{
     outline: 0;
@@ -74,6 +73,9 @@
   }  
   .wrap_login{
     float: right;
+  }
+  .hoverbar{
+    display: none;
   }
   .hline .click-hline{
     width: 100%;

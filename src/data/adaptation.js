@@ -1,0 +1,307 @@
+// ----------------- 工具栏 -----------------------------------------
+  exports.resizeToolBar = function (self, me) { // top工具栏排版
+    if(parseInt(me.wtop.css('height')) > 36){
+      me.library.css('paddingTop', '68px')
+      me.layer.css('paddingTop', '68px')
+      me.editBox.css('paddingTop', '68px')
+      self.paddingtop = 68;
+    }
+    me.$(window).resize(function() {
+      if (parseInt(me.wtop.css('height')) > 36) {
+        me.library.css('paddingTop', '68px')
+        me.layer.css('paddingTop', '68px')
+        me.editBox.css('paddingTop', '68px')
+        self.paddingtop = 68;
+      } else {
+        me.library.css('paddingTop', '35px')
+        me.layer.css('paddingTop', '35px')
+        me.editBox.css('paddingTop', '35px')
+        self.paddingtop = 35;
+      }
+    })
+  }
+// ----------------- 模块菜单 ---------------------------------------
+  exports.renderMenu = function (self, me) {  // 渲染模块菜单
+    let group = self.datahtml.toallGroup
+    let bhtm = ''
+    let ohtm = ''
+    let thtm = ''
+    for (let i = 0, len = group.basic.length; i < len; i++) {
+      let item = group.basic[i]
+      bhtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    for (let i = 0, len = group.online.length; i < len; i++) {
+      let item = group.online[i]
+      ohtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    for (let i = 0, len = group.todo.length; i < len; i++) {
+      let item = group.todo[i]
+      thtm += '<div class="lib_li" dataHtml="' + item.name + '"><i class="' + item.icon + '"></i><span>' + item.text + '</span></div>'
+    }
+    me.basicBox.html(bhtm)
+    me.onlineBox.html(ohtm)
+    me.todoBox.html(thtm)
+  }
+// ----------------- 参考虚线 ---------------------------------------
+  exports.computeLineHeight = function (me) { // 计算竖向参考线高度    
+    let scrollHeight = me.space[0].scrollHeight
+    me.colL.css('height', scrollHeight)
+    me.colR.css('height', scrollHeight)   
+  }
+
+  exports.computeLinePosition = function (self, me, show) {  // 计算参考线位置函数   
+    me.rowT.css('top', self.inp_y + self.postop + me.warp)
+    me.rowB.css('top', self.inp_y + self.postop + self.inp_h + me.warp - 1)
+    me.colL.css('left', self.inp_x + self.posleft)
+    me.colR.css('left', self.inp_x + self.posleft + self.inp_w - 1)
+    if (!show) {
+      me.line.show()
+    }
+  }
+
+  exports.computeOutsideLine = function (self, e, me) {  // 画布之外的参考线 
+    let sTop = parseInt(me.space.scrollTop()) // 当前滚动条高度
+    let sLeft = parseInt(me.space.scrollLeft())
+    let w = parseInt(me.copyBox.css('width'))
+    let h = parseInt(me.copyBox.css('height'))
+    me.rowT.css('top', e.pageY + sTop - self.paddingtop)
+    me.rowB.css('top', e.pageY + sTop - self.paddingtop + h)
+    me.colL.css('left', 0 + sLeft)
+    me.colR.css('left', w + sLeft)
+    me.line.show()
+    me.editBox.mousemove(function (e) {
+      sTop = parseInt(me.space.scrollTop())
+      me.rowT.css('top', e.pageY + sTop - self.paddingtop)
+      me.rowB.css('top', e.pageY + sTop - self.paddingtop + h)
+      me.colL.css('left', e.pageX + sLeft - self.paddingleft)
+      me.colR.css('left', e.pageX + sLeft - self.paddingleft + w)
+    })
+  }
+// ----------------- 元素图层 ---------------------------------------
+  exports.renderLayer = function (self, parent) {
+    let ele = parent.find('.module')
+    let arr = []
+    for (let i = 0, len = ele.length; i < len; i++) {
+      let item = ele.eq(i)
+      let text = item.attr('datatext')
+      let obj = {
+        x: parseInt(item.css('left')),
+        y: parseInt(item.css('top')),
+        x1: parseInt(item.css('left')) + parseInt(item.css('width')),
+        y1: parseInt(item.css('top')) + parseInt(item.css('height')),
+        ele: item,
+        text: text
+      }
+      arr.push(obj)
+    }
+    switch (parent.attr('class')) {
+      case 'c_top':
+        self.elementHead = arr
+        break
+      case 'c_body':
+        self.elementMain = arr
+        break
+      case 'c_foot':
+        self.elementTail = arr
+        break
+    }
+  }
+// ----------------- bindEvent ---------------------------------------
+  exports.bindElDialogMousemoveEvent = function (me) { // 悬浮框鼠标拖拽事件
+    me.doc.on('mousedown', '.el-dialog', function (e) {
+      if (me.$(e.target).hasClass('el-dialog__header') || me.$(e.target).hasClass('el-dialog__title')) {
+
+        let body = me.$('body')
+        let elDialog = me.$(this)
+        let eX = e.pageX
+        let eY = e.pageY
+        let edX = parseInt(elDialog.css('left'))
+        let edY = parseInt(elDialog.css('top'))
+        let edW = parseInt(elDialog.css('width'))
+        let edH = parseInt(elDialog.css('height'))
+        let bW = parseInt(body.css('width'))
+        let bH = parseInt(body.css('height'))
+
+        me.doc.mousemove(function (e) {
+          let left = edX - (eX - e.pageX)
+          let top = edY - (eY - e.pageY)
+
+          if (top < 0) { // 最小值
+            top = 0
+          }        
+
+          if (left < edW/2) {
+            left = edW/2
+          } else if ((left + edW/2) > bW) {
+            left = bW - edW/2
+          }
+
+          elDialog.css({'left': left, 'top': top})
+        })
+
+        me.doc.mouseup(function (e) {
+          me.doc.unbind('mousemove mouseup')
+        })
+      }
+    })
+  }
+
+  exports.bindHoverbarMousemoveEvent = function (self, me) { // 页头页尾调整
+    me.top.on('mousedown', '.hoverbar', function (e) { // top容器调整
+      let y = e.pageY
+      let h = parseInt(me.top.css('height'))
+      let tar = me.$(e.target)
+      tar.attr('style','display:block')
+      me.cleanSignEvent(self)
+      me.canvas.mousemove(function (e) {
+        let hs = h + (e.pageY - y)
+        me.top.css('height', hs)
+        me.canvas.css('paddingTop', hs)
+        me.topRangeY = hs + self.paddingtop + self.postop
+        me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
+      })
+      me.canvas.mouseup(function () {
+        tar.removeAttr('style')
+        me.canvas.unbind('mousemove mouseup')
+      })
+      return false
+    })
+
+    me.foot.on('mousedown', '.hoverbar', function (e) { // foot容器调整
+      let y = e.pageY
+      let h = parseInt(me.foot.css('height'))
+      let tar = me.$(e.target)
+      tar.attr('style','display:block')
+      me.cleanSignEvent(self)
+      me.canvas.mousemove(function (e) {
+        let hs = h + (y - e.pageY)
+        me.foot.css('height', hs)
+        me.canvas.css('paddingBottom', hs)
+        me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
+      })
+      me.canvas.mouseup(function () {
+        tar.removeAttr('style')
+        me.canvas.unbind('mousemove mouseup')
+      })
+      return false
+    })
+  }
+
+  exports.bindMenuEvent = function (self, me) { // 左侧列表收缩事件
+    me.lHeader.on('click', function () {
+      let $next = me.$(this).next()
+      let len = $next.children().length
+      let num = parseInt(len / 2) + len % 2
+      let h = 66 * num
+      if ($next.css('height') === '0px') {
+        $next.css('height', h + 'px')
+        me.$(this).removeClass('closei')
+      } else {
+        $next.css('height', h + 'px')
+        me.$(this).addClass('closei')
+        setTimeout(function () {
+          $next.css('height', '0px')
+        }, 0)
+      }
+    })
+
+    me.lShrink.on('click', function () {
+      if (me.lShrink.hasClass('shrinkout')) {
+        me.lShrink.removeClass('shrinkout')
+        me.library.removeClass('basic')
+        me.editBox.css('marginLeft', '')
+        me.editBox.css('paddingRight', '314px')
+        self.paddingleft = 133
+        me.lShrink.css('left','133px')
+      } else {
+        me.lShrink.addClass('shrinkout')
+        me.library.addClass('basic')
+        me.editBox.css('marginLeft', '5px')
+        me.editBox.css('paddingRight', '186px')
+        me.lShrink.css('left','5px')
+        self.paddingleft = 5
+      }
+    })
+  }
+
+  exports.bindLayerEvent = function (self, me) { // 右侧图层栏事件
+    me.rHeader.on('click', function () { // 收缩header栏
+      let $next = me.$(this).next()
+      let len = $next.children().length
+      let h = 25 * len
+      if ($next.css('height') === '1px') {
+        $next.css('height', h + 'px')
+        me.$(this).removeClass('closeiR')
+      } else {
+        $next.css('height', h + 'px')
+        me.$(this).addClass('closeiR')
+        setTimeout(function () {
+          $next.css('height', '0px')
+        }, 0)
+      }
+    })
+    me.rShrink.on('click', function () { // 隐藏右边栏
+      if (me.rShrink.hasClass('shrinkout')) {
+        me.rShrink.removeClass('shrinkout')
+        me.layer.addClass('layerHide')
+        if (me.lShrink.hasClass('shrinkout')) {
+          me.editBox.css('paddingRight', '0px')
+        } else {
+          me.editBox.css('paddingRight', '133px')
+        }
+      } else {
+        me.rShrink.addClass('shrinkout')
+        me.layer.removeClass('layerHide')
+        if (me.lShrink.hasClass('shrinkout')) {
+          me.editBox.css('paddingRight', '0px')
+        } else {
+          me.editBox.css('paddingRight', '314px')
+        }
+      }
+    })
+    me.elementHead.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementHead[index].ele
+      me.carrySignEvent(self, ele)
+    })
+    me.elementHead.on('click', '.deleteLayer', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      if (self.elementHead[index].text == '客服') {
+        me.$('.waiter').remove()
+      }
+      self.elementHead[index].ele.remove()
+      self.elementHead.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele) waiter
+    })
+    me.elementMain.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementMain[index].ele
+      me.carrySignEvent(self, ele)
+    })
+    me.elementMain.on('click', '.deleteLayer', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      if (self.elementMain[index].text == '客服') {
+        me.$('.waiter').remove()
+      }
+      self.elementMain[index].ele.remove()
+      self.elementMain.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele)
+    })
+    me.elementTail.on('click', '.ele_li', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      let ele = self.elementTail[index].ele
+      me.carrySignEvent(self, ele)
+    })
+    me.elementTail.on('click', '.deleteLayer', function (e) {
+      let index = me.$(this).attr('dataIndex')
+      if (self.elementTail[index].text == '客服') {
+        me.$('.waiter').remove()
+      }
+      self.elementTail[index].ele.remove()
+      self.elementTail.splice(index,1)
+      return false
+      // me.carrySignEvent(self, ele)
+    })
+  }
