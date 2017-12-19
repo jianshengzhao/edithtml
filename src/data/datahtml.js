@@ -548,6 +548,12 @@ var configHtml = {
       },
       public: []
     },
+    container: true, // 是否为容器
+    containerClass: '.suspenddiv', // 作为容器节点的class名称
+    containerOffsetTop: {
+      y: 0,
+      x: 0
+    },
     createEvent: function (self, element, me) {
 
     },

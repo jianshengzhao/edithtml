@@ -119,6 +119,11 @@ export default {
         public: []
       },
       container: true, // 是否为容器
+      containerClass: '.tab_content .active', // 作为容器节点的class名称
+      containerOffsetTop: {
+        y: 28,
+        x: 0
+      }, // 实际容器与容器父模块的间距
       // resize: undifend, // 拉伸方向: 默认为空,自由拉伸
       // resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调
       // },

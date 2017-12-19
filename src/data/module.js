@@ -499,8 +499,8 @@
     })
   }
 
-  exports.bindModuleDblclickEvent = function (self, me) { // 模块双击事件
-    me.editBox.on('dblclick', '.resizeBox', function (e) { // 模块双击操作 todolist: 
+  exports.bindModuleDblclickEvent = function (self, me) { // 模块双击事件 todolist:
+    me.editBox.on('dblclick', '.resizeBox', function (e) {
       alert(0)
     })
   }
@@ -615,78 +615,40 @@
         if (e.pageY + sTop < me.topRangeY) {
           box = me.top
           boxcls = 'c_top'
-          y = e.pageY + sTop - self.paddingtop - self.postop
-          if (me.top.find('.tab').length){
-            let ew = parseInt(me.copyBox.css('width'))
-            let eh = parseInt(me.copyBox.css('height'))
-            me.top.find('.tab').each(function (i) {
-              let tabx = parseInt(me.top.find('.addtab').eq(i).css('left'))
-              let taby = parseInt(me.top.find('.addtab').eq(i).css('top')) + 28
-              let tabw = parseInt(me.top.find('.addtab').eq(i).css('width'))
-              let tabh = parseInt(me.top.find('.addtab').eq(i).css('height'))
-              if (x >= tabx  && y >= taby && tabh > eh && tabw> ew && (taby+tabh)  >= (y+eh)){
-                x = x - tabx
-                y = y - taby
-                box = me.$(this).find('.tab_content .active')
-              }
-            })
-          }
-
-          if (me.top.find('.suspend').length){
-            let ew = parseInt(me.copyBox.css('width'))
-            let eh = parseInt(me.copyBox.css('height'))
-            me.top.find('.suspend').each(function (i) {
-              let suspendx = parseInt(me.top.find('.suspend').eq(i).css('left'))
-              let suspendy = parseInt(me.top.find('.suspend').eq(i).css('top')) + 28
-              let suspendw = parseInt(me.top.find('.suspend').eq(i).css('width'))
-              let suspendh = parseInt(me.top.find('.suspend').eq(i).css('height'))
-              if (x >= suspendx  && y >= suspendy && suspendh > eh && suspendw> ew && (suspendy+suspendh)  >= (y+eh)){
-                x = x - suspendx
-                y = y - suspendy
-                box = me.$(this).find('.suspenddiv')
-              }
-            })
-          }
+          y = e.pageY + sTop - self.paddingtop - self.postop 
         } else if (e.pageY + sTop < me.bodyRangeY) {
           box = me.body
           boxcls = 'c_body'
-          y = e.pageY + sTop - me.topRangeY
-          if (me.body.find('.tab').length){
-            let ew = parseInt(me.copyBox.css('width'))
-            let eh = parseInt(me.copyBox.css('height'))
-            me.body.find('.tab').each(function (i) {
-              let tabx = parseInt(me.body.find('.addtab').eq(i).css('left'))
-              let taby = parseInt(me.body.find('.addtab').eq(i).css('top')) + 28
-              let tabw = parseInt(me.body.find('.addtab').eq(i).css('width'))
-              let tabh = parseInt(me.body.find('.addtab').eq(i).css('height'))
-              if (x >= tabx  && y >= taby && tabh > eh && tabw> ew && (taby+tabh)  >= (y+eh)){
-                x = x - tabx
-                y = y - taby
-                box = me.$(this).find('.tab_content .active')
-              }
-            })
-          }
+          y = e.pageY + sTop - me.topRangeY         
         } else {
           box = me.foot
           boxcls = 'c_foot'
-          y = e.pageY + sTop - me.bodyRangeY
-          if (me.foot.find('.tab').length){
+          y = e.pageY + sTop - me.bodyRangeY        
+        }
+        // 判断是否为容器       
+        let target = me.$(e.target)
+        let containers = target.parents('.module')
+        for (let i = 0, len = containers.length; i < len; i++) {
+          let item = containers.eq(i)
+          let moduleName = item.attr('class').split(' ')[0]
+          let itemData = self.datahtml[moduleName]
+          if (itemData.container) {
             let ew = parseInt(me.copyBox.css('width'))
             let eh = parseInt(me.copyBox.css('height'))
-            me.foot.find('.tab').each(function (i) {
-              let tabx = parseInt(me.foot.find('.addtab').eq(i).css('left'))
-              let taby = parseInt(me.foot.find('.addtab').eq(i).css('top')) + 28
-              let tabw = parseInt(me.foot.find('.addtab').eq(i).css('width'))
-              let tabh = parseInt(me.foot.find('.addtab').eq(i).css('height'))
-              if (x >= tabx  && y >= taby && tabh > eh && tabw> ew && (taby+tabh)  >= (y+eh)){
-                x = x - tabx
-                y = y - taby
-                box = me.$(this).find('.tab_content .active')
-              }
-            })
-          }
-        }
-        // suspend模块只在top上
+            let suspendx = parseInt(item.css('left')) + itemData.containerOffsetTop.x
+            let suspendy = parseInt(item.css('top')) + itemData.containerOffsetTop.y
+            let suspendw = parseInt(item.css('width'))
+            let suspendh = parseInt(item.css('height'))
+            if (x >= suspendx  && y >= suspendy && suspendh > eh && suspendw> ew && (suspendy+suspendh)  >= (y+eh)){
+              x = x - suspendx
+              y = y - suspendy
+              box = item.find(itemData.containerClass)              
+              break
+            }
+          }          
+        }       
+        // 判断是否为容器
+      // suspend模块只在top上
         if (modType == 'suspend'){
           y = 0
           box = me.top

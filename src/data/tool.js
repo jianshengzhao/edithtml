@@ -51,7 +51,7 @@
       me.copynum = 0
       me.bindEvent(self)
     },
-    carryLineHeightEvent: function () {
+    carryLineHeightEvent: function () { // 获取参考高度
       let me = this
       adaptation.computeLineHeight(me)
     },
