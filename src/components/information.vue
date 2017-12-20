@@ -91,13 +91,85 @@
     created:function(){
       var self = this;
       let moduleData = self.$parent.datahtml
-      // 注入左侧图标
+    // ----------------------- LOGO ----------------------------
+      moduleData['toallGroup']['online'].push({
+        name: 'schoollogo',
+        icon: 'imgicon icon-logo',
+        text: 'LOGO'
+      }) 
+
+      moduleData['schoollogo'] = { 
+        style: 'width:220px; height:220px',
+        tool: {
+          private: {
+            text: '',
+            class: ''
+          },
+          public: ['b','c','d','e']
+        },
+        createEvent: function (self, element ,me) {
+            if (me.$('.schoollogo').length > 1) {
+              self.$notify({
+                title: '警告',
+                message: '您已经添加过LOGO',
+                type: 'warning'
+              })
+              element.remove()
+          }else{
+              self.createqr_logo(element)
+          }
+        },
+        html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
+      }    
+    // ----------------------- 二维码 ----------------------------
+      moduleData['toallGroup']['online'].push({
+        name: 'schoolqr',
+        icon: 'imgicon icon-QRcode',
+        text: '二维码'
+      }) 
+
+      moduleData['schoolqr'] = { 
+        style: 'width:212px; height:212px',
+        tool: {
+          private: {
+            text: '',
+            class: ''
+          },
+          public: ['b','c','d']
+        },
+        createEvent: function (self, element) {
+          self.createqr_logo(element)
+        },
+        html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img class="schoolqrimg" src="" /></a></div>'
+      }
+    // ----------------------- 网校介绍 ----------------------------
+      moduleData['toallGroup']['online'].push({
+        name: 'introduce',
+        icon: 'imgicon icon-introduce',
+        text: '网校介绍'
+      }) 
+
+      moduleData['introduce'] = { 
+        style: 'width:580px; height:145px',
+        tool: {
+          private: {
+            text: '',
+            class: ''
+          },
+          public: []
+        },
+        createEvent: function (self, element) {
+          self.createintroduce(element)
+        },
+        html: '<div class="introduce module addmodule" datatext="网校介绍"><a class="picBox"></a></div>'
+      }
+    // ----------------------- 资讯 ----------------------------
       moduleData['toallGroup']['online'].push({
         name: 'information',
         icon: 'imgicon icon-information',
         text: '资讯'
-      })
-      // 配置模块参数
+      })   
+
       moduleData['information'] = { 
         style: 'width:1200px;',
         tool: {
@@ -127,7 +199,46 @@
           self.$refs.information.show(self,element)
         },
         html: '<div class="information module addmodule" datatext="资讯"><div class="inforCon"></div></div>'
-      }  
+      } 
+    // ----------------------- 地图 ----------------------------
+      moduleData['toallGroup']['online'].push({
+        name: 'schoolmap',
+        icon: 'imgicon icon-map',
+        text: '地图'
+      }) 
+
+      moduleData['schoolmap'] = { 
+        style: 'width:935px; height:325px',
+        tool: {
+          private: {
+            text: '',
+            class: ''
+          },
+          public: []
+        },
+        resizeMouseUp: function (self, parent) { // 拉伸结束的回调
+          if(parent.find("#schoolmap").hasClass("schoolmap_box")){
+            parent.find("#schoolmap").remove();
+            var schoolmap = '<div class="schoolmap_box" id="schoolmap"></div>';
+            parent.append(schoolmap);
+            self.createmap();
+            resizeBox.hide();
+          }
+        },
+        createEvent: function (self, element, me) {
+          if (me.$('.schoolmap').length > 1) {
+              self.$notify({
+                title: '警告',
+                message: '您已经添加过地图',
+                type: 'warning'
+              })
+              element.remove()
+          }else{
+              self.createmap(element)
+          }
+        },
+        html: '<div class="schoolmap module addmodule" datatext="地图"><div class="schoolmap_box" id="schoolmap"></div></div>'
+      }
     },
     methods:{
       //用于主页调用当前模板函数，弹出弹框并加载数据

@@ -67,13 +67,13 @@
       let me = this
       adaptation.renderLayer(self, parent)
     },
-    carryAddElementStorageEvent: function (self, parent, AddElement, y, x, marginT) { // 区域存储(多选)   
+    carryAddElementStorageEvent: function (self, parent, AddElement, y, x, son) { // 区域存储(多选)   
       let me = this   
-      storage.addStorage(self, parent, AddElement, y, x, marginT, this)
+      storage.addStorage(self, parent, AddElement, y, x, this, son)
     },
     carryUpdateElementStorageEvent: function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
       let me = this     
-      storage.updateStorage(self, parent, elements, deleteEle)  
+      storage.updateStorage(self, parent, elements, deleteEle, me)  
     },
     carryRegionChoiceEvent: function (self, e) { // 区域选中事件(多选)
       let me = this    
@@ -636,7 +636,7 @@
       })
       if (type == 'delete' || type == 'shear') {
         me.carryUpdateElementStorageEvent(self, self.original, onModules, 'delete')
-      } else {
+      } else {       
         me.carryUpdateElementStorageEvent(self, self.original, onModules)
       }
       adaptation.renderLayer(self, self.original)

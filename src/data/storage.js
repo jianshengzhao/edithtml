@@ -6,53 +6,69 @@
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
   }
 
-  exports.addStorage = function (self, parent, AddElement, y, x, marginT, me) { // 添加存储(多选)
+  exports.addStorage = function (self, parent, AddElement, y, x, me, son) { // 添加存储(多选)
     let cname = parent.attr('class')
-    if (cname == 'active cont' || cname == 'cont active'){
-      cname = parent.parent().attr('parent')
-    }else if (cname == 'suspenddiv'){
-      cname = parent.attr('parent')
-    }
-    for(let i = 0, len = AddElement.length; i < len; i++) {
-      let regionY =  parseInt((y + i * marginT)/300) * 300  // 以y轴300px为区间分段存储
-      let id = getGuidGenerator()
-      let addEle = AddElement.eq(i)
-      let x1 = parseInt(addEle.css('width')) + x
-      let y1 = parseInt(addEle.css('height')) + y
-      let br = parseInt(addEle.css('border-left-width')) < 1 ? parseInt(addEle.css('border-top-width')) : parseInt(addEle.css('border-left-width'))
-      addEle.attr('id', id)
-      let regionYO = self.elementStorage[cname]
-      regionYO[id] = {
-        xt: x,
-        yt: y,
-        xb: x1,
-        yb: y1,
-        br: br,
-        ele: addEle
-      }
+    let id = getGuidGenerator()
+    let addEle = AddElement
+    let x1 = parseInt(addEle.css('width')) + x
+    let y1 = parseInt(addEle.css('height')) + y
+    let br = parseInt(addEle.css('border-left-width')) < 1 ? parseInt(addEle.css('border-top-width')) : parseInt(addEle.css('border-left-width'))
+    addEle.attr('id', id)
+    let regionYO = self.elementStorage[cname]
+    regionYO[id] = {
+      son: son,
+      xt: x,
+      yt: y,
+      xb: x1,
+      yb: y1,
+      br: br,
+      ele: addEle
     }
   }
 
-  exports.updateStorage = function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
-    let cname = parent.attr('class')
-    if (cname == 'active cont' || cname == 'cont active'){
-      cname = parent.parent('.tab_content').attr('parent')
-    }else if (cname == 'suspenddiv'){
-      cname = parent.attr('parent')
-    } 
+  exports.updateStorage = function (self, parent, elements, deleteEle, me) { // 更新区域存储(多选)
+    let cname = parent.attr('class') 
+    if ('c_top c_body c_foot'.indexOf(cname) < 0) {    
+      if (parent.parents('.c_top').length > 0) {
+        cname = 'c_top'
+      } else if (parent.parents('.c_body').length > 0) {
+        cname = 'c_body'
+      } else if (parent.parents('.c_foot').length > 0){
+        cname = 'c_foot'
+      } else {
+        return false
+      } 
+    }
     let parentO = self.elementStorage[cname]
+    let elementss = me.$.merge(elements,elements.find('.module')) // todolist:合并子集数组
+    console.log(elementss)
+    console.log(elementss.length)
     for (let i = 0, len = elements.length; i < len; i++) {
       let item = elements.eq(i)
-      let id = item.attr('id')
-      let iTop = parseInt(item.css('top'))     
+      let id = item.attr('id')        
       if (deleteEle == 'delete') {
         delete parentO[id]
       } else {
+        let son = false
+        let iTop = parseInt(item.css('top'))   
         let iLeft = parseInt(item.css('left'))
+        let parents = item.parents('.module')
+        let pLen = parents.length
+        if (pLen > 0) { // 如果为模块子元素计算元素相对位置
+          for (let j = 0; j < pLen; j++) {
+            let pitem = parents.eq(j)
+            let pcname = pitem.attr('class').split(' ')[0]
+            let containerOffset = self.datahtml[pcname].containerOffset
+            iTop += parseInt(pitem.css('top')) + containerOffset.y
+            iLeft += parseInt(pitem.css('left')) + containerOffset.x
+          }
+          son = true
+        }
         let ibottom = parseInt(item.css('height')) + iTop
         let iright = parseInt(item.css('width')) + iLeft
         let ibor = parseInt(item.css('border-left-width')) < 1? parseInt(item.css('border-top-width')) : parseInt(item.css('border-left-width'))
         parentO[id] = { // 更新存储的数据
+          son: son,
           xt: iLeft,
           yt: iTop,
           xb: iright,
@@ -65,6 +81,99 @@
   }
 
 // ----------------------------- 多选 ----------------------------------------------  
+
+  exports.getRegionSign = function (self, element, elementX, me) { // 多选模块并属性初始化
+    self.inp_z = parseInt(element.css('zIndex')) || ''
+    self.inp_x = parseInt(elementX.css('left'))
+    self.inp_y = parseInt(element.css('top'))
+    self.inp_w = parseInt(element.css('width'))
+    self.inp_h = parseInt(element.css('height'))
+    self.inp_size = parseInt(element.css('fontSize'))
+    self.inp_line = parseInt(element.css('lineHeight'))
+    self.color_font = element.css('color')
+    self.color_bg = element.css('backgroundColor')
+    self.br_width = parseInt(element.css('border-left-width'))
+    self.br_style = element.css('border-left-style')
+    self.br_color = element.css('border-left-color')
+    self.inp_opacity = parseInt(element.css('opacity') * 100)
+    if (element.css('boxShadow') == 'none') {
+      self.check_shadow = false
+      self.inp_weight_x = ''
+      self.inp_weight_y = ''
+      self.inp_blur = ''
+      self.bw_color = '#ccc'
+    } else {
+      let shadowArr = element.css('boxShadow').split(' ')
+      self.check_shadow = true
+      self.inp_weight_x = shadowArr[3].split('p')[0]
+      self.inp_weight_y = shadowArr[4].split('p')[0]
+      self.inp_blur = shadowArr[5].split('p')[0]
+      self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
+    }
+    self.disabled = false
+    me.mod.removeClass('tl_li_Disable')
+    me.brmod.removeClass('br-disable')
+  } 
+
+  exports.fuzzyCalibration = function (self, parentClass, id, left, top, height, width, ele, me) { // 模糊校准
+    me.$('.fuzzybox').remove()
+    me.line.hide()
+    let obj = self.elementStorage[parentClass]    
+    let yT = top
+    let yB = top + height
+    let xL = left
+    let xR = left + width    
+    let fv = self.fuzzyVal
+    let fyzzyHtml = '<div class="fuzzybox"></div>'
+  console.log(ele)
+    for (let i in obj) {
+      let item = obj[i] 
+      if (i != id && !item.son) {             
+        if (Math.abs(item.xt - xL) <= fv) {
+          ele.css({'left': item.xt})
+          self.inp_x = item.xt
+        }
+        if (Math.abs(item.xt - xR) <= fv) {
+          let fLeftR = item.xt - width
+          ele.css({'left': fLeftR})
+          self.inp_x = fLeftR
+        }
+        if (Math.abs(item.xb - xR) <= fv) {
+          let fLeft = item.xb - width
+          ele.css({'left': fLeft})
+          self.inp_x = fLeft
+        }
+        if (Math.abs(item.xb - xL) <= fv) {
+          ele.css({'left': item.xb})
+          self.inp_x = item.xb
+        }
+        if (Math.abs(item.yt - yT) <= fv) {
+          ele.css({'top': item.yt})
+          self.inp_y = item.yt
+        }
+        if (Math.abs(item.yt - yB) <= fv) {
+          let fTopB = item.yt - height
+          ele.css({'top': fTopB})
+          self.inp_y = fTopB
+        }
+        if (Math.abs(item.yb - yB) <= fv) {
+          let fTop = item.yb - height
+          ele.css({'top': fTop})
+          self.inp_y = fTop
+        }
+        if (Math.abs(item.yb - yT) <= fv) {
+          ele.css({'top': item.yb})
+          self.inp_y = item.yb
+        }
+        if (Math.abs(item.xt - xL) <= fv || Math.abs(item.xt - xR) <= fv || Math.abs(item.xb - xR) <= fv || Math.abs(item.xb - xL) <= fv || Math.abs(item.yt - yT) <= fv || Math.abs(item.yt - yB) <= fv || Math.abs(item.yb - yB) <= fv || Math.abs(item.yb - yT) <= fv) {
+          me.adaptation.computeLinePosition(self, me)
+          me.carryUpdateElementStorageEvent(self, ele.parent(), ele)
+          item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
+        }
+      }
+    }
+  }
+
   exports.drawingRegion = function (self, me, e) {  // 绘制选中区域 ps：优化拆分
     me.$('.getRegion').remove()
     me.$('.multiBox').remove()
@@ -112,117 +221,21 @@
     })
   }
 
-  exports.getRegionSign = function (self, element, elementX, me) { // 多选模块并属性初始化
-    self.inp_z = parseInt(element.css('zIndex')) || ''
-    self.inp_x = parseInt(elementX.css('left'))
-    self.inp_y = parseInt(element.css('top'))
-    self.inp_w = parseInt(element.css('width'))
-    self.inp_h = parseInt(element.css('height'))
-    self.inp_size = parseInt(element.css('fontSize'))
-    self.inp_line = parseInt(element.css('lineHeight'))
-    self.color_font = element.css('color')
-    self.color_bg = element.css('backgroundColor')
-    self.br_width = parseInt(element.css('border-left-width'))
-    self.br_style = element.css('border-left-style')
-    self.br_color = element.css('border-left-color')
-    self.inp_opacity = parseInt(element.css('opacity') * 100)
-    if (element.css('boxShadow') == 'none') {
-      self.check_shadow = false
-      self.inp_weight_x = ''
-      self.inp_weight_y = ''
-      self.inp_blur = ''
-      self.bw_color = '#ccc'
-    } else {
-      let shadowArr = element.css('boxShadow').split(' ')
-      self.check_shadow = true
-      self.inp_weight_x = shadowArr[3].split('p')[0]
-      self.inp_weight_y = shadowArr[4].split('p')[0]
-      self.inp_blur = shadowArr[5].split('p')[0]
-      self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
-    }
-    self.disabled = false
-    me.mod.removeClass('tl_li_Disable')
-    me.brmod.removeClass('br-disable')
-  } 
-
-  exports.fuzzyCalibration = function (self, parentClass, id, left, top, height, width, ele, me) { // 模糊校准 // todolist:去除子元素校准
-    me.$('.fuzzybox').remove()
-    me.line.hide()
-    let obj = self.elementStorage[parentClass]    
-    let yT = top
-    let yB = top + height
-    let xL = left
-    let xR = left + width    
-    let fv = self.fuzzyVal
-    let fyzzyHtml = '<div class="fuzzybox"></div>'
- 
-    for (let i in obj) {
-      if (i != id) {
-        let item = obj[i]      
-        if (Math.abs(item.xt - xL) <= fv) {
-          ele.css({'left': item.xt})
-          self.inp_x = item.xt
-        }
-        if (Math.abs(item.xt - xR) <= fv) {
-          let fLeftR = item.xt - width
-          ele.css({'left': fLeftR})
-          self.inp_x = fLeftR
-        }
-        if (Math.abs(item.xb - xR) <= fv) {
-          let fLeft = item.xb - width
-          ele.css({'left': fLeft})
-          self.inp_x = fLeft
-        }
-        if (Math.abs(item.xb - xL) <= fv) {
-          ele.css({'left': item.xb})
-          self.inp_x = item.xb
-        }
-        if (Math.abs(item.yt - yT) <= fv) {
-          ele.css({'top': item.yt})
-          self.inp_y = item.yt
-        }
-        if (Math.abs(item.yt - yB) <= fv) {
-          let fTopB = item.yt - height
-          ele.css({'top': fTopB})
-          self.inp_y = fTopB
-        }
-        if (Math.abs(item.yb - yB) <= fv) {
-          let fTop = item.yb - height
-          ele.css({'top': fTop})
-          self.inp_y = fTop
-        }
-        if (Math.abs(item.yb - yT) <= fv) {
-          ele.css({'top': item.yb})
-          self.inp_y = item.yb
-        }
-        if (Math.abs(item.xt - xL) <= fv || Math.abs(item.xt - xR) <= fv || Math.abs(item.xb - xR) <= fv || Math.abs(item.xb - xL) <= fv || Math.abs(item.yt - yT) <= fv || Math.abs(item.yt - yB) <= fv || Math.abs(item.yb - yB) <= fv || Math.abs(item.yb - yT) <= fv) {
-          me.adaptation.computeLinePosition(self, me)
-          me.carryUpdateElementStorageEvent(self, ele.parent(), ele)
-          item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
-        }
-      }
-    }
-  }
-
-  function getRegionParam (parent, getregion, self, me) { // 判断选中 // todolist: 增加外部虚线
+  function getRegionParam (parent, getregion, self, me) { // 判断选中的元素
     let gx
     let gy
     let gw
-    let gh
-    let sy
-    let ey
+    let gh   
     let obj = self.elementStorage[parent]
     gx = parseInt(getregion.css('left')) // 获得选区X坐标
     gy = parseInt(getregion.css('top')) // 获得选区Y坐标
     gw = parseInt(getregion.css('width')) // 获得选区宽
-    gh = parseInt(getregion.css('height')) // 获得选区高
-    sy = parseInt(gy/300) * 300
-    ey = parseInt((gy + gh) /300) * 300
-    
+    gh = parseInt(getregion.css('height')) // 获得选区高     
     for (let i in obj) { // 判断是否在选区内
       let item = obj[i]
-      if (self.choiceCon) { // 判断选择条件 
+      if (self.choiceCon) { // 判断选择条件         
         if ((gx + gw > item.xt && item.xb > gx && gy + gh > item.yt && item.yb > gy)) {
+
           item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
         }
       }else {
@@ -233,17 +246,17 @@
     }
     getregion.remove()
     let multiBox = me.$('.multiBox')
-    let parentModule = me.$('.' + parent +'>.on_module')   
+    let parentModule = me.$('.' + parent +'>.on_module')
     if (parentModule.length != multiBox.length) {
-      if (parentModule.length == 1) { // 选中模块内的子元素模块
+      if (parentModule.length == 1) { // 选中模块内的子元素模块       
         parentModule.children('.multiBox').remove()
-        parentModule.removeClass('on_module')
+        parentModule.removeClass('on_module')      
       } else {  // 清除的子元素模块的选中
         let childModule = parentModule.find('.on_module')       
         childModule.find('.multiBox').remove()
         childModule.removeClass('on_module')
       }
-    } 
+    }   
     screenElement(self, me)
   }
 

@@ -39,7 +39,71 @@ export default {
     }
   },
   created: function () {
-    // let self = this 
+    let self = this
+    let moduleData = self.$parent.datahtml
+  // ------------------ 教师 -----------------------
+    moduleData['toallGroup']['online'].push({
+      name: 'teacher',
+      icon: 'imgicon icon-teacher',
+      text: '教师'
+    })
+   
+    moduleData['teacher'] = { 
+      style: 'width: 247px; height: 228px',
+      tool: {
+        private: {
+          text: '编辑教师',
+          class: 'st-teacher'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.course.show(self, element, me, 'teacher')
+      },
+      html: '<div class="teacher module addmodule"  datatext="教师"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }
+  // ------------------ 试听 -----------------------
+    moduleData['toallGroup']['online'].push({
+      name: 'audition',
+      icon: 'imgicon icon-audition',
+      text: '试听'
+    })
+   
+    moduleData['audition'] = { 
+      style: 'width:190px; height:120px',
+      tool: {
+        private: {
+          text: '编辑试听',
+          class: 'st-audition'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.course.show(self, element, me, 'audition')
+      },
+      html: '<div class="audition module addmodule"  datatext="免费试听"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }
+  // ------------------ 课程 -----------------------
+    moduleData['toallGroup']['online'].push({
+      name: 'course',
+      icon: 'imgicon icon-course',
+      text: '课程'
+    })
+   
+    moduleData['course'] = { 
+      style: 'width:260px; height:220px',
+      tool: {
+        private: {
+          text: '编辑课程',
+          class: 'st-course'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.course.show(self, element, me, 'course')
+      },
+      html: '<div class="course module addmodule" datatext="课程"><div class="editAdd"><div class="add-icon"></div></div></div>'
+    }  
   },
   methods: {     
     dialogCourseEvent: function () {

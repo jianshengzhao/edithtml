@@ -89,7 +89,28 @@ export default {
     }
   },
   created: function () {
-    // let self = this 
+    let self = this
+    let moduleData = self.$parent.datahtml
+    moduleData['toallGroup']['online'].push({
+      name: 'advert',
+      icon: 'imgicon icon-advert',
+      text: '悬浮广告'
+    })
+    // 配置模块参数
+    moduleData['advert'] = { 
+      style: 'width:300px; height:150px',
+      tool: {
+        private: {
+          text: '编辑广告',
+          class: 'st-advert'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.advert.show(self, element)
+      },
+      html: '<div class="advert module addmodule"  datatext="悬浮广告"><div class="advCon"></div></div>'
+    }
   },
   methods: {
     show: function (that, element) {

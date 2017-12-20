@@ -58,7 +58,46 @@ export default {
     }
   },
   created: function () {
-    let self = this      
+    let self = this
+    let moduleData = self.$parent.datahtml
+  // ------------------- button ------------------
+    moduleData['toallGroup']['basic'].push({
+      name: 'button',
+      icon: 'imgicon icon-button',
+      text: '按钮'
+    })
+    // 配置模块参数
+    moduleData['button'] = { 
+      style: 'width:80px; height:30px',
+      tool: {
+        private: {
+          text: '设置样式',
+          class: 'st-style'
+        },
+        public: ['f','e']
+      },      
+      html: '<div class="button module addmodule"  datatext="按钮"><a target="_blank">按钮</a></div>'
+    }
+  // ------------------- taxonomy ------------------
+    moduleData['toallGroup']['basic'].push({
+      name: 'taxonomy',
+      icon: 'imgicon icon-classify',
+      text: '分类'
+    })
+    moduleData['taxonomy'] = { 
+      style: 'width:1200px;',
+      tool: {
+        private: {
+          text: '',
+          class: ''
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
+        self.getcoursecategorys(element)
+      },
+      html: '<div class="taxonomy module addmodule" datatext="分类"><div class="click-taxonomy"></div><div class="taxonomycont"><ul class="fl allson"></ul><ul class="fl allsondouble"></ul><div style="clear: both;"></div></div></div>'  
+    }
   },
   methods: { 
     show: function () {

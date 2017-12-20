@@ -110,6 +110,27 @@ export default {
   },
   created: function () {
     let self = this
+    let moduleData = self.$parent.datahtml
+    moduleData['toallGroup']['online'].push({
+      name: 'carousel',
+      icon: 'imgicon icon-carousel',
+      text: '轮播'
+    })
+    // 配置模块参数
+    moduleData['carousel'] = { 
+      style: 'width:1200px; height:320px',
+      tool: {
+        private: {
+          text: '编辑轮播',
+          class: 'st-carousel'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.carousel.show(self, element)
+      },
+      html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src="http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg"></div></div><div class="barbox"><li></li><li></li><li></li></div></div></div>'
+    }
   },
   methods: { 
     show: function (that, element) { 

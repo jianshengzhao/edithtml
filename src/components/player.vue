@@ -85,7 +85,37 @@ export default {
       playerData: []
     }
   },
-  created: function () {   
+  created: function () {  
+    let self = this
+    let moduleData = self.$parent.datahtml  
+    moduleData['toallGroup']['online'].push({
+      name: 'player',
+      icon: 'imgicon icon-player',
+      text: '播放器'
+    })   
+    moduleData['player'] = { 
+      style: 'width:940px; height:562px',
+      tool: {
+        private: {
+          text: '编辑视频',
+          class: 'st-player'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        if (me.$('.player').length > 1) {
+          self.$notify({
+            title: '警告',
+            message: '您已经添加过播放器',
+            type: 'warning'
+          })
+          element.remove()
+        } else {
+          self.$refs.player.show(self, element, me)
+        }
+      },
+      html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
+    } 
   },
   methods: { 
     show: function (that, element, me) { // 初始化调用弹出框

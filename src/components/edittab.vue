@@ -120,16 +120,27 @@ export default {
       },
       container: true, // 是否为容器
       containerClass: '.tab_content .active', // 作为容器节点的class名称
-      containerOffsetTop: {
+      containerOffset: { // 实际容器与容器父模块的相对位置
         y: 28,
         x: 0
-      }, // 实际容器与容器父模块的间距
+      }, 
+      AddModuleRule: function (box) { // 添加模块的限制
+        if (box.attr('class') == 'active cont' || box.attr('class') == 'cont active'){
+          self.$notify({
+            title: '警告',
+            message: '标签页中不可插入标签页',
+            type: 'warning'
+          })
+          return false
+        } else {
+          return true
+        } 
+      },
       // resize: undifend, // 拉伸方向: 默认为空,自由拉伸
       // resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调
       // },
       // beforeSelecting: function (self, element, me) { // 选中元素要执行的特殊操作 
-      // },  
-      beforeCreateEvent: function () {},
+      // },       
       createEvent: function (self, element, me) { // 模块创建事件        
       },
       html: '<div class="addtab module addmodule" datatext="标签页"><div class="tab"><ul class="tab_header" text="left" color="20A0FF" type="text" ev="click"><li class="active"><span>标签一</span></li><li><span>标签二</span></li></ul><ul class="tab_content"> <li class="active cont"></li> <li class="cont"></li></ul></div></div>'

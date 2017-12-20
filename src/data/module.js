@@ -400,7 +400,7 @@
       let classname = me.$(e.target).attr('class')
       switch (classname) {
         case 'st-left st-text':
-          self.$refs.ueditor.show()
+          self.$refs.ueditor.show(me.$(e.target).parents('.editor'))
           break
         case 'st-left st-style':
           self.$refs.editbutton.show()
@@ -513,8 +513,8 @@
 
   exports.bindOnModulesMousedownEvent = function (self, me) { // 选中模块拖拽事件
     me.editBox.on('click', '.module', function (e) { // 点击选中模块事件
-      let $this = me.$(this)
-      if(!$this.hasClass('on_module')) {
+      let $this = me.$(this)      
+      if(!$this.hasClass('on_module')&&!($this.find('.on_module').length > 0)) { // 判断是否已选中或者有子元素被选中
         me.carrySignEvent(self, $this)
         return false
       }
@@ -561,7 +561,7 @@
     })
   }
 
-  exports.bindAddModuleMousedownEvent = function (self, me) { // 模块列表操作事件 // todolist: 模块增加魔块生成事件
+  exports.bindAddModuleMousedownEvent = function (self, me) { // 模块列表操作事件
     me.libLi.mousedown(function (e) {
       me.cleanSignEvent(self)
       me.lShrink.hide()
@@ -569,30 +569,9 @@
       let modType = me.$(this).attr('dataHtml')
       let dataCon = self.datahtml[modType]
       let dlog = self.datahtml[modType].dlog || false
-      if(that.hasClass("onlyone")){ //只能添加一个模块
-        me.libLi.unbind('mousemove mouseup')
-        return false;
-      }
 
-      me.copyBox.attr('style', dataCon.style)
-      me.copyBox.show().css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
-      me.editBox.unbind('mouseup') // editBox解除mouseup事件
-
-      me.editBox.mousemove(function (e) { // editBox鼠标移动事件        
-        me.copyBox.css({'top': e.pageY + 1, 'left': e.pageX - self.paddingleft + 1})
-      })
-
-      me.libBox.mousemove(function (e) { // libLi鼠标移动事件       
-        me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
-      })
-
-      me.libBox.mouseup(function (e) { // libLi鼠标解除mouseup事件
-        me.libLi.unbind(' mouseup')
-        me.libBox.unbind('mousemove ')
-        me.editBox.unbind('mousemove mouseup')
-        me.copyBox.hide()
-        me.lShrink.show()
-      })
+      libBoxMouseEvent(self, me, e, dataCon)
+     
       // adaptation.computeOutsideLine(self, e, me) // 辅助线
       me.editBox.mouseup(function (e) { // 鼠标松开事件        
         me.lShrink.show()
@@ -604,66 +583,64 @@
           return false
         }
         let box
+        let storageBox // 存储位置
         let x
+        let storageX // 存储位置
         let y
-        let boxcls
+        let storageY // 存储位置
+        let son = false // 是否为模块的子模块
         let sTop = parseInt(me.space.scrollTop()) // 滚动条距顶部高度
         let sLeft = parseInt(me.space.scrollLeft()) // 滚动条距右边
         x = e.pageX - self.paddingleft - self.posleft + sLeft
+        storageX = x
         me.topRangeY = parseInt(me.top.css('height')) + self.paddingtop + self.postop
         me.bodyRangeY = parseInt(me.body.css('height')) + me.topRangeY
+      // ------------ 判断要添加的目标顶级容器并计算相对顶级容器的Y轴坐标
         if (e.pageY + sTop < me.topRangeY) {
           box = me.top
-          boxcls = 'c_top'
+          storageBox = me.top         
           y = e.pageY + sTop - self.paddingtop - self.postop 
+          storageY = y
         } else if (e.pageY + sTop < me.bodyRangeY) {
           box = me.body
-          boxcls = 'c_body'
-          y = e.pageY + sTop - me.topRangeY         
+          storageBox = me.body         
+          y = e.pageY + sTop - me.topRangeY
+          storageY = y   
         } else {
           box = me.foot
-          boxcls = 'c_foot'
-          y = e.pageY + sTop - me.bodyRangeY        
-        }
-        // 判断是否为容器       
+          storageBox = me.foot         
+          y = e.pageY + sTop - me.bodyRangeY
+          storageY = y        
+        }    
+      // ------------ 判断是否为添加到子容器模块 --------------------------
         let target = me.$(e.target)
         let containers = target.parents('.module')
-        for (let i = 0, len = containers.length; i < len; i++) {
+        for (let i = 0, len = containers.length; i < len; i++) { // 遍历祖先元素
           let item = containers.eq(i)
           let moduleName = item.attr('class').split(' ')[0]
           let itemData = self.datahtml[moduleName]
-          if (itemData.container) {
+          if (itemData.container) { // 父元素链是否为容器元素
             let ew = parseInt(me.copyBox.css('width'))
             let eh = parseInt(me.copyBox.css('height'))
-            let suspendx = parseInt(item.css('left')) + itemData.containerOffsetTop.x
-            let suspendy = parseInt(item.css('top')) + itemData.containerOffsetTop.y
+            let suspendx = parseInt(item.css('left')) + itemData.containerOffset.x
+            let suspendy = parseInt(item.css('top')) + itemData.containerOffset.y
             let suspendw = parseInt(item.css('width'))
             let suspendh = parseInt(item.css('height'))
             if (x >= suspendx  && y >= suspendy && suspendh > eh && suspendw> ew && (suspendy+suspendh)  >= (y+eh)){
               x = x - suspendx
               y = y - suspendy
-              box = item.find(itemData.containerClass)              
+              box = item.find(itemData.containerClass)
+              son = true
               break
             }
           }          
-        }       
-        // 判断是否为容器
-      // suspend模块只在top上
-        if (modType == 'suspend'){
-          y = 0
-          box = me.top
-        }
-
-        if (modType == 'addtab' && (box.attr('class') == 'active cont' || box.attr('class') == 'cont active')){
-          self.$notify({
-            title: '警告',
-            message: '标签页中不可插入标签页',
-            type: 'warning'
-          })
+        }           
+      // ------------ 执行添加模块的限制 --------------------------------
+        if (dataCon.AddModuleRule && !dataCon.AddModuleRule(box)) { // 执行添加模块的限制          
           return false
         }
-
-        if (self.config.moveLimit) { // 是否限制绘制区域
+      // ------------ 是否限制绘制区域 ----------------------------------
+        if (self.config.moveLimit) {
           if (x < 0) {
             x = 0
           }
@@ -678,31 +655,46 @@
           if (y > boxTop) {
             y = boxTop
           }
-        }
+        }      
+      // ------------ 添加模块到容器上 ----------------------------------
         box.append(dataCon.html)
-        // tab标签页内部元素移动问题
-        if (box.attr('class') == 'active cont'){
-          me.$('.tab .tab_content').attr('parent',boxcls)
-        }else if (box.attr('class') == 'suspenddiv'){
-          me.$('.suspend .suspenddiv').attr('parent','c_top')
-        }
+      // ------------ 赋予相对位置 --------------------------------------
         let AddElement = box.children('.addmodule')
-        let marginT = 0
-        if (dataCon.moduleMargin) {
-          marginT = dataCon.moduleMargin
-        }
-        for (let i = 0,len = AddElement.length; i < len; i++) {
-          let yg = y + i * marginT
-          AddElement.eq(i).css({'top': yg, 'left': x})
-        }
-        me.$('.addmodule').removeClass('addmodule')
+        AddElement.css({'top': y, 'left': x})      
+      // ------------ 模块添加创建后的回调函数 --------------------------
         if (dataCon.createEvent) {
           dataCon.createEvent(self, AddElement, me)
         }
-        me.carryAddElementStorageEvent(self, box, AddElement, y, x, marginT) // 区域存储
-        me.adaptation.renderLayer(self, box) // 更新图层
+      // ------------ 清除添加记录 --------------------------------------
+        me.$('.addmodule').removeClass('addmodule') // 清除添加记录
+      // ------------ 区域存储 -----------------------------------------
+        me.carryAddElementStorageEvent(self, storageBox, AddElement, storageY, storageX, son) // 
+      // ------------ 图层更新 -----------------------------------------
+        me.adaptation.renderLayer(self, storageBox) // 更新图层
       })
       return false
+    })
+  }
+
+  function libBoxMouseEvent(self, me, e, dataCon) {
+    me.copyBox.attr('style', dataCon.style)
+    me.copyBox.show().css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
+    me.editBox.unbind('mouseup') // editBox解除mouseup事件
+
+    me.editBox.mousemove(function (e) { // editBox鼠标移动事件        
+      me.copyBox.css({'top': e.pageY + 1, 'left': e.pageX - self.paddingleft + 1})
+    })
+
+    me.libBox.mousemove(function (e) { // libLi鼠标移动事件       
+      me.copyBox.css({'top': e.pageY, 'left': e.pageX - self.paddingleft})
+    })
+
+    me.libBox.mouseup(function (e) { // libLi鼠标解除mouseup事件
+      me.libLi.unbind(' mouseup')
+      me.libBox.unbind('mousemove ')
+      me.editBox.unbind('mousemove mouseup')
+      me.copyBox.hide()
+      me.lShrink.show()
     })
   }
 

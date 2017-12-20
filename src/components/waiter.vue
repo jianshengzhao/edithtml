@@ -66,7 +66,36 @@ export default {
     }
   },
   created: function () {
-    // let self = this 
+    let self = this
+    let moduleData = self.$parent.datahtml  
+    moduleData['toallGroup']['basic'].push({
+      name: 'waiter',
+      icon: 'imgicon icon-waiter',
+      text: '客服'
+    })
+    // 配置模块参数
+    moduleData['waiter'] = { 
+      style: 'width:50px; height:50px',
+      tool: {
+        private: {
+          text: '编辑客服',
+          class: 'st-waiter'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+        self.$refs.waiter.show(self, element)
+        if (me.$('.waiter').length < 3) {
+          me.editBox.append('<div class="waiter "><div class="kf-head"></div><div class="kf-top"></div></div>')
+          me.$('.waiter').on('click', function() {
+            self.$refs.waiter.show(self, element)
+          })
+        } else {
+          element.remove()
+        }
+      },
+      html: '<div class="waiter module addmodule" style="display:none;" datatext="客服"><div class="kf-head"></div><div class="kf-top"></div></div>'
+    }
   },
   methods: {
     show: function (that, element) {

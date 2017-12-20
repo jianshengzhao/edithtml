@@ -623,26 +623,29 @@
       </span>
     </el-dialog>
   <!-- dialog弹框 -->
-    <ueditor ref="ueditor" v-model="editEditor"></ueditor>
-    <hrefdialog ref="hrefdialogp"></hrefdialog>
-    <myimages ref="myimages"></myimages>
-    <information ref="information"></information>
-    <weather ref="weather"></weather>
-    <suspend ref="suspend"></suspend>
+  <!-- 小悬浮工具栏 -->
     <shape ref="shape"></shape>
+    <suspend ref="suspend"></suspend>
+    <myimages ref="myimages"></myimages>
+    <pulldown ref="pulldown"></pulldown>
+    <hrefdialog ref="hrefdialogp"></hrefdialog>
+  <!-- 基本组件 -->
+    <ueditor ref="ueditor"></ueditor>     
     <editbutton ref="editbutton"></editbutton>
-    <carousel ref="carousel"></carousel>
+    <loginFrame ref="loginFrame"></loginFrame>
     <waiter ref="waiter"></waiter>
+  <!-- 网校组件 -->
+    <carousel ref="carousel"></carousel> 
     <advert ref="advert"></advert>
     <course ref="course"></course>
     <player ref="player"></player>
     <addcoursetype ref="addcoursetype"></addcoursetype>
+    <information ref="information"></information>   
     <edittab ref="edittab"></edittab>
-    <pulldown ref="pulldown"></pulldown>
-    <addsearch ref="addsearch"></addsearch>
-    <addsearch ref="addsearch"></addsearch>
-    <addlogin ref="addlogin"></addlogin>
-  <!--<effect ref="effect"></effect> -->
+    <addsearch ref="addsearch"></addsearch>     
+    <suspendCase ref="suspendCase"></suspendCase>
+  <!-- <weather ref="weather"></weather> -->
+  <!-- <effect ref="effect"></effect> -->
   </div>
 </template>
 <script>
@@ -668,6 +671,8 @@
   import pulldown from '@/components/pulldown'
   import addsearch from '@/components/addsearch'
   import addlogin from '@/components/addlogin'
+  import loginFrame from '@/components/loginFrame'
+  import suspendCase from '@/components/module/suspendCase'
   import board from '@/components/board/template'
 
   /*import effect from '@/components/effect'*/
@@ -695,6 +700,8 @@
       pulldown,
       addsearch,
       addlogin,
+      loginFrame,
+      suspendCase,
       board
     },
     data: function () {
@@ -756,7 +763,6 @@
         inp_weight_y: '0',
         inp_blur: '0',
         bw_color: '#ccc',
-        editEditor: false,
       //  ---------------登录框文本----------
         logintext :'',
         dialogedittext:false,
@@ -2796,6 +2802,7 @@
       width: 100%;
       height: 100%;
       background-color: rgb(254, 233, 218);
+      z-index: 100;
     }
     .multiBox {
       position: absolute;
