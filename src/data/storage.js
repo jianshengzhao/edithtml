@@ -40,11 +40,19 @@
       } 
     }
     let parentO = self.elementStorage[cname]
-    let elementss = me.$.merge(elements,elements.find('.module')) // todolist:合并子集数组
-    console.log(elementss)
-    console.log(elementss.length)
+    let elementss = []
     for (let i = 0, len = elements.length; i < len; i++) {
       let item = elements.eq(i)
+      elementss.push(item)
+    }
+    let elementsChild = elements.find('.module')
+    for (let i = 0, len = elementsChild.length; i < len; i++) { // todolist:合并子集数组
+      let item = elementsChild.eq(i)
+      elementss.push(item)
+    }
+
+    for (let i = 0, len = elementss.length; i < len; i++) {
+      let item = elementss[i]
       let id = item.attr('id')        
       if (deleteEle == 'delete') {
         delete parentO[id]
@@ -111,6 +119,7 @@
       self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
     }
     self.disabled = false
+    element.parent().css('outline', '2px dashed rgba(64, 158, 255, 0.7)')
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')
   } 
@@ -125,7 +134,6 @@
     let xR = left + width    
     let fv = self.fuzzyVal
     let fyzzyHtml = '<div class="fuzzybox"></div>'
-  console.log(ele)
     for (let i in obj) {
       let item = obj[i] 
       if (i != id && !item.son) {             

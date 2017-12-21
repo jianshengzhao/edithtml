@@ -171,7 +171,7 @@
           }
           part = function (ele) {
             let tw = self.inp_width - parseInt(ele.css('left'))
-            if (!ele.hasClass('picture') && !ele.hasClass('sline')) { // 禁止图片拉伸
+            if (!ele.hasClass('sline')) { // 禁止图片拉伸
               if (val > tw && self.config.stretchLimit) {
                 ele.css('width', tw + 'px')
                 ele.find('.multiBox').css('width',tw + 'px')
@@ -191,7 +191,7 @@
           }
           part = function (ele) {
             let th = self.moduleParentElementHeight - parseInt(ele.css('top'))
-            if (!ele.hasClass('picture') && !ele.hasClass('hline')) {
+            if (!ele.hasClass('hline')) {
               if (val > th && self.config.stretchLimit) {
                 ele.css('height', th + 'px')
                 ele.find('.multiBox').css('height',th + 'px')
@@ -633,6 +633,11 @@
       onModules.each(function (i,e) { // 更新多选元素集合
         $this = me.$(this)
         part($this,i)
+        let cname = $this.attr('class').split(' ')[0] 
+        let attributeChange = self.datahtml[cname].attributeChange
+        if (attributeChange) {
+          attributeChange(self, type, $this)
+        }        
       })
       if (type == 'delete' || type == 'shear') {
         me.carryUpdateElementStorageEvent(self, self.original, onModules, 'delete')
@@ -647,7 +652,7 @@
       adaptation.bindElDialogMousemoveEvent(me) // 弹框拖拽 
       adaptation.bindHoverbarMousemoveEvent(self, me) // 页头页尾调整
       adaptation.bindMenuEvent(self, me) // 模块菜单 收缩事件
-      adaptation.bindLayerEvent(self, me) // 图层 收缩事件
+      // adaptation.bindLayerEvent(self, me) // 图层 收缩事件
       module.bindResizeDrawingEvent(self, me) // 模块圆点拉伸容器事件
       module.bindSupendToolsEvent(self, me) // 模块工具栏绑定事件
       module.bindModuleAClickEvent(self, me) // 去除a标签默认事件

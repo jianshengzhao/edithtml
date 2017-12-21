@@ -3,7 +3,7 @@
        
     let cName = element.attr('class').split(' ')[0]
     let eleConfig = self.datahtml[cName] 
-
+    element.parent().css('outline', '2px dashed rgba(64, 158, 255, 0.7)')
     if (eleConfig.beforeSelecting) { // 选中元素节点时的回调函数
       eleConfig.beforeSelecting(self, element, me)
     }
@@ -115,8 +115,9 @@
   // -------------------- getSign ------------------------------  
   exports.cleanSign = function (self, me) { // 取消选中，清除默认值
     me.$('.resizeBox').remove()
-    me.$('.supendTools').remove()
-    let element = me.$('.on_module')    
+    me.$('.supendTools').remove()   
+    let element = me.$('.on_module') 
+     element.parent().css('outline', '0px')
     if (element.length) {
       let cName = element.attr('class').split(' ')[0]
       let eleConfig = self.datahtml[cName] 
@@ -412,7 +413,7 @@
           self.$refs.myimages.show()
           break
         case 'st-animate':
-          self.dialoganim()
+          self.$refs.animates.show()
           break
         case 'st-pulldown':
           self.$refs.pulldown.show(self, me.$('.on_module'), me)
@@ -427,7 +428,7 @@
           self.$refs.effect.show()
           break
         case 'st-left st-logintext':
-          self.dialogeditlogin()
+          self.$refs.loginCase.show()
           break
         case 'st-left st-carousel':
           self.$refs.carousel.show(self, me.$('.on_module'))
@@ -501,7 +502,7 @@
 
   exports.bindModuleDblclickEvent = function (self, me) { // 模块双击事件 todolist:
     me.editBox.on('dblclick', '.resizeBox', function (e) {
-      alert(0)
+      // alert(0)
     })
   }
 
@@ -524,8 +525,9 @@
       let y = e.pageY
       let xs = self.inp_x
       let ys = self.inp_y
-      let parentClass = self.moduleElement.parent().attr('class')
-      let id = self.moduleElement.attr('id')
+      let thismodule = me.$('.on_module')
+      let parentClass = thismodule.parent().attr('class')
+      let id = thismodule.attr('id')
       let height = self.inp_h
       let width = self.inp_w
       let supendTools = me.$('.supendTools')
@@ -535,7 +537,7 @@
         let top = ys + e.pageY - y
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
-        me.carryFuzzyCalibrationEvent(self, parentClass, id, left, top, height, width, self.moduleElement)
+        me.carryFuzzyCalibrationEvent(self, parentClass, id, self.inp_x, self.inp_y, height, width, thismodule)
         return false
       })
       me.editBox.mouseup(function () {

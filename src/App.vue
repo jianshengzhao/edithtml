@@ -15,14 +15,6 @@
           <i class="tImgicon icon-preview"></i>
           <span>预览</span>
         </div>
-        <!--<div id="d1" class="tl_li" title="撤销">
-          <i class="tImgicon icon-preview"></i>
-          <span>撤销</span>
-        </div>-->
-       <!--  <div class="tl_li" title="量尺">
-          <i class="tImgicon icon-scale"></i>
-          <span>量尺</span>
-        </div> -->
         <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
           <i class="tImgicon icon-gridlines"></i>
           <span>格线</span>
@@ -221,18 +213,7 @@
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <board></board>
-        <div class="header layerhead">页头 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol elementHead">
-          <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>
-        <div class="header layerhead" >主体 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol elementMain">
-          <div class="ele_li" v-for="(item, index) in elementMain" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>
-        <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol elementTail">
-          <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>
+        <layer :elementHead = 'elementHead' :elementMain = 'elementMain' :elementTail = 'elementTail'></layer>
       </div>
       <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
@@ -562,77 +543,18 @@
         <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- 网校模块   -->
-    <el-dialog
-      title="模块动画"
-      :visible.sync="dialogscrollanim"
-      :close-on-click-modal="false"
-      size="scrollanim">
-      <el-row>
-        <el-col>
-          <div @click="editanim()" class="animlist active"><div :class="animtype==''?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>无效果</p></div>
-          <div @click="editanim('fadeIn')" class="animlist"><div :class="animtype=='fadeIn'?'animimg active':'animimg'">
-            <img  src="./assets/img/fadeIn_icon.png">
-          <div class="animtip">✔</div></div><p>淡入</p></div>
-          <div @click="editanim('slideInRight')" class="animlist"><div :class="animtype=='slideInRight'?'animimg active':'animimg'">
-            <img  src="./assets/img/slideInRight_icon.png">
-          <div class="animtip">✔</div></div><p>飞入</p></div>
-          <div @click="editanim('zoomIn')" class="animlist"><div :class="animtype=='zoomIn'?'animimg active':'animimg'">
-            <img  src="./assets/img/zoomIn_icon.png">
-          <div class="animtip">✔</div></div><p>放大</p></div>
-          <div @click="editanim('bounceInRight')" class="animlist"><div :class="animtype=='bounceInRight'?'animimg active':'animimg'">
-            <img  src="./assets/img/bounceInRight_icon.png">
-          <div class="animtip">✔</div></div><p>跳入</p></div><br>
-          <div @click="editanim('flash')" class="animlist"><div :class="animtype=='flash'?'animimg active':'animimg'">
-            <img  src="./assets/img/flash_icon.png">
-          <div class="animtip">✔</div></div><p>闪现</p></div>
-          <div @click="editanim('rotateIn')" class="animlist"><div :class="animtype=='rotateIn'?'animimg active':'animimg'">
-            <img src="./assets/img/rotateIn_icon.png">
-          <div class="animtip">✔</div></div><p>滚入</p></div>
-          <div @click="editanim('flipInY')" class="animlist"><div :class="animtype=='flipInY'?'animimg active':'animimg'">
-            <img src="./assets/img/flipInY_icon.png">
-          <div class="animtip">✔</div></div><p>翻转</p></div>
-          <div @click="editanim('bounceIn')" class="animlist"><div :class="animtype=='bounceIn'?'animimg active':'animimg'">
-            <img src="./assets/img/bounceIn_icon.png">
-          <div class="animtip">✔</div></div><p>弹性放大</p></div>
-          <div @click="editanim('bounceOut')" class="animlist"><div :class="animtype=='bounceOut'?'animimg active':'animimg'">
-            <img src="./assets/img/bounceOut_icon.png">
-          <div class="animtip">✔</div></div><p>弹性缩小</p></div>
-        </el-col>
 
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogscrollanim = false">取 消</el-button>
-        <el-button @click="editanimate()" type="primary">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="编辑文本"
-      :visible.sync="dialogedittext"
-      :close-on-click-modal="false"
-      size="edittext">
-      <el-row>
-        <el-col>
-          <el-input v-model="logintext"></el-input>
-        </el-col>
-
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogedittext = false">取 消</el-button>
-        <el-button @click="editlogintext()" type="primary">确 定</el-button>
-      </span>
-    </el-dialog>
-  <!-- dialog弹框 -->
   <!-- 小悬浮工具栏 -->
     <shape ref="shape"></shape>
     <suspend ref="suspend"></suspend>
+    <animates ref="animates"></animates>
     <myimages ref="myimages"></myimages>
-    <pulldown ref="pulldown"></pulldown>
+    <pulldown ref="pulldown"></pulldown>    
     <hrefdialog ref="hrefdialogp"></hrefdialog>
   <!-- 基本组件 -->
     <ueditor ref="ueditor"></ueditor>     
     <editbutton ref="editbutton"></editbutton>
-    <loginFrame ref="loginFrame"></loginFrame>
+    <loginCase ref="loginCase"></loginCase>
     <waiter ref="waiter"></waiter>
   <!-- 网校组件 -->
     <carousel ref="carousel"></carousel> 
@@ -653,56 +575,66 @@
   import configData from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
-  import ueditor from '@/components/ueditor'
-  import hrefdialog from '@/components/hrefdialog'
-  import myimages from '@/components/myimages'
-  import information from '@/components/information'
-  import weather from '@/components/weather'
-  import suspend from '@/components/suspend'
-  import shape from '@/components/shape'
-  import editbutton from '@/components/editbutton'
-  import carousel from '@/components/carousel'
-  import waiter from '@/components/waiter'
-  import advert from '@/components/advert'
-  import course from '@/components/course'
-  import player from '@/components/player'
-  import addcoursetype from '@/components/addcoursetype'
-  import edittab from '@/components/edittab'
-  import pulldown from '@/components/pulldown'
-  import addsearch from '@/components/addsearch'
-  import addlogin from '@/components/addlogin'
-  import loginFrame from '@/components/loginFrame'
-  import suspendCase from '@/components/module/suspendCase'
-  import board from '@/components/board/template'
-
-  /*import effect from '@/components/effect'*/
+  // ------------ main界面模块 ------------
+  import board from '@/components/mainPage/template'
+  import layer from '@/components/mainPage/layer'
+  // ------------ 小悬浮工具栏 ------------
+  import shape from '@/components/supendTool/shape'
+  import suspend from '@/components/supendTool/suspend'
+  import animates from '@/components/supendTool/animate'
+  import myimages from '@/components/supendTool/myimages'
+  import pulldown from '@/components/supendTool/pulldown'
+  import hrefdialog from '@/components/supendTool/hrefdialog'
+  /* import effect from '@/components/supendTool/effect' */
+// -------------- module ------------------
+  // ------------ 基本组件 ----------------
+  import ueditor from '@/components/module/basic/ueditor'
+  import editbutton from '@/components/module/basic/editbutton'
+  import loginCase from '@/components/module/basic/loginCase'
+  import waiter from '@/components/module/basic/waiter'
+  // ------------ 网校组件 ----------------
+  import carousel from '@/components/module/online/carousel'
+  import advert from '@/components/module/online/advert'
+  import course from '@/components/module/online/course'
+  import player from '@/components/module/online/player'
+  import addcoursetype from '@/components/module/online/addcoursetype'
+  import information from '@/components/module/online/information'
+  import edittab from '@/components/module/online/edittab'  
+  import addsearch from '@/components/module/online/addsearch' 
+  import suspendCase from '@/components/module/online/suspendCase' 
+  /* import weather from '@/components/module/online/weather' */
+  
   import '@/assets/animate.min.css'
   let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
     components: {
       colorPicker,
-      ueditor,
+      // -------------
+      board,
+      layer,
+      // -------------
       hrefdialog,
       myimages,
-      information,
-      weather,
+      animates,   
       suspend,
       shape,
+      pulldown,
+      // -------------
+      ueditor,           
       editbutton,
-      carousel,
+      loginCase,
       waiter,
+      // -------------
+      information,  
+      carousel,     
       advert,
       course,
       player,
       addcoursetype,
-      edittab,
-      pulldown,
+      edittab,     
       addsearch,
-      addlogin,
-      loginFrame,
-      suspendCase,
-      board
+      suspendCase
     },
     data: function () {
       return {
@@ -762,14 +694,8 @@
         inp_weight_x: '0',
         inp_weight_y: '0',
         inp_blur: '0',
-        bw_color: '#ccc',
-      //  ---------------登录框文本----------
-        logintext :'',
-        dialogedittext:false,
-      // ------------ 基础组件弹框 -------------------
-        dialogscrollanim:false,
-        anim:'',
-        animtype : 0,
+        bw_color: '#ccc',     
+      // ------------ 基础组件弹框 -------------------       
         dialogText: false,
         dialogEditor: false,
         dialogPicture: false,
@@ -1010,6 +936,9 @@
     },
     created: function () {
       let self = this
+      self.datahtml['toallGroup']['basic'] = []
+      self.datahtml['toallGroup']['online'] = []
+      
       let hash = window.location.hash
       let paramArr = hash.split('?')      
       if (paramArr.length > 1) {
@@ -1213,64 +1142,6 @@
           });
         });
       },
-      dialogeditlogin(){
-        let self = this
-        self.logintext = ''
-        let type = $('.on_module input').attr('name')
-        switch(type){
-          case 'username':
-            self.logintext = $('.on_module input').attr('placeholder')
-          break
-          case 'password':
-            self.logintext = $('.on_module input').attr('placeholder')
-          break
-          case 'Submit':
-            self.logintext = $('.on_module input').attr('value')
-          break
-        }
-        self.dialogedittext = true
-      },
-      editlogintext(){
-        let self = this
-        let type = $('.on_module input').attr('name')
-        switch(type){
-          case 'username':
-            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
-          break
-          case 'password':
-            self.logintext = $('.on_module input').attr('placeholder',self.logintext)
-          break
-          case 'Submit':
-            self.logintext = $('.on_module input').attr('value',self.logintext)
-          break
-        }
-        self.dialogedittext = false
-      },
-      dialoganim(){
-        let self = this
-        let anim  = $('.on_module').attr('data-kui-anim')
-        self.anim = anim;
-        self.animtype = anim;
-        self.dialogscrollanim = true
-      },
-      editanim(val){
-        let self = this;
-        let anim = val || ''
-        self.animtype = anim;
-        self.anim = anim;
-        let a = $('.on_module');
-        a.addClass('animated '+anim);
-        setTimeout(function(){
-          a.removeClass(anim);
-          a.removeClass('animated');
-        }, 1000);
-      },
-      editanimate(){
-        let self = this;
-        let a = $('.on_module');
-        a.attr('data-kui-anim',self.anim)
-        self.dialogscrollanim = false
-      },
       getImageHref: function (name) { // 获取图片
         let self = this
         self.$refs.myimages.show('waiter', self, function (self, data) {
@@ -1341,6 +1212,10 @@
         tool.cleanSignEvent(self)
         $('.setInfo').remove()
         self.$router.push('preview')
+        $('.resizeBox').remove()
+        $('.supendTools').remove()
+        $('.on_module').parent().css('outline','0')
+        $('.on_module').removeClass('on_module')
         let params = {}
         let headArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
@@ -1392,6 +1267,12 @@
           body: $('.c_body').css('height'),
           foot: $('.c_foot').css('height')
         }
+        // 清空
+        $('.resizeBox').remove()
+        $('.supendTools').remove()
+        $('.on_module').parent().css('outline','0')
+        $('.on_module').removeClass('on_module')
+       
         let strSetting = window.JSON.stringify(setting)
         let headArray = $('.c_top').html()
         let bodyArray = $('.c_body').html()
@@ -1948,10 +1829,7 @@
 <style>
     .el-dialog__header{
       cursor: move;
-    }
-    .el-dialog--scrollanim{
-      width: 510px;
-    }
+    }    
     .leftBorder{
       border-left: 1px solid #888;
       margin-left: 10px;
@@ -2801,7 +2679,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgb(254, 233, 218);
+      background-color: rgba(64, 158, 255, 0.3);
       z-index: 100;
     }
     .multiBox {
@@ -3102,10 +2980,7 @@
   .animlist img{
     margin-top: 14px;
   }
-  /* 登录框编辑文本弹窗 */
-  .el-dialog--edittext{
-    width: 500px;
-  }
+  /* 登录框编辑文本弹窗 */  
   .pitchIcon {
     display:none;
     position: absolute;
