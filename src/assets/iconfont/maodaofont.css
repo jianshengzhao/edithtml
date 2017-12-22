@@ -93,7 +93,7 @@
 .icon-gridlines{
 	background-image: url(../newslibIcon/z-gridlines.png);
 }
-.tl_li_Disable .icon-align-left{ background-image: url(../newslibIcon/z-align-left2.png) }
+
 .icon-align-up{ background-image: url(../newslibIcon/z-align-up.png) }
 .icon-align-down{background-image: url(../newslibIcon/z-align-down.png)  }
 .icon-align-left{ background-image: url(../newslibIcon/z-align-left.png) }
@@ -102,19 +102,35 @@
 .icon-align-middle{ background-image: url(../newslibIcon/z-align-middle.png) }
 .icon-spacing-middle{ background-image: url(../newslibIcon/z-spacing-middle.png) }
 .icon-spacing-center{ background-image: url(../newslibIcon/z-spacing-center.png) }
+.tl_li_Disable .icon-align-up{ background-image: url(../newslibIcon/z-align-up2.png) }
+.tl_li_Disable .icon-align-down{background-image: url(../newslibIcon/z-align-down2.png)  }
+.tl_li_Disable .icon-align-left{ background-image: url(../newslibIcon/z-align-left2.png) }
+.tl_li_Disable .icon-align-right{background-image: url(../newslibIcon/z-align-right2.png) }
+.tl_li_Disable .icon-align-center{ background-image: url(../newslibIcon/z-align-center2.png) }
+.tl_li_Disable .icon-align-middle{ background-image: url(../newslibIcon/z-align-middle2.png) }
+.tl_li_Disable .icon-spacing-middle{ background-image: url(../newslibIcon/z-spacing-middle2.png) }
+.tl_li_Disable .icon-spacing-center{ background-image: url(../newslibIcon/z-spacing-center2.png) }
+
 .icon-layer{background-image: url(../newslibIcon/z-layer-top.png)}
-.tl_li_Disable .icon-layer{background-image: url(../newslibIcon/z-layer-top2.png)}
 .icon-layer-top{background-image: url(../newslibIcon/z-layer-top.png)}
 .icon-layer-bottom{background-image: url(../newslibIcon/z-layer-bottom.png)}
 .icon-layer-up{background-image: url(../newslibIcon/z-layer-up.png)}
 .icon-layer-down{background-image: url(../newslibIcon/z-layer-down.png)}
+.tl_li_Disable .icon-layer{background-image: url(../newslibIcon/z-layer-top2.png)}
+.tl_li_Disable .icon-layer-top{background-image: url(../newslibIcon/z-layer-top2.png)}
+.tl_li_Disable .icon-layer-bottom{background-image: url(../newslibIcon/z-layer-bottom2.png)}
+.tl_li_Disable .icon-layer-up{background-image: url(../newslibIcon/z-layer-up2.png)}
+.tl_li_Disable .icon-layer-down{background-image: url(../newslibIcon/z-layer-down2.png)}
 
 .icon-shear{background-image: url(../newslibIcon/z-shear.png)}
-.tl_li_Disable .icon-copy{background-image: url(../newslibIcon/z-copy2.png)}
 .icon-copy{background-image: url(../newslibIcon/z-copy.png)}
 .icon-paste{background-image: url(../newslibIcon/z-paste.png)}
-.tl_li_Disable .icon-paste{background-image: url(../newslibIcon/z-paste2.png)}
 .icon-delete{background-image: url(../newslibIcon/z-delete.png)}
+.tl_li_Disable .icon-shear{background-image: url(../newslibIcon/z-shear2.png)}
+.tl_li_Disable .icon-copy{background-image: url(../newslibIcon/z-copy2.png)}
+.tl_li_Disable .icon-paste{background-image: url(../newslibIcon/z-paste2.png)}
+.tl_li_Disable .icon-delete{background-image: url(../newslibIcon/z-delete2.png)}
+
 .icon-clean{background-image: url(../newslibIcon/z-clean.png)}
 .icon-exits{background-image: url(../newslibIcon/z-exits.png)}
 

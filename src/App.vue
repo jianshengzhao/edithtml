@@ -19,10 +19,9 @@
           <i class="tImgicon icon-gridlines"></i>
           <span>格线</span>
         </div>
-        <div class="tl_li tl_mod tl_li_Disable" >
+       <!--  <div class="tl_li tl_mod tl_li_Disable" >
           <i class="tImgicon icon-align-left"></i>
-          <div class="doll"></div>
-          <!-- <span>对齐</span> -->
+          <div class="doll"></div>         
           <ul class="toolbar">
             <li @click="topAlignEvent"><i class="tImgicon icon-align-up"></i>上对齐</li>
             <li @click="bottomAlignEvent"><i class="tImgicon icon-align-down"></i>下对齐</li>
@@ -37,29 +36,27 @@
         <div class="tl_li tl_mod tl_li_Disable" >
           <i class="tImgicon icon-layer"></i>
           <div class="doll"></div>
-          <!-- <span>图层</span> -->
           <ul class="toolbar">
-            <li @click="topFloorEvent"><i class="tImgicon icon-layer-top"></i>置于顶层</li>
-            <li @click="bottomFloorEvent"><i class="tImgicon icon-layer-bottom"></i>置于底层</li>
             <li @click="upFloorEvent"><i class="tImgicon icon-layer-up"></i>上移一层</li>
             <li @click="downFloorEvent"><i class="tImgicon icon-layer-down"></i>下移一层</li>
+            <li @click="topFloorEvent"><i class="tImgicon icon-layer-top"></i>置于顶层</li>
+            <li @click="bottomFloorEvent"><i class="tImgicon icon-layer-bottom"></i>置于底层</li>            
           </ul>
         </div>
         <div class="tl_li tl_mod tl_li_Disable" >
           <i class="tImgicon icon-copy"></i>
           <div class="doll"></div>
-          <!-- <span>操作</span> -->
           <ul class="toolbar" >
             <li @click="shearEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="tImgicon icon-shear"></i>剪切</li>
             <li @click="copyEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="tImgicon icon-copy"></i>复制</li>
             <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="tImgicon icon-paste"></i>粘贴</li>
             <li @click="deleteEvent" ><i class="tImgicon icon-delete"></i>删除</li>
           </ul>
-        </div>
+        </div> -->
       </div>
       <!-- module attribute -->
      <!--  <div class="toolBox"> -->
-        <div class="property " >
+      <!--   <div class="property " >
           <label for="" class="leftBorder">Z :</label>
           <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
         </div>
@@ -78,7 +75,7 @@
         <div class="property">
           <label for="">高 :</label>
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
-        </div>
+        </div> -->
       <!-- module font -->
         <div class="property">
           <label for="" class="leftBorder">字号 :</label>
@@ -89,8 +86,7 @@
           <el-input v-model="inp_line" type='number' :disabled='disabled' min='12' @change='changeInpLine'></el-input>
         </div>
         <div class="property">
-          <label for="">字色 :</label>
-          <!-- <el-color-picker v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker> -->
+          <label for="">字色 :</label>      
           <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
         </div>
       <!-- module background -->
@@ -171,9 +167,7 @@
               </div>
             </ul>
           </div>
-        </div>
-      <!-- </div> -->
-      <!-- module exit -->
+        </div>     
       <div class="t_clean">
         <div class="tl_li" @click="cleanScreenEvent">
           <i class="tImgicon icon-clean"></i>
@@ -191,36 +185,136 @@
     </div>
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
-      <!-- <nav class="lib_nav">
-        <ol>
-          <li class="on"><i class="iconfont icon-cube"></i><span>组件</span></li>
-        </ol>
-      </nav> -->
       <div class="lib_box">
         <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol basicBox"></div>
         <div class="header basichead">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol onlineBox"></div>
-        <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol todoBox"></div> -->
-        <!--<div class="header">敬请期待。。。</div>-->
       </div>
     </div>
     <div class="shrink libshrink">
       <i class="el-icon-arrow-left"></i>
     </div>
-  <!-- layer      -->
+  <!-- layer -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
-        <board></board>
+       <!--  <board></board>精选模板 -->
+        <!-- alignBox -->
+        <div class="alignBox">
+          <div class="con-row">
+            <div class="con-col">
+              <div class="col-head">水平对齐</div>                
+                <li class="col-li" title="左对齐" @click="selectBloo ? leftAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-left"></i></li>
+                <li class="col-li" title="右对齐" @click="selectBloo ? rightAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-right"></i></li>
+                <li class="col-li" title="水平居中" @click="selectBloo ? centerAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-center"></i></li>                
+                <li class="col-li" title="水平等间距" @click="selectBloo ? centerSpacingEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-spacing-center"></i></li>
+            </div>
+            <div class="con-col r">
+              <div class="col-head">垂直对齐</div>
+                <li class="col-li" title="上对齐" @click="selectBloo ? topAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-up"></i></li>
+                <li class="col-li" title="下对齐" @click="selectBloo ? bottomAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-down"></i></li>
+                <li class="col-li" title="垂直居中" @click="selectBloo ? middleAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-middle"></i></li>
+                <li class="col-li" title="垂直等间距" @click="selectBloo ? middleSpacingEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-spacing-middle"></i></li>
+            </div>
+          </div>
+          <span class="con-border"></span>
+          <div class="con-row">
+            <div class="con-col">
+              <div class="col-head">编辑</div> 
+                <li class="col-li" title="剪切" @click="selectBloo ? shearEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-shear"></i></li>
+                <li class="col-li" title="复制" @click="selectBloo ? copyEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-copy"></i></li>
+                <li class="col-li" title="粘贴" @click="clipboard ? pasteEvent() :''" :class="clipboard?'':'tl_li_Disable'"><i class="tImgicon icon-paste"></i></li>
+                <li class="col-li" title="删除" @click="selectBloo ? deleteEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-delete"></i></li> 
+            </div>
+            <div class="con-col r">
+              <div class="col-head">图层</div> 
+                <li class="col-li" title="置于顶层" @click="selectBloo ? topFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-top"></i></li>
+                <li class="col-li" title="置于底层" @click="selectBloo ? bottomFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-bottom"></i></li>
+                <li class="col-li" title="上移一层" @click="selectBloo ? upFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-up"></i></li>
+                <li class="col-li" title="下移一层" @click="selectBloo ? downFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-down"></i></li>
+            </div>
+          </div>
+        </div>
+        <!-- propertyBox -->
+        <div class="propertyBox">
+          <div class="con-col">
+            <li class="con-pli head">属性</li>
+            <li class="con-pli">
+              <span class="tit">宽：</span>
+              <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' @change='changeInpW'></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">高：</span>
+              <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
+            </li>
+          </div>
+          <div class="con-col">
+            <li class="con-pli">
+              <span class="tit">Z：</span>
+              <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">X：</span>
+              <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">Y：</span>
+              <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
+            </li>
+          </div>
+        </div>
+        <!-- effectsBox -->
+        <div class="effectsBox">
+          <div class="con-erow">
+            <div class="con-col">
+              <span class="tip">背景：</span>
+              <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' :posleft='90' @change='changeColorBg'></colorPicker>
+            </div>
+            <div class="con-col">
+              <span class="tip">阴影：</span>
+              <div class="border br-mod br-disable shadow">
+                <i class="iconfont2 icon-yinying"></i>
+                <div class="doll"></div>
+                <ul class="toolbar">
+                  <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
+                  <div>
+                    <span>厚度：</span>
+                    <span>x：</span>
+                    <span>
+                      <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
+                    </span>
+                    <span>y：</span>
+                    <span>
+                      <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
+                    </span>
+                  </div>
+                  <div>
+                    <span>模糊度：</span>
+                    <span>
+                      <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
+                    </span>
+                    <span>颜色：</span>
+                    <span class="colorShadow">
+                      <colorPicker v-model="bw_color" @change='changColorShadow'></colorPicker>
+                    </span>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="con-erow">2</div>
+          <div class="con-erow">3</div>
+        </div>
+        <!-- fontBox -->
+        <div class="fontBox"></div>
         <layer :elementHead = 'elementHead' :elementMain = 'elementMain' :elementTail = 'elementTail'></layer>
       </div>
       <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
       </div>
     </div>
-  <!-- editBox    -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 378px;">
+  <!-- editBox -->
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 310px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -237,7 +331,7 @@
         <div class="row-b line"></div>
         <div class="col-l line"></div>
         <div class="col-r line"></div>
-          <!-- 自定义右键菜单 -->
+      <!-- 自定义右键菜单 -->
         <ul class="contextmenu">
           <li @click="upFloorEvent" v-if="rightButton"><i class="tImgicon icon-layer-up"></i>上移一层</li>
           <li @click="downFloorEvent" v-if="rightButton"><i class="tImgicon icon-layer-down"></i>下移一层</li>
@@ -268,7 +362,7 @@
         </div>
       </div>
     </div>
-  <!-- dialog弹框 -->
+  <!-- 页面设置 -->
     <el-dialog
       title="页面设置"
       :visible.sync="dialogPageSetting"
@@ -411,139 +505,7 @@
         <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="编辑文本"
-      :visible.sync="dialogText"
-      size="text">
-      <el-row>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="请输入文字"
-          v-model="textarea">
-        </el-input>
-      </el-row>
-      <el-row>
-        <el-col :span="3" style="text-align: right">链接类型：</el-col>
-        <el-col :span="17">
-          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
-            <el-option
-              v-for="item in linkTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'online'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'news'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-cascader
-            placeholder="请选择资讯"
-            :options="selectNewsOptions"
-            v-model="selectNews"
-            @change="selectNewsChange"
-            @active-item-change="handleNewsItemChange">
-          </el-cascader>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'coruse'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-cascader
-            placeholder="请选择课程"
-            :options="selectCoruseOptions"
-            v-model="selectCoruse"
-            @change="selectCoruseChange"
-            @active-item-change="handleCoruseItemChange">
-          </el-cascader>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogText = false">取 消</el-button>
-        <el-button type="primary" @click="dialogTextEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-   <!--  <el-dialog
-      title="富文本"
-      :visible.sync="dialogEditor"
-      size="small" class="ueditor">
-      <div ref="ueditor" class='editorC'></div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditor = false">取 消</el-button>
-        <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
-      </span>
-    </el-dialog> -->
-    <el-dialog
-      title="修改图片 ( 点击添加 )"
-      :visible.sync="dialogPicture"
-      size="picture" class="diaheader diapicture">
-      <el-upload
-        class="picture-uploader"
-        name="upfile"
-        action="/uploadv2/image.html"
-        :show-file-list="false"
-        :on-success="handlePictureSuccess"
-        :before-upload="beforePictureUpload">
-        <img v-if="pictureUrl" :src="pictureUrl" class="pictureMod">
-        <i v-else class="el-icon-plus pageHeader-uploader-icon"></i>
-      </el-upload>
-      <el-row>
-        <el-col :span="3" style="text-align: right">链接类型：</el-col>
-        <el-col :span="17">
-          <el-select v-model="linkType" placeholder="请选择" @change="linkTypeChangeEvent">
-            <el-option
-              v-for="item in linkTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'online'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-input v-model="inpOnline" placeholder="请输入链接，如：http://ss.ebh.net"></el-input>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'news'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-cascader
-            placeholder="请选择资讯"
-            :options="selectNewsOptions"
-            v-model="selectNews"
-            @change="selectNewsChange"
-            @active-item-change="handleNewsItemChange">
-          </el-cascader>
-        </el-col>
-      </el-row>
-      <el-row v-if="linkType == 'coruse'">
-        <el-col :span="3" style="text-align: right">链接地址：</el-col>
-        <el-col :span="17">
-          <el-cascader
-            placeholder="请选择课程"
-            :options="selectCoruseOptions"
-            v-model="selectCoruse"
-            @change="selectCoruseChange"
-            @active-item-change="handleCoruseItemChange">
-          </el-cascader>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogPicture = false">取 消</el-button>
-        <el-button type="primary" @click="dialogPictureEvent">确 定</el-button>
-      </span>
-    </el-dialog>
-
+  <!-- 页面设置 -->
   <!-- 小悬浮工具栏 -->
     <shape ref="shape"></shape>
     <suspend ref="suspend"></suspend>
@@ -641,6 +603,7 @@
       // ------------ 工具栏add ----------------------
         did: 0,
         onlybloo: true,
+        selectBloo: false,
         br_width: '0',
         br_widths: [{
           value: '0',
@@ -694,67 +657,9 @@
         inp_weight_x: '0',
         inp_weight_y: '0',
         inp_blur: '0',
-        bw_color: '#ccc',     
-      // ------------ 基础组件弹框 -------------------       
-        dialogText: false,
-        dialogEditor: false,
-        dialogPicture: false,
-        dialogButton: false,
-        dialogPageSetting: false,
-        dialogCarousel: false,
-        linkType: 'none',
-        linkTypeOptions: [{
-          value: 'none',
-          label: '无链接'
-        }, {
-          value: 'online',
-          label: '外部链接'
-        }, {
-          value: 'news',
-          label: '资讯链接'
-        }, {
-          value: 'coruse',
-          label: '课程链接'
-        }, {
-          value: 'login',
-          label: '登录弹框'
-        }],
-        inpOnline: '',
-        selectNews: [],
-        selectNewsOptions: [],
-        selectCoruse: [],
-        selectCoruseOptions: [],
-      // ------------ 轮播设置 -----------------------
-        inputBtnText: '',
-        inputBtnHref: '',
-        imageUrl: '',
-        pictureUrl: '',
-        textarea: '',
-        activeName: 'first',
-        activeNav: 'first',
-        carouselData: [{
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg',
-          clickurl: ''
-        }, {
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg',
-          clickurl: ''
-        }, {
-          imgurl: 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg',
-          clickurl: ''
-        }],
-        showTime: 5,
-        transitionTime: 0.6,
-        showWidth: 1200,
-        carouselTit: '轮播图 ( 图片尺寸 1200 * 320 )',
-        animStyle: [{
-          value: false,
-          label: '滚动'
-        }, {
-          value: true,
-          label: '渐显'
-        }],
-        changeStyle: false,
+        bw_color: '#ccc', 
       // ------------ 工具栏+全局设置+右侧元素图层 ---
+        dialogPageSetting: false,
         attachmentPgValue: 'scroll',
         attachmentBgValue: 'scroll',
         attachmentOptions: [{
@@ -852,86 +757,8 @@
             }
           }).catch(function (response) {
           })
-        },
-      // ---------------------------------------------
-        tool: tool,        
-        getcoursecategorys:function(html){
-          let self = this
-          self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
-            params: {
-            }
-          }, {emulateJSON: true}).then(function (response) {
-            let datas = response.data
-            if(datas.code == 0) {
-              let packages = datas.data.packages
-              let sorts = datas.data.sorts
-              let packageshtml = ''
-              let sortshtml = ''
-              for(var i=0;i<packages.length;i++){
-                if(packages[i].pid == 0){
-                  packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
-                }else{
-                  if(packages[i].cur){
-                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
-                  }else{
-                    packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
-                  }
-                }
-              }
-              for(var i=0;i<sorts.length;i++){
-                if(sorts[i].sid == -1){
-                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
-                }else{
-                  sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
-                }
-              }
-              let allson = html.find('.allson')
-              let allsondouble = html.find('.allsondouble')             
-              allson.html(packageshtml)
-              allsondouble.html(sortshtml)
-              let awidth = allson.css('width')
-              let aheight = parseInt(allson.css('height')) + parseInt(allsondouble.css('height'))
-              html.css({
-                'width': awidth,
-                'height': aheight
-              })
-            }
-          }, function (response) {
-            console.log(response)
-          })
-        },
-        createmap:function(html){
-          let self = this
-          var	lng = parseFloat(window.roominfo.lng),
-          		lat = parseFloat(window.roominfo.lat),
-           		map = new BMap.Map("schoolmap"),
-          		point = new BMap.Point(lng, lat),
-			  			marker = new BMap.Marker(point),
-			  			top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
-
-			  	map.centerAndZoom(point, 12);  //设置中心点坐标
-			  	map.addOverlay(marker);
-			  	map.addControl(top_right_navigation);
-			  	map.disableDragging();
-
-			  	var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>"
-			  	+"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
-			  	var infoWindow = new BMap.InfoWindow(sContent);
-			  	var pointinfo = new BMap.Point(lng, lat+0.01);
-					map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
-        },
-        createqr_logo:function(html){
-        	let self = this
-        	if(html.hasClass("schoolqr")){
-        		html.find("img").attr("src",window.roominfo.wechatimg)
-        	}else{
-        		html.find("img").attr("src",window.roominfo.cface)
-        	}
-        },
-        createintroduce:function(html){
-        	let self = this
-        	html.find(".picBox").html(window.roominfo.summary)
-        }
+        },    
+        tool: tool
       }
     },
     created: function () {
@@ -951,7 +778,7 @@
           }
         }       
       }      
-      self.$nextTick(function () {       
+      self.$nextTick(function () {
         let canvas = $('.canvas')
         let space = $('.space')
         canvas.css({'left': self.posleft + 'px', 'top': self.postop + 'px'})
@@ -1495,338 +1322,13 @@
       deleteEvent: function () { // 删除
         let self = this
         tool.carryModuleOperationEvent(self, 'delete')
-      },
-    // ------------- 基础模块 ----------------
-      dialogTextEvent: function () { // 编辑文本窗口
-        let self = this
-        let a = self.moduleElement.find('a')
-        a.text(self.textarea)
-        a.attr('linkType', self.linkType)
-        switch (self.linkType) {
-          case 'none':
-            a.removeAttr('href')
-            break
-          case 'online':
-            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
-            if (reg.test(self.inpOnline)) {
-              a.attr('href', self.inpOnline)
-            } else {
-              self.$notify({
-                title: '警告',
-                message: '请输入正确完整的跳转链接',
-                type: 'warning'
-              })
-              return
-            }
-            break
-          case 'news':
-            let itemid = self.selectNews[2]
-            a.attr('href', '/dyinformation/' + itemid + '.html')
-            a.attr('selectNews', self.selectNews)
-            break
-          case 'coruse':
-            let folderid = self.selectCoruse[2]
-            a.attr('href', '/courseinfo/' + folderid + '.html')
-            a.attr('selectCoruse', self.selectCoruse)
-            break
-          case 'login':
-            a.removeAttr('href')
-            self.moduleElement.addClass('loginEvent')
-            break
-        }
-        if (self.linkType !== 'login') {
-          self.moduleElement.removeClass('loginEvent')
-        }
-        self.dialogText = false
-      },
-      beforePictureUpload: function (file) {
-        let self = this
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-          self.$notify({
-            title: '警告',
-            message: '上传的图片只能是jpg、png或gif格式。',
-            type: 'warning',
-            offset: 50,
-            duration: 4000
-          })
-          return false
-        }
-      },
-      handlePageHeaderSuccess: function (res, file) {
-        let self = this
-        let code = res.code
-        if (code === 0) {
-          self.imageUrl = res.data.showurl
-        } else {
-          self.$notify({
-            title: '警告',
-            message: res.msg,
-            type: 'warning',
-            offset: 50,
-            duration: 4000
-          })
-        }
-      },
-    // ------------- 图片基础组件 ------------
-      handlePictureSuccess: function (res) { // 图片基础组件图片上传成功
-        let self = this
-        let code = res.code
-        if (code === 0) {
-          self.pictureUrl = res.data.showurl
-        } else {
-          self.$notify({
-            title: '警告',
-            message: res.msg,
-            type: 'warning',
-            offset: 50,
-            duration: 4000
-          })
-        }
-      },
-      dialogPictureEvent: function () { // 保存图片
-        let self = this
-        self.dialogPicture = false
-        self.moduleElement.find('img').attr('src', self.pictureUrl)
-        let a = self.moduleElement.find('.picBox')
-        a.attr('linkType', self.linkType)
-        switch (self.linkType) {
-          case 'none':
-            self.moduleElement.find('.picBox').removeAttr('href')
-            break
-          case 'online':
-            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
-            if (reg.test(self.inpOnline)) {
-              self.moduleElement.find('.picBox').attr('href', self.inpOnline)
-            } else {
-              self.$notify({
-                title: '警告',
-                message: '请输入正确完整的跳转链接',
-                type: 'warning'
-              })
-              return
-            }
-            break
-          case 'news':
-            let itemid = self.selectNews[2]
-            a.attr('href', '/dyinformation/' + itemid + '.html')
-            a.attr('selectNews', self.selectNews)
-            break
-          case 'coruse':
-            let folderid = self.selectCoruse[2]
-            a.attr('href', '/courseinfo/' + folderid + '.html')
-            a.attr('selectCoruse', self.selectCoruse)
-            break
-          case 'login':
-            self.moduleElement.addClass('loginEvent')
-            a.removeAttr('href')
-            break
-        }
-        if (self.linkType !== 'login') {
-          self.moduleElement.removeClass('loginEvent')
-        }
-      },
-      linkTypeChangeEvent: function (value) {
-        let self = this
-        switch (value) {
-          case 'news':
-            self.getNewsCategorysData()
-            break
-          case 'coruse':
-            self.courseSortData()
-            break
-        }
-        // self.selectNewsOptions
-        // self.courseSortData()
-      },
-      selectNewsChange: function () {
-      },
-      getNewsCategorysData: function () {
-        let self = this
-        let param = {
-          url: '/aroomv3/news/getNewsCategorys.html',
-          params: {},
-          fun: function (response) {
-            let navList = response.body.data
-            let obj = []
-            for (let i = 0, len = navList.length; i < len; i++) {
-              let item = navList[i]
-              if (item.code.length < 4 || item.code === 'news') {
-                let items = {
-                  label: item.name,
-                  value: item.code,
-                  children: []
-                }
-                if (item.subnav) {
-                  for (let j = 0, jen = item.subnav.length; j < jen; j++) {
-                    let jtem = item.subnav[j]
-                    let jtems = {
-                      label: jtem.name,
-                      value: jtem.code,
-                      children: []
-                    }
-                    items.children.push(jtems)
-                  }
-                }
-                items.children.push({label: '其它', value: item.code, children: []})
-                obj.push(items)
-              }
-            }
-            self.selectNewsOptions = obj
-          }
-        }
-        self.httpget(param)
-      },
-      handleNewsItemChange: function (arr) {
-        let self = this
-        let code = arr[1]
-        if (arr.length < 2) {
-          return false
-        }
-        let param = {
-          url: '/aroomv3/news.html',
-          params: {
-            navcode: code,
-            pagesize: 100,
-            page: 1
-          },
-          fun: function (response) {
-            let newsList = response.body.data
-            for (let i = 0, len = self.selectNewsOptions.length; i < len; i++) {
-              let item = self.selectNewsOptions[i]
-              if (item.value === code || item.value === code.split('s')[0]) {
-                for (let j = 0, jen = item.children.length; j < jen; j++) {
-                  let jtem = item.children[j]
-                  if (jtem.value === code) {
-                    let arrFolder = []
-                    for (let z = 0, zen = newsList.length; z < zen; z++) {
-                      let zitem = newsList[z]
-                      arrFolder.push({
-                        label: zitem.subject,
-                        value: zitem.itemid
-                      })
-                    }
-                    jtem.children = arrFolder
-                    break
-                  }
-                }
-                break
-              }
-            }
-          }
-        }
-        self.httpget(param)
-      },
-      selectCoruseChange: function () {},
-      handleCoruseItemChange: function (arr) {
-        let self = this
-        let pid = arr[0].split('|')[1]
-        let sid = ''
-        let csid = ''
-        if (arr.length < 2) return false
-        if (arr[1].split('|')[0] === 'pid') {
-          pid = arr[1].split('|')[1]
-          csid = pid
-        } else {
-          sid = arr[1].split('|')[1]
-          csid = sid
-        }
-        let param = {
-          url: '/aroomv3/course/courselist.html',
-          params: {
-            pid: pid,
-            sid: sid,
-            pagesize: 100,
-            page: 1
-          },
-          fun: function (response) {
-            let courselist = response.body.data.courselist
-            console.log(courselist, 11)
-            for (let i = 0, len = self.selectCoruseOptions.length; i < len; i++) {
-              let item = self.selectCoruseOptions[i]
-              if (item.pid === pid) {
-                for (let j = 0, jen = item.children.length; j < jen; j++) {
-                  let jtem = item.children[j]
-                  if (jtem.sid === csid) {
-                    let arrFolder = []
-                    for (let z = 0, zen = courselist.length; z < zen; z++) {
-                      let zitem = courselist[z]
-                      if (sid === '' && zitem.sid < 1) {
-                        arrFolder.push({
-                          label: zitem.foldername,
-                          value: zitem.itemid
-                        })
-                      } else if (sid !== '') {
-                        arrFolder.push({
-                          label: zitem.foldername,
-                          value: zitem.itemid
-                        })
-                      }
-                    }
-                    jtem.children = arrFolder
-                    break
-                  }
-                }
-                break
-              }
-            }
-            console.log(self.selectCoruseOptions)
-          }
-        }
-        self.httpget(param)
-      },
-      courseSortData: function () { // 选择课程 cascader
-        let self = this
-        let param = {
-          url: '/aroomv3/course/coursesort.html',
-          params: {
-            showbysort: 0
-          },
-          fun: function (response) {
-            let arr = response.body.data
-            let obj = []
-            for (let i = 0, len = arr.length; i < len; i++) {
-              let item = arr[i]
-              let itemcountP = parseInt(item.itemcount, 10)
-              let items = {
-                label: item.pname,
-                value: 'pid|' + item.pid,
-                children: [],
-                pid: item.pid
-              }
-              if (item.sorts) {
-                for (let j = 0, jen = item.sorts.length; j < jen; j++) {
-                  let jtem = item.sorts[j]
-                  itemcountP = itemcountP - parseInt(jtem.itemcount, 10)
-                  let jtems = {
-                    label: jtem.sname,
-                    value: 'sid|' + jtem.sid,
-                    children: [],
-                    sid: jtem.sid
-                  }
-                  if (jtem.itemcount > 0) {
-                    items.children.push(jtems)
-                  }
-                }
-              }
-              if (itemcountP > 0) {
-                items.children.push({label: '其它', value: 'pid|' + item.pid, children: [], sid: item.pid})
-              }
-              if (item.itemcount > 0) {
-                obj.push(items)
-              }
-            }
-            self.selectCoruseOptions = obj
-          }
-        }
-        if (self.selectCoruseOptions.length < 1) {
-          self.httpget(param)
-        }
       }
     }
   }
 </script>
 
 <style>
+  /*header*/
     .el-dialog__header{
       cursor: move;
     }    
@@ -1860,6 +1362,20 @@
     }
     #app .propertycolor .disabled{
       border-color: #ccc;
+    }
+    .el-dialog--pageSet{
+      width: 500px;
+    }
+    .el-dialog--pageSet .el-tabs__content{
+      overflow: visible;
+    }
+    .el-dialog--pageSet .m-colorPicker .box{
+      z-index: 99;
+    }
+    #app .el-dialog--pageSet .m-colorPicker .colorBtn{
+      width: 30px;
+      height: 30px;
+      border:1px solid #c4c4c4;
     }
   /*app*/
     #app {
@@ -2055,9 +1571,9 @@
     .border, .shadow{
       position: relative;
       display: inline-block;
-      width: 38px;
-      cursor:pointer;
-      margin-left: 5px;
+      width: 36px;
+      height: 20px;
+      cursor:pointer;     
       font-size: 14px;
     }
     .border .doll, .shadow .doll{
@@ -2251,9 +1767,9 @@
       width: 100%;
       height: 100%;
       color: #7d8695;
-      /*padding-left: 48px;*/
-      overflow: hidden;
-      overflow-y:auto;
+      /*padding-left: 48px;*/      
+      overflow-y: scroll;
+      overflow-x: hidden;
       box-sizing: border-box;
     }
     .header{
@@ -2392,81 +1908,203 @@
       opacity: 0;
     }
   /*layer*/
-    .layer{
-      position:absolute;
-      top:0;
-      right:0;
-      padding-top:35px;
-      width: 245px;
-      height:100%;
-      border-left: 1px solid #d9d9d9;
-      background-color: #fff;
-      box-sizing: border-box;
-      z-index: 3;
-      transition: all 400ms;
-      -moz-transition: all 400ms;
-      -webkit-transition: all 400ms;
-      -o-transition: all 400ms;
-    }
-    .layerHide{
-      width: 0;
-    }
-    .layer .shrink{
-      position: absolute;
-      top:50%;
-      left: -22px;
-      width: 22px;
-      height: 24px;
-      background-color: #fff;
-      border:1px solid #d9d9d9;
-      border-right: 0;
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-      color: #f55d54;
-      text-indent: 1px;
-      line-height: 24px;
-      cursor: pointer;
-    }
-    .layer .shrink i {
-      transition: all 400ms;
-      -moz-transition: all 400ms;
-      -webkit-transition: all 400ms;
-      -o-transition: all 400ms;
-    }
-    .layer .shrinkout {
-      text-indent: 6px;
-    }
-    .layer .shrinkout i{
-      transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-    }
-    .layer .lib_box {
-      padding: 0;
-    }
-    .layer .header{
-      width: 100%;
-      padding-left: 20px;
-      box-sizing: border-box;
-      background-color: #f8f8f8;
-    }
-    .layer .lib_ol {
-      width: 100%;
-      padding-left: 0px;
-      text-indent: 20px;
-      box-sizing: border-box;
-    }
-    .layer .lib_ol .ele_li{
-      cursor: pointer;
-      height: 24px;
-      line-height: 24px;
-      border-top: 1px solid #eee;
-    }
-    .layer .lib_ol .ele_li:hover{
-      background-color: #eee;
-    }
+    /*I*/
+      .layer{
+        position:absolute;
+        top:0;
+        right:0;
+        padding-top:35px;
+        width: 175px;
+        height:100%;
+        border-left: 1px solid #d9d9d9;
+        background-color: #fff;
+        box-sizing: border-box;
+        z-index: 3;
+        transition: all 400ms;
+        -moz-transition: all 400ms;
+        -webkit-transition: all 400ms;
+        -o-transition: all 400ms;
+      }
+      .layerHide{
+        width: 0;
+      }
+      .layer .shrink{
+        position: absolute;
+        top:50%;
+        left: -22px;
+        width: 22px;
+        height: 24px;
+        background-color: #fff;
+        border:1px solid #d9d9d9;
+        border-right: 0;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        color: #f55d54;
+        text-indent: 1px;
+        line-height: 24px;
+        cursor: pointer;
+      }
+      .layer .shrink i {
+        transition: all 400ms;
+        -moz-transition: all 400ms;
+        -webkit-transition: all 400ms;
+        -o-transition: all 400ms;
+      }
+      .layer .shrinkout {
+        text-indent: 6px;
+      }
+      .layer .shrinkout i{
+        transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+      }
+      .layer .lib_box {
+        padding: 0;
+      }
+      .layer .header{
+        width: 100%;
+        padding-left: 20px;
+        box-sizing: border-box;
+        background-color: #f8f8f8;
+      }
+      .layer .lib_ol {
+        width: 100%;
+        padding-left: 0px;
+        text-indent: 20px;
+        box-sizing: border-box;
+      }
+      .layer .lib_ol .ele_li{
+        cursor: pointer;
+        height: 24px;
+        line-height: 24px;
+        border-top: 1px solid #eee;
+      }
+      .layer .lib_ol .ele_li:hover{
+        background-color: #eee;
+      }
+    /*alignBox*/ 
+      .alignBox{
+        padding-top: 1px;
+        /*width: 170px;*/
+        height: 240px;
+        border-bottom: 1px solid #ccc;
+      }
+      .con-row{
+        margin: 10px auto;
+        height: 100px;
+      }
+      .con-col{
+        float: left;
+        width: 50%;
+        height: 100px;
+      }
+      .con-col.r{
+        box-sizing: border-box;
+        border-left: 1px solid #ededed;
+      }
+      .con-border{
+        display: block;
+        margin: 0 auto;
+        width: 135px;
+        height: 0;
+        border-bottom: 1px solid #ededed;
+      }
+      .col-head{
+        height: 16px;
+        line-height: 16px;
+        font-size: 13px;
+        color: #333;
+        text-indent: 12px;
+        text-shadow: 0 0 15px #999;
+      }
+      .col-li{
+        float: left;
+        margin: 12px 0 0 12px;
+        width: 25px;
+        height: 25px;       
+      }
+      .col-li i {
+        margin: 3px;
+      }
+      .col-li:hover{
+        cursor: pointer;
+        background-color: #dbe1ef;
+      }
+    /*propertyBox*/
+      .propertyBox{       
+        width: 100%;
+        height: 120px;
+        border-bottom: 1px solid #ccc;
+      }
+      .propertyBox .con-col{
+        padding-top: 12px;
+        height: 108px;
+      }
+      .con-pli{
+        height: 20px;
+        margin-bottom: 15px;
+      }
+      .con-pli.head{
+        line-height: 20px;
+        font-size: 14px;
+        color: #333;
+        text-indent: 12px;
+        text-shadow: 0 0 15px #999;
+      }
+      .con-pli .tit{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        text-shadow: 0 0 15px #999;
+      }
+      .con-pli .el-input{
+        float: left;
+        width: 48px;
+        height: 20px;
+        padding: 0;        
+      }
+      .con-pli .el-input__inner{
+        padding: 0;
+        height: 20px;
+        text-align: center;  
+        border-radius: 0;
+      }
+    /*effectsBox*/
+      .effectsBox{
+        padding-top: 10px;
+        width: 100%;
+        height: 90px;
+        border-bottom: 1px solid #ccc; 
+      }
+      .effectsBox .con-col{
+        height: 16px;
+      }
+      .effectsBox .tip{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        text-shadow: 0 0 15px #999;
+      }
+      .effectsBox .m-colorPicker .colorBtn{
+        width: 36px!important;
+      }
+      .con-erow{
+        height: 16px;
+        margin-bottom: 14px;
+      }
+      .fontBox{
+        padding-top: 1px;
+        width: 100%;
+        height: 70px;
+        border-bottom: 1px solid #ccc;
+      }
+
   /*editBox*/
     #app .module:hover .promptBox{
       display: block;
@@ -2842,100 +2480,7 @@
       margin: 3px 0;
       border-bottom: 1px solid #e5e5e5;
     }
-  /*editor*/
-    .editorC{
-      margin: 0 auto;
-      min-height: 400px
-    }
-    .el-dialog__footer {
-      padding: 10px 10px 15px;
-    }
-  /*pageHeader-uploader*/
-    .el-dialog--text{
-      width: 600px;
-    }
-    .el-dialog--text .el-row{
-      margin-bottom: 20px;
-    }
-    .el-dialog--text .el-col{
-      height: 36px;
-      line-height: 36px;
-    }
-    .el-dialog--pageSet{
-      width: 500px;
-    }
-    .el-dialog--pageSet .el-tabs__content{
-      overflow: visible;
-    }
-    .el-dialog--pageSet .m-colorPicker .box{
-      z-index: 99;
-    }
-    #app .el-dialog--pageSet .m-colorPicker .colorBtn{
-      width: 30px;
-      height: 30px;
-      border:1px solid #c4c4c4;
-    }
-    .pageHeader-uploader .el-upload {
-      width: 100%;
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .pageHeader-uploader .el-upload:hover {
-      border-color: #20a0ff;
-    }
-    .pageHeader-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .pageHeaderImg {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  /*carousel*/
-
-  /*picture*/
-    .el-dialog--picture{
-      width: 750px;
-    }
-    .picture-uploader .el-upload{
-      display: block;
-      margin:0 auto;
-      border: 1px dashed #d9d9d9;
-    }
-    .pictureMod {
-      max-width: 100%;
-      display: block;
-      margin:0 auto;
-    }
-    .diapicture .el-col{
-      height: 36px;
-      line-height: 36px;
-    }
-    .diapicture .el-row{
-      margin-top: 20px;
-    }
-    .diapicture .el-select{
-      width: 320px;
-    }
-  /*button*/
-    .dialogbutton .el-row{
-      margin-top: 10px;
-    }
-    .dialogbutton .el-col-3{
-      margin-right: 20px;
-      height: 36px;
-      text-align: right;
-      line-height: 36px;
-    }
-/* 模块动画 */
+  /* 模块动画 */
   .animlist{
     display: block;
     width: 74px;

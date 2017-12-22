@@ -119,6 +119,7 @@
       self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
     }
     self.disabled = false
+    self.selectBloo = true
     element.parent().css('outline', '2px dashed rgba(64, 158, 255, 0.7)')
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')

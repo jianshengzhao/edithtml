@@ -7,6 +7,7 @@
     if (eleConfig.beforeSelecting) { // 选中元素节点时的回调函数
       eleConfig.beforeSelecting(self, element, me)
     }
+    self.selectBloo = true
 
     resizeBox(self, element, me, eleConfig) // 插入resizeBox 和 悬浮工具栏
   
@@ -126,11 +127,12 @@
         me.carryUpdateElementStorageEvent(self, element.parent(), element)
       }
     } 
-
+    
     element.removeClass('on_module')
     me.$('.module').parent().unbind('mousemove') // 待定
     // me.$('.module').unbind('mouseup')
     me.$('.touch_module').removeClass('touch_module')
+    self.selectBloo = false
     self.moduleElement = false
     self.inp_z = ''
     self.inp_x = ''

@@ -116,7 +116,7 @@
               })
               element.remove()
           }else{
-              self.createqr_logo(element)
+            self.$refs.information.createqr_logo(element)
           }
         },
         html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
@@ -138,7 +138,7 @@
           public: ['b','c','d']
         },
         createEvent: function (self, element) {
-          self.createqr_logo(element)
+          self.$refs.information.createqr_logo(element)
         },
         html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img class="schoolqrimg" src="" /></a></div>'
       }
@@ -159,7 +159,7 @@
           public: []
         },
         createEvent: function (self, element) {
-          self.createintroduce(element)
+          self.$refs.information.createintroduce(element)
         },
         html: '<div class="introduce module addmodule" datatext="网校介绍"><a class="picBox"></a></div>'
       }
@@ -221,7 +221,7 @@
             parent.find("#schoolmap").remove();
             var schoolmap = '<div class="schoolmap_box" id="schoolmap"></div>';
             parent.append(schoolmap);
-            self.createmap();
+            self.$refs.information.createmap()        
             resizeBox.hide();
           }
         },
@@ -234,7 +234,7 @@
               })
               element.remove()
           }else{
-              self.createmap(element)
+            self.$refs.information.createmap()             
           }
         },
         html: '<div class="schoolmap module addmodule" datatext="地图"><div class="schoolmap_box" id="schoolmap"></div></div>'
@@ -386,6 +386,38 @@
         }, function(response) {
           console.log(response)
         });
+        },
+        createmap:function(html){
+          let self = this
+          var lng = parseFloat(window.roominfo.lng),
+              lat = parseFloat(window.roominfo.lat),
+              map = new BMap.Map("schoolmap"),
+              point = new BMap.Point(lng, lat),
+              marker = new BMap.Marker(point),
+              top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+
+          map.centerAndZoom(point, 12);  //设置中心点坐标
+          map.addOverlay(marker);
+          map.addControl(top_right_navigation);
+          map.disableDragging();
+
+          var sContent = "<h4 style='margin:0 0 5px 0;padding:3px 0;font-size:15px;color:#DD6A22;'>荣安中心</h4>"
+          +"<p style='font-size:13px;'>浙江省杭州市江干区城星路188号</p>"
+          var infoWindow = new BMap.InfoWindow(sContent);
+          var pointinfo = new BMap.Point(lng, lat+0.01);
+          map.openInfoWindow(infoWindow,pointinfo); //开启信息窗口
+        },
+        createqr_logo:function(html){
+          let self = this
+          if(html.hasClass("schoolqr")){
+            html.find("img").attr("src",window.roominfo.wechatimg)
+          }else{
+            html.find("img").attr("src",window.roominfo.cface)
+          }
+        },
+        createintroduce:function(html){
+          let self = this
+          html.find(".picBox").html(window.roominfo.summary)
         }
     }
   }

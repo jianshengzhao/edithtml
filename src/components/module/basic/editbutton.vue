@@ -94,7 +94,7 @@ export default {
         public: []
       },
       createEvent: function (self, element, me) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
-        self.getcoursecategorys(element)
+        self.$refs.editbutton.getcoursecategorys(element)
       },
       html: '<div class="taxonomy module addmodule" datatext="分类"><div class="click-taxonomy"></div><div class="taxonomycont"><ul class="fl allson"></ul><ul class="fl allsondouble"></ul><div style="clear: both;"></div></div></div>'  
     }
@@ -108,11 +108,11 @@ export default {
       self.dialogeditbutton = true
       self.inpBtnText = a.find('a').text()
     },
-    editbutton(val){
+    editbutton: function (val){
       let self = this
       self.buttontype =  val;
     },
-    dialogEditorEvent(){
+    dialogEditorEvent: function (){
       let self = this;
       let a =  $('.on_module');
       a.removeClass('button_radius')
@@ -124,8 +124,53 @@ export default {
       a.attr('buttontype',self.buttontype)
       self.dialogeditbutton = false
       a.find('a').text(self.inpBtnText)
+    },        
+    getcoursecategorys: function (html) {
+      let self = this
+      self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
+        params: {
+        }
+      }, {emulateJSON: true}).then(function (response) {
+        let datas = response.data
+        if(datas.code == 0) {
+          let packages = datas.data.packages
+          let sorts = datas.data.sorts
+          let packageshtml = ''
+          let sortshtml = ''
+          for(var i=0;i<packages.length;i++){
+            if(packages[i].pid == 0){
+              packageshtml += '<li class="fl"><a href="/platform.html" class="courselist">'+packages[i].pname+'</a></li>'
+            }else{
+              if(packages[i].cur){
+                packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist onhover">'+packages[i].pname+'</a></li>'
+              }else{
+                packageshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+packages[i].pid+'" class="courselist">'+packages[i].pname+'</a></li>'
+              }
+            }
+          }
+          for(var i=0;i<sorts.length;i++){
+            if(sorts[i].sid == -1){
+              sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'" class="courselist onhover">'+sorts[i].sname+'</a></li>'
+            }else{
+              sortshtml += '<li class="fl"><a href="/platform-1-0-0.html?pid='+sorts[i].pid+'&sid='+sorts[i].sid+'" class="courselist">'+sorts[i].sname+'</a></li>'
+            }
+          }
+          let allson = html.find('.allson')
+          let allsondouble = html.find('.allsondouble')             
+          allson.html(packageshtml)
+          allsondouble.html(sortshtml)
+          let awidth = allson.css('width')
+          let aheight = parseInt(allson.css('height')) + parseInt(allsondouble.css('height'))
+          html.css({
+            'width': awidth,
+            'height': aheight
+          })
+        }
+      }, function (response) {
+        console.log(response)
+      })
     },
-    handleClick(){
+    handleClick: function (){
     
     }
   }

@@ -12,7 +12,7 @@
       v-model="html5Color"
       v-on:change="updataValue(html5Color)">
     <!-- 颜色色盘 -->
-    <div class="box" v-bind:class="{ open: openStatus }">
+    <div class="box" v-bind:class="{ open: openStatus }" :style="'left:-'+ posleft + 'px'">
       <div class="hd">
         <div class="colorView" v-bind:style="`background-color: ${showPanelColor}`"></div>
         <div class="defaultColor"
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
   name: 'colorPicker',
   props: {
@@ -79,6 +80,9 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    posleft: {     
+      default: '0'
     }
   },
   data () {
@@ -143,7 +147,16 @@ export default {
       }
       return colorArr
     },
-    openStatusEvent() {     
+    openStatusEvent() {
+      // todolus .lib_box
+      if (!this.disabled) {
+       console.log(this.posleft)
+      } else {
+        $('.lib_box').css({
+          'overflow-y': 'scroll',
+          'overflow-x': 'hidden'
+        })
+      }
       return !this.disabled
       // this.openStatus = true
     }
@@ -240,6 +253,7 @@ export default {
   .colorBtn{ width: 15px; height: 15px; }
   .colorBtn.disabled{ cursor: no-drop; }
   .box{
+    z-index: 4;
     position: absolute; width: 190px; background: #fff; border: 1px solid #ddd; visibility: hidden; border-radius: 2px; margin-top: 2px; padding: 10px; padding-bottom: 5px; box-shadow: 0 0 5px rgba(0,0,0,.15); opacity: 0; transition: all .3s ease;
     h3{ margin: 0; font-size: 14px; font-weight: normal; margin-top: 10px; margin-bottom: 5px; line-height: 1; }
   }
