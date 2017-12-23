@@ -3,7 +3,7 @@
     <!-- 颜色显示小方块 -->
     <div class="colorBtn"
       v-bind:style="`background-color: ${showColor}`"
-      v-on:click="openStatus=openStatusEvent"
+      v-on:click="openStatusEvent"
       v-bind:class="{ disabled: disabled }"
     ></div>
     <!-- 用以激活HTML5颜色面板 -->
@@ -146,22 +146,18 @@ export default {
         colorArr.push(this.gradient(color[1], color[0], 5))
       }
       return colorArr
-    },
-    openStatusEvent() {
-      // todolus .lib_box
-      if (!this.disabled) {
-       console.log(this.posleft)
-      } else {
-        $('.lib_box').css({
-          'overflow-y': 'scroll',
-          'overflow-x': 'hidden'
-        })
-      }
-      return !this.disabled
-      // this.openStatus = true
     }
   },
   methods: {
+    openStatusEvent() {     
+      if (!this.disabled) {
+        $('.lib_box').css({        
+          'overflow-y': 'visible',
+          'overflow-x': 'visible'
+        })
+        this.openStatus = true
+      }
+    },
     triggerHtml5Color () {
       this.$refs.html5Color.click()
     },
@@ -237,7 +233,7 @@ export default {
     // 点击页面上其他地方，关闭弹窗
     let self = this
     document.addEventListener('click', function(){ 
-      self.openStatus = false
+      self.openStatus = false      
     })
   }
 }

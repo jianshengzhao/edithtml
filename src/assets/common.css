@@ -34,8 +34,8 @@
       height: 12px;
   }
   ::-webkit-scrollbar-track-piece{
-      background-color: #fff;
-    /*  -webkit-border-radius: 6px;*/
+    /*  background-color: #fff; */
+    /* -webkit-border-radius: 6px; */
   }
   ::-webkit-scrollbar-thumb:vertical{
       height: 8px;

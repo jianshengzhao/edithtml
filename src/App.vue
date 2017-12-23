@@ -77,7 +77,7 @@
           <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
         </div> -->
       <!-- module font -->
-        <div class="property">
+       <!--  <div class="property">
           <label for="" class="leftBorder">字号 :</label>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
         </div>
@@ -88,14 +88,14 @@
         <div class="property">
           <label for="">字色 :</label>      
           <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
-        </div>
+        </div> -->
       <!-- module background -->
-        <div class="property">
+     <!--    <div class="property">
           <label for="" class="leftBorder">背景 :</label>
           <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' @change='changeColorBg'></colorPicker>
-        </div>
+        </div> -->
       <!-- module border -->
-        <div class="property">
+     <!--    <div class="property">
           <label for="" class="leftBorder">边框 :</label>
           <div class="border br-mod br-disable">
             <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
@@ -130,14 +130,14 @@
             <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width==0">
             </colorPicker>
           </div>
-        </div>
+        </div> -->
       <!-- module opacity -->
-        <div class="property">
+      <!--   <div class="property">
           <label for="" class="leftBorder">透明度 :</label>
-          <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
-        </div>
+          
+        </div> -->
       <!-- module shadow -->
-        <div class="property" style="margin-left:4px;">
+       <!--  <div class="property" style="margin-left:4px;">
           <label for="" class="leftBorder">阴影 :</label>
           <div class="border br-mod br-disable shadow">
             <i class="iconfont2 icon-yinying"></i>
@@ -167,7 +167,7 @@
               </div>
             </ul>
           </div>
-        </div>     
+        </div>      -->
       <div class="t_clean">
         <div class="tl_li" @click="cleanScreenEvent">
           <i class="tImgicon icon-clean"></i>
@@ -278,35 +278,97 @@
                 <ul class="toolbar">
                   <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
                   <div>
-                    <span>厚度：</span>
+                    <span>偏移量：</span>
                     <span>x：</span>
                     <span>
                       <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
                     </span>
-                    <span>y：</span>
+                    <span style="margin-left: 52px;">y：</span>
                     <span>
                       <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
                     </span>
                   </div>
                   <div>
                     <span>模糊度：</span>
+                    <span >b：</span>
                     <span>
                       <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
                     </span>
-                    <span>颜色：</span>
-                    <span class="colorShadow">
-                      <colorPicker v-model="bw_color" @change='changColorShadow'></colorPicker>
+                    <span>颜色值：</span>
+                    <span>
+                      <colorPicker v-model="bw_color" :disabled='disabled'  :posleft='125' @change='changColorShadow'></colorPicker>
                     </span>
                   </div>
                 </ul>
               </div>
             </div>
           </div>
-          <div class="con-erow">2</div>
-          <div class="con-erow">3</div>
+          <div class="con-erow">
+            <span class="tip">边框：</span>
+            <div class="border br-mod br-disable br_width">
+              <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
+              <div class="doll" ></div>
+              <ul class="toolbar">
+                <el-radio-group v-model="br_width" @change='changeBorderWidth'>
+                <li v-for="(item, index) in br_widths">
+                  <el-radio-button :key="item.value" :label="item.label">
+                    <span v-if="item.value == 0" class="borderWidth">none</span>
+                    <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color:#333;'">{{item.label}}</span>
+                  </el-radio-button>
+                </li>
+                </el-radio-group>
+              </ul>
+            </div>
+            <div class="border br-mod br-disable br_style" :style="br_width=='0'?'cursor:not-allowed':''">
+              <i class="iconfont2 icon-biankuangyangshi" ></i>
+              <div class="doll" ></div>
+              <ul class="toolbar" v-if="br_width!='0'">
+                <el-radio-group v-model="br_style" @change='changeBorderStyle'>
+                <li v-for="(item, index) in br_styles">
+                  <el-radio-button :key="item.value" :label="item.label">
+                    <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color:#333;'"></span>
+                  </el-radio-button>
+                </li>
+                </el-radio-group>
+              </ul>
+            </div>
+            <div class="border br-mod br-disable br_color" >
+              <i class="iconfont2 icon-biankuangyanse" ></i>
+              <div class="doll" ></div>
+              <colorPicker class="br_color" v-model="br_color" :disabled="br_width==0" :posleft='170' @change='changeBorderColor'>
+              </colorPicker>
+            </div>
+          </div>
+          <div class="con-erow">
+            <span class="tip">透明度：</span>
+            <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
+          </div>
         </div>
         <!-- fontBox -->
-        <div class="fontBox"></div>
+        <div class="fontBox">
+          <div class="con-erow">
+            <div class="con-col">
+              <span class="tip p">字体</span>
+              <span class="tip p bold">B</span>
+              <span class="tip p bold style">I</span>
+              <span class="tip p bold underline">U</span>
+            </div>
+            <div class="con-col">
+              <span class="tip">字色：</span>
+              <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
+            </div>
+          </div>
+          <div class="con-erow">
+            <div class="con-col">
+              <span class="tip">字号：</span>
+              <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' :max='99' @change='changeInpSize'></el-input>
+            </div>
+            <div class="con-col">
+              <span class="tip">行高：</span>
+              <el-input v-model="inp_line" type='number' :disabled='disabled' min='12'  :max='99' @change='changeInpLine'></el-input>
+            </div>
+          </div>
+        </div>
         <layer :elementHead = 'elementHead' :elementMain = 'elementMain' :elementTail = 'elementTail'></layer>
       </div>
       <div class="shrink shrinkout">
@@ -1353,7 +1415,7 @@
       position: absolute;
       top:2px;
       left: 0;
-      border:1px solid #666;
+      border:1px solid #bfcbd9;
       cursor: pointer;
       /*margin:2px;*/
     }
@@ -1361,7 +1423,11 @@
       margin-top: 20px;
     }
     #app .propertycolor .disabled{
-      border-color: #ccc;
+      border-color: #d1dbe5;
+      background-color: #eef1f6!important;
+    }
+    .br-disable i.icon-yinying{
+       background-color: #eef1f6;
     }
     .el-dialog--pageSet{
       width: 500px;
@@ -1575,6 +1641,7 @@
       height: 20px;
       cursor:pointer;     
       font-size: 14px;
+      line-height: 20px;
     }
     .border .doll, .shadow .doll{
       right: 8px;
@@ -1610,33 +1677,8 @@
     .border .borderStyle{
       margin: 0 auto;
       display: block;
-      width: 100px;
+      width: 98px;
       height: 5px;
-    }
-    .shadow .toolbar{
-      width: 212px;
-      padding: 8px;
-    }
-    .colorShadow{
-      position: relative;
-    }
-    .shadow .toolbar .m-colorPicker {
-      top:5px;
-      left:5px;
-    }
-
-    .shadow .toolbar span{
-      display: inline-block;
-    }
-    .shadow .toolbar .el-input {
-      width: 50px;
-    }
-    .shadow .toolbar .el-input__inner{
-      width: 50px;
-      text-indent: 0;
-    }
-    .shadow .toolbar input::-webkit-inner-spin-button {
-      display: block;
     }
     .border .el-radio-button .el-radio-button__inner{
       border-radius: 2px;
@@ -1768,8 +1810,8 @@
       height: 100%;
       color: #7d8695;
       /*padding-left: 48px;*/      
-      overflow-y: scroll;
-      overflow-x: hidden;
+      /*overflow-y: auto;
+      overflow-x: hidden;*/
       box-sizing: border-box;
     }
     .header{
@@ -1987,7 +2029,7 @@
     /*alignBox*/ 
       .alignBox{
         padding-top: 1px;
-        /*width: 170px;*/
+        width: 174px;
         height: 240px;
         border-bottom: 1px solid #ccc;
       }
@@ -2034,7 +2076,7 @@
       }
     /*propertyBox*/
       .propertyBox{       
-        width: 100%;
+        width: 174px;
         height: 120px;
         border-bottom: 1px solid #ccc;
       }
@@ -2076,7 +2118,7 @@
     /*effectsBox*/
       .effectsBox{
         padding-top: 10px;
-        width: 100%;
+        width: 174px;
         height: 90px;
         border-bottom: 1px solid #ccc; 
       }
@@ -2097,14 +2139,115 @@
       .con-erow{
         height: 16px;
         margin-bottom: 14px;
+      }      
+      .effectsBox .shadow .toolbar{    
+        left: -120px;
+        width: 135px;
+        padding: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
       }
-      .fontBox{
-        padding-top: 1px;
+      .colorShadow{
+        position: relative;
+      }
+      .shadow .toolbar .m-colorPicker {
+        top:5px;
+        left:5px;
+      }
+      .effectsBox .el-input {
+        /*float: left;*/
+        width: 48px;
+        height: 20px;
+        padding: 0;
+      }
+      .shadow .el-input {
+        margin-top: 5px;
+      }
+      .effectsBox .el-input__inner {
+        padding: 0;
+        height: 20px;
+        text-align: center;
+        border-radius: 0;
+      }
+      .shadow .toolbar span{
+        display: inline-block;
+      }
+      .shadow .toolbar .el-input {
+        width: 50px;
+      }
+      .shadow .toolbar .el-input__inner{
+        width: 50px;
+        text-indent: 0;
+      }
+      .shadow .toolbar input::-webkit-inner-spin-button {
+        display: block;
+      }
+      .br_width .toolbar{       
+        left: -32px;      
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+      .br_width .toolbar .el-radio-button__inner{
+        padding: 7px 15px;
+      }
+      .br_style .toolbar{
+        left: -70px;       
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+    /*fontBox*/
+      .fontBox{        
+        padding-top: 10px;
         width: 100%;
-        height: 70px;
+        height: 60px;
         border-bottom: 1px solid #ccc;
       }
-
+      .fontBox .tip{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        text-shadow: 0 0 15px #999;
+      }
+      .tip.p{
+        cursor: pointer;
+      }
+      .tip.bold{
+        margin-left: 8px;
+        font-family: 'sans-serif';
+        font-weight: bold;
+        color: #777;
+        font-size: 14px;
+      }
+      .tip.style{
+        margin-left: 6px;
+        font-family: 'sans-serif';
+        font-style: italic;
+      }
+      .tip.underline{
+        margin-left: 10px;
+        font-family: 'sans-serif';
+        text-decoration: underline;
+      }
+      .fontBox .m-colorPicker .colorBtn {
+        width: 36px!important;
+      }
+      .fontBox .con-col{
+        height: 20px;
+      }
+      .fontBox .el-input {
+        /*float: left;*/
+        width: 38px;
+        height: 20px;
+        padding: 0;
+      }
+      .fontBox .el-input__inner {
+        padding: 0;
+        height: 20px;
+        text-align: center;
+        border-radius: 0;
+      }
   /*editBox*/
     #app .module:hover .promptBox{
       display: block;
@@ -2481,73 +2624,73 @@
       border-bottom: 1px solid #e5e5e5;
     }
   /* 模块动画 */
-  .animlist{
-    display: block;
-    width: 74px;
-    height: 88px;
-    text-align: center;
-    float: left;
-    margin: 24px 10px 0 10px;
-    cursor: pointer;
-  }
-  .animlist .animimg{
-    width: 74px;
-    height: 64px;
-    line-height:64px;
-    border: 2px solid #f2f2f2;
-    border-radius: 2px;
-    position: relative;
-  }
-  .animlist .animimg:hover{
-    border-color: #7fcc78;
-  }
-  .animlist .animimg .animtip{
-    display: none;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    line-height: 16px;
-    background: #7fcc78;
-    color: #fff;
-  }
-  .animlist p{
-    line-height: 24px;
-  }
-  .animlist .active{
-    border-color: #7fcc78;
-  }
-  .animlist .active .animtip{
-    display: block;
-  }
-  /* 模块动画弹窗 */
-  .animlist img{
-    margin-top: 14px;
-  }
-  /* 登录框编辑文本弹窗 */  
-  .pitchIcon {
-    display:none;
-    position: absolute;
-    bottom: 0;
-    right:0;
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
-    color: #fff;
-    background-color: #20a0ff;
-  }
-  .is-active .pitchIcon {
-    display: block;
-  }
-  .ele_li:hover .deleteLayer {
-    display: block;
-  }
-  .deleteLayer{
-    display: none;
-    float: right;
-    font-size: 16px;
-    font-weight: 600;
-    margin-right: 16px;
-  }
+    .animlist{
+      display: block;
+      width: 74px;
+      height: 88px;
+      text-align: center;
+      float: left;
+      margin: 24px 10px 0 10px;
+      cursor: pointer;
+    }
+    .animlist .animimg{
+      width: 74px;
+      height: 64px;
+      line-height:64px;
+      border: 2px solid #f2f2f2;
+      border-radius: 2px;
+      position: relative;
+    }
+    .animlist .animimg:hover{
+      border-color: #7fcc78;
+    }
+    .animlist .animimg .animtip{
+      display: none;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      line-height: 16px;
+      background: #7fcc78;
+      color: #fff;
+    }
+    .animlist p{
+      line-height: 24px;
+    }
+    .animlist .active{
+      border-color: #7fcc78;
+    }
+    .animlist .active .animtip{
+      display: block;
+    }
+    /* 模块动画弹窗 */
+    .animlist img{
+      margin-top: 14px;
+    }
+    /* 登录框编辑文本弹窗 */  
+    .pitchIcon {
+      display:none;
+      position: absolute;
+      bottom: 0;
+      right:0;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      color: #fff;
+      background-color: #20a0ff;
+    }
+    .is-active .pitchIcon {
+      display: block;
+    }
+    .ele_li:hover .deleteLayer {
+      display: block;
+    }
+    .deleteLayer{
+      display: none;
+      float: right;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 16px;
+    }
 </style>
