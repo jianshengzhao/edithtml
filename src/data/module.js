@@ -66,14 +66,14 @@
 
   function elementProperty (self, element, me) { // 元素节点属性获取
     self.moduleElement = element
-    self.moduleParentElementHeight = parseInt(element.parent().css('height'))
+    self.moduleParentElementHeight = parseInt(element.parent().css('height')) || 0
     self.inp_z = parseInt(element.css('zIndex')) || 0
-    self.inp_x = parseInt(element.css('left'))
-    self.inp_y = parseInt(element.css('top'))
-    self.inp_w = parseInt(element.css('width'))
-    self.inp_h = parseInt(element.css('height'))
-    self.inp_size = parseInt(element.css('fontSize'))
-    self.inp_line = parseInt(element.css('lineHeight'))
+    self.inp_x = parseInt(element.css('left')) || 0
+    self.inp_y = parseInt(element.css('top')) || 0
+    self.inp_w = parseInt(element.css('width')) || 0
+    self.inp_h = parseInt(element.css('height')) || 0
+    self.inp_size = parseInt(element.css('fontSize')) || 0
+    self.inp_line = parseInt(element.css('lineHeight')) || 0
     self.color_font = element.css('color')
     self.color_bg = element.css('backgroundColor')
     self.br_width = parseInt(element.css('border-left-width')) || parseInt(element.css('border-top-width'))
@@ -167,10 +167,10 @@
       let eleConfig = self.datahtml[cName] 
       let x = e.pageX
       let y = e.pageY
-      let xs = self.inp_x
-      let ys = self.inp_y
-      let ws = self.inp_w
-      let hs = self.inp_h
+      let xs = parseInt(self.inp_x)
+      let ys = parseInt(self.inp_y)
+      let ws = parseInt(self.inp_w)
+      let hs = parseInt(self.inp_h)
       let warp = me.warp
       let areaB = self.moduleParentElementHeight
       let areaR = parseInt(self.inp_width)
@@ -381,7 +381,7 @@
         } else {
           resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         }     
-        return false
+        // return false
       })
       me.editBox.mouseup(function (e) {
         me.editBox.unbind('mousemove mouseup')

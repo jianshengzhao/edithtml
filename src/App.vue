@@ -97,11 +97,11 @@
           <div class="con-col">
             <li class="con-pli">
               <span class="tit">Z：</span>
-              <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
+              <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' @change='changeInpZ' ></el-input>
             </li>
             <li class="con-pli">
               <span class="tit">X：</span>
-              <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
+              <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
             </li>
             <li class="con-pli">
               <span class="tit">Y：</span>
@@ -608,11 +608,11 @@
         inp_height: 1600,
         disabled: true,
         rightButton: false,
-        inp_z: '',
-        inp_x: '',
-        inp_y: '',
-        inp_w: '',
-        inp_h: '',
+        inp_z: 0,
+        inp_x: 0,
+        inp_y: 0,
+        inp_w: 0,
+        inp_h: 0,
         inp_size: '',
         inp_line: '',
         color_font: '#fff',
@@ -1093,7 +1093,7 @@
         tool.carryModuleOperationEvent(self, 'top', val)
       },
       changeInpW: function (val) { // width 宽度
-        var self = this
+        var self = this        
         tool.carryModuleOperationEvent(self, 'width', val)
       },
       changeInpH: function (val) { // height 高度

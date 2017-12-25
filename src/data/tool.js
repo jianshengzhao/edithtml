@@ -87,8 +87,9 @@
       let me = this     
       storage.fuzzyCalibration(self, parentClass, id, left, top, height, width, ele, me)
     },
-    carryModuleOperationEvent: function (self, type, val) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
+    carryModuleOperationEvent: function (self, type, vals) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
       let me = this
+      let val = parseInt(vals)          
       let onModules = me.$(".on_module")
       let $this
       let part
@@ -97,6 +98,7 @@
       if (type!== 'paste' && self.moduleElement) {
         self.original = self.moduleElement.parent()
       }
+
       switch (type) {
       // -------------- css属性 -----------------
         case 'zIndex':
@@ -633,7 +635,7 @@
       }
       onModules.each(function (i,e) { // 更新多选元素集合
         $this = me.$(this)
-        part($this,i)
+        part($this,i)      
         let cname = $this.attr('class').split(' ')[0] 
         let attributeChange = self.datahtml[cname].attributeChange
         if (attributeChange) {
