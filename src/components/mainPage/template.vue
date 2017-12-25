@@ -1,30 +1,30 @@
 <template>
   <div id="board">
-    <div class="headers layerhead">
-      <span class="tit">精选模板</span>
-      <span class="all" @click="dialogTemplateListEvent">全部模板</span>
-    </div>
-    <div class="lib_ol" v-if=" templateArray.length > 0">
-      <div class="ele_li" v-for="(item, index) in templateArray" >
-        <div class="li_head">
-          <div class="li_icon">{{index + 1}}</div><span>{{item.name}}</span>
-        </div>
-        <div class="li_picture">
-          <div class="li_pic_mask">
-            <div class="btn_preview" @click="previewEvent(item.path)">预览</div>
-            <div class="btn_apply" @click="applyEvent(item)">应用</div>
-          </div>
-          <img :src="item.path">
+    <div class="list-li" v-for="(item, index) in templateArray">
+      <div class="list-img">
+        <img :src="item.path">
+      </div>
+      <div class="li_show">       
+        <img :src="item.path">
+         <div class="li_pic">
+          <div class="btn_preview1" @click="previewEvent(item)">预览</div>
+          <div class="btn_apply1" @click="applyEvent(item)">应用</div>
         </div>
       </div>
     </div>
-    <div v-else style="float: left;height: 30px;line-height: 30px;text-indent:20px;">暂无精选模板</div>
+    <div v-if=" templateArray.length == 0" class="list-none">暂无精选</div>
+    <span class="list-more" @click="dialogTemplateListEvent"><span>全部模板</span></span>
+
     <!-- 预览 -->
     <el-dialog     
       :modal-append-to-body="false"
       :visible.sync="dialogVisible"
       size="pictures">
       <img :src="dialogPath" class="prev_img">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关 闭</el-button>
+        <el-button type="primary" @click="applyEvent(previewItem)">应 用</el-button>
+      </span>
     </el-dialog>
     <!-- 预览 -->
     <!-- 全部模板 -->
@@ -51,7 +51,7 @@
         <div  v-if="subsClass == items.aid" :key="items.aid" class="" v-for="(items, index) in item.subs">
           <div class="li_picture" :key="iteml.aid" v-for="(iteml, index) in items.list">
             <div class="li_pic_mask">
-              <div class="btn_preview" @click="previewEvent(iteml.path)">预览</div>
+              <div class="btn_preview" @click="previewEvent(iteml)">预览</div>
               <div class="btn_apply" @click="applyEvent(iteml)">应用</div>
             </div>
             <img :src="iteml.path">
@@ -219,6 +219,7 @@ export default {
         }],
       mainClass: '',
       subsClass: '',
+      previewItem: {}, 
       httpget: function (getParam) { // 封装的异步请求数据
         let self = this
         self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
@@ -297,24 +298,14 @@ export default {
     let self = this
     self.$nextTick(function () {
       self.selectedTemplates()
-      let board = $('#board')   
-      // let li_head = board.find('.li_head')
-      board.on('click', '.li_head', function(e) {
-        let ele_li = $(this).parent()
-        if (ele_li.hasClass('onclick')) {
-          $('.onclick').removeClass('onclick')
-        } else {
-          $('.onclick').removeClass('onclick')
-          ele_li.addClass('onclick')
-        } 
-      })
-    })      
+    })
   },
   methods: { 
-    previewEvent: function (path) {
+    previewEvent: function (data) {
       let self = this
       self.dialogVisible = true
-      self.dialogPath = path
+      self.dialogPath = data.path
+      self.previewItem = data
     },
     applyEvent: function (item) {
       let self = this
@@ -451,81 +442,94 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+/* ---------------- 列表 ----------------- */
 /* ---------------- board ---------------- */
   #board{
-    overflow: hidden;
-    border-bottom: 1px solid #d9d9d9;
-  }
-  #board .headers{
-    float: left; 
-    width: 100%;
-    height: 30px;
-    padding-left: 5px;
-    box-sizing: border-box;
-    background-color: #f8f8f8;
-    color: #7d8695;   
-    font-size: 12px;    
-    line-height: 30px;
-    text-indent: 10px;
-    cursor: pointer;    
-  }
-  #board .tit{
-    font-size: 14px;
-    color: #333333;
-  }
-  #board .all{
-    float: right;
-    margin-right: 5px;
-  }
-  #board .lib_ol{
-    margin-bottom: 5px;
-    border: 0;
-  }
-  #board .lib_ol .ele_li:nth-child(1) .li_icon{
-    background-color: #FF0000;
-  }
-  #board .lib_ol .ele_li:nth-child(2) .li_icon{
-    background-color: #FF6600;
-  }
-  #board .lib_ol .ele_li:nth-child(3) .li_icon{
-    background-color: #339933;
-  }
-  #board .ele_li{
-    margin-top: 5px;
-    border: 0;
-    height: auto;
-    cursor: default;
-  }
-  #board .ele_li:hover{
-    background-color: #fff;
-  }
-  #board .li_head{
-    text-indent: 15px;
-    height: 25px;
-    cursor: pointer;
-  }
-  #board .li_icon{
     float: left;
     margin-left: 10px;
-    width: 25px;
-    height: 25px;
-    background-color: #CCCCCC;
-    line-height: 25px;
-    text-indent: 0;
+    padding: 2px 0px 2px 4px;
+    width: auto;
+    height: 50px;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+  }
+  #board .list-li{
+    position:relative;
+    float: left;
+    margin-right:4px;
+    width: 68px;
+    height: 42px;
+    cursor: pointer;
+  }
+  .list-none{
+    float: left;
+    margin-right:4px;
+    width: 68px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+  }
+  .list-img, .list-img img{
+    width: 100%;
+    height: 100%;
+  }
+  .list-more{
+    float: left;
+    width: 68px;
+    height: 42px;
+    background-image: url(./image/more.png);
+    background-repeat: no-repeat;
+    background-position: center 5px;
+    cursor: pointer;
+  }
+  .list-more span{
+    display: block;
+    margin: 26px auto;
+    text-align: center;
+  }
+  .list-li .li_show {
+    padding-top: 20px;
+    display: none;
+    position: absolute;
+    width: 366px;
+    height: 236px; 
+  }
+  .list-li:hover .li_show {    
+    display: block;
+  }  
+  .li_show img{
+    display: block;
+    padding: 4px;
+    width: 100%;
+    height: 210px;
+    border: 1px solid #409efe;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  .li_show .li_pic{
+    position: absolute;
+    width:366px;
+    height: 26px;
+  }
+  .li_pic .btn_preview1{   
+    float: left;
+    width: 162px;
+    height: 26px;
+    line-height: 26px;
+    background-color: #409efe;
     text-align: center;
     color: #fff;
-    border-radius: 2px;
   }
-  #board .ele_li span {
-    text-indent: 0;
-    display: inline-block;
-    font-size: 14px;
-    color: #333333;  
-    max-width: 190px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; 
+  .li_pic .btn_apply1{ 
+    float: left;
+    width: 204px;
+    height: 26px;
+    line-height: 26px;
+    background-color: #f0f0f0;
+    text-align: center;
+    color: #ccc;
   }
+/* ---------------- dialog --------------- */
   #board .li_picture {
     position: relative;
     height: 0;
@@ -589,7 +593,6 @@ export default {
   #board .el-radio-group{
     margin-left: 12px;
   }
-/* ---------------- dialog --------------- */
   .el-dialog--pictures{
     width: 980px;
   }

@@ -192,8 +192,8 @@
       let $next = me.$(this).next()
       let len = $next.children().length
       let num = parseInt(len / 2) + len % 2
-      let h = 66 * num
-      if ($next.css('height') === '0px') {
+      let h = 58 * num
+      if (parseInt($next.css('height')) < 2) {
         $next.css('height', h + 'px')
         me.$(this).removeClass('closei')
       } else {
@@ -210,15 +210,15 @@
         me.lShrink.removeClass('shrinkout')
         me.library.removeClass('basic')
         me.editBox.css('marginLeft', '')
-        me.editBox.css('paddingRight', '314px')
+        me.editBox.css('paddingRight', '308px')
         self.paddingleft = 133
-        me.lShrink.css('left','133px')
+        me.lShrink.css('left','132px')
       } else {
         me.lShrink.addClass('shrinkout')
         me.library.addClass('basic')
         me.editBox.css('marginLeft', '5px')
         me.editBox.css('paddingRight', '186px')
-        me.lShrink.css('left','5px')
+        me.lShrink.css('left','4px')
         self.paddingleft = 5
       }
     })

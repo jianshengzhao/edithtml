@@ -1,186 +1,34 @@
 <template>
   <div id="app" unselectable="on" onselectstart="return false;">
   <!-- top main tool -->
-    <div class="top" unselectable="on" onselectstart="return false;">
-      <div class="t_left">
-        <div class="tl_li" @click="settingEvent">
-          <i class="tImgicon icon-setting" title="设置"></i>
-          <span></span>
-        </div>
-        <div class="tl_li" @click="saveEvent">
-          <i class="tImgicon icon-save" title="保存"></i>
-          <span></span>
-        </div>
-        <div class="tl_li" @click="previewEvent" title="预览">
-          <i class="tImgicon icon-preview"></i>
-          <span>预览</span>
-        </div>
-        <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
-          <i class="tImgicon icon-gridlines"></i>
-          <span>格线</span>
-        </div>
-       <!--  <div class="tl_li tl_mod tl_li_Disable" >
-          <i class="tImgicon icon-align-left"></i>
-          <div class="doll"></div>         
-          <ul class="toolbar">
-            <li @click="topAlignEvent"><i class="tImgicon icon-align-up"></i>上对齐</li>
-            <li @click="bottomAlignEvent"><i class="tImgicon icon-align-down"></i>下对齐</li>
-            <li @click="leftAlignEvent"><i class="tImgicon icon-align-left"></i>左对齐</li>
-            <li @click="rightAlignEvent"><i class="tImgicon icon-align-right"></i>右对齐</li>
-            <li @click="centerAlignEvent"><i class="tImgicon icon-align-center"></i>水平居中</li>
-            <li @click="middleAlignEvent"><i class="tImgicon icon-align-middle"></i>垂直居中</li>
-            <li @click="middleSpacingEvent"><i class="tImgicon icon-spacing-middle"></i>垂直等间距</li>
-            <li @click="centerSpacingEvent"><i class="tImgicon icon-spacing-center"></i>水平等间距</li>
-          </ul>
-        </div>
-        <div class="tl_li tl_mod tl_li_Disable" >
-          <i class="tImgicon icon-layer"></i>
-          <div class="doll"></div>
-          <ul class="toolbar">
-            <li @click="upFloorEvent"><i class="tImgicon icon-layer-up"></i>上移一层</li>
-            <li @click="downFloorEvent"><i class="tImgicon icon-layer-down"></i>下移一层</li>
-            <li @click="topFloorEvent"><i class="tImgicon icon-layer-top"></i>置于顶层</li>
-            <li @click="bottomFloorEvent"><i class="tImgicon icon-layer-bottom"></i>置于底层</li>            
-          </ul>
-        </div>
-        <div class="tl_li tl_mod tl_li_Disable" >
-          <i class="tImgicon icon-copy"></i>
-          <div class="doll"></div>
-          <ul class="toolbar" >
-            <li @click="shearEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="tImgicon icon-shear"></i>剪切</li>
-            <li @click="copyEvent" :class="onlybloo?'':'tl_li_Disable'"><i class="tImgicon icon-copy"></i>复制</li>
-            <li @click="pasteEvent" :class="clipboard?'':'tl_li_Disable'"><i class="tImgicon icon-paste"></i>粘贴</li>
-            <li @click="deleteEvent" ><i class="tImgicon icon-delete"></i>删除</li>
-          </ul>
-        </div> -->
+    <div class="top" unselectable="on" onselectstart="return false;">     
+      <div class="tl_li" @click="settingEvent">
+        <i class="tImgicon icon-setting" title="设置"></i>
+        <span>页面设置</span>
       </div>
-      <!-- module attribute -->
-     <!--  <div class="toolBox"> -->
-      <!--   <div class="property " >
-          <label for="" class="leftBorder">Z :</label>
-          <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' max='99' @change='changeInpZ' ></el-input>
-        </div>
-        <div class="property" >
-          <label for="">X :</label>
-          <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
-        </div>
-        <div class="property">
-          <label for="">Y :</label>
-          <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
-        </div>
-        <div class="property">
-          <label for="">宽 :</label>
-          <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' @change='changeInpW'></el-input>
-        </div>
-        <div class="property">
-          <label for="">高 :</label>
-          <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
-        </div> -->
-      <!-- module font -->
-       <!--  <div class="property">
-          <label for="" class="leftBorder">字号 :</label>
-          <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' @change='changeInpSize'></el-input>
-        </div>
-        <div class="property">
-          <label for="">行高 :</label>
-          <el-input v-model="inp_line" type='number' :disabled='disabled' min='12' @change='changeInpLine'></el-input>
-        </div>
-        <div class="property">
-          <label for="">字色 :</label>      
-          <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
-        </div> -->
-      <!-- module background -->
-     <!--    <div class="property">
-          <label for="" class="leftBorder">背景 :</label>
-          <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' @change='changeColorBg'></colorPicker>
-        </div> -->
-      <!-- module border -->
-     <!--    <div class="property">
-          <label for="" class="leftBorder">边框 :</label>
-          <div class="border br-mod br-disable">
-            <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
-            <div class="doll" ></div>
-            <ul class="toolbar">
-              <el-radio-group v-model="br_width" @change='changeBorderWidth'>
-              <li v-for="(item, index) in br_widths">
-                <el-radio-button :key="item.value" :label="item.label">
-                  <span v-if="item.value == 0" class="borderWidth">none</span>
-                  <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color:#333;'">{{item.label}}</span>
-                </el-radio-button>
-              </li>
-              </el-radio-group>
-            </ul>
-          </div>
-          <div class="border br-mod br-disable" :style="br_width=='0'?'cursor:not-allowed':''">
-            <i class="iconfont2 icon-biankuangyangshi" ></i>
-            <div class="doll" ></div>
-            <ul class="toolbar" v-if="br_width!='0'">
-              <el-radio-group v-model="br_style" @change='changeBorderStyle'>
-              <li v-for="(item, index) in br_styles">
-                <el-radio-button :key="item.value" :label="item.label">
-                  <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color:#333;'"></span>
-                </el-radio-button>
-              </li>
-              </el-radio-group>
-            </ul>
-          </div>
-          <div class="border br-mod br-disable" >
-            <i class="iconfont2 icon-biankuangyanse" ></i>
-            <div class="doll" ></div>
-            <colorPicker class="br_color" v-model="br_color" @change='changeBorderColor' :disabled="br_width==0">
-            </colorPicker>
-          </div>
-        </div> -->
-      <!-- module opacity -->
-      <!--   <div class="property">
-          <label for="" class="leftBorder">透明度 :</label>
-          
-        </div> -->
-      <!-- module shadow -->
-       <!--  <div class="property" style="margin-left:4px;">
-          <label for="" class="leftBorder">阴影 :</label>
-          <div class="border br-mod br-disable shadow">
-            <i class="iconfont2 icon-yinying"></i>
-            <div class="doll"></div>
-            <ul class="toolbar">
-              <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
-              <div>
-                <span>厚度：</span>
-                <span>x：</span>
-                <span>
-                  <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
-                </span>
-                <span>y：</span>
-                <span>
-                  <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
-                </span>
-              </div>
-              <div>
-                <span>模糊度：</span>
-                <span>
-                  <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
-                </span>
-                <span>颜色：</span>
-                <span class="colorShadow">
-                  <colorPicker v-model="bw_color" @change='changColorShadow'></colorPicker>
-                </span>
-              </div>
-            </ul>
-          </div>
-        </div>      -->
-      <div class="t_clean">
-        <div class="tl_li" @click="cleanScreenEvent">
-          <i class="tImgicon icon-clean"></i>
-          <span>清屏</span>
-        </div>
+      <div class="tl_li" @click="saveEvent">
+        <i class="tImgicon icon-save" title="保存"></i>
+        <span>保存</span>
       </div>
-      <div class="t_right">
+      <div class="tl_li" @click="previewEvent" title="预览">
+        <i class="tImgicon icon-preview"></i>
+        <span>预览</span>
+      </div>
+      <div class="tl_li tl_li_on gridli" @click="gridHangle" title="格线">
+        <i class="tImgicon icon-gridlines"></i>
+        <span>格线</span>
+      </div>
+      <!-- 精选模板 -->
+      <board></board>
+      <div class="t_right tl_li">
         <a href="/">
-          <div class="tl_li">
-            <i class="tImgicon icon-exits"></i>
-            <span>退出</span>
-          </div>
+          <i class="tImgicon icon-exits"></i>
+          <span>退出</span>
         </a>
+      </div>
+      <div class="t_clean tl_li"  @click="cleanScreenEvent">
+        <i class="tImgicon icon-clean"></i>
+        <span>清屏</span>
       </div>
     </div>
   <!-- assembly library -->
@@ -192,13 +40,11 @@
         <div class="lib_ol onlineBox"></div>
       </div>
     </div>
-    <div class="shrink libshrink">
-      <i class="el-icon-arrow-left"></i>
+    <div class="shrink libshrink">     
     </div>
   <!-- layer -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
-       <!--  <board></board>精选模板 -->
         <!-- alignBox -->
         <div class="alignBox">
           <div class="con-row">
@@ -339,9 +185,10 @@
               </colorPicker>
             </div>
           </div>
-          <div class="con-erow">
+          <div class="con-erow opacity">
             <span class="tip">透明度：</span>
-            <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>%
+            <el-slider v-model="inp_opacity" :disabled='disabled' @change='changeOpacity'></el-slider>
+            <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>
           </div>
         </div>
         <!-- fontBox -->
@@ -355,7 +202,7 @@
             </div>
             <div class="con-col">
               <span class="tip">字色：</span>
-              <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
+              <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' :posleft='170' @change='changeColorFont'></colorPicker>
             </div>
           </div>
           <div class="con-erow">
@@ -372,11 +219,10 @@
         <layer :elementHead = 'elementHead' :elementMain = 'elementMain' :elementTail = 'elementTail'></layer>
       </div>
       <div class="shrink shrinkout">
-        <i class="el-icon-arrow-left"></i>
       </div>
     </div>
   <!-- editBox -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 310px;">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 308px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -388,7 +234,7 @@
           <div class="c_foot">
             <div class="hoverbar" ondragstart="return false">拖动调节公共页尾选区高度</div>
           </div>
-        </div>
+        </div>        
         <div class="row-t line"></div>
         <div class="row-b line"></div>
         <div class="col-l line"></div>
@@ -714,7 +560,7 @@
         }
         ],
         br_color: '#ccc',
-        inp_opacity: '',
+        inp_opacity: 100,
         check_shadow: false,
         inp_weight_x: '0',
         inp_weight_y: '0',
@@ -1475,11 +1321,11 @@
       height: 100%;
     }
     .top{
-      padding-top: 3px;
+      padding-top: 1px;
       padding-left: 10px;
-      padding-right: 130px;
-      position: relative;
-      min-width: 1024px;
+      padding-right: 10px;
+      height: 60px;
+      position: relative;     
       border-bottom: 1px solid #d9d9d9;
       z-index: 4;
       background-color: #fff;
@@ -1488,26 +1334,15 @@
       width: 100%;
       box-sizing: border-box;
     }
-    .top>div{
-      height: 28px;
-    }
-    .t_logo{
-      float: left;
-      width: 20px;
-    }
-    .t_left{
-      float: left;
-      width: 300px;
-      height: 28px;
-    }
+    .top>div{      
+      margin-top: 2px;
+      width: 50px;
+      height: 50px;
+    } 
+  
     .tl_li{
-      position: relative;
-      padding: 2px 4px 0 2px;
-      border-radius: 2px;
-      position: relative;
-      display: inline-block;
-      height: 24px;
-      margin: 2px ;
+      float: left;     
+      border-radius: 4px;     
       cursor: pointer;
       text-align: center;
       border:1px solid #fff;
@@ -1519,8 +1354,8 @@
       right:-4px;
       margin-top: -2px;
       border: 3px solid transparent;
-      border-bottom-color: #cacaca;
-      border-left-color: #cacaca;
+      border-bottom-color: #20a0ff;
+      border-left-color: #20a0ff;
       transform:rotate(-45deg);
       -ms-transform:rotate(-45deg);
       -moz-transform:rotate(-45deg);
@@ -1530,30 +1365,24 @@
     .tl_li_on{
       background: rgba(0, 0, 0, 0.04);
       border-color:rgba(0,0,0,.1);
-    }
-    .tl_li_Disable{
-      cursor:not-allowed;
-    }
-    .top .tl_li_Disable span{
-      color: #cacaca;
-    }
-    .top .tl_li_Disable i{
-      color: #cacaca;
-    }
+    }  
     .tl_li i{
-      float: left;
+      display: block;
+      margin: 2px auto 0;
       font-size: 18px;
       line-height: 18px;
       color:#f55d54;
     }
-    .tl_li>span{
-      float: left;
-      text-indent: 2px;
-      font-size: 12px;
+    .tl_li a:hover{
+      text-decoration: none;
+    }
+    .tl_li span{
+      margin-top: 6px;  
+      display: block;
       height: 18px;
       line-height: 18px;
+      font-size: 12px;
       color: #525e71;
-      padding-left: 2px;
     }
     .tl_li:hover .toolbar{
       display: block;
@@ -1589,20 +1418,11 @@
     .toolbar input::-webkit-inner-spin-button{
       display: none;
     }
-    #app .t_clean{
-      position: absolute;
-      width: 60px;
-      height: 28px;
-      top: 3px;
-      right: 64px;
+    #app .t_clean{    
+      float: right;     
     }   
     #app .t_right{
-      position: absolute;
-      width: 60px;
-      height: 28px;
-      top: 3px;
-      right: 4px;
-      text-align: left;
+      float: right;
     }
     .toolbar .el-col{
       height: 36px;
@@ -1643,10 +1463,13 @@
       font-size: 14px;
       line-height: 20px;
     }
+    .border i{
+      color: #20a0ff;
+    }
     .border .doll, .shadow .doll{
       right: 8px;
-      border-bottom-color: inherit;
-      border-left-color:inherit;
+     /* border-bottom-color: inherit;
+      border-left-color:inherit;*/
     }
     .border:hover .toolbar{
       display: block;
@@ -1657,6 +1480,10 @@
     }
     .br-disable i{
       color: #ccc;
+    }
+    .border.br-disable .doll, .shadow.br-disable .doll{
+       border-bottom-color: #ccc;
+      border-left-color:#ccc;
     }
     .br-disable:hover .toolbar{
       display: none;
@@ -1755,7 +1582,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      padding-top:35px;
+      padding-top:60px;
       width: 133px;
       height:100%;
       border-right: 1px solid #d9d9d9;
@@ -1813,6 +1640,7 @@
       /*overflow-y: auto;
       overflow-x: hidden;*/
       box-sizing: border-box;
+      /*background-color: #f3f3f3;*/
     }
     .header{
       float: left;
@@ -1869,7 +1697,7 @@
     .lib_ol{
       width: 132px;
       overflow: hidden;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid #e5e5e5;
       transition: height 400ms ease-in-out;
     }
     .lib_li{
@@ -1900,40 +1728,20 @@
     .libshrink{
       position: absolute;
       top: 50%;
-      left: 133px;
-      width: 22px;
-      height: 24px;
-      background-color: #fff;
-      border:1px solid #d9d9d9;
-      border-left: 0;
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-      color: #f55d54;
-      text-indent: 1px;
-      line-height: 24px;
-      cursor: pointer;
+      left: 132px;
+      width: 15px;
+      height: 97px;
+      background-image: url(./assets/image/left2.png);
       z-index: 3;
       transition: all 400ms;
       -moz-transition: all 400ms;
       -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
-    .libshrink i {
-      transition: all 400ms;
-      -moz-transition: all 400ms;
-      -webkit-transition: all 400ms;
-      -o-transition: all 400ms;
-    }
     .shrinkout {
-      text-indent: 4px;
+      background-image: url(./assets/image/left1.png);
     }
-    .shrinkout i{
-      transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-    }
+   
     .basic {
       width: 5px;
     }
@@ -1955,7 +1763,7 @@
         position:absolute;
         top:0;
         right:0;
-        padding-top:35px;
+        padding-top:60px;
         width: 175px;
         height:100%;
         border-left: 1px solid #d9d9d9;
@@ -1973,43 +1781,26 @@
       .layer .shrink{
         position: absolute;
         top:50%;
-        left: -22px;
-        width: 22px;
-        height: 24px;
-        background-color: #fff;
-        border:1px solid #d9d9d9;
-        border-right: 0;
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
-        color: #f55d54;
-        text-indent: 1px;
-        line-height: 24px;
+        left: -15px;
+        width: 15px;
+        height: 97px;       
+        background-image: url(./assets/image/right2.png);       
         cursor: pointer;
       }
-      .layer .shrink i {
-        transition: all 400ms;
-        -moz-transition: all 400ms;
-        -webkit-transition: all 400ms;
-        -o-transition: all 400ms;
-      }
+     
       .layer .shrinkout {
-        text-indent: 6px;
+        background-image: url(./assets/image/right1.png);  
       }
-      .layer .shrinkout i{
-        transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-        -moz-transform: rotate(180deg);
-        -webkit-transform: rotate(180deg);
-        -o-transform: rotate(180deg);
-      }
+   
       .layer .lib_box {
         padding: 0;
       }
       .layer .header{
         width: 100%;
-        padding-left: 20px;
+        padding-left: 10px;
         box-sizing: border-box;
         background-color: #f8f8f8;
+        border-bottom: 1px solid #e5e5e5;
       }
       .layer .lib_ol {
         width: 100%;
@@ -2025,13 +1816,13 @@
       }
       .layer .lib_ol .ele_li:hover{
         background-color: #eee;
-      }
+      }      
     /*alignBox*/ 
       .alignBox{
         padding-top: 1px;
         width: 174px;
         height: 240px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #e5e5e5;
       }
       .con-row{
         margin: 10px auto;
@@ -2059,7 +1850,7 @@
         font-size: 13px;
         color: #333;
         text-indent: 12px;
-        text-shadow: 0 0 15px #999;
+        /*text-shadow: 0 0 15px #999;*/
       }
       .col-li{
         float: left;
@@ -2074,11 +1865,15 @@
         cursor: pointer;
         background-color: #dbe1ef;
       }
+      .tl_li_Disable.col-li:hover{
+        cursor: not-allowed;
+        background-color: #fff;
+      }
     /*propertyBox*/
       .propertyBox{       
         width: 174px;
         height: 120px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #e5e5e5;
       }
       .propertyBox .con-col{
         padding-top: 12px;
@@ -2093,7 +1888,7 @@
         font-size: 14px;
         color: #333;
         text-indent: 12px;
-        text-shadow: 0 0 15px #999;
+       /* text-shadow: 0 0 15px #999;*/
       }
       .con-pli .tit{
         float: left;
@@ -2101,7 +1896,7 @@
         line-height: 20px;
         font-size: 13px;
         color: #333;        
-        text-shadow: 0 0 15px #999;
+        /*text-shadow: 0 0 15px #999;*/
       }
       .con-pli .el-input{
         float: left;
@@ -2120,7 +1915,7 @@
         padding-top: 10px;
         width: 174px;
         height: 90px;
-        border-bottom: 1px solid #ccc; 
+        border-bottom: 1px solid #e5e5e5; 
       }
       .effectsBox .con-col{
         height: 16px;
@@ -2131,7 +1926,7 @@
         line-height: 20px;
         font-size: 13px;
         color: #333;        
-        text-shadow: 0 0 15px #999;
+        /*text-shadow: 0 0 15px #999;*/
       }
       .effectsBox .m-colorPicker .colorBtn{
         width: 36px!important;
@@ -2195,12 +1990,30 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         z-index: 99;
       }
+      .effectsBox .el-slider{
+        float: left;
+        width: 54px;
+      }
+      .effectsBox .el-slider__runway{
+        margin: 8px 0;
+      }
+      .effectsBox .el-slider__button-wrapper{
+        z-index: 9;
+      }
+      .effectsBox .el-slider__button{
+        width: 10px;
+        height: 10px;
+      }
+      .effectsBox .opacity .el-input{
+        width: 46px;
+        margin-left: 10px;
+      }
     /*fontBox*/
       .fontBox{        
         padding-top: 10px;
         width: 100%;
         height: 60px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #e5e5e5;
       }
       .fontBox .tip{
         float: left;
@@ -2208,7 +2021,7 @@
         line-height: 20px;
         font-size: 13px;
         color: #333;        
-        text-shadow: 0 0 15px #999;
+        /*text-shadow: 0 0 15px #999;*/
       }
       .tip.p{
         cursor: pointer;
@@ -2258,7 +2071,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      padding-top: 35px;
+      padding-top: 60px;
       margin-left: 133px;
       margin-right: 181px;
       box-sizing:border-box;
@@ -2274,6 +2087,7 @@
       width: 100%;
       height: 100%;
       overflow:auto;
+      background-color:#ccc;
     }
     .scrollcanvas {
       width: 3600px;
@@ -2284,7 +2098,7 @@
       top: 50px;
       left: 50px;
       padding: 400px 0 200px 0;
-      margin-bottom: 100px;
+      margin-bottom: 600px;
       width: 1200px;
       height: 1800px;
       background-color: #fff;

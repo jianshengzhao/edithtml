@@ -73,7 +73,7 @@ export default {
         if (me.lShrink.hasClass('shrinkout')) {
           me.editBox.css('paddingRight', '0px')
         } else {
-          me.editBox.css('paddingRight', '314px')
+          me.editBox.css('paddingRight', '308px')
         }
       }
     })
@@ -134,5 +134,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
 
- 
+   #layers{
+    overflow-y:auto;
+    overflow-x: hidden;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 532px;
+   }
+   .layer .lib_ol .ele_li:nth-child(1){
+    border-top:0;
+   }
 </style>

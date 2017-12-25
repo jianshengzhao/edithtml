@@ -43,7 +43,7 @@
       me.basicBox = me.$('.basicBox')
       me.onlineBox = me.$('.onlineBox')
       me.todoBox = me.$('.todoBox')
-      adaptation.resizeToolBar(self, me)  
+      // adaptation.resizeToolBar(self, me)  
       adaptation.renderMenu(self, me)
       adaptation.computeLineHeight(me)
       me.libBox = me.$('.lib_box')
@@ -94,7 +94,7 @@
       let part
       let left
       let top
-      if (type!== 'paste') {
+      if (type!== 'paste' && self.moduleElement) {
         self.original = self.moduleElement.parent()
       }
       switch (type) {
@@ -259,8 +259,9 @@
           }
           break
         case 'opacity':
-          part = function (ele) {
+          part = function (ele) {          
             ele.css('opacity', val/100)
+            self.inp_opacity = parseInt(val)
           }
           break
         case 'boxShadow':

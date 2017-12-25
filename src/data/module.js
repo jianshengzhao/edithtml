@@ -3,7 +3,7 @@
        
     let cName = element.attr('class').split(' ')[0]
     let eleConfig = self.datahtml[cName] 
-    element.parent().css('outline', '2px dashed rgba(64, 158, 255, 0.7)')
+    element.parent().css('outline', '1px dashed rgba(64, 158, 255, 0.7)')
     if (eleConfig.beforeSelecting) { // 选中元素节点时的回调函数
       eleConfig.beforeSelecting(self, element, me)
     }
@@ -35,7 +35,7 @@
       thtml += '</div>'
     }
     var resizeBox = ''    
-    if (eleConfig.resize && eleConfig.resize.length > 0) {
+    if (eleConfig.resize) {
       let resize = eleConfig.resize
       resizeBox += thtml + '<div class="resizeBox" style="width:' + w + ';height:' + h + ';top: -' + b + ';left:-' + b + '">'
       for (let i = 0, len = eleConfig.resize.length; i < len; i++) {
@@ -145,7 +145,7 @@
     self.color_bg = '#fff'
     self.br_width = 0
     self.br_color = ''
-    self.inp_opacity = ''
+    self.inp_opacity = 100
     self.disabled = true
     self.check_shadow = false
     self.inp_weight_x = '1'

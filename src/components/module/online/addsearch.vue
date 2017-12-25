@@ -78,7 +78,26 @@ export default {
     }
   },
   created: function () {
-    let self = this
+    let self = this    
+    let moduleData = self.$parent.datahtml
+    moduleData['toallGroup']['online'].push({
+      name : 'addsearch',
+      icon: 'imgicon icon-addsearch',
+      text: '搜索框'
+    })
+    moduleData['addsearch'] = {
+      style: 'width: 200px; height: 44px',
+      tool: {
+        private: {
+          text: '编辑搜索',
+          class: 'st-search'
+        },
+        public: []
+      },
+      createEvent: function (self, element, me) {
+      },
+      html:'<div class="addsearch module addmodule" type="one" datatext="搜索框"><div class="search"> <div class="serach-input"><input type="text" placeholder="搜索课程" value=""></div><div class="serach-but"><input type="button" value=""></div></div></div>'
+    }
   },
   methods: {
     show: function (that, element, me) {
