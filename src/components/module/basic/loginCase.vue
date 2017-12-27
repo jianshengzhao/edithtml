@@ -61,7 +61,7 @@ export default {
           element.remove()
         } else {
           let box = element.parent()
-          let loginHtml = '<div class="loginbox password module addmodule"  datatext="密码"><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"></div><div class="loginbox loginbutton module addmodule"  datatext="登录按钮"><input id="signbtnsubmit" class="signbtn" value="立即登录" name="Submit" type="submit"></div>'
+          let loginHtml = '<div class="loginbox password module addmodule"  datatext="密码"><i class="i_password"><i></i></i><input name="password" id="password" type="password" maxlength="20" class="txtpass" placeholder="请输入密码"></div><div class="loginbox loginbutton module addmodule"  datatext="登录按钮"><input id="signbtnsubmit" class="signbtn" value="立即登录" name="Submit" type="submit"></div>'
           box.append(loginHtml)
           let x = parseInt(element.css('left'))
           let y = parseInt(element.css('top'))
@@ -74,7 +74,7 @@ export default {
           }          
         }      
       },
-      html: '<div class="loginbox username module addmodule"  datatext="账号"><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div>'
+      html: '<div class="loginbox username module addmodule"  datatext="账号"><i class="i_username"><i></i></i><input name="username" id="username" class="txtarea" placeholder="请输入用户名/手机号/邮箱"></div>'
     } 
   // -------------  ---------------
     moduleData['toallGroup']['basic'].push({      
@@ -84,7 +84,7 @@ export default {
     })
    
     moduleData['LoginRegister'] = {
-      style: 'width:132px; height:40px',
+      style: 'width:150px; height:40px',
       tool: {
         private: {
           text: '',

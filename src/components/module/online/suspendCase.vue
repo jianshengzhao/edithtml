@@ -18,7 +18,7 @@ export default {
     let moduleData = self.$parent.datahtml  
     moduleData['toallGroup']['online'].push({
       name : 'suspend',
-      icon: 'imgicon icon-addsearch',
+      icon: 'imgicon icon-suspend',
       text: '悬浮框'
     })
     
@@ -55,6 +55,14 @@ export default {
       // beforeSelecting: function (self, element, me) { // 选中元素要执行的特殊操作 
       // }, 
       createEvent: function (self, element, me) {
+        if (me.$('.suspend').length > 1) {
+          self.$notify({
+            title: '警告',
+            message: '您已经添加过悬浮框',
+            type: 'warning'
+          })
+          element.remove()
+        }
       },
       html:'<div class="suspend module addmodule" datatext="悬浮框"><div class="suspenddiv"></div></div>' 
     } 

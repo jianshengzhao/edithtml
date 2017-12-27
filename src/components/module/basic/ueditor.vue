@@ -45,7 +45,7 @@ export default {
       text: '矩形'
     })
     moduleData['rectangle'] = { 
-      style: 'width: 200px; height: 50px',
+      style: 'width: 80px; height: 40px',
       tool: {
         private: {
           text: '',
@@ -62,7 +62,7 @@ export default {
       text: '圆形'
     })
     moduleData['radius'] = { 
-      style: 'width:100px; height:100px',
+      style: 'width:50px; height:50px',
       tool: {
         private: {
           text: '',
@@ -79,7 +79,7 @@ export default {
       text: '文本'
     })    
     moduleData['editor'] = { 
-      style: 'width:76px; height:34px',
+      style: 'width:96px; height:40px',
       tool: {
         private: {
           text: '编辑文本',

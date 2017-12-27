@@ -143,7 +143,7 @@ export default {
       // },       
       createEvent: function (self, element, me) { // 模块创建事件        
       },
-      html: '<div class="addtab module addmodule" datatext="标签页"><div class="tab"><ul class="tab_header" text="left" color="20A0FF" type="text" ev="click"><li class="active"><span>标签一</span></li><li><span>标签二</span></li></ul><ul class="tab_content"> <li class="active cont"></li> <li class="cont"></li></ul></div></div>'
+      html: '<div class="addtab module addmodule" datatext="标签页"><div class="tab"><ul class="tab_header" text="left" color="409eff" type="text" ev="click"><li class="active"><span>标签一</span></li><li><span>标签二</span></li></ul><ul class="tab_content"> <li class="active cont"></li> <li class="cont"></li></ul></div></div>'
     } 
   },
   methods: {
@@ -163,7 +163,7 @@ export default {
 
       }else{
         self.type = 'text'
-        self.color_font = '#20A0FF'
+        self.color_font = '#409eff'
         self.radio_position = 'left'
         self.radio_mouse = 'click'
         self.labels = [
@@ -185,7 +185,7 @@ export default {
     },
     changeColorFont(val){
       let self = this
-      self.color_font = val || '#20A0FF'
+      self.color_font = val || '#409eff'
       if(!val){
         self.$notify({
           title: '警告',

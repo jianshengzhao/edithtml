@@ -195,10 +195,17 @@
         <div class="fontBox">
           <div class="con-erow">
             <div class="con-col">
-              <span class="tip p">字体</span>
-              <span class="tip p bold">B</span>
+              <el-select v-model="inp_fontFamily" placeholder="设置字体" :disabled='disabled' @change='changeFontFamily'>
+                <el-option
+                  v-for="item in optionsFontFamily"
+                  :key="item.name"
+                  :label="item.label"
+                  :value="item.val">
+                </el-option>
+              </el-select>
+             <!--  <span class="tip p bold">B</span>
               <span class="tip p bold style">I</span>
-              <span class="tip p bold underline">U</span>
+              <span class="tip p bold underline">U</span> -->
             </div>
             <div class="con-col">
               <span class="tip">字色：</span>
@@ -446,7 +453,7 @@
   import tool from '@/data/tool.js'
   import colorPicker from '@/components/colorPicker'
   // ------------ main界面模块 ------------
-  import board from '@/components/mainPage/template'
+  import board from '@/components/mainPage/board'
   import layer from '@/components/mainPage/layer'
   // ------------ 小悬浮工具栏 ------------
   import shape from '@/components/supendTool/shape'
@@ -566,6 +573,20 @@
         inp_weight_y: '0',
         inp_blur: '0',
         bw_color: '#ccc', 
+        inp_fontFamily: '微软雅黑',
+        optionsFontFamily: [
+           { label:'宋体',name:'songti',val:'宋体,SimSun'},
+           { label:'楷体',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
+           { label:'微软雅黑',name:'yahei',val:'微软雅黑'},
+           { label:'黑体',name:'heiti',val:'黑体, SimHei'},
+           { label:'隶书',name:'lishu',val:'隶书, SimLi'},
+           { label:'andale mono',name:'andaleMono',val:'andale mono'},
+           { label:'arial',name:'arial',val:'arial, helvetica,sans-serif'},
+           { label:'arial black',name:'arialBlack',val:'arial black,avant garde'},
+           { label:'comic sans ms',name:'comicSansMs',val:'comic sans ms'},
+           { label:'impact',name:'impact',val:'impact,chicago'},
+           { label:'times new roman',name:'timesNewRoman',val:'times new roman'}
+        ],
       // ------------ 工具栏+全局设置+右侧元素图层 ---
         dialogPageSetting: false,
         attachmentPgValue: 'scroll',
@@ -598,7 +619,7 @@
         }],
         activeSetting: 'first',
         prospectColorVal: '#fff',
-        bgColorVal: '#F5F5F5',
+        bgColorVal: '#f7f7f7',
         fontHoverColorVal: '#333',
         bgImageUrl: '',
         pgImageUrl: '',
@@ -704,14 +725,23 @@
           self.fontHoverColorVal = pp.fontHover
           self.inp_width = parseInt(pp.width)
           self.inp_height = parseInt(pp.height)
-          self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-          self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-          self.repeatPgValue = pp.pgImage.backgroundRepeat
-          self.attachmentPgValue = pp.pgImage.backgroundAttachment
+          //  背景
           self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+          if (self.bgImageUrl != '') {
+            space.css(pp.bgImage)
+          }
           self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
           self.repeatBgValue = pp.bgImage.backgroundRepeat
           self.attachmentBgValue = pp.bgImage.backgroundAttachment
+          //  前景
+          self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+          if (self.pgImageUrl != '') {
+            space.css(pp.pgImage)
+          }
+          self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+          self.repeatPgValue = pp.pgImage.backgroundRepeat
+          self.attachmentPgValue = pp.pgImage.backgroundAttachment
+
           space.css(pp.bgImage)
           space.css('backgroundColor', pp.bg)
           canvas.css(pp.pgImage)
@@ -764,18 +794,25 @@
                   self.fontHoverColorVal = pp.fontHover||'#333'
                   self.inp_width = parseInt(pp.width) || 1200
                   self.inp_height = parseInt(pp.height)
-                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
-                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
-                  self.repeatPgValue = pp.pgImage.backgroundRepeat
-                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                  //  背景
                   self.bgImageUrl = pp.bgImage.backgroundImage.split('(')[1].split(')')[0]
+                  if (self.bgImageUrl != '') {
+                    space.css(pp.bgImage)
+                  }
                   self.inp_percent = pp.bgImage.backgroundSize.split('%')[0]
                   self.repeatBgValue = pp.bgImage.backgroundRepeat
                   self.attachmentBgValue = pp.bgImage.backgroundAttachment
+                  //  前景
+                  self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
+                  if (self.pgImageUrl != '') {
+                    canvas.css(pp.pgImage)
+                  }
+                  self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
+                  self.repeatPgValue = pp.pgImage.backgroundRepeat
+                  self.attachmentPgValue = pp.pgImage.backgroundAttachment
+                 
                   space.css('backgroundColor', pp.bg)
-                  space.css(pp.bgImage)
                   canvas.css('backgroundColor', pp.pg)
-                  canvas.css(pp.pgImage)
                   canvas.css('width', self.inp_width)
                   canvas.css('height', self.inp_height)
                   head.css('height', pp.top)
@@ -1107,6 +1144,12 @@
       changeInpLine: function (val) { // line-height 行高
         var self = this
         tool.carryModuleOperationEvent(self, 'lineHeight', val)
+      },
+      changeFontFamily: function (val) { // 字体类型
+        var self = this     
+        if ($(".on_module").length > 0) {
+          tool.carryModuleOperationEvent(self, 'fontFamily', val)
+        }
       },
       changeColorFont: function (val) { // font-color 字体颜色
         var self = this
@@ -1585,6 +1628,8 @@
       padding-top:60px;
       width: 133px;
       height:100%;
+      overflow-y: auto;
+      overflow-x: hidden;
       border-right: 1px solid #d9d9d9;
       background-color: #fff;
       box-sizing: border-box;
@@ -2043,6 +2088,9 @@
         font-family: 'sans-serif';
         text-decoration: underline;
       }
+      .tip.family{
+        position: relative
+      }     
       .fontBox .m-colorPicker .colorBtn {
         width: 36px!important;
       }
@@ -2055,7 +2103,22 @@
         height: 20px;
         padding: 0;
       }
-      .fontBox .el-input__inner {
+      .fontBox  .el-select{
+        float: left;
+        width: 80px;
+      }
+      .fontBox .el-select .el-input {
+        width: 80px;        
+        text-indent: 2px;
+      }
+      .fontBox .el-select .el-input .el-input__icon{
+        width: 14px;
+      }
+      .fontBox .el-select .el-input .el-input__inner{
+      /*  text-align: left;*/
+        padding-right: 14px;
+      }
+      .fontBox .el-input .el-input__inner {
         padding: 0;
         height: 20px;
         text-align: center;
@@ -2075,7 +2138,7 @@
       margin-left: 133px;
       margin-right: 181px;
       box-sizing:border-box;
-      background-color: #f5f5f5;
+      background-color: #f7f7f7;
       z-index: 2;
       transition: all 400ms;
       -moz-transition: all 400ms;
@@ -2087,7 +2150,7 @@
       width: 100%;
       height: 100%;
       overflow:auto;
-      background-color:#ccc;
+      /*background-color:#ccc;*/
     }
     .scrollcanvas {
       width: 3600px;

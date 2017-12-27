@@ -81,7 +81,7 @@ export default {
       let index = me.$(this).attr('dataIndex')
       let ele = self.elementHead[index].ele
       me.$('.on_module').parent().css('outline', '0')
-      me.carrySignEvent(self, ele)
+      me.carrySignEvent(self.$parent, ele)
     })
     me.elementHead.on('click', '.deleteLayer', function (e) {
       let index = me.$(this).attr('dataIndex')
@@ -97,7 +97,7 @@ export default {
       let index = me.$(this).attr('dataIndex')
       let ele = self.elementMain[index].ele
       me.$('.on_module').parent().css('outline', '0')
-      me.carrySignEvent(self, ele)
+      me.carrySignEvent(self.$parent, ele)
     })
     me.elementMain.on('click', '.deleteLayer', function (e) {
       let index = me.$(this).attr('dataIndex')
@@ -113,7 +113,7 @@ export default {
       let index = me.$(this).attr('dataIndex')
       let ele = self.elementTail[index].ele
       me.$('.on_module').parent().css('outline', '0')
-      me.carrySignEvent(self, ele)
+      me.carrySignEvent(self.$parent, ele)
     })
     me.elementTail.on('click', '.deleteLayer', function (e) {
       let index = me.$(this).attr('dataIndex')

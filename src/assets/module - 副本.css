@@ -49,10 +49,10 @@
     overflow: visible;
   }
   .rectangle{
-    width: 80px;
-    height: 40px;
+    width: 200px;
+    height: 50px;
     box-sizing: border-box;
-    border: 1px solid #999999;
+    border: 1px solid #ccc;
   }
   .rectangle a,.radius a{
     display: block;
@@ -60,11 +60,11 @@
     height: 100%;
   }
   .radius {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     box-sizing: border-box;
-    border: 1px solid #999999;
+    border: 1px solid #ccc;
   }
   .text{
     width: 200px;
@@ -88,7 +88,6 @@
   .editor{
     box-sizing: border-box;
     padding: 8px;
-    font-size: 16px;
     /*width: 400px;*/
     /*height: 200px;*/
     word-break:break-all;
@@ -629,15 +628,12 @@
   .button{
     width: 80px;
     height: 30px;
-    font-size: 16px;
-    /*border: 1px solid #bbbbbb;*/
+    border: 1px solid #bbbbbb;
     border-radius: 4px;
-    line-height: 30px;
+    line-height: 28px;
     text-align: center;
     cursor: pointer;
     box-sizing: border-box;
-    background: #409eff;
-    color: #ffffff;
   }
   .button a{
     display: block;
@@ -660,7 +656,7 @@
     border-right-width: 0px!important;
     border-bottom-width: 0px!important;
     border-style: solid;
-    border-color: #999999;
+    border-color: #333;
   }
   .hline .resizeBox{
     padding: 5px 0;
@@ -683,7 +679,7 @@
     border-right-width: 0px!important;
     border-bottom-width: 0px!important;
     border-style: solid;
-    border-color: #999999;
+    border-color: #333;
   }
   .sline .resize{
     display: none;
@@ -2303,7 +2299,7 @@
 
   /* 登录框 */
   .username,.password{
-    width: 232px;
+    width: 240px;
     height: 40px;
     border:1px solid #e5e5e5;
     background: inherit;
@@ -2338,15 +2334,13 @@
     display: block;
     width: 100%;
     height: 100%;
-    background: url(http://static.ebanhui.com/ebh/tpl/2016/images/user_17_7_271.png) no-repeat center;
-    background-size: 19px;
+    background: url(http://static.ebanhui.com/ebh/tpl/2016/images/user_17_7_271.png) no-repeat 16px center;
   }
   .password i.i_password i{
     display: block;
     width: 100%;
     height: 100%;
-    background: url(http://static.ebanhui.com/ebh/tpl/2016/images/mima1_17_7_27.png) no-repeat center;
-    background-size: 19px;
+    background: url(http://static.ebanhui.com/ebh/tpl/2016/images/mima1_17_7_27.png) no-repeat 16px center;
   }
 
   /*.username input::-webkit-input-placeholder,
@@ -2357,12 +2351,11 @@
     color: #b4bccc;
   }*/
   .loginbutton{
-    width: 232px;
-    height: 44px;
+    width: 240px;
+    height: 40px;
     background: #409eff;
-    color: #ffffff;
-    border-radius: 3px;
-    font-size: 18px;
+    color: #fff;
+    border-radius: 4px;
   }
   .loginbutton input{
     width: 100%;
@@ -2534,9 +2527,7 @@
 	.introduce{
 	  width: 580px;
 	  height: 145px;
-    font-size: 16px;
-    color: #777777;
-    line-height: 28px;
+    font-size: 14px;
 	}
 	.introduce .picBox{
 	  display: block;
@@ -2931,7 +2922,7 @@
 	.infor-wrap-pic{
 		width: 1140px;
 		height: 180px;
-		padding: 20px 30px 0px 30px;
+		padding: 20px 30px 0 30px;
 	}
 	.infor-cont-pic{
 		width: 100%;
@@ -3076,28 +3067,17 @@
     position:relative;
   }
   .tab .tab_header{
-    height:30px;
+    height:28px;
     overflow: hidden;
   }
   .tab .tab_header li{
     display: inline-block;
     cursor: pointer;
-    height: 100%;
-    width: 80px;
-    text-align: center;
-    line-height: 30px;
-    font-size: 16px;
-    color: #999999;
-  }
-  .tab .tab_header li span{
-    font-size: inherit;
-  }
-  .tab .tab_header[type=padd] li{
-    color: #999999;
+    line-height: 28px;
     margin-right: 5px;
   }
-  .tab .tab_header[type=padd] li:last-child{
-    margin-right: 0px;
+  .tab .tab_header[type=padd] li{
+    color: #000000;
   }
   .tab .tab_header[text=center]{
     text-align: center;
@@ -3109,17 +3089,22 @@
     text-align: right;
   }
   .tab .tab_header li.active{
-    color: #409eff;
+    color: #20A0FF;
+  }
+  .tab .tab_header[type=padd] li{
+    padding: 0 5px;
+    line-height: 22px;
+    margin-top: 3px;
   }
   .tab .tab_header[type=padd] li.active{
-    background-color: #409eff;
+    background-color: #20A0FF;
     color: #ffffff!important;
   }
   .tab .tab_header li:hover{
-    color: #409eff;
+    color: #20A0FF;
   }
   .tab .tab_header[type=padd] li.hover{
-    background-color: #409eff;
+    background-color: #20A0FF;
     color: #ffffff!important;
   }
   .tab .tab_content{
@@ -3247,13 +3232,11 @@
   }
  /* 登录样式*/
   .LoginRegister{
-    width: 150px;
+    width: 132px;
     height: 40px;
     font-size: inherit;
     line-height: 40px;
     text-align: center;
-    font-size: 18px;
-    color: #666666;
   }
   #LoginRegister {
     height: 100%;

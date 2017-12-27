@@ -12,7 +12,7 @@
     resizeBox(self, element, me, eleConfig) // 插入resizeBox 和 悬浮工具栏
   
     elementProperty(self, element, me) // 元素节点属性获取
-
+    
     me.carryUpdateElementStorageEvent(self, element.parent(), element) // 更新临时存储
   }
 
@@ -28,6 +28,9 @@
       thtml = '<div class="supendTools">'
       if (tool.private.text !=='') {
         thtml += '<li class="st-left ' + tool['private']['class'] + '">' + tool['private']['text'] + '</li>'
+        if (element.hasClass('username') || element.hasClass('password')){
+          thtml += '<li class="st-left st-editpicture">编辑图标</li>'
+        }
       }
       for (let i = 0, len = tool.public.length; i < len; i ++) {
         thtml += '<li class="' + toolClass[tool.public[i]][0] + '" title="' + toolClass[tool.public[i]][1] + '"></li>'
@@ -74,6 +77,7 @@
     self.inp_h = parseInt(element.css('height')) || 0
     self.inp_size = parseInt(element.css('fontSize')) || 0
     self.inp_line = parseInt(element.css('lineHeight')) || 0
+    self.inp_fontFamily = element.css('fontFamily')
     self.color_font = element.css('color')
     self.color_bg = element.css('backgroundColor')
     self.br_width = parseInt(element.css('border-left-width')) || parseInt(element.css('border-top-width'))
@@ -152,6 +156,7 @@
     self.inp_weight_y = '1'
     self.inp_blur = '1'
     self.bw_color = '#ccc'
+    self.inp_fontFamily = ''
     me.mod.addClass('tl_li_Disable')
     me.brmod.addClass('br-disable')
     self.moduleElementY = false
@@ -431,6 +436,9 @@
           break
         case 'st-left st-logintext':
           self.$refs.loginCase.show()
+          break
+        case 'st-left st-editpicture':
+          self.$refs.myimages.show('','','','loginbox')
           break
         case 'st-left st-carousel':
           self.$refs.carousel.show(self, me.$('.on_module'))

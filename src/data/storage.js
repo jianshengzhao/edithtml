@@ -26,7 +26,7 @@
     }
   }
 
-  exports.updateStorage = function (self, parent, elements, deleteEle, me) { // 更新区域存储(多选)
+  exports.updateStorage = function (self, parent, elements, deleteEle, me) { // 更新区域存储(多选)   
     let cname = parent.attr('class') 
     if ('c_top c_body c_foot'.indexOf(cname) < 0) {    
       if (parent.parents('.c_top').length > 0) {

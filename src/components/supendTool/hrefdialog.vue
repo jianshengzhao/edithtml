@@ -52,8 +52,8 @@
               <div class="newscont">
                 <form class="oneselnews">
                   <div class="newsradio" v-for="(item,index) in NewsOptions">
-                    <input :checked="incode == item.value?true:false" :code="item.value" :newsname="item.label" name="onenews" type="radio" value="" />
-                    <a @click="parameter.thatName == 'addsearch' ? incode = item.value  : getsonNews(item.value,0,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                    <input :code="item.value" :newsname="item.label" name="onenews" type="radio" value="" />
+                    <a @click="parameter.thatName == 'addsearch' ? checkedincode(item.value) : getsonNews(item.value,0,item.label)" class="vc-font2"><span class="vc-inner">{{item.label}}(<span style="color: red;"> {{item.newsCount}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
                   <div style="clear: both;"></div>
                   <input type="reset" class="newsradioreset" style="display: none;" value="Reset">
@@ -792,7 +792,6 @@
               case 'pulldown':
                 saveparam = false
                 tCP.addClass('inputpulldown')
-                self.indexinit()
                 self.pulldown = true
                 self.addcoursetype = false
                 let index = pulldownindex
@@ -804,12 +803,12 @@
                 }else{
                   self.parameter = {thatName : 'pulldown',linktype: '',thatSelf: thatSelf}
                 }
+                self.indexinit()
                 break
               case 'addsearch':
                 linktype = 'news'
                 saveparam = false
                 tCP.addClass('inputaddsearch')
-                self.indexinit()
                 self.addsearch = true
                 self.pulldown = false
                 self.addcoursetype = false
@@ -820,6 +819,7 @@
                 }else{
                   self.parameter = {thatName : 'addsearch',linktype: 'news',thatSelf: thatSelf}
                 }
+                self.indexinit()
                 break
               case 'addcoursetype':
                 linktype = 'course'
@@ -903,11 +903,14 @@
               }
             }else if(linkobj.active == 2){
               self.getsonNews(linkobj.news.code,linkobj.news.son,linkobj.news.label)
-              setTimeout(function(){
+              self.$nextTick( () => {
                 $("input[code='"+linkobj.newscode+"']").attr('checked','true');
-              },0)
+              })
             }else{
-              $("input[code='"+linkobj.newscode+"']").attr('checked','true');
+              self.$nextTick( () => {
+                $("input[code='"+linkobj.newscode+"']").attr('checked','true');
+              })
+
             }
           }else if(linktype == 'course'){
             $('ul.tabsul li a[data-index=2]').addClass('tab-active')
@@ -2702,6 +2705,12 @@
         $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
         $('.fiveselcourse').show();
         self.seaqshow = 2;
+      },
+      checkedincode(incode){
+        let self = this;
+        $("input[name='onenews']").removeAttr('checked');
+        $('.newsradioreset').click()
+        $("input[code='"+incode+"']").attr('checked','true');
       }
     }
   }

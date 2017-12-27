@@ -24,12 +24,20 @@
                 <p class="desc">纯文字</p>
               </div>
             </div>
+            <div class="icon-wrap" v-if="infortype == 2">
+              <div class="infordesc">前置图标：</div>
+              <img :src="beforeImg" v-if="beforeImg!=''">
+              <span class="updateicon" v-if="beforeImg!=''" @click="imagesEvent('beforeImg')">修改</span>
+              <span class="deleteicon" v-if="beforeImg!=''" @click="deteleEvent('beforeImg')">删除</span> 
+              <span class="addicon" v-if="beforeImg==''" @click="imagesEvent('beforeImg')">添加</span>
+            </div>
             <div class="classify-wrap">
               <div class="infordesc">资讯分类：</div>
               <el-cascader
                 :props="propsclassify"
-              :options="optionsclassify"
-              v-model="selectedclassify">
+                :options="optionsclassify"
+                v-model="selectedclassify"
+                change-on-select>
           </el-cascader>
             </div>
             <div class="contentrange-wrap">
@@ -59,6 +67,7 @@
                 value: 'code',
           children: 'subnav',
         },
+        beforeImg:'',
         selectedclassify: [],
         num1:1,
         num2:5,
@@ -179,7 +188,7 @@
           },
           public: []
         },
-        resize: ['e', 'w'], // 拉伸方向: 默认为空,自由拉伸
+        resize: [], // 拉伸方向: 默认为空,自由拉伸
         resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调          
           let inforCon = parent.find('.inforCon')
           let infor_wrap = parent.find('.infor-wrap')
@@ -252,6 +261,7 @@
           } else {
               self.currentEle_info = element
           }  
+          self.openInformation();
         },
         //窗口打开函数
         openInformation:function(){
@@ -264,6 +274,7 @@
         self.selectedclassify = [];
           self.num1 = 1;
           self.num2 = 5;
+          self.beforeImg = "";
           self.getinfordesc();
           self.$nextTick( () => {
           let $imgwrap = $(".img-wrap");
@@ -312,7 +323,8 @@
           self.currentEle_info.attr('begin', self.num1)
           self.currentEle_info.attr('last', self.num2)
           self.currentEle_info.attr('navcode', self.selectedclassify[i])
-          self.currentEle_info.attr('infortype', self.infortype)          
+          self.currentEle_info.attr('infortype', self.infortype) 
+          self.currentEle_info.attr('beforeImg', self.beforeImg)         
           self.currentEle_info.find(".inforCon").empty();
           self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
           {
@@ -327,12 +339,14 @@
               if(self.infortype == 1){
                 for(var i in datas.data.newslist){
                   datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
-                  inforhtml += '<div class="infor-wrap">'
-                  inforhtml +=  '<div class="infor-cont">'
-                  inforhtml +=    '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><p class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p></a>'
+                  inforhtml += '<div class="infor-wrap-pic">'
+                  inforhtml +=  '<div class="infor-cont-pic">'
+                  inforhtml +=    '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'
+                  inforhtml +=      '<p class="infor-title-pic" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
+                  inforhtml +=      '</a>'
                   if(datas.data.newslist[i].thumb != ""){
                     inforhtml += '<div class="infor-img">'
-                    inforhtml += '<a class="infor-img-a" style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
+                    inforhtml += '<a class="infor-img-a" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
                     inforhtml += '<div class="infor-desc">'
                   }else{
                     inforhtml += '<div class="infor-desc-text">'
@@ -357,9 +371,12 @@
               }else{
                 for(var i in datas.data.newslist){
                   datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
-                  inforhtml += '<div class="infor-wrap" style="height:40px;padding:0;">'
-                  inforhtml +=  '<div class="infor-cont" style="border:0 none;height:40px;">'
-                  inforhtml +=    '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><p style="text-indent:10px;" class="infor-title" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p></a>'
+                  inforhtml += '<div class="infor-wrap">'
+                  inforhtml +=  '<div class="infor-cont">'                  
+                  inforhtml +=    (self.beforeImg == '' ? '' : '<img class="infor-icon" src="' + self.beforeImg + '">')
+                  inforhtml +=    '<a class="infor-titlea" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'
+                  inforhtml +=      '<p class="infor-title-txt" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
+                  inforhtml +=    '</a>'
                   inforhtml +=  '</div>'
                   inforhtml += '</div>'
                 }
@@ -386,6 +403,16 @@
         }, function(response) {
           console.log(response)
         });
+        },
+        imagesEvent: function(seat){
+          self = this
+          self.$parent.$refs.myimages.show('footer', self, function (self, data, imgSize) { 
+              self[seat] = data
+          })
+        },
+        deteleEvent: function (seat) {
+            let self = this
+            self[seat] = ''
         },
         createmap:function(html){
           let self = this
@@ -424,14 +451,39 @@
 </script>
 
 <style type="text/css">
+  /*.information .resize{
+      display: none;
+  }*/
   .el-dialog--myinformation{
     width: 420px;
   }
-  
-  
   .style-wrap{
     width: 100%;
     height: 116px;
+  }
+    .icon-wrap{
+      width: 100%;
+      height: 40px;
+  }
+  .icon-wrap .infordesc{
+      padding: 0;
+      height: 40px;
+      line-height: 40px;
+  }
+  .icon-wrap .updateicon, .icon-wrap .deleteicon, .icon-wrap .addicon{
+      color: #20A0FF;
+      cursor: pointer;
+      line-height: 40px;
+  } 
+  .icon-wrap .deleteicon{
+      color: #FF0000;
+  }
+  .icon-wrap img {
+      float: left;
+      margin-top: 10px;
+      margin-right: 5px;
+      width: 20px;
+      height: 20px;
   }
   .infordesc{
     float: left;

@@ -43,6 +43,7 @@
       me.basicBox = me.$('.basicBox')
       me.onlineBox = me.$('.onlineBox')
       me.todoBox = me.$('.todoBox')
+      me.familyBox = me.$('.familyBox')
       // adaptation.resizeToolBar(self, me)  
       adaptation.renderMenu(self, me)
       adaptation.computeLineHeight(me)
@@ -68,11 +69,11 @@
       adaptation.renderLayer(self, parent)
     },
     carryAddElementStorageEvent: function (self, parent, AddElement, y, x, son) { // 区域存储(多选)   
-      let me = this   
+      let me = this
       storage.addStorage(self, parent, AddElement, y, x, this, son)
     },
     carryUpdateElementStorageEvent: function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
-      let me = this     
+      let me = this
       storage.updateStorage(self, parent, elements, deleteEle, me)  
     },
     carryRegionChoiceEvent: function (self, e) { // 区域选中事件(多选)
@@ -87,9 +88,8 @@
       let me = this     
       storage.fuzzyCalibration(self, parentClass, id, left, top, height, width, ele, me)
     },
-    carryModuleOperationEvent: function (self, type, vals) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
-      let me = this
-      let val = parseInt(vals)          
+    carryModuleOperationEvent: function (self, type, val) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
+      let me = this        
       let onModules = me.$(".on_module")
       let $this
       let part
@@ -222,6 +222,11 @@
         case 'color':
           part = function (ele) {
             ele.css('color', val)
+          }
+          break
+        case 'fontFamily':
+          part = function (ele) {            
+            ele.css('fontFamily', val)           
           }
           break
         case 'backgroundColor':
@@ -655,6 +660,7 @@
       adaptation.bindElDialogMousemoveEvent(me) // 弹框拖拽 
       adaptation.bindHoverbarMousemoveEvent(self, me) // 页头页尾调整
       adaptation.bindMenuEvent(self, me) // 模块菜单 收缩事件
+      adaptation.bindFontFamily(self, me) // 字体列表
       // adaptation.bindLayerEvent(self, me) // 图层 收缩事件
       module.bindResizeDrawingEvent(self, me) // 模块圆点拉伸容器事件
       module.bindSupendToolsEvent(self, me) // 模块工具栏绑定事件
@@ -694,7 +700,7 @@
           me.$(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
           if (color){
             if (type == 'padd'){
-              me.$(this).parent().find('li').css('color','#000000')
+              me.$(this).parent().find('li').css('color','#999999')
               me.$(this).parent().find('li').css('backgroundColor','')
               me.$(this).css('color','#ffffff')
               me.$(this).css('backgroundColor','#'+color)
@@ -703,7 +709,6 @@
               me.$(this).parent().find('li').css('color','')
               me.$(this).css('color','#'+color)
             }
-
           }
         })
         if(ev == 'click'){
@@ -717,7 +722,7 @@
             me.$(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
             if (color){
               if (type == 'padd'){
-                me.$(this).parent().find('li').css('color','#000000')
+                me.$(this).parent().find('li').css('color','#999999')
                 me.$(this).parent().find('li').css('backgroundColor','')
                 me.$(this).css('color','#ffffff')
                 me.$(this).css('backgroundColor','#'+color)
@@ -746,7 +751,7 @@
             let type =  me.$(this).parent().attr('type')
             if (type == 'padd'){
               me.$(this).parent().find('li').css('backgroundColor','')
-              me.$(this).parent().find('li').css('color','#000000')
+              me.$(this).parent().find('li').css('color','#999999')
               me.$(this).parent().find('li.active').css('backgroundColor','#'+color)
               me.$(this).parent().find('li.active').css('color','#ffffff')
             }else{
@@ -766,11 +771,11 @@
             if (color){
               if (type == 'padd'){
                 me.$(this).parent().find('li').css('backgroundColor','')
-                me.$(this).parent().find('li').css('color','#000000')
+                me.$(this).parent().find('li').css('color','#999999')
                 me.$(this).css('backgroundColor','#' + color);
                 me.$(this).css('color','#ffffff');
               }else{
-                me.$(this).parent().find('li').css('color','#000000')
+                me.$(this).parent().find('li').css('color','#999999')
                 me.$(this).css('color','#' + color);
               }
 

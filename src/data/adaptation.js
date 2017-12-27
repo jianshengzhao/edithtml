@@ -223,4 +223,15 @@
       }
     })
   }
+
+  exports.bindFontFamily = function (self, me) { // 字体列表
+    // me.layer.on('click', '.family', function (e) {
+    //   if (me.familyBox.css('display') == 'none') {
+    //     me.familyBox.show()
+    //   }   
+    // })
+    // me.familyBox.on('mouseleave',function () {
+    //   me.familyBox.hide()
+    // })
+  }
   
