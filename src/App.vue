@@ -54,6 +54,184 @@
   <!-- layer      -->
     <div class="layer" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
+        <!-- alignBox -->
+        <div class="alignBox">
+          <div class="con-row">
+            <div class="con-col">
+              <div class="col-head">水平对齐</div>                
+                <li class="col-li" title="左对齐" @click="selectBloo ? leftAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-left"></i></li>
+                <li class="col-li" title="右对齐" @click="selectBloo ? rightAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-right"></i></li>
+                <li class="col-li" title="水平居中" @click="selectBloo ? centerAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-center"></i></li>                
+                <li class="col-li" title="水平等间距" @click="selectBloo ? centerSpacingEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-spacing-center"></i></li>
+            </div>
+            <div class="con-col r">
+              <div class="col-head">垂直对齐</div>
+                <li class="col-li" title="上对齐" @click="selectBloo ? topAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-up"></i></li>
+                <li class="col-li" title="下对齐" @click="selectBloo ? bottomAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-down"></i></li>
+                <li class="col-li" title="垂直居中" @click="selectBloo ? middleAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-middle"></i></li>
+                <li class="col-li" title="垂直等间距" @click="selectBloo ? middleSpacingEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-spacing-middle"></i></li>
+            </div>
+          </div>
+          <span class="con-border"></span>
+          <div class="con-row">
+            <div class="con-col">
+              <div class="col-head">编辑</div> 
+                <li class="col-li" title="剪切" @click="selectBloo ? shearEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-shear"></i></li>
+                <li class="col-li" title="复制" @click="selectBloo ? copyEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-copy"></i></li>
+                <li class="col-li" title="粘贴" @click="clipboard ? pasteEvent() :''" :class="clipboard?'':'tl_li_Disable'"><i class="tImgicon icon-paste"></i></li>
+                <li class="col-li" title="删除" @click="selectBloo ? deleteEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-delete"></i></li> 
+            </div>
+            <div class="con-col r">
+              <div class="col-head">图层</div> 
+                <li class="col-li" title="置于顶层" @click="selectBloo ? topFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-top"></i></li>
+                <li class="col-li" title="置于底层" @click="selectBloo ? bottomFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-bottom"></i></li>
+                <li class="col-li" title="上移一层" @click="selectBloo ? upFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-up"></i></li>
+                <li class="col-li" title="下移一层" @click="selectBloo ? downFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-down"></i></li>
+            </div>
+          </div>
+        </div>
+        <!-- propertyBox -->
+        <div class="propertyBox">
+          <div class="con-col">
+            <li class="con-pli head">属性</li>
+            <li class="con-pli">
+              <span class="tit">宽：</span>
+              <el-input v-model="inp_w" type='number' :disabled='disabled' min='0' @change='changeInpW'></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">高：</span>
+              <el-input v-model="inp_h" type='number' :disabled='disabled' min='0' @change='changeInpH'></el-input>
+            </li>
+          </div>
+          <div class="con-col">
+            <li class="con-pli">
+              <span class="tit">Z：</span>
+              <el-input v-model="inp_z" type='number' :disabled='disabled' min='0' @change='changeInpZ' ></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">X：</span>
+              <el-input v-model="inp_x" type='number' :disabled='disabled' min='0' @change='changeInpX' ></el-input>
+            </li>
+            <li class="con-pli">
+              <span class="tit">Y：</span>
+              <el-input v-model="inp_y" type='number' :disabled='disabled' min='0' @change='changeInpY' ></el-input>
+            </li>
+          </div>
+        </div>
+        <!-- effectsBox -->
+        <div class="effectsBox">
+          <div class="con-erow">
+            <div class="con-col">
+              <span class="tip">背景：</span>
+              <colorPicker class="propertycolor" v-model="color_bg" :disabled='disabled' :posleft='90' @change='changeColorBg'></colorPicker>
+            </div>
+            <div class="con-col">
+              <span class="tip">阴影：</span>
+              <div class="border br-mod br-disable shadow">
+                <i class="iconfont2 icon-yinying"></i>
+                <div class="doll"></div>
+                <ul class="toolbar">
+                  <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
+                  <div>
+                    <span>偏移量：</span>
+                    <span>x：</span>
+                    <span>
+                      <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
+                    </span>
+                    <span style="margin-left: 52px;">y：</span>
+                    <span>
+                      <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
+                    </span>
+                  </div>
+                  <div>
+                    <span>模糊度：</span>
+                    <span >b：</span>
+                    <span>
+                      <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
+                    </span>
+                    <span>颜色值：</span>
+                    <span>
+                      <colorPicker v-model="bw_color" :disabled='disabled'  :posleft='125' @change='changColorShadow'></colorPicker>
+                    </span>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="con-erow">
+            <span class="tip">边框：</span>
+            <div class="border br-mod br-disable br_width">
+              <i class="iconfont2 icon-dayin_biankuangshezhi"></i>
+              <div class="doll" ></div>
+              <ul class="toolbar">
+                <el-radio-group v-model="br_width" @change='changeBorderWidth'>
+                <li v-for="(item, index) in br_widths">
+                  <el-radio-button :key="item.value" :label="item.label">
+                    <span v-if="item.value == 0" class="borderWidth">none</span>
+                    <span v-else class="borderWidth" :style="'border-bottom-width:' + item.label + 'px;border-style: ' + br_style + ';border-color:#333;'">{{item.label}}</span>
+                  </el-radio-button>
+                </li>
+                </el-radio-group>
+              </ul>
+            </div>
+            <div class="border br-mod br-disable br_style" :style="br_width=='0'?'cursor:not-allowed':''">
+              <i class="iconfont2 icon-biankuangyangshi" ></i>
+              <div class="doll" ></div>
+              <ul class="toolbar" v-if="br_width!='0'">
+                <el-radio-group v-model="br_style" @change='changeBorderStyle'>
+                <li v-for="(item, index) in br_styles">
+                  <el-radio-button :key="item.value" :label="item.label">
+                    <span class="borderStyle" :style="'border-width:' + br_width + 'px;border-style: ' + item.label + ';border-color:#333;'"></span>
+                  </el-radio-button>
+                </li>
+                </el-radio-group>
+              </ul>
+            </div>
+            <div class="border br-mod br-disable br_color" >
+              <i class="iconfont2 icon-biankuangyanse" ></i>
+              <div class="doll" ></div>
+              <colorPicker class="br_color" v-model="br_color" :disabled="br_width==0" :posleft='170' @change='changeBorderColor'>
+              </colorPicker>
+            </div>
+          </div>
+          <div class="con-erow opacity">
+            <span class="tip">透明度：</span>
+            <el-slider v-model="inp_opacity" :disabled='disabled' @change='changeOpacity'></el-slider>
+            <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>
+          </div>
+        </div>
+        <!-- fontBox -->
+        <div class="fontBox">
+          <div class="con-erow">
+            <div class="con-col">
+              <el-select v-model="inp_fontFamily" placeholder="设置字体" :disabled='disabled' @change='changeFontFamily'>
+                <el-option
+                  v-for="item in optionsFontFamily"
+                  :key="item.name"
+                  :label="item.label"
+                  :value="item.val">
+                </el-option>
+              </el-select>
+             <!--  <span class="tip p bold">B</span>
+              <span class="tip p bold style">I</span>
+              <span class="tip p bold underline">U</span> -->
+            </div>
+            <div class="con-col">
+              <span class="tip">字色：</span>
+              <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' :posleft='170' @change='changeColorFont'></colorPicker>
+            </div>
+          </div>
+          <div class="con-erow">
+            <div class="con-col">
+              <span class="tip">字号：</span>
+              <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' :max='99' @change='changeInpSize'></el-input>
+            </div>
+            <div class="con-col">
+              <span class="tip">行高：</span>
+              <el-input v-model="inp_line" type='number' :disabled='disabled' min='12'  :max='99' @change='changeInpLine'></el-input>
+            </div>
+          </div>
+        </div>       
         <div class="header layerhead">模块索引 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
@@ -377,7 +555,7 @@
             label: 'outset'
           }],
         br_color: '#ccc',
-        inp_opacity: '',        
+        inp_opacity: 100,        
         check_shadow: false,
         inp_weight_x: '0',
         inp_weight_y: '0',
@@ -451,6 +629,20 @@
         moduleParentElementHeight: '',      
         clipboard: '',
         original: '',
+        selectBloo: false,
+        inp_fontFamily: '微软雅黑',
+        optionsFontFamily:[
+           { label:'宋体',name:'songti',val:'宋体,SimSun'},
+           { label:'楷体',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
+           { label:'微软雅黑',name:'yahei',val:'微软雅黑'},
+           { label:'黑体',name:'heiti',val:'黑体, SimHei'},
+           { label:'隶书',name:'lishu',val:'隶书, SimLi'},
+           { label:'andale mono',name:'andaleMono',val:'andale mono'},
+           { label:'arial',name:'arial',val:'arial, helvetica,sans-serif'},
+           { label:'arial black',name:'arialBlack',val:'arial black,avant garde'},
+           { label:'comic sans ms',name:'comicSansMs',val:'comic sans ms'},
+           { label:'impact',name:'impact',val:'impact,chicago'},
+           { label:'times new roman',name:'timesNewRoman',val:'times new roman'}],
       // ------------ config -------------------- 
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
@@ -824,6 +1016,12 @@
       changeInpLine: function (val) { // line-height 行高
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'lineHeight', val)
+      },
+      changeFontFamily: function (val) { // 字体类型
+        var self = this     
+        if ($(".on_module").length > 0) {
+          tool.tool.carryModuleOperationEvent(self, 'fontFamily', val)
+        }
       },
       changeColorFont: function (val) { // font-color 字体颜色
         var self = this       
@@ -1552,43 +1750,12 @@
       -webkit-transition: all 400ms; 
       -o-transition: all 400ms;
     }
-    .layerHide{
-      width: 0;
-    }
-    .layer .shrink{
-      position: absolute;
-      top:50%;
-      left: -22px;
-      width: 22px;
-      height: 24px;
-      background-color: #fff;
-      border:1px solid #d9d9d9;
-      border-right: 0;
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-      color: #f55d54;
-      text-indent: 1px;
-      line-height: 24px;
-      cursor: pointer;   
-    }
-    .layer .shrink i {
-      transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
-      -o-transition: all 400ms;
-    }
-    .layer .shrinkout {
-      text-indent: 6px;
-    }
-    .layer .shrinkout i{
-      transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg); 
-      -o-transform: rotate(180deg); 
-    }
     .layer .lib_box {
       padding: 0;
+      overflow: hidden;
+    }
+    .layer .elementHead{
+      overflow-y:auto;
     }
     .layer .header{
       width: 100%;
@@ -1611,6 +1778,268 @@
     .layer .lib_ol .ele_li:hover{
       background-color: #eee;
     }
+    /*alignBox*/ 
+      .alignBox{
+        padding-top: 1px;
+        width: 174px;
+        height: 240px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .con-row{
+        margin: 10px auto;
+        height: 100px;
+      }
+      .con-col{
+        float: left;
+        width: 50%;
+        height: 100px;
+      }
+      .con-col.r{
+        box-sizing: border-box;
+        border-left: 1px solid #ededed;
+      }
+      .con-border{
+        display: block;
+        margin: 0 auto;
+        width: 135px;
+        height: 0;
+        border-bottom: 1px solid #ededed;
+      }
+      .col-head{
+        height: 16px;
+        line-height: 16px;
+        font-size: 13px;
+        color: #333;
+        text-indent: 12px;
+        /*text-shadow: 0 0 15px #999;*/
+      }
+      .col-li{
+        float: left;
+        margin: 12px 0 0 12px;
+        width: 25px;
+        height: 25px;       
+      }
+      .col-li i {
+        margin: 3px;
+      }
+      .col-li:hover{
+        cursor: pointer;
+        background-color: #dbe1ef;
+      }
+      .tl_li_Disable.col-li:hover{
+        cursor: not-allowed;
+        background-color: #fff;
+      }
+    /*propertyBox*/
+      .propertyBox{       
+        width: 174px;
+        height: 120px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .propertyBox .con-col{
+        padding-top: 12px;
+        height: 108px;
+      }
+      .con-pli{
+        height: 20px;
+        margin-bottom: 15px;
+      }
+      .con-pli.head{
+        line-height: 20px;
+        font-size: 14px;
+        color: #333;
+        text-indent: 12px;
+       /* text-shadow: 0 0 15px #999;*/
+      }
+      .con-pli .tit{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        /*text-shadow: 0 0 15px #999;*/
+      }
+      .con-pli .el-input{
+        float: left;
+        width: 48px;
+        height: 20px;
+        padding: 0;        
+      }
+      .con-pli .el-input__inner{
+        padding: 0;
+        height: 20px;
+        text-align: center;  
+        border-radius: 0;
+      }
+    /*effectsBox*/
+      .effectsBox{
+        padding-top: 10px;
+        width: 174px;
+        height: 90px;
+        border-bottom: 1px solid #e5e5e5; 
+      }
+      .effectsBox .con-col{
+        height: 16px;
+      }
+      .effectsBox .tip{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        /*text-shadow: 0 0 15px #999;*/
+      }
+      .effectsBox .m-colorPicker .colorBtn{
+        width: 36px!important;
+      }
+      .con-erow{
+        height: 16px;
+        margin-bottom: 14px;
+      }      
+      .effectsBox .shadow .toolbar{    
+        left: -120px;
+        width: 135px;
+        padding: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+      .colorShadow{
+        position: relative;
+      }
+      .shadow .toolbar .m-colorPicker {
+        top:5px;
+        left:5px;
+      }
+      .effectsBox .el-input {
+        /*float: left;*/
+        width: 48px;
+        height: 20px;
+        padding: 0;
+      }
+      .shadow .el-input {
+        margin-top: 5px;
+      }
+      .effectsBox .el-input__inner {
+        padding: 0;
+        height: 20px;
+        text-align: center;
+        border-radius: 0;
+      }
+      .shadow .toolbar span{
+        display: inline-block;
+      }
+      .shadow .toolbar .el-input {
+        width: 50px;
+      }
+      .shadow .toolbar .el-input__inner{
+        width: 50px;
+        text-indent: 0;
+      }
+      .shadow .toolbar input::-webkit-inner-spin-button {
+        display: block;
+      }
+      .br_width .toolbar{       
+        left: -32px;      
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+      .br_width .toolbar .el-radio-button__inner{
+        padding: 7px 15px;
+      }
+      .br_style .toolbar{
+        left: -70px;       
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+      }
+      .effectsBox .el-slider{
+        float: left;
+        width: 54px;
+      }
+      .effectsBox .el-slider__runway{
+        margin: 8px 0;
+      }
+      .effectsBox .el-slider__button-wrapper{
+        z-index: 9;
+      }
+      .effectsBox .el-slider__button{
+        width: 10px;
+        height: 10px;
+      }
+      .effectsBox .opacity .el-input{
+        width: 46px;
+        margin-left: 10px;
+      }
+    /*fontBox*/
+      .fontBox{        
+        padding-top: 10px;
+        width: 100%;
+        height: 60px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .fontBox .tip{
+        float: left;
+        margin-left: 6px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;        
+        /*text-shadow: 0 0 15px #999;*/
+      }
+      .tip.p{
+        cursor: pointer;
+      }
+      .tip.bold{
+        margin-left: 8px;
+        font-family: 'sans-serif';
+        font-weight: bold;
+        color: #777;
+        font-size: 14px;
+      }
+      .tip.style{
+        margin-left: 6px;
+        font-family: 'sans-serif';
+        font-style: italic;
+      }
+      .tip.underline{
+        margin-left: 10px;
+        font-family: 'sans-serif';
+        text-decoration: underline;
+      }
+      .tip.family{
+        position: relative
+      }     
+      .fontBox .m-colorPicker .colorBtn {
+        width: 36px!important;
+      }
+      .fontBox .con-col{
+        height: 20px;
+      }
+      .fontBox .el-input {
+        /*float: left;*/
+        width: 38px;
+        height: 20px;
+        padding: 0;
+      }
+      .fontBox  .el-select{
+        float: left;
+        width: 80px;
+      }
+      .fontBox .el-select .el-input {
+        width: 80px;        
+        text-indent: 2px;
+      }
+      .fontBox .el-select .el-input .el-input__icon{
+        width: 14px;
+      }
+      .fontBox .el-select .el-input .el-input__inner{
+      /*  text-align: left;*/
+        padding-right: 14px;
+      }
+      .fontBox .el-input .el-input__inner {
+        padding: 0;
+        height: 20px;
+        text-align: center;
+        border-radius: 0;
+      }
   /* ------------- editBox ------------- */
     #app .module:hover .promptBox{
       display: block;

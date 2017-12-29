@@ -156,6 +156,7 @@ var tool = {
     self.inp_z = parseInt(element.css('zIndex')) || 0
     self.inp_x = parseInt(element.css('left'))
     self.inp_y = parseInt(element.css('top'))
+    self.selectBloo = true
     me.supendTools.show()
     me.supendTools.html(thtml)
     me.carrySupendToolsPositionEvent(self)   
@@ -211,21 +212,6 @@ var tool = {
     me.supendTools.hide()
     me.supendTools.removeClass('me.supendTools')
     me.$('.resizeBox').remove()
-    // ---------addcoursetype---------------
-    let addcoursetype = me.$('.addcoursetype.on_module')
-    if (addcoursetype.length > 0) {      
-      let allcourse = parseInt(addcoursetype.find('.allcourse').css('height'))
-      var carouseldata = addcoursetype.attr('carouseldata')
-      if(carouseldata){
-        var jsoncarouseldata = me.$.parseJSON(carouseldata)
-        if(jsoncarouseldata.type == '2'){
-          addcoursetype.css('height', allcourse)
-          addcoursetype.find('.second_mune_ul').hide()
-        }
-      }
-      me.carryUpdateElementStorageEvent(self, addcoursetype.parent(), addcoursetype)
-    } 
-    // ---------addcoursetype---------------
     me.$('.on_module').removeClass('on_module')
     me.$('.module').parent().unbind('mousemove') // 待定
     // me.$('.module').unbind('mouseup')
@@ -242,13 +228,14 @@ var tool = {
     self.color_bg = '#fff'
     self.br_width = 0
     self.br_color = ''
-    self.inp_opacity = ''
+    self.inp_opacity = 100
     self.disabled = true
     self.check_shadow = false
     self.inp_weight_x = '1'
     self.inp_weight_y = '1'
     self.inp_blur = '1'
     self.bw_color = '#ccc'
+    self.selectBloo = false
     me.mod.addClass('tl_li_Disable')
     me.brmod.addClass('br-disable')
     self.moduleElementY = false
@@ -516,6 +503,7 @@ var tool = {
     self.br_style = element.css('border-left-style')
     self.br_color = element.css('border-left-color')
     self.inp_opacity = parseInt(element.css('opacity') * 100)
+    self.selectBloo = true
     if (element.css('boxShadow') == 'none') {
       self.check_shadow = false
       self.inp_weight_x = ''
@@ -669,6 +657,11 @@ var tool = {
           ele.css('color', val)         
         }
         break
+      case 'fontFamily':
+          part = function (ele) {            
+            ele.css('fontFamily', val)           
+          }
+          break
       case 'backgroundColor':
         part = function (ele) {
           if (val === null) {
