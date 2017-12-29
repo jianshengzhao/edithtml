@@ -164,7 +164,7 @@ export default {
           revealStr = window.JSON.stringify(revealData)
           self.element.attr('dataarray', revealStr)
           htmFun = function (x,y) {
-            let html = '<div class="course module addmodule" datatext="课程" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd two"><div class="add-icon "></div></div></div>'
+            let html = '<div class="course module addmodule" datatext="课程" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><a class="coursehref"><div class="editAdd two"><div class="add-icon "></div></div></a></div>'
             return html
           }
           break
@@ -186,7 +186,7 @@ export default {
           revealStr = window.JSON.stringify(revealData)
           self.element.attr('dataarray', revealStr)
           htmFun = function (x,y) {
-            let html = '<div class="audition module addmodule"  datatext="免费试听" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><div class="editAdd"><div class="add-icon"></div></div></div>'
+            let html = '<div class="audition module addmodule"  datatext="免费试听" style="left:' + (x / 37.5) + 'rem;top:' + (y / 37.5) + 'rem"><a class="auditionhref"><div class="editAdd"><div class="add-icon"></div></div></a></div>'
             return html
           }
           break

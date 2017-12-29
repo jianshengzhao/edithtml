@@ -312,6 +312,14 @@ export default {
                 urlRoute = '选课中心'
                 urlHref = '/platform.html'
               break
+              case 'teacherList':
+                urlRoute = '教师列表'
+                urlHref = '/shop/school/masterlist.html'
+              break
+              case 'personalCenter':
+                urlRoute = '个人中心'
+                urlHref = '/myroom.html'
+              break
               case 'contact':
                 urlRoute = '联系我们'
                 urlHref = '/contacts.html'

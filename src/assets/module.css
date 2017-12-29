@@ -612,8 +612,8 @@ a{
   .audition .resizeBox .w, .audition .resizeBox .e{
     display: block;
   }
-/* ------------- teacher ---------------- */
-  .teacher{
+/* ------------- teacher ---------------- */ 
+  .module.teacher{
     width: 4.4rem;
     height: 5.73rem;
   } 
@@ -819,8 +819,8 @@ a{
     z-index: 3;    
   }
   .barbox li {
-    width: 0.32rem;
-    height: 0.32rem;
+    width: 0.16rem;
+    height: 0.16rem;
     float: left;
     margin: 0 0.08rem;  
     border-radius: 50%;

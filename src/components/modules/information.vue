@@ -238,17 +238,17 @@
               let item  = newslist[i]
               item.dateline = self.getLocalTime(item.dateline);
               if (self.infortype == 1) {
-                inforhtml += '<li>'
+                inforhtml += '<a href="/dyinformation/' + item.itemid +'.html"><li>'
                           +    '<div class="title">' + item.subject + '</div>'
-                          +    '<img class="newImg" scr="' + item.thumb + '">'
+                          +    '<img class="newImg" src="' + item.thumb + '">'
                           +    '<div class="info"><span>' + self.currTit + '</span><span>阅读 ' + item.viewnum + '</span><span>' + item.dateline + '</span></div>'
-                          +  '</li>'
+                          +  '</li></a>'
                 lih = 2.25
               } else {
-                inforhtml += '<li class="news-text">'
+                inforhtml += '<a href="/dyinformation/' + item.itemid +'.html"><li class="news-text">'
                           +    (self.beforeImg == '' ? '' : '<img src="' + self.beforeImg + '">')
                           +    '<div class="title">' + item.subject + '</div>'                         
-                          +  '</li>'
+                          +  '</li></a>'
                 lih = 0.854
                 self.currentEle_info.find(".inforCon").css('border', '0')
               }

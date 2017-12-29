@@ -13,7 +13,7 @@
             <ul class="show-style-ul">
               <li class="on" showstyle="lefthalf">
                 <div class="imgbox">
-                  <img src="">
+                  <img src="../../assets/newslibIcon/first.gif">
                   <div class="animtip">✔</div>
                 </div>               
                 <span>左侧半屏</span>
@@ -49,7 +49,7 @@
           </el-row>
           <el-row class="menu-head">
             <el-col :span="5" class="right">单菜单高度：</el-col>
-            <el-col :span="12"><el-input-number size="small" v-model="menuH"></el-input-number></el-col>
+            <el-col :span="12"><el-input-number size="small" v-model="menuH" :min="30" :max="100"></el-input-number></el-col>
           </el-row>
           <el-row class="newnav">
             <el-button type="primary" size="small" @click="addnavEvent('add')">新增菜单</el-button>
@@ -94,6 +94,7 @@
         <el-col :span="17" class="con">
           <img :src="beforeImg" v-if="beforeImg!=''">
           <span class="updateicon" v-if="beforeImg!=''" @click="imagesEvent('beforeImg')">修改</span>
+          <span class="deleteicon" v-if="beforeImg!=''" @click="deleteImagesEvent">删除</span>
           <span class="addicon" v-if="beforeImg==''" @click="imagesEvent('beforeImg')">添加</span>
         </el-col>
       </el-row>  
@@ -267,6 +268,10 @@
         self.$parent.$refs.myimages.show('footer', self, function (self, data, imgSize) { 
           self[seat] = data
         })
+      },
+      deleteImagesEvent:function () {
+        let self = this
+        self.beforeImg = ''
       },
       normalEvent: function (seat) {
         let self = this
@@ -575,6 +580,12 @@
   .updateicon{
     color: #20A0FF;
     line-height: 40px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  .deleteicon{
+    color: #FF0000;
+    line-height: 40px;
     margin-left: 10px;
     cursor: pointer;
   }
@@ -601,5 +612,9 @@
     left: 50%;
     margin-left:-5rem;  
     z-index: 99
+  }
+  .el-dialog--nav .el-dialog__header{
+    border-bottom: 1px solid #CECECE;
+    height: 30px;
   }
 </style>

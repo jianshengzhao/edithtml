@@ -109,11 +109,11 @@
               <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
                 <form class="oneselcourse">
                  <div class="courseradio">
-                    <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" />
+                <!--     <input sourceid="0" sourcename="本校课程"  name="onecourse" type="radio" value="" /> -->
                     <a @click="getsoncourse(0)" class="vc-font2"><span class="vc-inner">本校课程 (<span style="color: red;"> {{mecoursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
                   <div class="courseradio" v-for="(item,index) in schsourcelist">
-                    <input :sourceid="item.sourcecrid" :sourcename="item.name"  name="onecourse" type="radio" value="" />
+                  <!--   <input :sourceid="item.sourcecrid" :sourcename="item.name"  name="onecourse" type="radio" value="" /> -->
                     <a @click="getsoncourse(item.sourcecrid,item.name)" class="vc-font2"><span class="vc-inner">{{item.name}} (<span style="color: red;"> {{item.coursenum}} </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                   </div>
                   <div style="clear: both;"></div>
@@ -151,10 +151,10 @@
                     <a @click="getcwlistall(item.folderid,item.foldername)" class="vc-font2"><span class="vc-inner">{{item.foldername}}</span><span class="vc-fix">此标签不能换行</span></a>
                   </div> -->
                   <div  class="courselist" v-for="(item,index) in courselist">
-                    <input :folderid="item.folderid" :itemid="item.itemid"  :coursewarenum="item.coursewarenum" :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" :iprice="item.iprice" name="fourcourse" type="radio" value="" />
+                    <input :folderid="item.folderid" :itemid="item.itemid"  :coursewarenum="item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum" :checked="infolderid == item.folderid?true:false" :foldername="item.foldername" :img="item.img" :viewnum="item.viewnum" :studynum="item.studynum" :summary="item.summary" :iprice="item.iprice" name="fourcourse" type="radio" value="" />
                     <a @click="parameter.thatName == 'course' ? infolderid = item.folderid  : getcwlistall(item.folderid,item.foldername,item.fprice,item.itemid,1)"  class="vc-font2">
                       <img :src="item.img" ><br/>
-                      <div style="text-align: center;width: 121px;">
+                      <div style="text-align: center;width: 140px;">
                         <h3 class="coursetitle" :title="item.foldername">{{item.foldername}} </h3>
                         <h3  style="display: inline-block;">(<span style="color: red;"> {{item.coursewarenum==undefined?item.coursewareCount:item.coursewarenum}} </span>)</h3>
                       </div>
@@ -244,25 +244,33 @@
                       <a class="vc-font2"><span class="vc-inner">选课中心</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
                     </label>
                     <label class="inlineschoolradio">
+                      <input code="teacherList"  name="oneinlineschool" type="radio" value="" />
+                      <a class="vc-font2"><span class="vc-inner">教师列表</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                    </label>
+                    <label class="inlineschoolradio">
+                      <input code="personalCenter"  name="oneinlineschool" type="radio" value="" />
+                      <a class="vc-font2"><span class="vc-inner">个人中心</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                    </label>
+                 <!--    <label class="inlineschoolradio">
                       <input code="contact"  name="oneinlineschool" type="radio" value="" />
-                      <a class="vc-font2"><span class="vc-inner">联系我们</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                      <a class="vc-font2"><span class="vc-inner">联系我们</span><span class="vc-fix"></span></a>
                     </label>
                     <label class="inlineschoolradio">
                       <input code="register"  name="oneinlineschool" type="radio" value="" />
-                      <a class="vc-font2"><span class="vc-inner">注册</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                      <a class="vc-font2"><span class="vc-inner">注册</span><span class="vc-fix"></span></a>
                     </label>
                     <label class="inlineschoolradio">
                       <input code="password"  name="oneinlineschool" type="radio" value="" />
-                      <a class="vc-font2"><span class="vc-inner">获取密码</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
+                      <a class="vc-font2"><span class="vc-inner">获取密码</span><span class="vc-fix"></span></a>
                     </label>
                     <label class="inlineschoolradio">
                       <input code="username"  name="oneinlineschool" type="radio" value="" />
-                      <a class="vc-font2"><span class="vc-inner">获取用户名</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                    </label>
-                    <div class="inlineschoolradio">
+                      <a class="vc-font2"><span class="vc-inner">获取用户名</span><span class="vc-fix"></span></a>
+                    </label> -->
+                    <!-- <div class="inlineschoolradio">
                       <input code="login"  name="oneinlineschool" type="radio" value="" />
-                      <a @click="getmorelogin()" class="vc-font2"><span class="vc-inner">登录(<span style="color: red;"> 4 </span>)</span><span class="vc-fix"><!-- 此标签不能换行 --></span></a>
-                    </div>
+                      <a @click="getmorelogin()" class="vc-font2"><span class="vc-inner">登录(<span style="color: red;"> 4 </span>)</span><span class="vc-fix"></span></a>
+                    </div> -->
                     <input type="reset" class="oneselinlineschoolReset" style="display: none;" value="Reset">
                   </form>
                   <form class="twoselinlineschool" style="display: none;">
@@ -1047,6 +1055,12 @@
               break
               case 'course':
                 a.attr('href', '/platform.html')
+              break
+              case 'teacherList':
+                a.attr('href', '/shop/school/masterlist.html')
+              break
+              case 'personalCenter':
+                a.attr('href', '/myroom.html')
               break
               case 'contact':
                 a.attr('href', '/contacts.html')
@@ -2091,16 +2105,16 @@
   }
   .hrefdialog  .courselist input{
     position: absolute;
-    left: 20px;
+    left: 5px;
     top: 28%;
   }
   .hrefdialog  .courselist a{
-    width: 120px;
-    height: 100px;
+    width: 148px;
+    height: 120px;
     text-align: center;
     overflow: hidden;
     display: inline-block;
-    margin-left: 40px;
+    margin-left: 20px;
     cursor: pointer;
     /* border:1px solid #fff; */
   }
@@ -2108,8 +2122,8 @@
     text-decoration: none;
   }
   .hrefdialog  .courselist a img{
-    width: 110px;
-    height: 65px;
+    width: 135px;
+    height: 80px
   }
   .hrefdialog  .courselist a h3{
     display:inline-block;
@@ -2119,9 +2133,11 @@
   }
   .hrefdialog .courselist a h3{
     max-width: 120px;
+    font-size: 12px;
+    font-weight: 500;
   }
   .hrefdialog  .courselist a h3.coursetitle{
-    max-width: 84px;
+    max-width: 104px;
   }
   
   

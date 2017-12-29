@@ -1,7 +1,7 @@
 <template>
   <div id="footernav">   
     <el-dialog
-      :title="title"
+      title="底部导航"
       :visible.sync="dialogFooterNav"
       size="footer" 
       @close="beforeCloseEvent">
@@ -153,9 +153,9 @@ export default {
             type: 'warning'
           }) 
           element.remove()
-        } else {
+        } else {          
           self.$refs.footernav.show(element, me)      
-        }       
+        } 
       },
       html: '<div class="footernav module addmodule"  datatext="底部导航"><div class="editbox"></div></div>'
     }
@@ -164,6 +164,7 @@ export default {
     show: function (element, me) { // 导航弹框显示
       let self = this
       self.element = element
+      self.me = me
       self.dialogFooterNav = true
       let navData = self.element.attr('navData')
       if (navData) {
@@ -253,6 +254,16 @@ export default {
           navhtml += '<li class="' + classname + '"><a hrefD="' + item.url + '"><img src="' + item.before + '"><img src="' + item.after + '"><span>' + item.navname + '</span></a></li>'
         }
         self.element.find('.editbox').html(navhtml)
+        let space = self.me.space
+        let tooltop = parseInt($('.top').css('height'))
+        let footernav = $('.footernav')
+        let stop = 683 + tooltop - space.scrollTop()
+        footernav.css('top', stop)
+        space.unbind('scroll')
+        space.on('scroll', function () {          
+          let stop = 683 + tooltop - space.scrollTop()
+          footernav.css('top', stop)
+        })
       }
     },
     beforeCloseEvent: function () { // 导航弹框关闭执行事件
@@ -305,7 +316,6 @@ export default {
     },
     dialogAddNavEvent: function () { // 新增导航确定
       let self = this
-      console.log(self.index)
       let message = ''
       if (self.navname == '') {
         message = '你还未填写导航名称'
@@ -356,7 +366,7 @@ export default {
     },
     hrefsEvent: function () { // 添加链接
       let self = this
-      self.$parent.$refs.hrefdialogp.show('carousel', self, function (self, data, linkType) {
+      self.$parent.$refs.hrefdialogp.show('advert', self, function (self, data, linkType) {
         let urlType = ''
         let urlHref = ''
         let urlRoute = ''
@@ -451,6 +461,14 @@ export default {
               case 'course':
                 urlRoute = '选课中心'
                 urlHref = '/platform.html'
+              break
+              case 'teacherList':
+                urlRoute = '教师列表'
+                urlHref = '/shop/school/masterlist.html'
+              break
+              case 'personalCenter':
+                urlRoute = '个人中心'
+                urlHref = '/myroom.html'
               break
               case 'contact':
                 urlRoute = '联系我们'
@@ -562,22 +580,22 @@ export default {
   .footernav{
     width: 375px;
     left:50%!important;
-    top: 718px!important;
+    top: 718px;
     margin-left: -211px;
     display: none;
     z-index: 100;
   }
   .spaceon .footernav{
-    top: 751px!important;
+    top: 751px;
   }
-  .onsupendTools{
-    position: fixed;
+  .onsupendTools{ 
+    display:block!important; 
     left:50%!important;
-    top: 718px!important;
-    margin-left: -215px;
+    top: 640px!important;
+    margin-left: -188px;
   }
   .spaceon .onsupendTools{
-    top: 750px!important; 
+    top: 640px!important; 
   }
   .footernav .resize{
     display: none;

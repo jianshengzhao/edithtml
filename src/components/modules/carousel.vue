@@ -582,14 +582,14 @@ export default {
       width: 180px;
     }
     #carousel .el-input{
-      height: 31px;
-      line-height: 31px;
+      height: 32px;
+      line-height: 32px;
       overflow: hidden;
     }
     #carousel .el-input-number{
       float: left;
     }
     #carousel .el-input-number__decrease, #carousel .el-input-number__increase{
-      height: 28px;
+      height: 30px;
     }
 </style>

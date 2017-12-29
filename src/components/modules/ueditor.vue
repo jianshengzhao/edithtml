@@ -59,17 +59,17 @@ export default {
   },
   methods: { 
     dialogEditorEvent: function () {
-        let self = this
-        let content = self.editor.getContent()
-        let h = $('.ueditor .edui-editor-iframeholder').css('height')
-        self.dialogEditor = false
-        let element = $('.on_module')
-        let editorCon = element.find('.editorCon')
-        editorCon.html(content)
-        let editheight = parseInt(editorCon.css('height')) / 37.5 + 0.6
+      let self = this
+      let content = self.editor.getContent()
+      let h = $('.ueditor .edui-editor-iframeholder').css('height')
+      self.dialogEditor = false
+      let element = $('.on_module')
+      let editorCon = element.find('.editorCon')
+      editorCon.html(content)
+      let editheight = parseInt(editorCon.css('height')) / 37.5 + 0.6
 
-        element.css('height', editheight + 'rem')
-        element.find('.resizeBox').css('height', editheight + 'rem')
+      element.css('height', editheight + 'rem')
+      element.find('.resizeBox').css('height', editheight + 'rem')
     },
     show: function () {
       let self = this 
