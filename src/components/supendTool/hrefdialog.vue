@@ -4,7 +4,7 @@
       title="设置链接"
       :visible.sync="visdialog"
       :close-on-click-modal="false"
-      size="hrefs">
+      class="el-dialog-visdialog">
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
@@ -47,7 +47,7 @@
                 <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newsthreembx"  style="display: none;"><a></a></span>
-                <el-input icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
+                <el-input suffix-icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
               </div>
               <div class="newscont">
                 <form class="oneselnews">
@@ -103,8 +103,8 @@
                 <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
-                <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
-                <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
+                <el-input  suffix-icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
+                <el-input  suffix-icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
               </div>
               <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
                 <form class="oneselcourse">
@@ -211,7 +211,7 @@
             <div class="tab-content">
               <div class="teambx mbx">
                 <span class="teaonembx"><a @click="indexinit()">教师</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                <el-input  icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
+                <el-input  suffix-icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
               </div>
               <div class="teacont">
                 <el-col class="teaflowx" style="height: 450px;overflow-x: hidden;">
@@ -430,6 +430,7 @@
               pagesize: 1000
             }
           }, {emulateJSON: true}).then(function (response) {
+            if (response.data.code != 0) return false
             let list = response.data.data.list
             if (list.length) {
               for (var i = 0; i < list.length; i++) {
@@ -453,9 +454,10 @@
             params: {
             }
           }, {emulateJSON: true}).then(function (response) {
+            if (response.data.code != 0) return false
             let list = response.data.data[1]
             let list1 = response.data.data[0]
-            self.mecoursenum = 0;
+            self.mecoursenum = 0;           
             if(list1.length){
               for(var i=0;i<list1.length;i++){
                 self.mecoursenum = self.mecoursenum + list1[i].coursenum
@@ -2723,14 +2725,13 @@
   .hrefdialog *{
     font-size: 14px;
   }
+  .el-dialog-visdialog .el-dialog{
+    width: 1000px;
+  }
   .hrefdialog .el-dialog__title{
     font-size: 16px;
-  }
-  .hrefdialog .el-dialog--hrefs{
-    width: 1000px;
-    /*height: 720px;*/
-  }
-  .hrefdialog .el-dialog--hrefs .el-dialog__body{
+  } 
+  .hrefdialog .el-dialog__body{
     padding: 5px 0px;
   }
   .hrefdialog .tabs-vertical{
@@ -2739,7 +2740,7 @@
     border: 1px solid #CECECE;
     border-right:none;
     border-left:none;
-    margin: 20px auto 10px;
+    margin: 5px auto 10px;
     border-radius: 2px;
     height: 552px;
     color: #333333;
@@ -2976,10 +2977,7 @@
   .hrefdialog .tabs-vertical .tabs-content-placeholder div img{
     max-width: 100%;
     margin-top:5px;
-  }
-  .hrefdialog .el-dialog__body{
-    padding: 5px 10px
-  }
+  }  
   .hrefdialog .vc-font2:hover{
     border:1px solid red;
     box-sizing: border-box;

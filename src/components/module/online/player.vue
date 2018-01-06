@@ -3,7 +3,7 @@
     <el-dialog
       title="播放器"
       :visible.sync="dialogPlayer"
-      size="player"
+      class="el-dialog--player"
       @close="beforeCloseEvent">
       <el-row style="margin-bottom: 60px;">
         <el-col :span="4" class="right" >选择样式：</el-col>
@@ -136,16 +136,16 @@ export default {
     },
     addPlayerEvent: function () { // 添加视频
       let self = this
-      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {       
+      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {
         self.playerData.push({
           title: data.cwname,
           desc: data.summary,
-          thumb:data.thumb,
+          thumb: data.cover || data.thumb,
           size: data.cwsize,
           pic: data.logo,
           cwid: data.cwid,
           styleNum: data.viewnum
-        })
+        })        
       }) 
     },
     updatePlayerEvent: function (index) { // 修改视频
@@ -154,7 +154,7 @@ export default {
         self.playerData.splice(index,1,{
           title: data.cwname,
           desc: data.summary,
-          thumb:data.thumb,
+          thumb: data.cover || data.thumb,
           size: data.cwsize,
           pic: data.logo,
           cwid: data.cwid,
@@ -195,7 +195,7 @@ export default {
       } 
 
       let cover = self.element.find('.editPlayer').find('img')
-      cover.attr('src', self.playerData[0].pic)
+      cover.attr('src', self.playerData[0].thumb)
 
       let obj = {
         selectStyle: self.selectStyle, 
@@ -218,7 +218,7 @@ export default {
 }
 </script>
 <style>
-  .el-dialog--player {
+  .el-dialog--player .el-dialog{
     width: 500px;
   }
   #player .el-row {

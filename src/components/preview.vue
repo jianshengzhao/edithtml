@@ -1,17 +1,17 @@
 <template>
   <div id="preview">
     <div class="top">
-      <div class="t_right">
-        <div class="tl_li" style="margin-left:50px;" @click="saveEvent">
-          <i class="tImgicon icon-save"></i>
-          <span>保存</span>
-        </div>
+     <!--  <div class="t_right"> -->
         <div class="tl_li" @click='returnEvent'>
           <i class="tImgicon icon-exits"></i>
           <span>返回</span>
         </div>
-      </div> 
-    </div>
+        <div class="tl_li" style="margin-left:50px;" @click="saveEvent">
+          <i class="tImgicon icon-save"></i>
+          <span>保存</span>
+        </div>        
+      </div>
+  <!--   </div> -->
     <div class="content">
       <div class="head"></div>
       <div class="middle"></div>
@@ -46,21 +46,55 @@
           if (C.attr('carouseldata')) {
             D = $.parseJSON(C.attr('carouseldata'))
           } else {
-            let ds = '{"changeStyle":false,"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg","clickurl":""}]}'
+            let ds = '{"carouseltype":"one","showhref":"false","changeStyle":false,"showWidth":1200,"showTime":5,"transitionTime":0.6,"carouselData":[{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner1.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner2.jpg","clickurl":""},{"imgurl":"http://static.ebanhui.com/ebh/tpl/newschoolindex/images/slide_banner3.jpg","clickurl":""}]}'
             D = $.parseJSON(ds)
           }
           let bloo = D.changeStyle
           let d = D.carouselData
+          let carouseltype = D.carouseltype
+          let showhref = D.showhref
           let Lw = parseInt($('.screenBox').css('width'))
           let Uw
-          let H = bloo ? '' : '<div class="img_li"><a href="' + d[d.length - 1].clickurl + '" target="_blank"><img src="' + d[d.length - 1].imgurl + '"></a></div>'
+          let H
+          if (d[d.length - 1].urlType == "外部链接"){
+             H = bloo ? '' : '<div class="img_li"><a href="' + d[d.length - 1].clickurl + '" target="_blank"><img src="' + d[d.length - 1].imgurl + '"></a></div>'
+          }else{
+            if (showhref == 'true'){
+               H = bloo ? '' : '<div class="img_li"><a href="' + d[d.length - 1].clickurl + '" target="_blank"><img src="' + d[d.length - 1].imgurl + '"><div class="img_bg"></div><div class="img_title" title="'+ d[d.length - 1].urltitle+'">'+ d[d.length - 1].urltitle+'</div></a></div>'
+            }else{
+               H = bloo ? '' : '<div class="img_li"><a href="' + d[d.length - 1].clickurl + '" target="_blank"><img src="' + d[d.length - 1].imgurl + '"></a></div>'
+            }
+          }
+
           let Hb = ''
           for (let i = 0, len = d.length; i < len; i++) {
             let m = d[i]
-            H += '<div class="img_li"><a href="' + m.clickurl + '" target="_blank"><img src="' + m.imgurl + '"></a></div>'
-            Hb += '<li></li>'
+            if (m.urlType == "外部链接" || m.urltitle == ''){
+              H += '<div class="img_li"><a href="' + m.clickurl + '" target="_blank"><img src="' + m.imgurl + '"></a></div>'
+            }else{
+              if (showhref == 'true'){
+                H += '<div class="img_li"><a href="' + m.clickurl + '" target="_blank"><img src="' + m.imgurl + '"><div class="img_bg"></div><div class="img_title" title="'+ m.urltitle+'">'+ m.urltitle+'</div></a></div>'
+              }else{
+                H += '<div class="img_li"><a href="' + m.clickurl + '" target="_blank"><img src="' + m.imgurl + '"></a></div>'
+              }
+            }
+            if (carouseltype == 'one'){
+              Hb += '<li></li>'
+            }else if (carouseltype == 'two'){
+              Hb += '<li><div></div><span>'+ (i+1) +'</span></li>'
+            }
+
           }
-          H += bloo ? '' : '<div class="img_li"><a href="' + d[0].clickurl + '" target="_blank"><img src="' + d[0].imgurl + '"></a></div>'
+          if ( d[0].urlType == "外部链接" || d[0].urltitle == ''){
+            H += bloo ? '' : '<div class="img_li"><a href="' + d[0].clickurl + '" target="_blank"><img src="' + d[0].imgurl + '"></a></div>'
+          }else{
+            if (showhref == 'true'){
+              H += bloo ? '' : '<div class="img_li"><a href="' + d[0].clickurl + '" target="_blank"><img src="' + d[0].imgurl + '"><div class="img_bg"></div><div class="img_title" title="'+d[0].urltitle+'">'+ d[0].urltitle+'</div></a></div>'
+            }else{
+              H += bloo ? '' : '<div class="img_li"><a href="' + d[0].clickurl + '" target="_blank"><img src="' + d[0].imgurl + '"></a></div>'
+            }
+          }
+
           if (bloo) {
             let x = $('.screenBox')
             x.addClass('screenBox2')
@@ -70,7 +104,7 @@
           }
           U.html(H)
           B.html(Hb)
-          let imgLi = $('.img_li')
+          let imgLi = C.find('.img_li')
           imgLi.css('width', D.showWidth + 'px')
         // ------------动        画------------
           U.addClass('transition')
@@ -227,7 +261,7 @@
     created: function () { // 增加白名单，各模块所加载的js
       let self = this
       let hash = window.location.hash
-      let paramArr = hash.split('?')      
+      let paramArr = hash.split('?')
       if (paramArr.length > 1) {
         let paramdid = paramArr[1].split('&')
         for (let i = 0, len = paramdid.length; i < len; i++) {
@@ -236,30 +270,19 @@
             self.did = item.split('=')[1]
             break
           }
-        }       
+        }
       }
       $('#previewStyle').remove()
       if (!window.saveParams) return false
       let params = window.saveParams
       let pp = params.page
-      console.log(params)
       let style = '<style id="previewStyle">' +
                   'body a[href]:hover{color:' + pp.fontHover + ';}' +
-                  'body,#preview{background-color:' + pp.bg + ';' +
-                    'background-attachment:' + pp.bgImage.backgroundAttachment + ';' +
-                    'background-image:' + pp.bgImage.backgroundImage + ';' +
-                    'background-repeat:' + pp.bgImage.backgroundRepeat + ';' +
-                    'background-size:' + pp.bgImage.backgroundSize + ';' +
-                  '}' +
-                  '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + ';' + 
-                    'background-attachment:' + pp.pgImage.backgroundAttachment + ';' +
-                    'background-image:' + pp.pgImage.backgroundImage + ';' +
-                    'background-repeat:' + pp.pgImage.backgroundRepeat + ';' +
-                    'background-size:' + pp.pgImage.backgroundSize + ';' +
-                  '}' +
-                  '.head{height:' + pp.top + ';}' +
-                  '.middle{height:' + pp.body + ';}' +
-                  '.foot{height:' + pp.foot + ';}' +
+                  'body,#preview{background-color:' + pp.bg + '}' +
+                  '.content{width:' + pp.width + ';height:' + pp.height + ';background-color:' + pp.pg + '}' +
+                  '#preview .head{height:' + pp.top + ';}' +
+                  '#preview .middle{height:' + pp.body + ';}' +
+                  '#preview .foot{height:' + pp.foot + ';}' +
                   '</style>'
       $('head').append(style)
       self.$nextTick(function () {
@@ -273,7 +296,7 @@
         let carousel = $('.carousel')
         for (let i = 0, len = carousel.length; i < len; i++) {
           self.carouselEvent(self, carousel.eq(i), i)
-        }       
+        }
         // let newscarouseldata = $('.news').attr('carouseldata') || ''
         // self.getnews(newscarouseldata)
         self.switchPwd()
@@ -325,7 +348,7 @@
           for (let j = 0, jen = playerData.length; j < jen; j++) {
             let cwid = playerData[j].cwid
             if (!vedioidObj[cwid]) {
-              vedioids.push(cwid) 
+              vedioids.push(cwid)
               vedioidObj[cwid] = true
             }
           }
@@ -368,12 +391,12 @@
   }
 </script>
 <style>
-/*top*/  
+/*top*/
   #preview .top{
     padding-top: 3px;
     padding-left: 10px;
-    padding-right: 60px;
-    position: relative;    
+    padding-right: 30px;
+    position: relative;
     min-width: 1024px;
     border-bottom: 1px solid #d9d9d9;
     z-index: 4;
@@ -382,22 +405,27 @@
     float: left;
     width: 100%;
     box-sizing: border-box;
-    height: 34px;
+    height: 54px;
     z-index:1001;
   }
-  .top>div{
-    height: 28px;
+ /* .top>div{
+    margin-top: 2px;
+    width: 50px;
+    height: 50px;
+  }*/
+  #preview .tl_li{
+    float: right;
   }
   .t_logo{
     float: left;
-    width: 20px; 
+    width: 20px;
   }
   .t_left{
     float: left;
-    width: 380px;  
+    width: 200px;
     height: 28px;
   }
-  .tl_li{
+  /*.tl_li{
     position: relative;
     padding: 2px 4px 0 2px;
     border-radius: 2px;
@@ -405,11 +433,11 @@
     display: inline-block;
     height: 24px;
     margin: 2px ;
-    cursor: pointer; 
-    text-align: center; 
-    border:1px solid #fff;  
+    cursor: pointer;
+    text-align: center;
+    border:1px solid #fff;
     box-sizing: border-box;
-  }
+  }*/
     .tl_li_on{
       background: rgba(0, 0, 0, 0.04);
       border-color:rgba(0,0,0,.1);
@@ -423,7 +451,7 @@
     .top .tl_li_Disable i{
       color: #cacaca;
     }
-    .tl_li i{
+   /* .tl_li i{
       float: left;
       font-size: 18px;
       line-height: 18px;
@@ -431,17 +459,17 @@
     }
     .tl_li>span{
       float: left;
-      text-indent: 2px;    
+      text-indent: 2px;
       font-size: 12px;
       height: 18px;
       line-height: 18px;
       color: #525e71;
       padding-left: 2px;
-    }
-    .tl_li:hover .toolbar{
+    }*/
+   #preview  .tl_li:hover .toolbar{
       display: block;
-    } 
-    .tl_li_Disable:hover .toolbar{
+    }
+   #preview  .tl_li_Disable:hover .toolbar{
       display: none;
     }
     .toolbar{
@@ -468,23 +496,23 @@
       margin-top: -3px;
       margin-right:5px;
       float: left;
-    }  
+    }
     .toolbar input::-webkit-inner-spin-button{
       display: none;
     }
     #preview .t_right{
-      position: absolute;    
+      position: absolute;
       width: 180px;
       height: 28px;
       top: 3px;
       right: 4px;
       text-align: left;
-    } 
-    .toolbar .el-col{
+    }
+    #preview .toolbar .el-col{
       height: 36px;
       line-height: 36px;
     }
-    .toolbar .el-input__inner{
+    #preview .toolbar .el-input__inner{
       height: 30px;
       width: 80px;
       color: #555;
@@ -494,10 +522,10 @@
     overflow-y:auto;
     height: 100%;
   }
-  .content{
-    margin: 0 auto;
+  #preview .content{
+    margin: 54px auto;
   }
-  .head, .middle, .foot{
+  #preview .head, #preview .middle, #preview .foot{
     width: 100%;
     position: relative;
   }

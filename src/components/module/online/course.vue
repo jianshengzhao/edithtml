@@ -3,7 +3,7 @@
     <el-dialog
       :title="title"
       :visible.sync="dialogCourse"
-      size="course" 
+      class="el-dialog--course" 
       @close="beforeCloseEvent"
       >
       <el-row>
@@ -210,7 +210,7 @@ export default {
 }
 </script>
 <style>
-  .el-dialog--course {
+  .el-dialog--course .el-dialog{
     width: 500px;
   }
   #course .el-row {

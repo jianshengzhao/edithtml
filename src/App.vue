@@ -35,7 +35,7 @@
     <div class="library" unselectable="on" onselectstart="return false;">
       <div class="lib_box">
         <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol basicBox"></div>
+        <div class="lib_ol basicBox" style="height: 0px;"></div>
         <div class="header basichead">网校组件 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol onlineBox"></div>
       </div>
@@ -187,7 +187,7 @@
           </div>
           <div class="con-erow opacity">
             <span class="tip">透明度：</span>
-            <el-slider v-model="inp_opacity" :disabled='disabled' @change='changeOpacity'></el-slider>
+            <!-- <el-slider v-model="inp_opacity" :disabled='disabled' @change='changeOpacity'></el-slider> -->
             <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>
           </div>
         </div>
@@ -280,39 +280,42 @@
   <!-- 页面设置 -->
     <el-dialog
       title="页面设置"
-      :visible.sync="dialogPageSetting"
-      size="pageSet" class="dialogSetting">
-      <el-tabs v-model="activeSetting" type="card" >
-        <el-tab-pane label="页面设置" name="first" >
+      :visible.sync="dialogPageSetting"      
+      class="dialogSetting">
+      <el-tabs v-model="activeSetting">
+        <el-tab-pane label="基础设置" name="first" >
           <el-row>
-            <el-col :span="5" class="tit">背景色</el-col>
+            <el-col :span="4" class="tit">背景色</el-col>
             <el-col :span="7">
               <!-- <el-color-picker v-model="bgColorVal"></el-color-picker> -->
-              <colorPicker v-model="bgColorVal" ></colorPicker>
+            <!--   <colorPicker v-model="bgColorVal" ></colorPicker> -->
+              <el-color-picker v-model="bgColorVal"></el-color-picker>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="5" class="tit">前景色</el-col>
+            <el-col :span="4" class="tit">前景色</el-col>
             <el-col :span="7">
              <!--  <el-color-picker v-model="prospectColorVal" ></el-color-picker> -->
-              <colorPicker v-model="prospectColorVal" ></colorPicker>
+             <!--  <colorPicker v-model="prospectColorVal" ></colorPicker> -->
+              <el-color-picker v-model="prospectColorVal"></el-color-picker>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="5" class="tit">文字链接hover</el-col>
+            <el-col :span="4" class="tit">链接hover</el-col>
             <el-col :span="7">
               <!-- <el-color-picker v-model="fontHoverColorVal" ></el-color-picker> -->
-              <colorPicker v-model="fontHoverColorVal" ></colorPicker>
+             <!--  <colorPicker v-model="fontHoverColorVal" ></colorPicker> -->
+              <el-color-picker v-model="fontHoverColorVal"></el-color-picker>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="5" class="tit">页宽</el-col>
+            <el-col :span="4" class="tit">页宽</el-col>
             <el-col :span="7">
               <el-input-number v-model="inp_width" :step="100" size="small"></el-input-number>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="5" class="tit">页高</el-col>
+            <el-col :span="4" class="tit">页高</el-col>
             <el-col :span="7">
               <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
             </el-col>
@@ -443,6 +446,8 @@
     <edittab ref="edittab"></edittab>
     <addsearch ref="addsearch"></addsearch>     
     <suspendCase ref="suspendCase"></suspendCase>
+    <calendar ref="calendar"></calendar>
+    <scene ref="scene"></scene>
   <!-- <weather ref="weather"></weather> -->
   <!-- <effect ref="effect"></effect> -->
   </div>
@@ -479,6 +484,8 @@
   import edittab from '@/components/module/online/edittab'  
   import addsearch from '@/components/module/online/addsearch' 
   import suspendCase from '@/components/module/online/suspendCase' 
+  import calendar from '@/components/module/online/calendar' 
+  import scene from '@/components/module/online/scene'
   /* import weather from '@/components/module/online/weather' */
   
   import '@/assets/animate.min.css'
@@ -511,7 +518,9 @@
       addcoursetype,
       edittab,     
       addsearch,
-      suspendCase
+      suspendCase,
+      calendar,
+      scene
     },
     data: function () {
       return {
@@ -1279,6 +1288,13 @@
 </script>
 
 <style>
+  .dialogSetting .el-dialog{
+    width: 500px;
+  }
+  .dialogSetting .el-dialog__body{
+    padding: 0 20px;
+    height: 360px;
+  }
   /*header*/
     .el-dialog__header{
       cursor: move;
@@ -1489,7 +1505,7 @@
     .getRegion{
       position: absolute;
       z-index: 200;
-      background-color: rgba(245, 93, 84, 0.5);
+      background-color: rgba(64, 158, 255, 0.5);
     }
   /*边框*/
     .pick{
@@ -2232,7 +2248,7 @@
       display: block;
       width: 200px;
       height: 50px;
-      background-color: rgba(245,93,84,0.6);
+      background-color: rgba(64, 158, 255, 0.6);
       z-index: 100;
      /* border: 1px dotted #333;*/
     }
@@ -2344,11 +2360,11 @@
       position: absolute;
       top: 0;
       left: 0;
-      border: 1px solid #f55d54;
+      border: 1px solid #20a0ff;
       width: 100%;
       height: 100%;
       box-sizing:border-box;
-      background-color: rgba(245, 93, 84, 0.5);
+      background-color: rgba(32, 160, 255, 0.5);
       z-index: 100;
     }
     .resizeBox{

@@ -3,7 +3,7 @@
     <el-dialog
       title="客服"
       :visible.sync="dialogWaiter"
-      size="waiter" >
+      class="el-dialog-waiter" >
       <el-row style = 'margin-bottom: 56px;'>
         <el-col :span="4">显示方式：</el-col>
         <el-col :span="18">
@@ -153,7 +153,7 @@ export default {
 }
 </script>
 <style>
-  .el-dialog--waiter {
+  .el-dialog-waiter .el-dialog{
     width: 500px;
   }
   #waiter .el-dialog__header {

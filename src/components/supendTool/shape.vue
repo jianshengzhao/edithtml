@@ -3,7 +3,7 @@
     <el-dialog
       title="图片形状"
       :visible.sync="dialogShape"
-      size="tiny">
+      class="el-dialog--dialogShape">
       <ul class="selectLi" >
         <li @click="selectLiEvent('artwork')" :class="addClassVal=='artwork'?'on':''">
           <div class="imgbox">          
@@ -107,11 +107,15 @@ export default {
   .m-shape{
     position:relative;
   }
-  .m-shape .el-dialog--tiny{
+  .el-dialog--dialogShape .el-dialog{
     width: 400px;
+  }
+  .el-dialog--dialogShape .el-dialog__body{
+    padding: 10px 20px;
   }
   .m-shape .selectLi{  
     overflow: hidden;  
+    height: 300px;
   }
   .m-shape .selectLi li{
     float: left;

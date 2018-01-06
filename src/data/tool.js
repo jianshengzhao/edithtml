@@ -211,6 +211,27 @@
             ele.css('fontSize', val + 'px')
             if(parseInt(ele.css('lineHeight')) < val) {
               ele.css('lineHeight', val + 'px')
+              self.inp_line = val
+            }
+            if(ele.hasClass("information")){
+            	if(ele.attr("infortype") == "2"){
+            		var rowspacing = ele.attr("rowspacing");
+	            	if(ele.attr("isscroll") == "2"){
+	            		var allheight = parseInt(ele.find('.infor-wrap-txt').length) * (parseInt(val) + parseInt(rowspacing));
+			            ele.css('height', allheight+ 'px')
+			            ele.find('.resizeBox').css('height',allheight + 'px')
+			            ele.find('.infor-wrap-txt').css({
+			            	'height':val + "px",
+			            	'lineHeight':val + "px",
+			            	'margin-bottom': self.rowspacing + "px"
+			            });
+			            ele.find('.infor-icon').css({
+			            	'width':val + "px",
+			            	'height':val + "px",
+			            	'lineHeight':val + "px"
+			            });
+	            	}
+            	}
             }
           }
           break

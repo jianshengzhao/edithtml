@@ -2,8 +2,8 @@
   <div class="editbutton">
     <el-dialog
       title="设置样式"
-      :visible.sync="dialogeditbutton"
-      size="editbutton">
+      :visible.sync="dialogeditbutton"     
+      class="el-dialog-editbutton">
       <el-tabs v-model="activeName">
         <el-tab-pane label="样式" name="first">
           <el-row>
@@ -178,10 +178,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-  .el-dialog--editbutton{
+  .el-dialog-editbutton .el-dialog{
     width: 600px;
   }
-  .el-dialog--editbutton .editbuttonlist{
+  .el-dialog-editbutton .editbuttonlist{
     width: 162px;
     height: 122px;
     border:1px solid #f2f2f2;
@@ -190,10 +190,10 @@ export default {
     cursor: pointer;
 
   }
-  .el-dialog--editbutton .editbuttonlist:hover,.el-dialog--editbutton .typeactive{
+  .el-dialog-editbutton .editbuttonlist:hover,.el-dialog-editbutton .typeactive{
     border-color: #8DC526;
   }
-  .el-dialog--editbutton .buttonstyle{
+  .el-dialog-editbutton .buttonstyle{
     width: 96px;
     height: 32px;
     margin: 0 auto;

@@ -3,7 +3,7 @@
     <el-dialog
       title="编辑标签"
       :visible.sync="dialogedittab"
-      size="edittab">
+      class="el-dialog--edittab">
       <el-row>
         <el-col>
           <el-form ref="edittabform" label-width="85px">
@@ -274,7 +274,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-  .el-dialog--edittab{
+  .el-dialog--edittab .el-dialog{
     width: 460px;
   }
   .el-dialog--edittab .el-dialog__body{

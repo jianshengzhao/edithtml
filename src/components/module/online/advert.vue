@@ -3,7 +3,7 @@
     <el-dialog
       title="悬浮广告"
       :visible.sync="dialogAdvert"
-      size="advert"
+      class="el-dialog--advert"
       @close="beforeCloseEvent" >
       <el-row style="margin-bottom: 26px;">
         <el-col :span="4">悬浮方式</el-col>
@@ -394,7 +394,7 @@ export default {
 }
 </script>
 <style>
-  .el-dialog--advert {
+  .el-dialog--advert .el-dialog{
     width: 500px;
   }
   #advert .el-dialog__header {

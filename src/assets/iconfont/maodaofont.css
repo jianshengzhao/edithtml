@@ -45,7 +45,8 @@
 .icon-addtab { background-image: url(../newslibIcon/addicon.png); }
 .icon-addsearch { background-image: url(../newslibIcon/search.png); }
 .icon-addcoursetype { background-image: url(../newslibIcon/coursetype.png);}
-
+.icon-scene{ background-image: url(../newslibIcon/scene.png); }
+.icon-calendar{ background-image: url(../newslibIcon/calendar.png); }
 
 .lib_li:hover .icon-advert { background-image: url(../newslibIcon/advert2.png);  }
 .lib_li:hover .icon-button { background-image: url(../newslibIcon/button2.png);  }
@@ -72,6 +73,8 @@
 .lib_li:hover .icon-addtab { background-image: url(../newslibIcon/addicon2.png); }
 .lib_li:hover .icon-addsearch { background-image: url(../newslibIcon/search2.png); }
 .lib_li:hover .icon-addcoursetype { background-image: url(../newslibIcon/coursetype2.png);}
+.lib_li:hover .icon-scene { background-image: url(../newslibIcon/scene2.png);}
+.lib_li:hover .icon-calendar { background-image: url(../newslibIcon/calendar2.png);}
 
 /* ------------------------------- tool -------------------------------------*/
 .tImgicon{

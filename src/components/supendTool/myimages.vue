@@ -4,7 +4,7 @@
 		<el-dialog
 		    title="添加图片"
 		    :visible.sync="dialogmyPicture"
-		    size="mypicture"
+		    class="el-dialog-mypicture"
 		    :close-on-click-modal="false"
 		    @open="openMypic"
 		    @close="closeMypic">
@@ -459,7 +459,7 @@
 		       						var photos = datas.data.photos;
 		       						var oDiv = "";
 									for(let i in photos){
-										var oDiv = "<div class='waterfall' style='height:" + photos[i].picheight +"px' title="+photos[i].photoname+"><img class='' style='height:"+photos[i].picheight+"px' src="+photos[i].imgurl+"  dataW='"+ (photos[i].width|| false) +"' dataH='"+ (photos[i].height|| false) +"'/><span class='checked_falls'></span></div>"
+										var oDiv = "<div class='waterfall' style='height:" + photos[i].picheight +"px' title=" +photos[i].photoname+"&nbsp;"+photos[i].width+ "×" +photos[i].height+ "><img class='' style='height:"+photos[i].picheight+"px' src="+photos[i].imgurl+"  dataW='"+ (photos[i].width|| false) +"' dataH='"+ (photos[i].height|| false) +"'/><span class='checked_falls'></span></div>"
 										$("#waterfall-box").append(oDiv);
 									}
 		       						change();
@@ -947,7 +947,10 @@
 </script>
 <!--我的图片库样式-->
 <style type="text/css">
-	.el-dialog--mypicture .el-dialog__body{
+	.el-dialog-mypicture .el-dialog{
+		width: 943px;
+	}
+	.el-dialog-mypicture .el-dialog__body{
 		width: 943px;
 		height: 534px;
 		border-top: 1px solid #ccc;
@@ -956,13 +959,13 @@
 		margin: 20px 0 10px 0;
 		position: relative;
 	}
-	.el-dialog--mypicture .pic_ul{
+	.el-dialog-mypicture .pic_ul{
 		width:140px;
 		height:135px;
 		float:left;
 		position: relative;
 	}
-	.el-dialog--mypicture .pic_li{
+	.el-dialog-mypicture .pic_li{
 		width: 140px;
 		height: 65px;
 		line-height: 65px;

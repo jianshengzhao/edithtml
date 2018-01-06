@@ -3,7 +3,7 @@
     <el-dialog
       title="课程导航"
       :visible.sync="dialogaddcoursetype"
-      size="addcoursetype" >
+      class="el-dialog--addcoursetype" >
       <el-row>
         <el-col>
           <el-form :rules="rules" ref="courseobj" :model="courseobj" label-width="110px">
@@ -358,7 +358,7 @@ export default {
 }
 </script>
 <style>
-  .el-dialog--addcoursetype {
+  .el-dialog--addcoursetype .el-dialog{
     width: 600px;
   }
   #addcoursetype .el-dialog__header {

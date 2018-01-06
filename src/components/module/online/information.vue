@@ -3,7 +3,7 @@
     <el-dialog
         title="资讯"
         :visible.sync="dialogInformation"
-        size="myinformation"
+        class="el-dialog--myinformation"
         :close-on-click-modal="false"
         @open="openInformation"
         :before-close="beforeclose">
@@ -24,12 +24,22 @@
                 <p class="desc">纯文字</p>
               </div>
             </div>
+            <div class="scroll-wrap" v-if="infortype == 2">
+              <div class="infordesc">是否滚动：</div>
+              <el-radio v-model="isscroll" label="1">是</el-radio>
+              <el-radio v-model="isscroll" label="2">否</el-radio>
+            </div>
             <div class="icon-wrap" v-if="infortype == 2">
               <div class="infordesc">前置图标：</div>
               <img :src="beforeImg" v-if="beforeImg!=''">
               <span class="updateicon" v-if="beforeImg!=''" @click="imagesEvent('beforeImg')">修改</span>
               <span class="deleteicon" v-if="beforeImg!=''" @click="deteleEvent('beforeImg')">删除</span> 
               <span class="addicon" v-if="beforeImg==''" @click="imagesEvent('beforeImg')">添加</span>
+            </div>
+            <div class="rows-wrap" v-if="infortype == 2">
+              <div class="infordesc" style="text-indent: 10px;">行间距：</div>
+              <el-input-number v-model="rowspacing" :min="5" :max="50"></el-input-number>
+              <span class="rows-tips">（5~50）</span>
             </div>
             <div class="classify-wrap">
               <div class="infordesc">资讯分类：</div>
@@ -63,11 +73,13 @@
         infortype:1,
         optionsclassify:[],
         propsclassify:{
-                label: 'name',
-                value: 'code',
+          label: 'name',
+          value: 'code',
           children: 'subnav',
         },
+        isscroll:'2',
         beforeImg:'',
+        rowspacing:'5',
         selectedclassify: [],
         num1:1,
         num2:5,
@@ -188,22 +200,56 @@
           },
           public: []
         },
-        resize: [], // 拉伸方向: 默认为空,自由拉伸
+        resize: ['w','e'], // 拉伸方向: 默认为空,自由拉伸
         resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调          
-          let inforCon = parent.find('.inforCon')
-          let infor_wrap = parent.find('.infor-wrap')
-          let infor_desc = parent.find('.infor-desc')
-          let inforheight = parseInt(parent.css('height'))
-          let infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60 
-          let infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
+          // let inforCon = parent.find('.inforCon')
+          // let infor_wrap = parent.find('.infor-wrap')
+          // let infor_desc = parent.find('.infor-desc')
+          // let inforheight = parseInt(parent.css('height'))
+          // let infor_wrap_width = self.inp_w - 60 <= 490?490:self.inp_w - 60 
+          // let infor_desc_width = self.inp_w - 60 - 210 <= 280?280:self.inp_w - 60 - 210
           
-          resizeBox.css({'width': self.inp_w + 'px','height': inforheight + 'px'}) // 资讯拉伸规则         
-          inforCon.css({'width': self.inp_w + 'px'})        
-          infor_wrap.css({'width': infor_wrap_width + 'px'})          
-          infor_desc.css({'width': infor_desc_width + 'px'}) //资讯拉伸规则
-        },
-        // beforeSelecting: function (self, element, me) { // 选中元素要执行的特殊操作 
-        // },   
+          // resizeBox.css({'width': self.inp_w + 'px','height': inforheight + 'px'}) // 资讯拉伸规则         
+          // inforCon.css({'width': self.inp_w + 'px'})        
+          // infor_wrap.css({'width': infor_wrap_width + 'px'})          
+          // infor_desc.css({'width': infor_desc_width + 'px'}) //资讯拉伸规则
+
+            var inforheight = parseInt(parent.css('height'))
+            var $li = parent.find('.infor-li-scroll')
+            var maxinfoWidth = 0;
+            var inforlen = $li.length
+            for(let i=0;i<inforlen;i++){
+              maxinfoWidth += (parseFloat($li.eq(i).width()) + 10);
+            }
+            maxinfoWidth = Math.ceil(maxinfoWidth)
+            self.inp_w = parseInt(parent.css('width'))
+            if(parent.find(".infor-wrap-pic").length > 0){
+              self.inp_w = self.inp_w<=550?550:self.inp_w;
+            }else if(parent.find(".infor-wrap-txt").length > 0){
+              self.inp_w = self.inp_w<=150?150:self.inp_w;
+            }else if(parent.find(".infor-wrap-scroll").length > 0){
+              self.inp_w = self.inp_w<=150?150:self.inp_w;
+              self.inp_w = self.inp_w>=parseInt(maxinfoWidth/2)?parseInt(maxinfoWidth/2):self.inp_w;
+            }
+            parent.css({'width': self.inp_w + 'px','height': inforheight + 'px'})
+            resizeBox.css({'width': self.inp_w + 'px','height': inforheight + 'px'})
+            parent.find(".infor-txt-p").css('width',(parent.find(".infor-txt-pic").width() - 210) + 'px')
+            parent.find(".infor-titlea").css('width',(parent.find(".infor-cont-txt").width() - 30) + 'px')
+               
+        }, 
+        attributeChange: function (self, type, element) {
+          if (type == 'fontSize') {
+            if(element.find('.infor-li-scroll').length > 0){
+              var $li = element.find('.infor-li-scroll');
+              var ulWidth = 0;
+              for(var i=0;i<$li.length;i++){
+                 ulWidth += (parseFloat($li.eq(i).width()) + 10);
+              }
+              ulWidth = Math.ceil(ulWidth)
+              element.find('.infor-ul-scroll').css('width',ulWidth + 'px')
+            }
+          }
+        },       
         createEvent: function (self, element, me) {
           self.$refs.information.show(self,element)
         },
@@ -250,8 +296,8 @@
       }
     },
     methods:{
-      //用于主页调用当前模板函数，弹出弹框并加载数据
-      show:function(that,element){
+      	//用于主页调用当前模板函数，弹出弹框并加载数据
+      	show:function(that,element){
             var self = this;
             self.that = that
             self.element = element 
@@ -266,15 +312,18 @@
         //窗口打开函数
         openInformation:function(){
           var self = this;
-          $(".img-wrap").css("border-color","#FFFFFF");
-          $($(".img-wrap")[0]).css("border-color","#557CE1");
-          $('.checked_infor').hide();
-          $($('.checked_infor')[0]).show();
-          self.infortype = 1;
-        self.selectedclassify = [];
-          self.num1 = 1;
-          self.num2 = 5;
-          self.beforeImg = "";
+          //初始化先注释
+//        $(".img-wrap").css("border-color","#FFFFFF");
+//        $($(".img-wrap")[0]).css("border-color","#557CE1");
+//        $('.checked_infor').hide();
+//        $($('.checked_infor')[0]).show();
+//        self.infortype = 1;
+//      	self.selectedclassify = [];
+//        self.num1 = 1;
+//        self.num2 = 5;
+//        self.beforeImg = "";
+//        self.isscroll = "2";
+          //加载资讯分类
           self.getinfordesc();
           self.$nextTick( () => {
           let $imgwrap = $(".img-wrap");
@@ -320,13 +369,18 @@
           });
             return false;
           }
+          self.currentEle_info.css("width",1200);
+          self.currentEle_info.find('.resizeBox').css("width",1200);
           self.currentEle_info.attr('begin', self.num1)
           self.currentEle_info.attr('last', self.num2)
           self.currentEle_info.attr('navcode', self.selectedclassify[i])
-          self.currentEle_info.attr('infortype', self.infortype) 
-          self.currentEle_info.attr('beforeImg', self.beforeImg)         
+          self.currentEle_info.attr('infortype', self.infortype)
+          self.currentEle_info.attr('isscroll', self.isscroll)
+          self.currentEle_info.attr('beforeImg', self.beforeImg)
+          self.currentEle_info.attr('rowspacing', self.rowspacing)
           self.currentEle_info.find(".inforCon").empty();
-          self.$http.post(window.host + "/aroomv3/news/getnewslists.html", 
+          
+          self.$http.post(window.host + "/aroomv3/news/getnewslists.html",
           {
           begin:self.num1,
           last:self.num2,
@@ -339,57 +393,104 @@
               if(self.infortype == 1){
                 for(var i in datas.data.newslist){
                   datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
+                  var titlespace = datas.data.newslist[i].note.replace(/ /g,'&#32;');
                   inforhtml += '<div class="infor-wrap-pic">'
                   inforhtml +=  '<div class="infor-cont-pic">'
-                  inforhtml +=    '<a style="text-decoration:none;" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'
-                  inforhtml +=      '<p class="infor-title-pic" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
-                  inforhtml +=      '</a>'
+                  inforhtml +=    '<a class="infor-title-pic" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</a>'
                   if(datas.data.newslist[i].thumb != ""){
-                    inforhtml += '<div class="infor-img">'
-                    inforhtml += '<a class="infor-img-a" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'
-                    inforhtml += '<div class="infor-desc">'
+                    inforhtml +=    '<div class="infor-txt-pic">'
+                    inforhtml +=      '<a class="infor-img-a" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank"><img src="'+datas.data.newslist[i].thumb+'" /></a>'    
+                    inforhtml +=      '<div class="infor-txt-p">' 
+                    inforhtml +=        '<p class="infor-conc" title='+titlespace+'>'+datas.data.newslist[i].note+'</p>'
+                    inforhtml +=        '<p class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</p>'
+                    inforhtml +=      '</div>'
+                    inforhtml +=    '</div>'
                   }else{
-                    inforhtml += '<div class="infor-desc-text">'
-                    inforhtml += '<div class="infor-desc-no">'
+                    inforhtml +=    '<div class="infor-txt-nopic">'
+                    inforhtml +=      '<div class="infor-txt-noimg">' 
+                    inforhtml +=        '<p class="infor-conc-noimg" title='+titlespace+'>'+datas.data.newslist[i].note+'</p>'
+                    inforhtml +=        '<p class="infor-time-noimg">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</p>'
+                    inforhtml +=      '</div>'
+                    inforhtml +=    '</div>'
                   }
-                  inforhtml +=        '<p class="infor-conc" title='+datas.data.newslist[i].note+'>'+datas.data.newslist[i].note+'</p>'
-                  inforhtml +=        '<div class="infor-time">发表于：'+datas.data.newslist[i].dateline+'  阅读<span style="color: #FFAF28">'+datas.data.newslist[i].viewnum+'</span>次</div>'
-                  inforhtml +=      '</div>'
-                  inforhtml +=    '</div>'
                   inforhtml +=  '</div>'
                   inforhtml += '</div>'
                 }
-                self.currentEle_info.find(".inforCon").html(inforhtml);
-                self.dialogInformation = false;
+                var allheight = datas.data.newslist.length * 200; //因为图文资讯模块固定高度每个为200px
                 self.currentEle_info.ready(function() {
-                  self.currentEle_info.css("background-color","#FFFFFF");
-                      self.currentEle_info.css('height',datas.data.newslist.length * 200 + 'px')
-                      self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
-                      self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
-                      self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 200 + 'px')
+                      self.currentEle_info.css('height', allheight+ 'px')
+                      self.currentEle_info.find('.resizeBox').css('height',allheight + 'px')
                 })
               }else{
-                for(var i in datas.data.newslist){
-                  datas.data.newslist[i].dateline = self.getLocalTime(datas.data.newslist[i].dateline);
-                  inforhtml += '<div class="infor-wrap">'
-                  inforhtml +=  '<div class="infor-cont">'                  
-                  inforhtml +=    (self.beforeImg == '' ? '' : '<img class="infor-icon" src="' + self.beforeImg + '">')
-                  inforhtml +=    '<a class="infor-titlea" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'
-                  inforhtml +=      '<p class="infor-title-txt" title='+datas.data.newslist[i].subject+'>'+datas.data.newslist[i].subject+'</p>'
-                  inforhtml +=    '</a>'
-                  inforhtml +=  '</div>'
-                  inforhtml += '</div>'
+                if(self.isscroll == "1"){
+                  inforhtml += '<div class="infor-wrap-scroll">'
+                  inforhtml += '<ul class="infor-ul-scroll">'
+                  for(var i in datas.data.newslist){
+                  	var titlespace = datas.data.newslist[i].subject.replace(/ /g,'&#32;');
+                    inforhtml += '<li class="infor-li-scroll" title='+titlespace+'>'
+                    inforhtml +=    (self.beforeImg == '' ? '' : '<img class="infor-icon-scroll" src="' + self.beforeImg + '">')
+                    inforhtml +=  '<a href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'+datas.data.newslist[i].subject+'</a>'
+                    inforhtml += '</li>'
+                  }
+                  for(var i in datas.data.newslist){
+                  	var titlespace = datas.data.newslist[i].subject.replace(/ /g,'&#32;');
+                    inforhtml += '<li class="infor-li-scroll" title='+titlespace+'>'
+                    inforhtml +=    (self.beforeImg == '' ? '' : '<img class="infor-icon-scroll" src="' + self.beforeImg + '">')
+                    inforhtml +=  '<a href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'+datas.data.newslist[i].subject+'</a>'
+                    inforhtml += '</li>'
+                  }
+                  inforhtml += '</ul></div>'
+                  self.currentEle_info.ready(function() {
+                        self.currentEle_info.css('height', 40 + 'px')
+                        self.currentEle_info.find('.resizeBox').css('height',40 + 'px')
+                        var $li = self.currentEle_info.find('.infor-li-scroll');
+                        var ulWidth = 0;
+                        for(var i=0;i<$li.length;i++){
+                          ulWidth += parseFloat( $($li[i]).width() );
+                        }
+                        ulWidth = Math.ceil( ulWidth + ($li.length * 10) );
+                        self.currentEle_info.find('.infor-ul-scroll').css('width',ulWidth + 'px')
+                        
+                        var boxwidth = parseInt(ulWidth/2);
+                        boxwidth = boxwidth>=1200?1200:boxwidth;
+                        self.currentEle_info.css('width', boxwidth + 'px')
+                        self.currentEle_info.attr('ulWidth', ulWidth)
+                        self.currentEle_info.find('.resizeBox').css('width', boxwidth + 'px')
+                  })
+                }else{
+                  for(var i in datas.data.newslist){
+                  	var titlespace = datas.data.newslist[i].subject.replace(/ /g,'&#32;');
+                    inforhtml += '<div class="infor-wrap-txt">'
+                    inforhtml +=  '<div class="infor-cont-txt">'
+                    inforhtml +=    (self.beforeImg == '' ? '' : '<img style="width:12px;height:12px;" class="infor-icon" src="' + self.beforeImg + '">')
+                    inforhtml +=    '<a class="infor-titlea" href="/dyinformation/'+datas.data.newslist[i].itemid+'.html" target="_blank">'
+                    inforhtml +=      '<p class="infor-title-txt" title='+titlespace+'>'+datas.data.newslist[i].subject+'</p>'
+                    inforhtml +=    '</a>'
+                    inforhtml +=  '</div>'
+                    inforhtml += '</div>'
+                  }
+                  self.currentEle_info.ready(function() {
+              			var fontHeight = parseInt(self.currentEle_info.find('.infor-wrap-txt').css('fontSize'));
+              			var allheight = datas.data.newslist.length * (fontHeight + self.rowspacing);
+              			
+                    self.currentEle_info.css('height', allheight+ 'px')
+                    self.currentEle_info.find('.resizeBox').css('height',allheight + 'px')
+                    
+                    self.currentEle_info.find('.infor-wrap-txt').css({
+                    	'height':fontHeight + "px",
+                    	'lineHeight':fontHeight + "px",
+                    	'margin-bottom': self.rowspacing + "px"
+                    });
+                    self.currentEle_info.find('.infor-icon').css({
+                    	'width':fontHeight + "px",
+                    	'height':fontHeight + "px",
+                    	'lineHeight':fontHeight + "px"
+                    });
+                  })
                 }
-                self.currentEle_info.find(".inforCon").html(inforhtml);
-                self.dialogInformation = false;
-                self.currentEle_info.ready(function() {
-                  self.currentEle_info.css("background-color","#FFFFFF");
-                      self.currentEle_info.css('height',datas.data.newslist.length * 40 + 'px')
-                      self.currentEle_info.find('.resizeBox').css('width',self.currentEle_info.width()+'px')
-                      self.currentEle_info.find('.infor-wrap').css('width',(self.currentEle_info.width() - 60)+'px')
-                      self.currentEle_info.find('.resizeBox').css('height',datas.data.newslist.length * 40 + 'px')
-                })
               }
+              self.currentEle_info.find(".inforCon").html(inforhtml);
+              self.dialogInformation = false;
             }else{
               self.$notify({
                 title: '提示',
@@ -454,14 +555,30 @@
   /*.information .resize{
       display: none;
   }*/
-  .el-dialog--myinformation{
+  .el-dialog--myinformation .el-dialog{
     width: 420px;
+  }
+  .information .el-dialog__header{
+      border-bottom: 1px solid #CECECE;
+      height: 30px;
   }
   .style-wrap{
     width: 100%;
     height: 116px;
   }
-    .icon-wrap{
+  .scroll-wrap{
+    width: 100%;
+      height: 55px;
+  } 
+  .scroll-wrap .infordesc{
+    padding: 0;
+      height: 55px;
+      line-height: 55px;
+  }
+  .scroll-wrap .el-radio{
+    line-height: 55px;
+  }
+  .icon-wrap{
       width: 100%;
       height: 40px;
   }
@@ -484,6 +601,18 @@
       margin-right: 5px;
       width: 20px;
       height: 20px;
+  }
+  .rows-wrap{
+  	width: 100%;
+    height: 40px;
+    margin-top: 10px;
+  }
+  .rows-wrap .el-input-number{
+  	width: 120px;
+  }
+  .rows-wrap .rows-tips{
+  	font-size: 14px;
+  	color: #999;
   }
   .infordesc{
     float: left;

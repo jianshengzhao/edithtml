@@ -3,7 +3,7 @@
     <el-dialog
       title="编辑搜索"
       :visible.sync="dialogaddsearch"
-      size="addsearch">
+      class="el-dialog--addsearch">
       <el-row>
         <el-col>
           <span class="label">选择样式：</span>
@@ -181,7 +181,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-  .el-dialog--addsearch{
+  .el-dialog--addsearch .el-dialog{
     width: 420px;
   }
   .el-dialog--addsearch .el-dialog__body{

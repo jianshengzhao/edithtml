@@ -193,7 +193,9 @@
       let len = $next.children().length
       let num = parseInt(len / 2) + len % 2
       let h = 58 * num
+      // let lib_ol = me.$('.lib_ol ')      
       if (parseInt($next.css('height')) < 2) {
+        // lib_ol.css('height', '0px')
         $next.css('height', h + 'px')
         me.$(this).removeClass('closei')
       } else {

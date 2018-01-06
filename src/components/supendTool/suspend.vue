@@ -3,7 +3,7 @@
     <el-dialog
       title="悬浮特效"
       :visible.sync="dialogSuspend"
-      size="tiny">
+      class="el-dialog-suspend">
       <ul class="selectLi" >
         <li @click="selectLiEvent('enlarge')" :class="addClassVal=='enlarge'?'on':''">
           <div class="imgbox">
@@ -101,11 +101,15 @@ export default {
   .m-suspend{
     position:relative;
   }
-  .m-suspend .el-dialog--tiny{
+  .el-dialog-suspend .el-dialog{
     width: 400px;
   }
+  .el-dialog-suspend .el-dialog__body{
+    padding: 10px 20px;
+  }
   .m-suspend .selectLi{  
-    overflow: hidden;  
+    overflow: hidden;
+    height: 440px;
   }
   .m-suspend .selectLi li{
     float: left;

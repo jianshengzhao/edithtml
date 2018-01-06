@@ -3,8 +3,8 @@
     <el-dialog
       title="模块动画"
       :visible.sync="dialogscrollanim"
-      :close-on-click-modal="false"
-      size="scrollanim">
+      class="el-dialog-scrollanim"
+      :close-on-click-modal="false">
       <el-row>
         <el-col>
           <div @click="editanim()" class="animlist active"><div :class="animtype==''?'animimg active':'animimg'">无<div class="animtip">✔</div></div><p>无效果</p></div>
@@ -59,8 +59,6 @@ export default {
       anim:''
     }
   },
-  computed: { // 接受的数据变化所执行的事件
-  },
   methods: {
     show () {
       let self = this
@@ -96,7 +94,7 @@ export default {
 </script>
 
 <style >
-  .el-dialog--scrollanim{
+  .el-dialog-scrollanim .el-dialog{
     width: 510px;
   }
 </style>
