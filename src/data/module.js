@@ -87,7 +87,7 @@
       self.br_style = 'solid'
     }
     self.br_color = element.css('border-left-color')
-    self.inp_opacity = parseInt(element.css('opacity') * 100)
+    self.inp_opacity = parseInt(element.css('opacity') * 100)   
     if (element.css('boxShadow') == 'none') {
       self.check_shadow = false
       self.inp_weight_x = ''

@@ -144,27 +144,27 @@
             <div class="border br-mod br-disable shadow">
               <i class="iconfont2 icon-yinying"></i>
               <div class="doll"></div>
-              <ul class="toolbar" style="display: block;">
+              <ul class="toolbar shadowToolbar" >
                 <el-checkbox v-model="check_shadow" @change='changeShadow'>阴影</el-checkbox>
-                <div>
+                <div class="shadow-col">
                   <span>厚度：</span>
-                  <span>X：</span>
+                  <span>X</span>
                   <span>
-                    <el-input v-model="inp_weight_x" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
+                    <el-input v-model="inp_weight_x" type='number' :disabled='!check_shadow' :step="1" :min='0' :max='10' @change='changHShadow'></el-input>
                   </span>
-                  <span >Y：</span>
+                  <span >Y</span>
                   <span>
-                    <el-input v-model="inp_weight_y" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
+                    <el-input v-model="inp_weight_y" type='number' :disabled='!check_shadow' :step="1" :min='0' :max='10' @change='changVShadow'></el-input>
                   </span>
                 </div>
-                <div>
+                <div class="shadow-col">
                   <span>模糊度：</span>                 
                   <span>
-                    <el-input v-model="inp_blur" type='number' :disabled='disabled' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
+                    <el-input v-model="inp_blur" type='number' :disabled='!check_shadow' :step="1" :min='0' :max='10' @change='changBlurShadow'></el-input>
                   </span>
                   <span>颜色值：</span>
-                  <span>
-                    <colorPicker v-model="bw_color" :disabled='disabled'  :posleft='125' @change='changColorShadow'></colorPicker>
+                  <span @click="clickShadowColor">
+                    <el-color-picker class="bw_color" popper-class="shadowColor" v-model="bw_color" :disabled='!check_shadow' size="mini" @change='changColorShadow'></el-color-picker>
                   </span>
                 </div>
               </ul>
@@ -1100,6 +1100,9 @@
         }
         self.httppost(param)
       },
+      clickShadowColor: function () {
+        $('.shadowToolbar').css('display','block')
+      },
     // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
@@ -1192,6 +1195,7 @@
       changColorShadow: function (val) { // 阴影颜色
         var self = this
         tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
+        $('.shadowToolbar').removeAttr('style')
       },
     // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
@@ -1650,6 +1654,39 @@
         width: 212px;
         padding: 8px;
         box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+      }
+      .shadowLi .toolbar span{
+        float: left;
+        display: block;
+        min-width: 12px;
+        text-align: center;
+      }
+      .shadowLi .el-input {
+        margin-top: 0px;
+      }
+      .shadowLi .shadow-col{
+        padding-top: 3px;
+        margin-bottom: 5px;
+        height: 28px;
+        overflow: hidden;
+      }
+      .shadowLi .el-input{
+        margin-right: 4px;
+      }
+      .shadowLi li .el-input__inner{
+        border: 0;
+        border-bottom: 1px solid #999;
+      }
+      .shadowLi li .el-input.is-disabled .el-input__inner{
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+      }
+      .shadowLi .el-color-picker__trigger{
+        padding: 1px;
+        width: 24px;
+        height: 24px;
+        border-radius: 1px;
+       /* border: 1px solid #ccc;*/
       }
   /* #app*/
     #app .t_clean{    
@@ -2191,18 +2228,14 @@
         height: 20px;
         padding: 0;
       }
-      .shadow .el-input {
-        margin-top: 5px;
-      }
+      
       .effectsBox .el-input__inner {
         padding: 0;
         height: 20px;
         text-align: center;
         border-radius: 0;
       }
-      .shadow .toolbar span{
-        display: inline-block;
-      }
+
       .shadow .toolbar .el-input {
         width: 50px;
       }
