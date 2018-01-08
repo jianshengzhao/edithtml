@@ -517,12 +517,12 @@
     color: #333;
   }
 /*-------------enlisttodo-----------------*/
-  .openservice{
+  .module .openservice{
     position: absolute;
     top:40px;
     left: 72px;
   }
-  .openservice a{
+  .module  .openservice a{
     padding: 0 10px;
     color: #338bff;
   }

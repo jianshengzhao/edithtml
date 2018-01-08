@@ -261,7 +261,10 @@
           break
         case 'borderWidth':
           part = function (ele) {
-            ele.css('borderWidth', val)
+            ele.css('borderWidth', val)            
+            if (ele.css('borderStyle') == 'none') {
+              ele.css('borderStyle', 'solid')
+            }
             let w = parseInt(ele.css('width'))
             let h = parseInt(ele.css('height'))
             if (ele.hasClass('sline')){

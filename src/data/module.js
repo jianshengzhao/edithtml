@@ -79,7 +79,8 @@
     self.inp_line = parseInt(element.css('lineHeight')) || 0
     self.inp_fontFamily = element.css('fontFamily')
     self.color_font = element.css('color')
-    self.color_bg = element.css('backgroundColor')
+    let bgcolor = element.css('backgroundColor')
+    self.color_bg = bgcolor == 'rgba(0, 0, 0, 0)' ? '' : bgcolor
     self.br_width = parseInt(element.css('border-left-width')) || parseInt(element.css('border-top-width'))
     self.br_style = element.css('border-left-style')
     if(self.br_style =='none') {
