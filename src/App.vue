@@ -630,7 +630,7 @@
         moduleParentElementHeight: '',
         clipboard: '',
         original: '',
-      // ---------- config --------------
+      // ------------ config --------------
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
           moveLimit: config.moveLimit // 是否开启module移动限制
