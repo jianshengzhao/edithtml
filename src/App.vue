@@ -136,6 +136,7 @@
         <li class="con-pli">
           <span class="tit">透明度：</span>
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>
+           <el-slider v-model="slider_opacity"></el-slider>
         </li>
       </div>
       <div class="shadowLi">
@@ -186,11 +187,13 @@
     </div>
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
-      <div class="lib_box">
-        <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol basicBox" style="height: 0px;"></div>
-        <div class="header basichead">网校组件 <i class="el-icon-caret-bottom"></i></div>
-        <div class="lib_ol onlineBox"></div>
+      <div class="lib-scroll">
+        <div class="lib_box">
+          <div class="header basichead">基本组件 <i class="el-icon-caret-bottom"></i></div>
+          <div class="lib_ol basicBox"></div>
+          <div class="header basichead">网校组件 <i class="el-icon-caret-bottom"></i></div>
+          <div class="lib_ol onlineBox"></div>
+        </div>
       </div>
     </div>
     <div class="shrink libshrink">     
@@ -630,6 +633,7 @@
         moduleParentElementHeight: '',
         clipboard: '',
         original: '',
+        slider_opacity: 100,
       // ---------- config --------------
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
@@ -1930,8 +1934,7 @@
       padding-top: 36px;
       width: 100px;
       height:100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
       border-right: 1px solid #d9d9d9;
       background-color: #f6f7f7;
       box-sizing: border-box;
@@ -1940,6 +1943,12 @@
       -moz-transition: all 400ms;
       -webkit-transition: all 400ms;
       -o-transition: all 400ms;
+    }
+    .lib-scroll{
+      width: 110px;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .library .lib_ol{
       padding-left: 0;
