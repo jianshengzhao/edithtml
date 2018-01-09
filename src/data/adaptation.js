@@ -1,23 +1,7 @@
 // ----------------- 工具栏 -----------------------------------------
-  exports.resizeToolBar = function (self, me) { // top工具栏排版
-    if(parseInt(me.wtop.css('height')) > 36){
-      me.library.css('paddingTop', '68px')
-      me.layer.css('paddingTop', '68px')
-      me.editBox.css('paddingTop', '68px')
-      self.paddingtop = 68;
-    }
+  exports.resizeToolBar = function (self, me) { // top工具栏排版  
     me.$(window).resize(function() {
-      if (parseInt(me.wtop.css('height')) > 36) {
-        me.library.css('paddingTop', '68px')
-        me.layer.css('paddingTop', '68px')
-        me.editBox.css('paddingTop', '68px')
-        self.paddingtop = 68;
-      } else {
-        me.library.css('paddingTop', '35px')
-        me.layer.css('paddingTop', '35px')
-        me.editBox.css('paddingTop', '35px')
-        self.paddingtop = 35;
-      }
+
     })
   }
 // ----------------- 模块菜单 ---------------------------------------
@@ -110,7 +94,6 @@
   exports.bindElDialogMousemoveEvent = function (me) { // 悬浮框鼠标拖拽事件
     me.doc.on('mousedown', '.el-dialog', function (e) {
       if (me.$(e.target).hasClass('el-dialog__header') || me.$(e.target).hasClass('el-dialog__title')) {
-
         let body = me.$('body')
         let elDialog = me.$(this)
         let eX = e.pageX
@@ -123,15 +106,13 @@
         let bH = parseInt(body.css('height'))
 
         me.doc.mousemove(function (e) {
-          let left = edX - (eX - e.pageX)
+          let left = edX - (eX - e.pageX)          
           let top = edY - (eY - e.pageY)
-
           if (top < 0) { // 最小值
             top = 0
-          }        
-
-          if (left < edW/2) {
-            left = edW/2
+          }
+          if (left < -edW/2) {
+            left = -edW/2
           } else if ((left + edW/2) > bW) {
             left = bW - edW/2
           }
@@ -192,7 +173,7 @@
       let $next = me.$(this).next()
       let len = $next.children().length
       let num = parseInt(len / 2) + len % 2
-      let h = 58 * num
+      let h = 55 * num
       // let lib_ol = me.$('.lib_ol ')      
       if (parseInt($next.css('height')) < 2) {
         // lib_ol.css('height', '0px')
@@ -212,14 +193,26 @@
         me.lShrink.removeClass('shrinkout')
         me.library.removeClass('basic')
         me.editBox.css('marginLeft', '')
-        me.editBox.css('paddingRight', '308px')
-        self.paddingleft = 133
-        me.lShrink.css('left','132px')
+        if(me.rShrink.hasClass('shrinkout')) {
+          me.editBox.css('paddingRight', '245px')
+          me.$('.waiter').css('right', '245px')
+        }else {
+          me.editBox.css('paddingRight', '100px')
+          me.$('.waiter').css('right', '100px')
+        }
+        self.paddingleft = 100
+        me.lShrink.css('left','99px')
       } else {
         me.lShrink.addClass('shrinkout')
         me.library.addClass('basic')
         me.editBox.css('marginLeft', '5px')
-        me.editBox.css('paddingRight', '186px')
+        if(me.rShrink.hasClass('shrinkout')) {
+           me.editBox.css('paddingRight', '150px')
+           me.$('.waiter').css('right', '150px')
+        }else {
+          me.editBox.css('paddingRight', '5px')
+          me.$('.waiter').css('right', '5px')
+        }       
         me.lShrink.css('left','4px')
         self.paddingleft = 5
       }

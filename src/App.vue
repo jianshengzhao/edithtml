@@ -2,17 +2,17 @@
   <div id="app" unselectable="on" onselectstart="return false;">
   <!-- top main tool -->
     <div class="top" unselectable="on" onselectstart="return false;">     
-      <div class="tl_li" @click="settingEvent">
+      <div class="tl_li" @click="settingEvent" style="margin-left: -90px;">
         <i class="tImgicon icon-setting" title="设置"></i>
       </div>
-      <div class="tl_li" @click="saveEvent">
+      <div class="tl_li" @click="saveEvent"  style="margin-left: -64px;">
         <i class="tImgicon icon-save" title="保存"></i>
       </div>
-      <div class="tl_li tl_span" @click="previewEvent" title="预览">
+      <div class="tl_li tl_span" @click="previewEvent" title="预览"  style="margin-left: -40px;">
         <i class="tImgicon icon-preview"></i>
         <span>预览</span>
       </div>
-      <div class="tl_li tl_span tl_li_on gridli" @click="gridHangle" title="格线">
+      <div class="tl_li tl_span tl_li_on gridli" @click="gridHangle" title="格线"  style="margin-left: -5px;">
         <i class="tImgicon icon-gridlines"></i>
         <span>格线</span>
       </div>
@@ -73,9 +73,9 @@
             :value="item.val">
           </el-option>
         </el-select>
-        <span class="tip p bold">B</span>
-        <span class="tip p bold style">I</span>
-        <span class="tip p bold underline">U</span> 
+        <span class="tip p bold " @click="clickBoldEvent">B</span>
+        <span class="tip p bold style" @click="clickStyleEvent">I</span>
+        <span class="tip p bold underline" @click="clickUnderlineEvent">U</span> 
         <li class="con-pli">  
           <span class="tit">字号：</span>
           <el-input v-model="inp_size" type='number' :disabled='disabled' min='12' :max='99' @change='changeInpSize'></el-input>  
@@ -204,7 +204,7 @@
       </div>
     </div>
   <!-- editBox -->
-    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 308px;">
+    <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right: 245px;">
       <div class="space" >
         <div class="scrollcanvas"></div>
         <div class="canvas grid" >
@@ -603,7 +603,7 @@
         }],
         activeSetting: 'first',
         prospectColorVal: '#fff',
-        bgColorVal: '#f7f7f7',
+        bgColorVal: '#fff',
         fontHoverColorVal: '#333',
         bgImageUrl: '',
         pgImageUrl: '',
@@ -1138,6 +1138,42 @@
           tool.carryModuleOperationEvent(self, 'fontFamily', val)
         }
       },
+      clickBoldEvent: function () { // 加粗
+        var self = this
+        if ($(".on_module").length < 1) return false
+        var element = $('.tip.p').eq(0)
+        if (element.hasClass('on')) {
+          element.removeClass('on')
+          tool.carryModuleOperationEvent(self, 'fontWeight', 'normal')
+        } else {
+          element.addClass('on')
+          tool.carryModuleOperationEvent(self, 'fontWeight', 'bold')
+        }
+      },
+      clickStyleEvent: function () { // 斜体
+        var self = this
+        if ($(".on_module").length < 1) return false
+        var element = $('.tip.p').eq(1)
+        if (element.hasClass('on')) {
+          element.removeClass('on')
+          tool.carryModuleOperationEvent(self, 'fontStyle', 'normal')
+        } else {
+          element.addClass('on')
+          tool.carryModuleOperationEvent(self, 'fontStyle', 'italic')
+        }
+      },
+      clickUnderlineEvent: function () { // 下划线
+        var self = this
+        if ($(".on_module").length < 1) return false
+        var element = $('.tip.p').eq(2)
+        if (element.hasClass('on')) {
+          element.removeClass('on')
+          tool.carryModuleOperationEvent(self, 'textDecoration', 'none')
+        } else {
+          element.addClass('on')
+          tool.carryModuleOperationEvent(self, 'textDecoration', 'underline')
+        }        
+      },     
       changeColorFont: function (val) { // font-color 字体颜色
         var self = this
         tool.carryModuleOperationEvent(self, 'color', val)
@@ -1360,13 +1396,13 @@
     }
     .top{
       padding-top: 1px;
-      padding-left: 10px;
-      padding-right: 10px;
+      padding-left: 99px;
+      padding-right: 140px;
       height: 36px;
       position: relative;     
       border-bottom: 1px solid #d9d9d9;
       z-index: 4;
-      background-color: #fff;
+      background-color: #f7f9f9;
       letter-spacing: 0;
       float: left;
       width: 100%;
@@ -1377,7 +1413,8 @@
       float: left; 
       margin-top: 2px;
       margin-right: 9px;
-      height: 29px;
+      margin-bottom: 3px;
+      height: 30px;
       line-height: 36px;   
       border-radius: 4px;     
       cursor: pointer;
@@ -1447,6 +1484,7 @@
       min-width: 123px;
       background: #fff;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,.1);
+      z-index: 101;
     }
     .toolbar li{
       padding: 0 10px;
@@ -1479,10 +1517,14 @@
     /*propertyLi*/
       .propertyLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;
+        padding-right: 6px;
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .propertyLi li{
         float: left;
@@ -1492,18 +1534,23 @@
       .propertyLi li .el-input__inner{
         border: 0;
         border-bottom: 1px solid #999;
+        background-color: #f6f7f7;
       }
       .propertyLi li .el-input.is-disabled .el-input__inner{
-        background-color: #fff;
+        background-color: #f6f7f7;
         border-bottom: 1px solid #ccc;
       }
     /*fontLi*/
       .fontLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;
+        padding-right: 6px;
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .fontLi li{
         float: left;
@@ -1511,6 +1558,7 @@
         height: 18px;
       }
       .fontLi li .el-input__inner{
+        background-color: #f6f7f7;
         border: 0;
         border-bottom: 1px solid #999;
       }
@@ -1522,6 +1570,7 @@
         float: left;
         margin-left: 5px;
         margin-top: -1px;
+        margin-right: 2px;
         width: 100px;
         height: 28px;
       } 
@@ -1554,16 +1603,20 @@
         height: 22px;
       }
       .fontLi li .el-input.is-disabled .el-input__inner{
-        background-color: #fff;
+        background-color: #f6f7f7;
         border-bottom: 1px solid #ccc;
       }
     /*backgLi*/
       .backgLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;
+        padding-right: 6px;
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .backgLi li{
         float: left;
@@ -1591,10 +1644,13 @@
     /*borderLi*/
       .borderLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;        
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .borderLi li{
         float: left;
@@ -1618,10 +1674,14 @@
     /*opacityLi*/
       .opacityLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;
+        padding-right: 6px;
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .opacityLi li{
         float: left;
@@ -1631,18 +1691,22 @@
       .opacityLi li .el-input__inner{
         border: 0;
         border-bottom: 1px solid #999;
+        background-color: #f6f7f7;
       }
       .opacityLi li .el-input.is-disabled .el-input__inner{
-        background-color: #fff;
+        background-color: #f6f7f7;
         border-bottom: 1px solid #ccc;
       }
     /*shadowLi*/
       .shadowLi{
         float: left;
-        margin-top: 4px;
-        margin-right: 9px;
-        height: 28px;
+        margin-right: -1px;
+        padding-top: 4px;       
+        height: 30px;
         border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #d9d9d9;
+        background-color: #f7f9f9;
       }
       .shadowLi li{
         float: left;
@@ -1681,6 +1745,10 @@
         background-color: #fff;
         border-bottom: 1px solid #ccc;
       }
+      .shadowLi .el-color-picker--mini .el-color-picker__mask{
+        width: 22px;
+        height: 22px;
+      }
       .shadowLi .el-color-picker__trigger{
         padding: 1px;
         width: 24px;
@@ -1690,10 +1758,16 @@
       }
   /* #app*/
     #app .t_clean{    
-      float: right;     
+      float: right;  
+      position: absolute;
+      top: 0px;
+      right: 70px;   
     }   
     #app .t_right{
       float: right;
+      position: absolute;
+      top: 0px;
+      right: 10px;
     }
     .toolbar .el-col{
       height: 36px;
@@ -1854,18 +1928,37 @@
       left: 0;
       top: 0;
       padding-top: 36px;
-      width: 133px;
+      width: 100px;
       height:100%;
       overflow-y: auto;
       overflow-x: hidden;
       border-right: 1px solid #d9d9d9;
-      background-color: #fff;
+      background-color: #f6f7f7;
       box-sizing: border-box;
       z-index: 2;
       transition: all 400ms;
       -moz-transition: all 400ms;
       -webkit-transition: all 400ms;
       -o-transition: all 400ms;
+    }
+    .library .lib_ol{
+      padding-left: 0;
+      width: 100px;
+    }
+    .library .lib_ol .lib_li{
+      margin-bottom: 3px;
+      width: 50px;
+      height: 52px;
+    }
+    .library .lib_li span {
+      font-family: 'serif';
+      margin-left: -3px;
+      width: 110%;
+      transform:scale(0.9);
+      -ms-transform:scale(0.9);   /* IE 9 */
+      -moz-transform:scale(0.9);  /* Firefox */
+      -webkit-transform:scale(0.9); /* Safari 和 Chrome */
+      -o-transform:scale(0.9);
     }
     .lib_nav{
       position: absolute;
@@ -1917,13 +2010,13 @@
     }
     .header{
       float: left;
-      width: 132px;
+      width: 100px;
       font-size: 12px;
       color: #7d8695;
       height: 30px;
       line-height: 30px;
       cursor: pointer;
-      text-indent:10px;
+      text-indent:5px;
     }
     .header i{
       float: right;
@@ -1935,7 +2028,7 @@
     .basichead i{
       width: 13px;
       height: 13px;
-      margin-left: 15px;
+      margin-left: 10px;
       margin-top: 8px;
       margin-right: 0;
       line-height: 15px;
@@ -2001,7 +2094,7 @@
     .libshrink{
       position: absolute;
       top: 50%;
-      left: 132px;
+      left: 99px;
       width: 15px;
       height: 97px;
       background-image: url(./assets/image/left2.png);
@@ -2037,7 +2130,7 @@
         top:0;
         right:0;
         padding-top:36px;
-        width: 175px;
+        width: 150px;
         height:100%;
         border-left: 1px solid #d9d9d9;
         background-color: #fff;
@@ -2080,16 +2173,7 @@
         padding-left: 0px;
         text-indent: 20px;
         box-sizing: border-box;
-      }
-      .layer .lib_ol .ele_li{
-        cursor: pointer;
-        height: 24px;
-        line-height: 24px;
-        border-top: 1px solid #eee;
-      }
-      .layer .lib_ol .ele_li:hover{
-        background-color: #eee;
-      }      
+      }        
     /*alignBox*/ 
       .alignBox{
         padding-top: 1px;
@@ -2289,26 +2373,33 @@
         margin-left: 6px;
         line-height: 20px;
         font-size: 13px;
-        color: #333;        
-        /*text-shadow: 0 0 15px #999;*/
+        color: #333;
+      }
+      .tip.on{
+        background-color: rgba(119,119,119,0.4);
       }
       .tip.p{
         cursor: pointer;
       }
       .tip.bold{
-        margin-left: 8px;
+        margin-left: 0;
+        width: 18px;
+        text-align: center;
         font-family: 'sans-serif';
         font-weight: bold;
         color: #777;
-        font-size: 14px;
+        font-size: 14px;       
       }
       .tip.style{
-        margin-left: 6px;
+       /* margin-left: 6px;*/
+        width: 16px;
         font-family: 'sans-serif';
         font-style: italic;
+        text-align: left;
+        text-indent: 4px;
       }
       .tip.underline{
-        margin-left: 10px;
+       /* margin-left: 10px;*/
         font-family: 'sans-serif';
         text-decoration: underline;
       }
@@ -2348,6 +2439,13 @@
         text-align: center;
         border-radius: 0;
       }
+      .waiter {
+        margin-right: 6px;
+        transition: all 400ms;
+        -moz-transition: all 400ms;
+        -webkit-transition: all 400ms;
+        -o-transition: all 400ms;
+      }
   /*editBox*/
     #app .module:hover .promptBox{
       display: block;
@@ -2359,7 +2457,7 @@
       width: 100%;
       height: 100%;
       padding-top: 36px;
-      margin-left: 133px;
+      margin-left: 100px;
       margin-right: 181px;
       box-sizing:border-box;
       background-color: #f7f7f7;
@@ -2374,7 +2472,7 @@
       width: 100%;
       height: 100%;
       overflow:auto;
-      /*background-color:#ccc;*/
+      background-color:#fff;
     }
     .scrollcanvas {
       width: 3600px;

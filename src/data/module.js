@@ -3,7 +3,7 @@
        
     let cName = element.attr('class').split(' ')[0]
     let eleConfig = self.datahtml[cName] 
-    element.parent().css('outline', '1px dashed rgba(64, 158, 255, 0.7)')
+    element.parent().css('outline', '1px solid rgba(64, 158, 255, 0.7)')
     if (eleConfig.beforeSelecting) { // 选中元素节点时的回调函数
       eleConfig.beforeSelecting(self, element, me)
     }
@@ -78,6 +78,19 @@
     self.inp_size = parseInt(element.css('fontSize')) || 0
     self.inp_line = parseInt(element.css('lineHeight')) || 0
     self.inp_fontFamily = element.css('fontFamily')
+    let fontp = me.$('.tip.p')
+    let fontWeight = parseInt(element.css('fontWeight'))
+    if (fontWeight > 400) {
+      fontp.eq(0).addClass('on')      
+    }
+    let fontStyle = element.css('fontStyle')
+    if (fontStyle != 'normal') {     
+      fontp.eq(1).addClass('on')      
+    }
+    let textDecoration = element.css('textDecoration').split(' ')[0]
+    if (textDecoration == 'underline') {     
+      fontp.eq(2).addClass('on')      
+    }
     self.color_font = element.css('color')
     let bgcolor = element.css('backgroundColor')
     self.color_bg = bgcolor == 'rgba(0, 0, 0, 0)' ? '' : bgcolor
@@ -104,7 +117,7 @@
     }
     self.disabled = false
     me.mod.removeClass('tl_li_Disable')
-    me.brmod.removeClass('br-disable')
+    me.brmod.removeClass('br-disable') 
     switch (self.moduleElement.parent().attr('class')) {
       case 'c_top':
         me.warp = 0
@@ -158,6 +171,7 @@
     self.inp_blur = '1'
     self.bw_color = '#ccc'
     self.inp_fontFamily = ''
+    me.$('.tip.p').removeClass('on')
     me.mod.addClass('tl_li_Disable')
     me.brmod.addClass('br-disable')
     self.moduleElementY = false
