@@ -1,0 +1,282 @@
+
+.imgicon{
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-position: center;	
+}
+.lib_box .lib_ol{
+	padding-left: 6px;
+	box-sizing: border-box;
+}
+.lib_ol .lib_li {
+	width: 58px;
+	height: 58px;
+}
+.lib_li .imgicon{
+	display: block;
+	margin: 4px auto 2px;
+	/*background-size: 28px auto; */
+}
+.icon-advert { background-image: url(../newslibIcon/advert.png);  }
+.icon-button { background-image: url(../newslibIcon/button.png);  }
+.icon-carousel { background-image: url(../newslibIcon/carousel.png);  }
+.icon-classify { background-image: url(../newslibIcon/classify.png);  }
+.icon-information { background-image: url(../newslibIcon/information.png); }
+.icon-introduce { background-image: url(../newslibIcon/introduce.png); }
+.icon-suspend { background-image: url(../newslibIcon/suspend.png);  }
+.icon-level_Line { background-image: url(../newslibIcon/level_Line.png);  }
+.icon-login { background-image: url(../newslibIcon/login.png);  }
+.icon-logo { background-image: url(../newslibIcon/logo.png); }
+.icon-map { background-image: url(../newslibIcon/map.png);  }
+.icon-picture { background-image: url(../newslibIcon/picture.png);  }
+.icon-player { background-image: url(../newslibIcon/player.png); }
+.icon-QRcode { background-image: url(../newslibIcon/QRcode.png); }
+.icon-rectangle { background-image: url(../newslibIcon/rectangle.png);}
+.icon-round { background-image: url(../newslibIcon/round.png);}
+.icon-text { background-image: url(../newslibIcon/text.png);}
+.icon-vertical_Line { background-image: url(../newslibIcon/vertical_Line.png); }
+.icon-waiter { background-image: url(../newslibIcon/waiter.png); }
+.icon-weather { background-image: url(../newslibIcon/weather.png); }
+.icon-course { background-image: url(../newslibIcon/course.png);  }
+.icon-teacher { background-image: url(../newslibIcon/teacher.png);  }
+.icon-audition { background-image: url(../newslibIcon/audition.png); }
+.icon-addtab { background-image: url(../newslibIcon/addicon.png); }
+.icon-addsearch { background-image: url(../newslibIcon/search.png); }
+.icon-addcoursetype { background-image: url(../newslibIcon/coursetype.png);}
+.icon-scene{ background-image: url(../newslibIcon/scene.png); }
+.icon-calendar{ background-image: url(../newslibIcon/calendar.png); }
+
+.lib_li:hover .icon-advert { background-image: url(../newslibIcon/advert2.png);  }
+.lib_li:hover .icon-button { background-image: url(../newslibIcon/button2.png);  }
+.lib_li:hover .icon-carousel { background-image: url(../newslibIcon/carousel2.png);  }
+.lib_li:hover .icon-classify { background-image: url(../newslibIcon/classify2.png);  }
+.lib_li:hover .icon-information { background-image: url(../newslibIcon/information2.png); }
+.lib_li:hover .icon-introduce { background-image: url(../newslibIcon/introduce2.png); }
+.lib_li:hover .icon-suspend { background-image: url(../newslibIcon/suspend2.png);  }
+.lib_li:hover .icon-level_Line { background-image: url(../newslibIcon/level_Line2.png);  }
+.lib_li:hover .icon-login { background-image: url(../newslibIcon/login2.png);  }
+.lib_li:hover .icon-logo { background-image: url(../newslibIcon/logo2.png); }
+.lib_li:hover .icon-map { background-image: url(../newslibIcon/map2.png);  }
+.lib_li:hover .icon-picture { background-image: url(../newslibIcon/picture2.png);  }
+.lib_li:hover .icon-player { background-image: url(../newslibIcon/player2.png); }
+.lib_li:hover .icon-QRcode { background-image: url(../newslibIcon/QRcode2.png); }
+.lib_li:hover .icon-rectangle { background-image: url(../newslibIcon/rectangle2.png);}
+.lib_li:hover .icon-round { background-image: url(../newslibIcon/round2.png);}
+.lib_li:hover .icon-text { background-image: url(../newslibIcon/text2.png);}
+.lib_li:hover .icon-vertical_Line { background-image: url(../newslibIcon/vertical_Line2.png); }
+.lib_li:hover .icon-waiter { background-image: url(../newslibIcon/waiter2.png); }
+.lib_li:hover .icon-course { background-image: url(../newslibIcon/course2.png);  }
+.lib_li:hover .icon-teacher { background-image: url(../newslibIcon/teacher2.png);  }
+.lib_li:hover .icon-audition { background-image: url(../newslibIcon/audition2.png); }
+.lib_li:hover .icon-addtab { background-image: url(../newslibIcon/addicon2.png); }
+.lib_li:hover .icon-addsearch { background-image: url(../newslibIcon/search2.png); }
+.lib_li:hover .icon-addcoursetype { background-image: url(../newslibIcon/coursetype2.png);}
+.lib_li:hover .icon-scene { background-image: url(../newslibIcon/scene2.png);}
+.lib_li:hover .icon-calendar { background-image: url(../newslibIcon/calendar2.png);}
+
+/* ------------------------------- tool -------------------------------------*/
+.tImgicon{
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-repeat: no-repeat;
+	background-position: center;	
+}
+.icon-setting{
+	background-image: url(../newslibIcon/z-setting.png);
+}
+.icon-save{
+	background-image: url(../newslibIcon/z-save.png);
+}
+.icon-preview{
+	background-image: url(../newslibIcon/z-preview.png);
+}
+.icon-gridlines{
+	background-image: url(../newslibIcon/z-gridlines.png);
+}
+
+.icon-align-up{ background-image: url(../newslibIcon/z-align-up.png) }
+.icon-align-down{background-image: url(../newslibIcon/z-align-down.png)  }
+.icon-align-left{ background-image: url(../newslibIcon/z-align-left.png) }
+.icon-align-right{background-image: url(../newslibIcon/z-align-right.png) }
+.icon-align-center{ background-image: url(../newslibIcon/z-align-center.png) }
+.icon-align-middle{ background-image: url(../newslibIcon/z-align-middle.png) }
+.icon-spacing-middle{ background-image: url(../newslibIcon/z-spacing-middle.png) }
+.icon-spacing-center{ background-image: url(../newslibIcon/z-spacing-center.png) }
+.tl_li_Disable .icon-align-up{ background-image: url(../newslibIcon/z-align-up2.png) }
+.tl_li_Disable .icon-align-down{background-image: url(../newslibIcon/z-align-down2.png)  }
+.tl_li_Disable .icon-align-left{ background-image: url(../newslibIcon/z-align-left2.png) }
+.tl_li_Disable .icon-align-right{background-image: url(../newslibIcon/z-align-right2.png) }
+.tl_li_Disable .icon-align-center{ background-image: url(../newslibIcon/z-align-center2.png) }
+.tl_li_Disable .icon-align-middle{ background-image: url(../newslibIcon/z-align-middle2.png) }
+.tl_li_Disable .icon-spacing-middle{ background-image: url(../newslibIcon/z-spacing-middle2.png) }
+.tl_li_Disable .icon-spacing-center{ background-image: url(../newslibIcon/z-spacing-center2.png) }
+
+.icon-layer{background-image: url(../newslibIcon/z-layer-top.png)}
+.icon-layer-top{background-image: url(../newslibIcon/z-layer-top.png)}
+.icon-layer-bottom{background-image: url(../newslibIcon/z-layer-bottom.png)}
+.icon-layer-up{background-image: url(../newslibIcon/z-layer-up.png)}
+.icon-layer-down{background-image: url(../newslibIcon/z-layer-down.png)}
+.tl_li_Disable .icon-layer{background-image: url(../newslibIcon/z-layer-top2.png)}
+.tl_li_Disable .icon-layer-top{background-image: url(../newslibIcon/z-layer-top2.png)}
+.tl_li_Disable .icon-layer-bottom{background-image: url(../newslibIcon/z-layer-bottom2.png)}
+.tl_li_Disable .icon-layer-up{background-image: url(../newslibIcon/z-layer-up2.png)}
+.tl_li_Disable .icon-layer-down{background-image: url(../newslibIcon/z-layer-down2.png)}
+
+.icon-shear{background-image: url(../newslibIcon/z-shear.png)}
+.icon-copy{background-image: url(../newslibIcon/z-copy.png)}
+.icon-paste{background-image: url(../newslibIcon/z-paste.png)}
+.icon-delete{background-image: url(../newslibIcon/z-delete.png)}
+.tl_li_Disable .icon-shear{background-image: url(../newslibIcon/z-shear2.png)}
+.tl_li_Disable .icon-copy{background-image: url(../newslibIcon/z-copy2.png)}
+.tl_li_Disable .icon-paste{background-image: url(../newslibIcon/z-paste2.png)}
+.tl_li_Disable .icon-delete{background-image: url(../newslibIcon/z-delete2.png)}
+
+.icon-clean{background-image: url(../newslibIcon/z-clean.png)}
+.icon-exits{background-image: url(../newslibIcon/z-exits.png)}
+
+@-moz-keyframes spinning {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+
+	to {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+}
+
+@-webkit-keyframes spinning {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+
+	to {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+}
+
+@-o-keyframes spinning {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+
+	to {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+}
+
+@keyframes spinning {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+
+	to {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+}
+
+@-moz-keyframes spinning-reverse {
+	0% {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+
+	to {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+}
+
+@-webkit-keyframes spinning-reverse {
+	0% {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+
+	to {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+}
+
+@-o-keyframes spinning-reverse {
+	0% {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+
+	to {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+}
+
+@keyframes spinning-reverse {
+	0% {
+		-webkit-transform: rotate(359deg);
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-ms-transform: rotate(359deg);
+		transform: rotate(359deg)
+	}
+
+	to {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg)
+	}
+}
