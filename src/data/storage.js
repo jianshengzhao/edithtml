@@ -120,7 +120,7 @@
     }
     self.disabled = false
     self.selectBloo = true
-    element.parent().css('outline', '2px dashed rgba(64, 158, 255, 0.7)')
+    element.parent().css('outline', '1px solid rgba(64, 158, 255, 0.7)')
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')
   } 

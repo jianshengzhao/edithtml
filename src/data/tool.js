@@ -44,7 +44,7 @@
       me.onlineBox = me.$('.onlineBox')
       me.todoBox = me.$('.todoBox')
       me.familyBox = me.$('.familyBox')
-      // adaptation.resizeToolBar(self, me)  
+      adaptation.resizeToolBar(self, me)  
       adaptation.renderMenu(self, me)
       adaptation.computeLineHeight(me)
       me.libBox = me.$('.lib_box')
@@ -248,6 +248,21 @@
         case 'fontFamily':
           part = function (ele) {            
             ele.css('fontFamily', val)           
+          }
+          break
+        case 'fontWeight':
+          part = function (ele) {            
+            ele.css('fontWeight', val)               
+          }
+          break
+        case 'fontStyle':
+          part = function (ele) {            
+            ele.css('fontStyle', val)           
+          }
+          break
+        case 'textDecoration':
+          part = function (ele) {            
+            ele.css('textDecoration', val)           
           }
           break
         case 'backgroundColor':
