@@ -49,13 +49,6 @@
           </el-col> -->
         </el-row>
         <el-row>
-          <el-col :span="2">链接名称：</el-col>
-          <el-col :span="8">
-            <el-radio class="radio" v-model="showhref" label="true">是</el-radio>
-            <el-radio class="radio" v-model="showhref" label="false">否</el-radio>
-          </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="3">展示时间（s）：</el-col>
           <el-col :span="8">
             <el-input-number v-model="showTime" :min="1" :max="99"></el-input-number>
@@ -68,7 +61,14 @@
             <el-input-number v-model="transitionTime" :min="0.5" :max="5" :step="0.5"></el-input-number>
              <span style="color: #999;">（0.5~5）</span>
           </el-col>
-        </el-row>        
+        </el-row>
+        <el-row>
+          <el-col :span="2">链接名称：</el-col>
+          <el-col :span="8">
+            <el-radio class="radio" v-model="showhref" label="true">是</el-radio>
+            <el-radio class="radio" v-model="showhref" label="false">否</el-radio>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col>
             添加图片：<span style="color: #999;">（最多8张图片）</span>
@@ -284,12 +284,38 @@ export default {
       }
       if (self.carouseltype == 'one'){
         self.element.find('.barbox').remove()
-        var typeone = '<div class="barbox" type="one"><li></li><li></li><li></li></div>'
-        self.element.find('.screenBox').append(typeone)
+        var typeone = ''
+        for (var i=0;i<self.carouselData.length;i++) {
+            if (self.carouselData[i].auditionid) {
+              typeone += '<li auditionid="' + self.carouselData[i].auditionid + '"></li>'
+            } else {
+              typeone += '<li></li>'
+            }
+        }
+        var typeonehtml = '<div class="barbox" type="one">'+typeone+'</div>'
+        self.element.find('.screenBox').append(typeonehtml)
+
       }else{
         self.element.find('.barbox').remove()
-        var typetwo = '<div class="barbox" type="two"><li class="on"><div></div><span>1</span></li><li><div></div><span>2</span></li><li><div></div><span>3</span></li></div>'
-        self.element.find('.screenBox').append(typetwo)
+        var typetwo = ''
+        for (var i=0;i<self.carouselData.length;i++){
+          if (i == 0){
+            if (self.carouselData[i].auditionid){
+              typetwo += '<li auditionid="'+self.carouselData[i].auditionid+'" class="on"><div></div><span>'+(i+1)+'</span></li>'
+            }else{
+              typetwo += '<li class="on"><div></div><span>'+(i+1)+'</span></li>'
+            }
+          }else{
+            if (self.carouselData[i].auditionid){
+              typetwo += '<li auditionid="'+self.carouselData[i].auditionid+'"><div></div><span>'+(i+1)+'</span></li>'
+            }else{
+              typetwo += '<li><div></div><span>'+(i+1)+'</span></li>'
+            }
+          }
+
+        }
+        var typetwohtml = '<div class="barbox" type="two">'+typetwo+'</div>'
+        self.element.find('.screenBox').append(typetwohtml)
       }
       self.element.show()
       self.element.attr('carouselData', str)
@@ -322,6 +348,7 @@ export default {
       self.carouselData[index].clickurl = ''
       self.carouselData[index].urlType = ''
       self.carouselData[index].urlRoute = ''
+      self.carouselData[index].auditionid = ''
     },
     carouselChangeEvent: function (index) { // 设置跳转链接
       let self = this
@@ -331,6 +358,7 @@ export default {
         let urlHref = ''
         let urlRoute = ''
         let urltitle = ''
+        let auditionid = ''
         let navcm
         switch(linkType){
           case 'online':
@@ -407,11 +435,17 @@ export default {
                 urlType = '课件'
                 urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname + ' / ' + data.foldername + ' / ' + data.cwname
                 urltitle = '课件：'+ data.cwname
-                if(data.cwpay == '1'){
-                  urlHref = '/ibuy.html?cwid=' + data.cwid
+                if (data.cwidtype == '2'){
+                  urlHref = '/course/' + data.cwid + '.html'
+                  auditionid = data.cwid
                 }else{
-                  urlHref = '/courseinfo/' + data.itemid + '.html'
+                  if(data.cwpay == '1'){
+                    urlHref = '/ibuy.html?cwid=' + data.cwid
+                  }else{
+                    urlHref = '/courseinfo/' + data.itemid + '.html'
+                  }
                 }
+                /**/
                 break
             }
             break
@@ -477,6 +511,8 @@ export default {
         self.carouselData[self.index]['urlRoute'] = urlRoute
         self.carouselData[self.index]['urltitle'] = urltitle
         self.carouselData[self.index]['clickurl'] = urlHref
+        self.carouselData[self.index]['auditionid'] = auditionid
+
       })
       // self.carouselData[index].clickurl = val
     },
@@ -502,10 +538,10 @@ export default {
     .carousel .el-dialog__header {
       border-bottom: 1px solid #CECECE;
       height: 40px;
-    }
+    }   
     .el-dialog--carousel .el-dialog{
       width: 980px;
-    }   
+    }
     .scrollBox{
     }
     .selectBox{

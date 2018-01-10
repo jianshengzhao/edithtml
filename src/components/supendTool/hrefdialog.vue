@@ -4,7 +4,7 @@
       title="设置链接"
       :visible.sync="visdialog"
       :close-on-click-modal="false"
-      class="el-dialog-visdialog">
+      class="el-dialog--hrefs">
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
@@ -47,7 +47,7 @@
                 <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newsthreembx"  style="display: none;"><a></a></span>
-                <el-input suffix-icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
+                <el-input icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
               </div>
               <div class="newscont">
                 <form class="oneselnews">
@@ -103,8 +103,8 @@
                 <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
-                <el-input  suffix-icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
-                <el-input  suffix-icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
+                <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
+                <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
               </div>
               <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
                 <form class="oneselcourse">
@@ -181,8 +181,8 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :checked="incwid == items.cwid?true:false" :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :cover="items.cover" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition'||parameter.thatName == 'carousel' ? false : items.ism3u8=='1' ? false:true"/>
-                      <a class="vc-font2" :style="!parameter.thatName||parameter.thatName == 'advert'||formVue == 'audition'||parameter.thatName == 'carousel'  ? '' : items.ism3u8=='1' ? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
+                      <input :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :cover="items.cover" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="items.ism3u8=='1'? false:true"/>
+                      <a class="vc-font2" :style="items.ism3u8=='1'? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
                       </a>
@@ -211,7 +211,7 @@
             <div class="tab-content">
               <div class="teambx mbx">
                 <span class="teaonembx"><a @click="indexinit()">教师</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                <el-input  suffix-icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
+                <el-input  icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
               </div>
               <div class="teacont">
                 <el-col class="teaflowx" style="height: 450px;overflow-x: hidden;">
@@ -297,6 +297,11 @@
           <el-radio class="radio" v-model="showtype1" label="1">本窗口打开</el-radio>
           <el-radio class="radio" v-model="showtype1" label="2">打开新页面</el-radio>
         </el-col>
+        <el-col v-if="cwidon" style="text-align: left;font-size: 14px;margin-top: 20px;margin-left:20px;">
+          课件属性：
+          <el-radio class="radio" v-model="cwidtype" label="1">正常课件</el-radio>
+          <el-radio class="radio" v-model="cwidtype" label="2">免费试听</el-radio>
+        </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="!pulldown && !addsearch" @click="indexinit(1)">重 置</el-button>
@@ -315,6 +320,8 @@
     name: 'hrefdialog',
     data: function () {
       return {
+        cwidon:false,
+        cwidtype:'1',
         addcoursetype:false,
         pulldown:false,
         addsearch:false,
@@ -420,6 +427,7 @@
           $('.oneselcourse').show();
           $('.twoselcourse,.coursetwombx,.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide();
           self.newschoolactive = false;
+          self.cwidon = false
         },
         hrefgetealist: function () {
           let self = this
@@ -430,7 +438,6 @@
               pagesize: 1000
             }
           }, {emulateJSON: true}).then(function (response) {
-            if (response.data.code != 0) return false
             let list = response.data.data.list
             if (list.length) {
               for (var i = 0; i < list.length; i++) {
@@ -454,10 +461,9 @@
             params: {
             }
           }, {emulateJSON: true}).then(function (response) {
-            if (response.data.code != 0) return false
             let list = response.data.data[1]
             let list1 = response.data.data[0]
-            self.mecoursenum = 0;           
+            self.mecoursenum = 0;
             if(list1.length){
               for(var i=0;i<list1.length;i++){
                 self.mecoursenum = self.mecoursenum + list1[i].coursenum
@@ -565,7 +571,7 @@
                   self.cwpage = linkobj.cwpage;
                   self.cwpagesize= linkobj.cwpagesize;
                   self.cwq= linkobj.cwq;
-                  self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid)
+                  self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid,self.cwq,linkobj.cwid,linkobj.cwidtype)
                   self.incwid = linkobj.cwid;
                   $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
                 }
@@ -575,7 +581,7 @@
             console.log(response)
           })
         },
-        getitemcourselist:function(sourceid,pid,sid,linkobj){
+        getitemcourselist:function(sourceid,pid,sid,linkobj,cwid){
           let self = this
           self.$http.get(window.host + '/aroomv3/course/schCourse.html', {
             params: {
@@ -609,7 +615,7 @@
                   self.cwpage = linkobj.cwpage;
                   self.cwpagesize= linkobj.cwpagesize;
                   self.cwq= linkobj.cwq;
-                  self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid)
+                  self.getcwlistall(linkobj.folderid,linkobj.foldername,linkobj.fprice,linkobj.itemid,self.cwq,linkobj.cwid,linkobj.cwidtype)
                   self.incwid = linkobj.cwid;
                   $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
 
@@ -620,7 +626,7 @@
             console.log(response)
           })
         },
-        getcwlist:function(folderid,sourceid){
+        getcwlist:function(folderid,sourceid,cwid,cwidtype){
           let self = this
           self.$http.get(window.host + '/aroomv3/course/cwlist.html', {
             params: {
@@ -666,6 +672,13 @@
             setTimeout(function(){
               $('.courseradiofourreset').click()
               $('.courseradiothreereset').click()
+              if(cwidtype){
+                self.cwidtype = cwidtype
+              }
+              if (cwid){
+                $("input[cwid='"+cwid+"']").attr('checked','true');
+              }
+
             },0)
           }, function (response) {
             console.log(response)
@@ -843,6 +856,7 @@
                 linktype = 'course'
                 saveparam = true
                 self.formVue = thatName.split('|')[1]
+
                 tCP.addClass('inputCwlist')
                 break
               case 'teacher':
@@ -882,6 +896,7 @@
             }
           }else{
             self.newschoolactive = false;
+            self.cwidon = false
           }
           if(linktype == 'news'){
             $('ul.tabsul li a[data-index=1]').addClass('tab-active')
@@ -981,6 +996,7 @@
                 self.newschoolactive = true;
               }else{
                 self.newschoolactive = false;
+                self.cwidon = false
               }
 
             }
@@ -1003,7 +1019,7 @@
           linkType = $('a.tab-active').attr('type')
           a.removeClass('registerEvent')
           a.removeClass('getUserNameEvent')
-          a.removeClass('loginEvent')
+          a.removeAttr('auditionid')
         }
         // ----------- update end------------
         switch (linkType) {
@@ -1109,14 +1125,11 @@
                   news : self.newsobj,
                   newschoolactive : self.showtype1
                 }
-                console.log(self.showtype1)
-                console.log(a)
                 if(self.showtype1 == '1'){
                   a.removeAttr('target')
                 }else{
                   a.attr('target', '_blank')
                 }
-                console.log(a.attr('target'))
               }else{
                 obj = {
                   active : num,
@@ -1399,15 +1412,21 @@
                 cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
-                cwpagesize : self.cwpagesize
+                cwpagesize : self.cwpagesize,
+                cwidtype : self.cwidtype
               }
               // ----------- update start------------
               if (!parameter) {
                 a.attr('linkobj', JSON.stringify(obj))
-                if(cwpay == '1'){
-                  a.attr('href','/ibuy.html?cwid='+fivecourseradio)
+                if (self.cwidtype == '2'){
+                  a.attr('href','/course/' + fivecourseradio + '.html')
+                  a.attr('auditionid',fivecourseradio)
                 }else{
-                  a.attr('href','/courseinfo/' + self.itemid + '.html')
+                  if(cwpay == '1'){
+                    a.attr('href','/ibuy.html?cwid='+fivecourseradio)
+                  }else{
+                    a.attr('href','/courseinfo/' + self.itemid + '.html')
+                  }
                 }
               }
               // ----------- update end------------
@@ -1900,15 +1919,28 @@
                 cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
                 cwq : self.cwq,
                 cwpage : self.cwpage,
-                cwpagesize : self.cwpagesize
+                cwpagesize : self.cwpagesize,
+                cwidtype : self.cwidtype
               }
 
               // ----------- update start------------
+              if (self.cwidtype == '2'){
+                url = '/course/' + fivecourseradio + '.html'
+              }else{
+                if(cwpay == '1'){
+                  url = '/ibuy.html?cwid='+fivecourseradio
+                }else{
+                  url = '/courseinfo/' + self.itemid + '.html'
+                }
+              }
+              //url = '/course/' + fivecourseradio + '.html'
+              /*a.attr('href','/course/' + fivecourseradio + '.html')
+              a.attr('target','_blank')
               if(cwpay == '1'){
                 url = '/ibuy.html?cwid='+fivecourseradio
               }else{
                 url = '/courseinfo/' + self.itemid + '.html'
-              }
+              }*/
               // ----------- update end------------
             }
             break
@@ -1972,6 +2004,7 @@
               name= obj.cwname
               editname= obj.cwname
               sonclass = obj.name +'/'+ obj.pname +'/'+obj.sname + '/'+obj.foldername +'/'+obj.cwname
+
             }
 
             break
@@ -2491,6 +2524,7 @@
           self.newsobj.label = label;
         }
         self.newschoolactive = false;
+        self.cwidon = false
       },
       handleIconClick(){
         let self = this;
@@ -2608,6 +2642,7 @@
         $('.oneselinlineschool').hide();
         $('.twoselinlineschool,.inlineschooltwombx').show();
         self.newschoolactive = false;
+        self.cwidon = false
       },
       getsoncourse(sourceid,name,linkobj){
         let self = this;
@@ -2630,7 +2665,7 @@
       },
       getsidcourse(pid,name,linkobj){
         let self = this;
-
+        self.cwidon = false
         let list = self.coursesort;
         //let item = self.itemlist;
         let sidlist  = [];
@@ -2676,6 +2711,7 @@
         $('.fourselcourse').show();
         self.seaqshow = 1;
         self.sid = sids;
+        self.cwidon = false
       },
       coursebxinit(num){
         let self = this;
@@ -2683,17 +2719,20 @@
           $('.coursethreembx,.coursefourmbx,.coursefivembx,.threeselcourse,.fourselcourse,.fiveselcourse').hide()
           $('.twoselcourse').show();
           self.seaqshow = 0;
+          self.cwidon = false
         }else if(num == 3){
           $('.coursefourmbx,.coursefivembx,.fourselcourse,.fiveselcourse').hide()
           $('.threeselcourse').show()
           self.seaqshow = 0;
+          self.cwidon = false
         }else if(num == 4){
           $('.coursefivembx,.fiveselcourse').hide()
           $('.fourselcourse').show()
           self.seaqshow = 1;
+          self.cwidon = false
         }
       },
-      getcwlistall(folderid,name,fprice,itemid,page){
+      getcwlistall(folderid,name,fprice,itemid,page,cwid,cwidtype){
         let self = this;
         if(page){
           self.cwpage = 1;
@@ -2701,12 +2740,19 @@
         self.folderid = folderid;
         self.fprice = fprice;
         self.itemid = itemid;
-        self.getcwlist(folderid,self.sourceid)
+        self.getcwlist(folderid,self.sourceid,cwid,cwidtype)
         $('.coursefivembx a').text(name)
         $('.coursefivembx').show()
         $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
         $('.fiveselcourse').show();
         self.seaqshow = 2;
+        if (self.parameter.thatName == 'coursecw'){
+          self.cwidon = false
+          self.cwidtype = '2'
+        }else{
+          self.cwidon = true
+          self.cwidtype = '1'
+        }
       },
       checkedincode(incode){
         let self = this;
@@ -2725,13 +2771,14 @@
   .hrefdialog *{
     font-size: 14px;
   }
-  .el-dialog-visdialog .el-dialog{
-    width: 1000px;
-  }
   .hrefdialog .el-dialog__title{
     font-size: 16px;
-  } 
-  .hrefdialog .el-dialog__body{
+  }
+  .hrefdialog .el-dialog--hrefs .el-dialog{
+    width: 1000px;
+    /*height: 720px;*/
+  }
+  .hrefdialog .el-dialog--hrefs .el-dialog__body{
     padding: 5px 0px;
   }
   .hrefdialog .tabs-vertical{
@@ -2740,7 +2787,7 @@
     border: 1px solid #CECECE;
     border-right:none;
     border-left:none;
-    margin: 5px auto 10px;
+    margin: 20px auto 10px;
     border-radius: 2px;
     height: 552px;
     color: #333333;
@@ -2977,7 +3024,10 @@
   .hrefdialog .tabs-vertical .tabs-content-placeholder div img{
     max-width: 100%;
     margin-top:5px;
-  }  
+  }
+  .hrefdialog .el-dialog__body{
+    padding: 5px 10px
+  }
   .hrefdialog .vc-font2:hover{
     border:1px solid red;
     box-sizing: border-box;

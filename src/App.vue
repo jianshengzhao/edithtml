@@ -2012,8 +2012,7 @@
       width: 50px;
       height: 52px;
     }
-    .library .lib_li span {
-      font-family: 'serif';
+    .library .lib_li span {    
       margin-left: -3px;
       width: 110%;
       transform:scale(0.9);

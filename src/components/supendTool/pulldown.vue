@@ -3,8 +3,7 @@
     <el-dialog
       title="下拉框"
       :visible.sync="dialogpulldown"
-      class="dialogpulldown"
-      width="660px">
+      class="el-dialog--pulldown">
       <el-row>
         <el-col v-if="pulldowndata.length < 10" style="text-align: right;margin-bottom: 10px">
           <el-button @click="dialoghref" type="primary">添加链接</el-button>
@@ -87,7 +86,7 @@ export default {
       let self = this
       self.that = that
       self.me = me
-      self.pulldown = element     
+      self.pulldown = element
       let pulldownData = self.pulldown.find('.pulldown_position').attr('pulldownData')
       if (pulldownData){
         let jsonpulldownData = $.parseJSON(pulldownData)
@@ -105,23 +104,23 @@ export default {
     },
     enteredit:function (val) {
       let self = this
-      // if (val.edit){
-      //   val.hoverqued = 1
-      //   val.hoveredit = 0
-      // }else{
-      //   val.hoveredit = 1
-      //   val.hoverqued = 0
-      // }
+      if (val.edit){
+        val.hoverqued = 1
+        val.hoveredit = 0
+      }else{
+        val.hoveredit = 1
+        val.hoverqued = 0
+      }
     },
     leaveedit:function (val) {
       let self = this
-      // if (val.edit){
-      //   val.hoverqued = 0
-      //   val.hoveredit = 0
-      // }else{
-      //   val.hoveredit = 0
-      //   val.hoverqued = 0
-      // }
+      if (val.edit){
+        val.hoverqued = 0
+        val.hoveredit = 0
+      }else{
+        val.hoveredit = 0
+        val.hoverqued = 0
+      }
     },
     editname:function (index) {
       let self = this
@@ -173,7 +172,11 @@ export default {
                 }
                 break
               case 'course':
-                pulldownhtnl += '<a href="'+ pulldowndata[i].url +'">'+pulldowndata[i].name+'</a>'
+                if (pulldowndata[i].obj.cwidtype == '2'){
+                  pulldownhtnl += '<a target="_blank" auditionid="'+ pulldowndata[i].obj.cwid+'" href="'+ pulldowndata[i].url +'">'+pulldowndata[i].name+'</a>'
+                }else{
+                  pulldownhtnl += '<a target="_blank" href="'+ pulldowndata[i].url +'">'+pulldowndata[i].name+'</a>'
+                }
                 break
               case 'teacher':
                 pulldownhtnl += '<a target="_blank" href="'+ pulldowndata[i].url +'">'+pulldowndata[i].name+'</a>'
@@ -260,13 +263,16 @@ export default {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style > 
-  .dialogpulldown .el-dialog__body{
+<style >
+  .el-dialog--pulldown .el-dialog{
+    width: 660px;
+  }
+  .el-dialog--pulldown .el-dialog__body{
     margin-top: 18px;
     padding-top: 10px;
     border-top: 1px solid #ccc;
   }
-  .dialogpulldown .el-table .cell, .dialogpulldown .el-table th>div{
+  .el-dialog--pulldown .el-table .cell, .el-dialog--pulldown .el-table th>div{
     padding-left: 10px;
     padding-right: 10px;
   }

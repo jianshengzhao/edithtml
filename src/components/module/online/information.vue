@@ -537,10 +537,12 @@
         },
         createqr_logo:function(html){
           let self = this
-          if(html.hasClass("schoolqr")){
-            html.find("img").attr("src",window.roominfo.wechatimg)
+          if(html.hasClass("schoolqr")){           
+            let wechatimg = window.roominfo.wechatimg || 'http://static.ebanhui.com/design/wapdesign/image/noqrcode.jpg'
+            html.find("img").attr("src", wechatimg)
           }else{
-            html.find("img").attr("src",window.roominfo.cface)
+            let cface = window.roominfo.cface || 'http://static.ebanhui.com/design/wapdesign/image/noLogo.jpg'
+            html.find("img").attr("src", cface)
           }
         },
         createintroduce:function(html){
