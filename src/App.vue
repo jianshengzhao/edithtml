@@ -30,7 +30,7 @@
         <i class="tImgicon icon-clean"></i>
         <span>清屏</span>
       </div>
-    </div> 
+    </div>
   <!-- assembly library -->
     <div class="library" unselectable="on" onselectstart="return false;">
       <!-- <nav class="lib_nav">
@@ -46,7 +46,7 @@
         <!-- <div class="header">正在做。。。 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol todoBox"></div> -->
        <!--  <div class="header">敬请期待。。。</div> -->
-      </div>      
+      </div>
     </div>
   <!--   <div class="shrink libshrink">
       <i class="el-icon-arrow-left"></i>
@@ -58,10 +58,10 @@
         <div class="alignBox">
           <div class="con-row">
             <div class="con-col">
-              <div class="col-head">水平对齐</div>                
+              <div class="col-head">水平对齐</div>
                 <li class="col-li" title="左对齐" @click="selectBloo ? leftAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-left"></i></li>
                 <li class="col-li" title="右对齐" @click="selectBloo ? rightAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-right"></i></li>
-                <li class="col-li" title="水平居中" @click="selectBloo ? centerAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-center"></i></li>                
+                <li class="col-li" title="水平居中" @click="selectBloo ? centerAlignEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-align-center"></i></li>
                 <li class="col-li" title="水平等间距" @click="selectBloo ? centerSpacingEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-spacing-center"></i></li>
             </div>
             <div class="con-col r">
@@ -75,14 +75,14 @@
           <span class="con-border"></span>
           <div class="con-row">
             <div class="con-col">
-              <div class="col-head">编辑</div> 
+              <div class="col-head">编辑</div>
                 <li class="col-li" title="剪切" @click="selectBloo ? shearEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-shear"></i></li>
                 <li class="col-li" title="复制" @click="selectBloo ? copyEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-copy"></i></li>
                 <li class="col-li" title="粘贴" @click="clipboard ? pasteEvent() :''" :class="clipboard?'':'tl_li_Disable'"><i class="tImgicon icon-paste"></i></li>
-                <li class="col-li" title="删除" @click="selectBloo ? deleteEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-delete"></i></li> 
+                <li class="col-li" title="删除" @click="selectBloo ? deleteEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-delete"></i></li>
             </div>
             <div class="con-col r">
-              <div class="col-head">图层</div> 
+              <div class="col-head">图层</div>
                 <li class="col-li" title="置于顶层" @click="selectBloo ? topFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-top"></i></li>
                 <li class="col-li" title="置于底层" @click="selectBloo ? bottomFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-bottom"></i></li>
                 <li class="col-li" title="上移一层" @click="selectBloo ? upFloorEvent() : ''" :class="selectBloo?'':'tl_li_Disable'"><i class="tImgicon icon-layer-up"></i></li>
@@ -231,7 +231,7 @@
               <el-input v-model="inp_line" type='number' :disabled='disabled' min='12'  :max='99' @change='changeInpLine'></el-input>
             </div>
           </div>
-        </div>       
+        </div>
         <div class="header layerhead">模块索引 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementHead">
           <div class="ele_li" v-for="(item, index) in elementHead" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
@@ -243,7 +243,7 @@
         <div class="header layerhead">页尾 <i class="el-icon-caret-bottom"></i></div>
         <div class="lib_ol elementTail">
           <div class="ele_li" v-for="(item, index) in elementTail" :dataIndex="index"><span>{{item.text}}</span> <span :dataIndex="index" class="deleteLayer" title="删除">×</span></div>
-        </div>       --> 
+        </div>       -->
       </div>
      <!--  <div class="shrink shrinkout">
         <i class="el-icon-arrow-left"></i>
@@ -251,26 +251,26 @@
     </div>
   <!-- editBox    -->
     <div class="editBox" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;padding-right:314px;">
-      <div class="space">  
-        <div class="canvasbg"></div>     
+      <div class="space">
+        <div class="canvasbg"></div>
         <div class="canvas grid" >
-          <div class="c_top">            
-          </div>          
+          <div class="c_top">
+          </div>
          <!--  <div class="c_body">
           </div>
-          <div class="c_foot">           
+          <div class="c_foot">
           </div> -->
         </div>
         <div class="supendTools"></div>
         <div class="row-t line"></div>
-        <div class="row-b line"></div> 
+        <div class="row-b line"></div>
         <div class="col-l line"></div>
         <div class="col-r line"></div>
           <!-- 自定义右键菜单 -->
         <ul class="contextmenu">
           <li @click="upFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-up"></i>上移一层</li>
           <li @click="downFloorEvent" v-if="rightButton"><i class="iconfont icon-layer-down"></i>下移一层</li>
-          <div class="divider" v-if="rightButton"></div>       
+          <div class="divider" v-if="rightButton"></div>
           <li v-if="rightButton"><i class="iconfont icon-align-left"></i>对齐
             <i class="el-icon-caret-bottom"></i>
             <ol>
@@ -293,7 +293,7 @@
       <div class="copyBox">
         <div class="copyCon">
         </div>
-      </div>  
+      </div>
     </div>
   <!-- dialog弹框 -->
     <el-dialog
@@ -301,8 +301,8 @@
       :visible.sync="dialogPageSetting"
       size="pageSet" class="dialogSetting">
       <el-row>
-        <el-col :span="4" class="tit">页高</el-col>          
-        <el-col :span="7">          
+        <el-col :span="4" class="tit">页高</el-col>
+        <el-col :span="7">
           <el-input-number v-model="inp_height" :step="100" size="small"></el-input-number>
         </el-col>
       </el-row>
@@ -334,7 +334,7 @@
       <el-row>
         <el-col :span="4" class="tit">显示（%）</el-col>
         <el-col :span="10">
-          <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number> 
+          <el-input-number v-model="inp_pgPercent" :step="2" size="small" :min="0" :max="100"></el-input-number>
         </el-col>
       </el-row>
       <el-row>
@@ -362,13 +362,13 @@
             </el-option>
           </el-select>
         </el-col>
-      </el-row>      
+      </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPageSetting = false">取 消</el-button>
         <el-button type="primary" @click="dialogPageSettingEvent">确 定</el-button>
       </span>
     </el-dialog>
-  <!-- 网校模块   -->    
+  <!-- 网校模块   -->
     <el-dialog
       title="模块动画"
       :visible.sync="dialogscrollanim"
@@ -405,14 +405,14 @@
             <img src="./assets/img/bounceOut_icon.png">
           <div class="animtip">✔</div></div><p>弹性缩小</p></div>
         </el-col>
-        
+
       </el-row>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogscrollanim = false">取 消</el-button>
         <el-button @click="editanimate()" type="primary">确 定</el-button>
       </span>
-    </el-dialog>  
-  <!-- dialog弹框 suspendTools -->    
+    </el-dialog>
+  <!-- dialog弹框 suspendTools -->
     <hrefdialog ref="hrefdialogp"></hrefdialog>
     <myimages ref="myimages"></myimages>
     <suspend ref="suspend"></suspend>
@@ -425,13 +425,13 @@
     <hline ref="hline"></hline>
     <sline ref="sline"></sline>
   <!-- dialog弹框 modules 网校组件 -->
-    <headers ref="headers"></headers>  
+    <headers ref="headers"></headers>
     <menubar ref="menubar"></menubar>
     <carousel ref="carousel"></carousel>
     <course ref="course"></course>
     <information ref="information"></information>
     <footernav ref="footernav"></footernav>
-  <!-- <weather ref="weather"></weather> 
+  <!-- <weather ref="weather"></weather>
        <carousel ref="carousel"></carousel>
        <waiter ref="waiter"></waiter>
        <advert ref="advert"></advert>
@@ -440,8 +440,8 @@
        <effect ref="effect"></effect> -->
   </div>
 </template>
-<script>  
-  import $ from 'jquery' 
+<script>
+  import $ from 'jquery'
   import configData from '@/data/configData.js'
   import tool from '@/data/tool.js'
   import board from '@/components/limbs/board'
@@ -449,8 +449,8 @@
   import hrefdialog from '@/components/supendTools/hrefdialog'
   import myimages from '@/components/supendTools/myimages'
   import suspend from '@/components/supendTools/suspend'
-  import shape from '@/components/supendTools/shape' 
-  
+  import shape from '@/components/supendTools/shape'
+
   import rectangle from '@/components/modules/rectangle'
   import ueditor from '@/components/modules/ueditor'
   import editbutton from '@/components/modules/editbutton'
@@ -464,11 +464,11 @@
   import information from '@/components/modules/information'
   import carousel from '@/components/modules/carousel'
   import headers from '@/components/modules/header'
-  // import weather from '@/components/modules/weather' 
+  // import weather from '@/components/modules/weather'
   // import waiter from '@/components/modules/waiter'
-  // import advert from '@/components/modules/advert'  
+  // import advert from '@/components/modules/advert'
   // import player from '@/components/modules/player'
-  // import addcoursetype from '@/components/modules/addcoursetype'  
+  // import addcoursetype from '@/components/modules/addcoursetype'
   // import effect from '@/components/modules/effect'
   import '@/assets/animate.min.css'
   let config = configData.config.config
@@ -477,13 +477,13 @@
     components: {
       board,
       colorPicker,
-      hrefdialog, 
+      hrefdialog,
       myimages,
-      suspend, 
+      suspend,
       shape,
       rectangle,
-      ueditor, 
-      editbutton,           
+      ueditor,
+      editbutton,
       picture,
       hline,
       sline,
@@ -494,16 +494,16 @@
       carousel,
       headers
       // weather,
-      // carousel, 
-      // waiter, 
-      // advert, 
+      // carousel,
+      // waiter,
+      // advert,
       // course,
       // player,
       // addcoursetype
     },
     data: function () {
       return {
-      // ------------ 工具栏add ----------------- 
+      // ------------ 工具栏add -----------------
         did: 0,
         onlybloo: true,
         br_width: '0',
@@ -555,17 +555,17 @@
             label: 'outset'
           }],
         br_color: '#ccc',
-        inp_opacity: 100,        
+        inp_opacity: 100,
         check_shadow: false,
         inp_weight_x: '0',
         inp_weight_y: '0',
         inp_blur: '0',
         bw_color: '#ccc',
         editEditor: false,
-      // ------------ 登录框文本 ---------------- 
+      // ------------ 登录框文本 ----------------
         logintext :'',
         dialogedittext:false,
-      // ------------ 基础组件弹框 -------------- 
+      // ------------ 基础组件弹框 --------------
         dialogscrollanim:false,
         anim:'',
         animtype : 0,
@@ -626,7 +626,7 @@
         moduleElementX:'',
         moduleElementR:'',
         moduleElementB:'',
-        moduleParentElementHeight: '',      
+        moduleParentElementHeight: '',
         clipboard: '',
         original: '',
         selectBloo: false,
@@ -643,7 +643,7 @@
            { label:'comic sans ms',name:'comicSansMs',val:'comic sans ms'},
            { label:'impact',name:'impact',val:'impact,chicago'},
            { label:'times new roman',name:'timesNewRoman',val:'times new roman'}],
-      // ------------ config -------------------- 
+      // ------------ config --------------------
         config: {
           stretchLimit: config.stretchLimit, // 是否开启module拉伸限制
           moveLimit: config.moveLimit // 是否开启module移动限制
@@ -665,8 +665,8 @@
         elementTail: [],
         moduleData: configData.config,
         tool: tool,
-      // ------------ 封装的异步请求 ------------ 
-        httpget: function (getParam) { 
+      // ------------ 封装的异步请求 ------------
+        httpget: function (getParam) {
           let self = this
           self.$http.get(window.host + getParam.url, {params: getParam.params}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -675,7 +675,7 @@
           }).catch(function (response) {
           })
         },
-        httppost: function (getParam) { 
+        httppost: function (getParam) {
           let self = this
           self.$http.post(window.host + getParam.url, getParam.params, {emulateJSON: true}).then((response) => {
             if (getParam.fun !== undefined) {
@@ -686,10 +686,10 @@
         }
       }
     },
-    created: function () {      
+    created: function () {
       var self = this
       let hash = window.location.hash
-      let paramArr = hash.split('?')      
+      let paramArr = hash.split('?')
       if (paramArr.length > 1) {
         let paramdid = paramArr[1].split('&')
         for (let i = 0, len = paramdid.length; i < len; i++) {
@@ -698,13 +698,13 @@
             self.did = item.split('=')[1]
             break
           }
-        }       
+        }
       }
       self.moduleData['toallGroup']['basic'] = []
       self.moduleData['toallGroup']['online'] = []
-      self.$nextTick(function () {        
+      self.$nextTick(function () {
         let head = $('.c_top')
-      // -------- 获取网校信息 ------------- 
+      // -------- 获取网校信息 -------------
           let getParam = {
             url: '/aroomv3/roominfo.html',
             params: {},
@@ -721,45 +721,45 @@
                 },
                 fun: function (response) {
                   let saveParams = response.body.data
-                  let html = saveParams.head.replace(/[\\]/g, '') 
+                  let html = saveParams.head.replace(/[\\]/g, '')
                   html += saveParams.body.replace(/[\\]/g, '')
-                  html += saveParams.foot.replace(/[\\]/g, '')  
-                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))                 
+                  html += saveParams.foot.replace(/[\\]/g, '')
+                  let pp = $.parseJSON(saveParams.settings.replace(/[\\]/g, ''))
                   self.inp_height = pp.body * 37.5
                   self.prospectColorVal = pp.pg =='transparent'?null:pp.pg
-                  self.fontHoverColorVal = pp.fontHover||'#333'                
+                  self.fontHoverColorVal = pp.fontHover||'#333'
                   self.pgImageUrl = pp.pgImage.backgroundImage.split('(')[1].split(')')[0]
                   self.inp_pgPercent = pp.pgImage.backgroundSize.split('%')[0]
                   self.repeatPgValue = pp.pgImage.backgroundRepeat
                   self.attachmentPgValue = pp.pgImage.backgroundAttachment
                   head.css('backgroundColor', pp.pg)
-                  head.css(pp.pgImage)              
+                  head.css(pp.pgImage)
                   head.css('height', self.inp_height)
                   head.html(html)
-                  self.moduleElement = $('.on_module')                  
+                  self.moduleElement = $('.on_module')
                   tool.tool.carryLayerEvent(self, head)
                   tool.tool.carryUpdateElementStorageEvent(self, head, head.find('.module'))
                   let footernav = $('.footernav')
                   if(footernav.length > 0) {
-                    let space = tool.tool.space                  
-                    let tooltop = parseInt($('.top').css('height'))                  
+                    let space = tool.tool.space
+                    let tooltop = parseInt($('.top').css('height'))
                     let stop = 683 + tooltop - space.scrollTop()
                     footernav.css('top', stop)
                     space.unbind('scroll')
-                    space.on('scroll', function () {          
+                    space.on('scroll', function () {
                       let stop = 683 + tooltop - space.scrollTop()
                       footernav.css('top', stop)
                     })
                   }
                 }
               }
-              self.httppost(getParams) 
+              self.httppost(getParams)
             }
           }
-        self.httpget(getParam) 
-      // -------- 工具初始化 ----------------  
+        self.httpget(getParam)
+      // -------- 工具初始化 ----------------
         tool.tool.init(self, $)
-      // -------- 工具栏位置自适应调整 ------ 
+      // -------- 工具栏位置自适应调整 ------
         let shadow = $('.property .shadow .toolbar')
         let colorbox = shadow.find('.box')
         let $top = $('.top')
@@ -772,26 +772,26 @@
         function positionshadow() {
           width = parseInt($top.css('width'))
           if(width < 1845){
-            width = parseInt($top.css('width'))   
-            if(width < 1558) {             
+            width = parseInt($top.css('width'))
+            if(width < 1558) {
               shadow.css('left', '0px')
               colorbox.css('left', '0px')
             } else {
-              moveShadow = width - 1845             
+              moveShadow = width - 1845
               if (moveShadow < -212) {
                 shadow.css('left', '-212px')
                 colorbox.css('left', (moveShadow + 212) + 'px')
               }else{
                 shadow.css('left', moveShadow + 'px')
               }
-            }     
+            }
           }
         }
 
       })
     },
     methods: {
-    // ------------- 清屏 -------------------- 
+    // ------------- 清屏 --------------------
       cleanScreenEvent: function () {
         let self = this
         self.$confirm('此操作将清除页面为空白页, 是否继续?', '提示', {
@@ -815,10 +815,10 @@
           self.$message({
             type: 'info',
             message: '已取消清屏'
-          });          
+          });
         });
       },
-    // ------------- 动画效果 ---------------- 
+    // ------------- 动画效果 ----------------
       dialoganim(){
         let self = this
         let anim  = $('.on_module').attr('data-kui-anim')
@@ -844,14 +844,14 @@
         a.attr('data-kui-anim',self.anim)
         self.dialogscrollanim = false
       },
-    // ------------- 页面设置 ---------------- 
+    // ------------- 页面设置 ----------------
       settingEvent: function () { // 页面设置
         let self = this
         self.dialogPageSetting = true
       },
       handlePredropSuccess: function (res) {
         let self = this
-        let showurl = res.data.showurl       
+        let showurl = res.data.showurl
         self.pgImageUrl = showurl
       },
       cleanPgEvent: function () {
@@ -859,21 +859,21 @@
         self.pgImageUrl = ''
       },
       dialogPageSettingEvent: function () { // 页面设置弹框保存
-        var self = this       
+        var self = this
         let canvas = $('.c_top')
-        
+
         canvas.css('height', self.inp_height)
         if (self.prospectColorVal) {
           canvas.css('backgroundColor', self.prospectColorVal)
         } else {
           canvas.css('backgroundColor', 'transparent')
-        }        
+        }
         if(self.pgImageUrl){
           let pgJson = {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue}
           canvas.css(pgJson)
         } else {
           canvas.css('backgroundImage','none')
-        }      
+        }
         if (self.fontHoverColorVal) {
           $('#fontHover').remove()
           $('head').append('<style id="fontHover">body a[href]:hover{color:' + self.fontHoverColorVal + ';}</style>')
@@ -881,30 +881,30 @@
         self.dialogPageSetting = false
       },
       saveEvent: function () { // 页面保存
-        let self = this        
+        let self = this
         $('.supendTools').hide()
         $('.resizeBox').remove()
-      // ------------- setting -------------------- 
+      // ------------- setting --------------------
         let setting = {
           pg: self.prospectColorVal?self.prospectColorVal:'transparent',
-          pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},     
+          pgImage: {'backgroundImage': 'url(' + self.pgImageUrl + ')', 'backgroundSize': self.inp_pgPercent + '% auto', 'backgroundRepeat': self.repeatPgValue,'backgroundAttachment': self.attachmentPgValue},
           height: self.inp_height / 37.5 ,
           top: parseInt($('.headers').css('height'))/37.5,
           body: parseInt($('.c_top').css('height'))/37.5,
           foot: parseInt($('.footernav').css('height'))/37.5
         }
         let strSetting = window.JSON.stringify(setting)
-      // ------------- gethtml -------------------- 
+      // ------------- gethtml --------------------
         let headHtm = ''
         let bodyHtm = ''
         let footHtm = ''
         if ($('.headers').length > 0) {
-          
+
         }
         let obj = self.elementStorage['c_top']
         let headH = parseInt($('.headers').css('height'))
         for (let i in obj) { // 判断是否在选区内
-          let item = obj[i]         
+          let item = obj[i]
           if (item.xt >= 0 && item.xb <= 375 && item.yt >= 0 && item.yb <= headH) {
             headHtm += item['ele'][0]['outerHTML']
           } else if(item['ele'].hasClass('footernav')) {
@@ -914,7 +914,7 @@
           }
         }
 
-        let headArray = headHtm // todolist:        
+        let headArray = headHtm // todolist:
         let bodyArray = bodyHtm
         if (bodyArray == '') {
           self.$notify({
@@ -923,10 +923,10 @@
             type: 'warning'
           })
           return false
-        }       
+        }
         let footArray = footHtm
-      // ------------- audition ------------------- 
-        let audition = $('.audition ')
+      // ------------- audition -------------------
+        let audition = $("[auditionid]")
         let auditions = ''
         let auditionArr = {}
         for (let i = 0, len = audition.length; i < len; i++) {
@@ -939,7 +939,7 @@
           }
         }
         auditions = auditions.substring(0, auditions.length - 1)
-      // ------------- player --------------------- 
+      // ------------- player ---------------------
         let player = $('.player')
         let vedioids = []
         let vedioidObj = {}
@@ -948,12 +948,12 @@
           for (let j = 0, jen = playerData.length; j < jen; j++) {
             let cwid = playerData[j].cwid
             if (!vedioidObj[cwid]) {
-              vedioids.push(cwid) 
+              vedioids.push(cwid)
               vedioidObj[cwid] = true
             }
           }
-        }  
-      // ------------- save ----------------------- 
+        }
+      // ------------- save -----------------------
         let param = {
           url: '/room/design/save.html',
           params: {
@@ -988,7 +988,7 @@
         }
         self.httppost(param)
       },
-    // ------------- 模块属性控制 ------------ 
+    // ------------- 模块属性控制 ------------
       changeInpZ: function (val) { // z-index 定位
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'zIndex', val)
@@ -1003,28 +1003,28 @@
       },
       changeInpW: function (val) { // width 宽度
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'width', val)       
+        tool.tool.carryModuleOperationEvent(self, 'width', val)
       },
       changeInpH: function (val) { // height 高度
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'height', val)       
+        tool.tool.carryModuleOperationEvent(self, 'height', val)
       },
       changeInpSize: function (val) { // font-size 字体大小
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'fontSize', val) 
+        tool.tool.carryModuleOperationEvent(self, 'fontSize', val)
       },
       changeInpLine: function (val) { // line-height 行高
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'lineHeight', val)
       },
       changeFontFamily: function (val) { // 字体类型
-        var self = this     
+        var self = this
         if ($(".on_module").length > 0) {
           tool.tool.carryModuleOperationEvent(self, 'fontFamily', val)
         }
       },
       changeColorFont: function (val) { // font-color 字体颜色
-        var self = this       
+        var self = this
         tool.tool.carryModuleOperationEvent(self, 'color', val)
       },
       changeColorBg: function (val) { // background-color 背景颜色
@@ -1040,7 +1040,7 @@
           }
         }else if(mods.length!= 0){
           tool.tool.carryModuleOperationEvent(self, 'borderWidth', val)
-        }        
+        }
       },
       changeBorderStyle: function (val) { // 边框样式
         var self = this
@@ -1049,9 +1049,9 @@
           if (self.moduleElementY.css('border-left-style')!== val){
             tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
           }
-        }else if(mods.length!= 0){          
+        }else if(mods.length!= 0){
           tool.tool.carryModuleOperationEvent(self, 'borderStyle', val)
-        }        
+        }
       },
       changeBorderColor: function (val) { // 边框颜色
         var self = this
@@ -1063,25 +1063,25 @@
       },
       changeShadow: function (val) { // 阴影开关
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)        
+        tool.tool.carryModuleOperationEvent(self, 'boxShadow', self.check_shadow)
       },
       changHShadow: function (val) { // 水平偏移阴影
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowX', val)        
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowX', val)
       },
       changVShadow: function (val) { // 垂直偏移阴影
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowY', val)        
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowY', val)
       },
       changBlurShadow: function (val) { // 阴影模糊
         var self = this
-        tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)       
+        tool.tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)
       },
       changColorShadow: function (val) { // 阴影颜色
-        var self = this        
+        var self = this
         tool.tool.carryModuleOperationEvent(self, 'boxShadowColor', val)
       },
-    // ------------- 模块操作 ---------------- 
+    // ------------- 模块操作 ----------------
       topAlignEvent: function () { // top 上对齐
         var self = this
         tool.tool.carryModuleOperationEvent(self, 'topAlign')
@@ -1116,7 +1116,7 @@
       },
       upFloorEvent: function () { // 图层上移一层
         let self = this
-        tool.tool.carryModuleOperationEvent(self, 'upFloor')       
+        tool.tool.carryModuleOperationEvent(self, 'upFloor')
       },
       downFloorEvent: function () { // 图层下移一层
         let self = this
@@ -1137,7 +1137,7 @@
       deleteEvent: function () { // 删除
         let self = this
         tool.tool.carryModuleOperationEvent(self, 'delete')
-      },    
+      },
       beforePictureUpload: function (file) {
         let self = this
         if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
@@ -1177,7 +1177,7 @@
       display: inline-block;
     }
     .picture{
-      border-width: 0; 
+      border-width: 0;
       border-style: solid;
       border-color: #000;
     }
@@ -1185,10 +1185,10 @@
       width: 22px;
       height: 15px;
     }
-    .propertycolor .colorBtn{  
-      position: absolute; 
+    .propertycolor .colorBtn{
+      position: absolute;
       top:2px;
-      left: 0;    
+      left: 0;
       border:1px solid #666;
       cursor: pointer;
       /*margin:2px;*/
@@ -1235,7 +1235,7 @@
       padding-left: 10px;
       padding-right: 10px;
       height: 60px;
-      position: relative;     
+      position: relative;
       border-bottom: 1px solid #d9d9d9;
       z-index: 4;
       background-color: #fff;
@@ -1244,11 +1244,11 @@
       width: 100%;
       box-sizing: border-box;
     }
-    .top>div{      
+    .top>div{
       margin-top: 2px;
       width: 50px;
       height: 50px;
-    }    
+    }
     .tl_li{
       float: left;
       position: relative;
@@ -1257,9 +1257,9 @@
       display: inline-block;
       height: 24px;
       margin: 2px ;
-      cursor: pointer; 
-      text-align: center; 
-      border:1px solid #fff;  
+      cursor: pointer;
+      text-align: center;
+      border:1px solid #fff;
       box-sizing: border-box;
     }
     .doll{
@@ -1301,7 +1301,7 @@
       text-decoration: none;
     }
     .tl_li span{
-      margin-top: 6px;  
+      margin-top: 6px;
       display: block;
       height: 18px;
       line-height: 18px;
@@ -1310,7 +1310,7 @@
     }
    /* .tl_li>span{
       float: left;
-      text-indent: 2px;    
+      text-indent: 2px;
       font-size: 12px;
       height: 18px;
       line-height: 18px;
@@ -1319,7 +1319,7 @@
     }*/
     .tl_li:hover .toolbar{
       display: block;
-    } 
+    }
     .tl_li_Disable:hover .toolbar{
       display: none;
     }
@@ -1347,24 +1347,24 @@
       margin-top: -3px;
       margin-right:5px;
       float: left;
-    }  
+    }
     .toolbar input::-webkit-inner-spin-button{
       display: none;
     }
     #app .t_clean{
-      position: absolute;    
+      position: absolute;
       width: 60px;
       height: 28px;
       top: 3px;
-      right: 64px;      
-    }   
+      right: 64px;
+    }
     #app .t_right{
-      position: absolute;    
+      position: absolute;
       width: 60px;
       height: 28px;
       top: 3px;
-      right: 4px;    
-    } 
+      right: 4px;
+    }
     .toolbar .el-col{
       height: 36px;
       line-height: 36px;
@@ -1379,7 +1379,7 @@
     }
     .dialogSetting .el-col{
       margin-right: 15px;
-      line-height: 36px;    
+      line-height: 36px;
     }
     .dialogSetting .tit{
       text-align: right;
@@ -1398,9 +1398,9 @@
     .border, .shadow{
       position: relative;
       display: inline-block;
-      width: 38px;     
+      width: 38px;
       cursor:pointer;
-      margin-left: 5px; 
+      margin-left: 5px;
       font-size: 14px;
     }
     .border .doll, .shadow .doll{
@@ -1411,13 +1411,13 @@
     .border:hover .toolbar{
       display: block;
     }
-    .br-disable{    
+    .br-disable{
       cursor: not-allowed;
       border-color: #ccc;
     }
     .br-disable i{
       color: #ccc;
-    }  
+    }
     .br-disable:hover .toolbar{
       display: none;
     }
@@ -1497,10 +1497,10 @@
       border-left: 1px solid #9c9c9c;
       padding: 0 10px;
 
-    }  
+    }
     .property{
       float: left;
-      width: auto;    
+      width: auto;
       height: 20px;
       margin-top: 4px;
       line-height: 20px;
@@ -1508,7 +1508,7 @@
     }
     .property .el-input{
       display: inline-block;
-      width: 50px;    
+      width: 50px;
     }
     .property input{
       padding: 0;
@@ -1542,14 +1542,14 @@
       top: 0;
       padding-top:60px;
       width: 133px;
-      height:100%;   
+      height:100%;
       border-right: 1px solid #d9d9d9;
       background-color: #fff;
       box-sizing: border-box;
       z-index: 2;
       transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
     .lib_nav{
@@ -1560,10 +1560,10 @@
       border-right:1px solid #d9d9d9;
       opacity: 1;
        transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
-    }  
+    }
     .lib_nav ol{
       float: right;
       padding-top: 7px;
@@ -1572,8 +1572,8 @@
     .lib_nav li{
       width: 37px;
       height: 64px;
-      border-top-left-radius:2px; 
-      border-bottom-left-radius:2px; 
+      border-top-left-radius:2px;
+      border-bottom-left-radius:2px;
       text-align: center;
       cursor: pointer;
     }
@@ -1605,10 +1605,10 @@
       font-size: 12px;
       color: #7d8695;
       height: 30px;
-      line-height: 30px;    
+      line-height: 30px;
       cursor: pointer;
       text-indent:10px;
-    }    
+    }
     .header i{
       float: right;
       margin-right:10px;
@@ -1630,16 +1630,16 @@
       width: 13px;
       height: 13px;
       margin-right: 15px;
-      margin-top: 8px;     
+      margin-top: 8px;
       line-height: 15px;
-      text-indent: 0;      
+      text-indent: 0;
     }
     .closei i{
       transform:rotate(-90deg);
       -ms-transform:rotate(-90deg);   /* IE 9 */
       -moz-transform:rotate(-90deg);  /* Firefox */
       -webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
-      -o-transform:rotate(-90deg); 
+      -o-transform:rotate(-90deg);
     }
     .closeiR i{
       width: 13px;
@@ -1649,7 +1649,7 @@
       -ms-transform:rotate(90deg);   /* IE 9 */
       -moz-transform:rotate(90deg);  /* Firefox */
       -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
-      -o-transform:rotate(90deg); 
+      -o-transform:rotate(90deg);
     }
     .lib_ol{
       width: 132px;
@@ -1663,7 +1663,7 @@
       height: 66px;
       text-align: center;
       font-size: 28px;
-      color: #525e71;  
+      color: #525e71;
     }
     .lib_li i{
       display: inline-block;
@@ -1698,14 +1698,14 @@
       cursor: pointer;
       z-index: 4;
       transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
     .libshrink i {
       transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
     .shrinkout {
@@ -1715,9 +1715,9 @@
       transform: rotate(180deg);
       -ms-transform: rotate(180deg);
       -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg); 
-      -o-transform: rotate(180deg); 
-    }  
+      -webkit-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+    }
     .basic {
       width: 5px;
     }
@@ -1746,8 +1746,8 @@
       box-sizing: border-box;
       z-index: 3;
       transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
     .layer .lib_box {
@@ -1778,7 +1778,7 @@
     .layer .lib_ol .ele_li:hover{
       background-color: #eee;
     }
-    /*alignBox*/ 
+    /*alignBox*/
       .alignBox{
         padding-top: 1px;
         width: 174px;
@@ -1817,7 +1817,7 @@
         float: left;
         margin: 12px 0 0 12px;
         width: 25px;
-        height: 25px;       
+        height: 25px;
       }
       .col-li i {
         margin: 3px;
@@ -1831,7 +1831,7 @@
         background-color: #fff;
       }
     /*propertyBox*/
-      .propertyBox{       
+      .propertyBox{
         width: 174px;
         height: 120px;
         border-bottom: 1px solid #e5e5e5;
@@ -1856,19 +1856,19 @@
         margin-left: 6px;
         line-height: 20px;
         font-size: 13px;
-        color: #333;        
+        color: #333;
         /*text-shadow: 0 0 15px #999;*/
       }
       .con-pli .el-input{
         float: left;
         width: 48px;
         height: 20px;
-        padding: 0;        
+        padding: 0;
       }
       .con-pli .el-input__inner{
         padding: 0;
         height: 20px;
-        text-align: center;  
+        text-align: center;
         border-radius: 0;
       }
     /*effectsBox*/
@@ -1876,7 +1876,7 @@
         padding-top: 10px;
         width: 174px;
         height: 90px;
-        border-bottom: 1px solid #e5e5e5; 
+        border-bottom: 1px solid #e5e5e5;
       }
       .effectsBox .con-col{
         height: 16px;
@@ -1886,7 +1886,7 @@
         margin-left: 6px;
         line-height: 20px;
         font-size: 13px;
-        color: #333;        
+        color: #333;
         /*text-shadow: 0 0 15px #999;*/
       }
       .effectsBox .m-colorPicker .colorBtn{
@@ -1895,8 +1895,8 @@
       .con-erow{
         height: 16px;
         margin-bottom: 14px;
-      }      
-      .effectsBox .shadow .toolbar{    
+      }
+      .effectsBox .shadow .toolbar{
         left: -120px;
         width: 135px;
         padding: 8px;
@@ -1938,8 +1938,8 @@
       .shadow .toolbar input::-webkit-inner-spin-button {
         display: block;
       }
-      .br_width .toolbar{       
-        left: -32px;      
+      .br_width .toolbar{
+        left: -32px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         z-index: 99;
       }
@@ -1947,7 +1947,7 @@
         padding: 7px 15px;
       }
       .br_style .toolbar{
-        left: -70px;       
+        left: -70px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         z-index: 99;
       }
@@ -1970,7 +1970,7 @@
         margin-left: 10px;
       }
     /*fontBox*/
-      .fontBox{        
+      .fontBox{
         padding-top: 10px;
         width: 100%;
         height: 60px;
@@ -1981,7 +1981,7 @@
         margin-left: 6px;
         line-height: 20px;
         font-size: 13px;
-        color: #333;        
+        color: #333;
         /*text-shadow: 0 0 15px #999;*/
       }
       .tip.p{
@@ -2006,7 +2006,7 @@
       }
       .tip.family{
         position: relative
-      }     
+      }
       .fontBox .m-colorPicker .colorBtn {
         width: 36px!important;
       }
@@ -2024,7 +2024,7 @@
         width: 80px;
       }
       .fontBox .el-select .el-input {
-        width: 80px;        
+        width: 80px;
         text-indent: 2px;
       }
       .fontBox .el-select .el-input .el-input__icon{
@@ -2053,37 +2053,37 @@
       padding-top: 60px;
       margin-left: 133px;
       margin-right: 181px;
-      box-sizing:border-box;    
+      box-sizing:border-box;
       background-color: #f5f5f5;
       z-index: 2;
       transition: all 400ms;
-      -moz-transition: all 400ms; 
-      -webkit-transition: all 400ms; 
+      -moz-transition: all 400ms;
+      -webkit-transition: all 400ms;
       -o-transition: all 400ms;
     }
     .space{
       position: relative;
       width: 100%;
       height: 100%;
-      overflow:auto;      
-    }    
+      overflow:auto;
+    }
     .canvas{
-      position: relative; 
-      left:2px;     
+      position: relative;
+      left:2px;
       width: 380px;
       height: 629px;
-      margin: 109px auto;     
+      margin: 109px auto;
       overflow-y:scroll;
-      background-size:10px 10px;     
+      background-size:10px 10px;
       box-sizing: border-box;
       /*overflow: hidden;*/
-      cursor: default;  
-      z-index: 2;    
+      cursor: default;
+      z-index: 2;
     }
     .canvasbg{
       position: absolute;
       top: 0;
-      left:50%;      
+      left:50%;
       margin-left: -198px;
       width: 396px;
       height: 860px;
@@ -2091,19 +2091,19 @@
       background-image: url(assets/iphone.png);
       background-size: 395px 792px;
       background-repeat: no-repeat;
-      background-position: center 20px;     
-    }     
+      background-position: center 20px;
+    }
     /*.grid{
-      background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);    
+      background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAAnNk6AHRRIAAAAAnRSTlMAsyT7Lw4AAAANSURBVAjXY2hgoCoAACfQAIGM5uSyAAAAAElFTkSuQmCC);
     }*/
-    .c_top{     
+    .c_top{
       position: absolute;
       top:0;
       left: 0;
       width: 375px;
-      height: 1800px; 
-      background-color: #fff;     
-    }  
+      height: 1800px;
+      background-color: #fff;
+    }
     .c_body{
      /* display: none;*/ /*关闭分区*/
       position: relative;
@@ -2118,21 +2118,21 @@
       height: 200px;
       border-top: 1px dashed #d9d9d9;
       box-sizing: border-box;
-    }  
+    }
     .hoverbar{
       display: none;
       position: absolute;
       left: 0;
       bottom: -30px;
       width: 100%;
-      height:30px; 
+      height:30px;
       background-color: rgba(245, 93, 84, 0.9);
       font-size: 14px;
       line-height: 30px;
       text-align: center;
       color: #fff;
-      cursor: ns-resize;  
-      z-index: 99; 
+      cursor: ns-resize;
+      z-index: 99;
     }
     .c_top:hover .hoverbar{
      display: block;
@@ -2150,7 +2150,7 @@
   /* ------------- copyBox ------------- */
     .copyBox{
       position: absolute;
-      display: block;    
+      display: block;
       width: 200px;
       height: 50px;
       background-color: rgba(245,93,84,0.6);
@@ -2198,9 +2198,9 @@
       border-color: #f55d54;
     }
     .supendTools{
-      position: absolute;      
+      position: absolute;
       left: 0px;
-      height: 36px;       
+      height: 36px;
       box-sizing: border-box;
       border:1px solid #E4E4E4;
       background-color: #fff;
@@ -2327,7 +2327,7 @@
       -moz-transform:translateY(-50%);  /* Firefox */
       -webkit-transform:translateY(-50%); /* Safari 和 Chrome */
       -o-transform:translateY(-50%);
-      cursor: e-resize; 
+      cursor: e-resize;
     }
     .se{
       bottom: -3px;
@@ -2379,19 +2379,19 @@
       color: #f55d54;
       font-size: 18px;
       text-indent: 4px;
-    }  
+    }
     .contextmenu li i.el-icon-caret-bottom{
       float: right;
       margin: 7px;
       font-size: 12px;
       color: #cacaca;
-    } 
+    }
     .contextmenu li:hover i.el-icon-caret-bottom{
        transform: rotate(-90deg);
       -ms-transform: rotate(-90deg);
       -moz-transform: rotate(-90deg);
-      -webkit-transform: rotate(-90deg); 
-      -o-transform: rotate(-90deg); 
+      -webkit-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
       margin-right: 3px;
     }
      .contextmenu li ol{
@@ -2416,7 +2416,7 @@
   /* ------------- editor -------------- */
     .el-dialog__footer {
       padding: 10px 10px 15px;
-    } 
+    }
   /* ------------- 模块动画 ------------ */
     .animlist{
       display: block;
@@ -2460,14 +2460,14 @@
     }
   /* ------------- 模块动画弹窗 -------- */
     .animlist img{
-      margin-top: 14px; 
+      margin-top: 14px;
     }
   /* ------------- 登录框编辑文本弹窗 -- */
     .el-dialog--edittext{
       width: 500px;
     }
     .pitchIcon {
-      display:none; 
+      display:none;
       position: absolute;
       bottom: 0;
       right:0;
@@ -2494,7 +2494,7 @@
       background-color: #FAFFBD;
       background-image: none;
       color: #000;
-    } 
+    }
   /* ------------- 页面设置 ------------ */
     .el-dialog--pageSet{
       width: 500px;

@@ -33,20 +33,20 @@
           <el-col>
             添加图片：<span style="color: #999;">（最多8张图片）</span>
           </el-col>
-        </el-row>        
+        </el-row>
         <div class="selectBox">
           <div class="diaimg_li" v-for="(item, index) in carouselData">
             <div class="carImgBox">
               <img :src="item.imgurl">
               <div class="update" @click="updatePictureEvent(index)"></div>
               <div class="delete" @click="deletePictureEvent(index)"></div>
-            </div>            
+            </div>
             <div class="handleList">
               <el-row>
                 <el-col :span="2">
                   <span @click="carouselShiftUpEvent(index)" class="spanTit" v-if="index!=0">上移</span>
                   <span v-else class="spanTit ban">上移</span>
-                </el-col>  
+                </el-col>
                 <el-col :span="19">
                   <span class="spanTit spanUrl" :style="!item.clickurl ? 'display:block' : 'display:none'" @click="carouselChangeEvent(index)">设置链接</span>
                   <div class="urlType" v-if="item.clickurl">{{item.urlType}}：</div>
@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogCarousel = false">取 消</el-button>
         <el-button type="primary" @click="dialogCarouselEvent">确 定</el-button>
       </span>
@@ -91,7 +91,7 @@ export default {
       dialogCarousel: false,
       carouselData: [],
       showTime: 3,
-      transitionTime: 1.5,     
+      transitionTime: 1.5,
       showWidth: 1200,
       carouselTit: '轮播图',
       animStyle: [{
@@ -111,41 +111,41 @@ export default {
         icon: 'imgicon icon-carousel',
         text: '轮播'
       })
-      // 配置模块参数   
+      // 配置模块参数
       moduleData['carousel'] = {
         style: 'width:10rem; height:4.53rem',
         tool: {
           private: {
             text: '编辑轮播',
             class: 'st-carousel'
-          }, 
+          },
           public: []
         },
-        createEvent: function (self, element, me) {      
+        createEvent: function (self, element, me) {
           self.$refs.carousel.show(self, element)
         },
-        html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src=""></div></div><div class="barbox"></div></div></div>'      
+        html: '<div class="carousel module addmodule" datatext="轮播图"><div class="screenBox"><div class="img_ul"><div class="img_li"><img src=""></div></div><div class="barbox"></div></div></div>'
       }
   },
-  methods: { 
-    show: function (that, element) { 
+  methods: {
+    show: function (that, element) {
       let self = this
       self.that = that
-      self.element = element     
-      self.dialogCarousel = true 
+      self.element = element
+      self.dialogCarousel = true
       self.carouselData = []
       let cData = element.attr('carouseldata')
       if (cData) {
         cData = $.parseJSON(cData)
-        self.changeStyle = cData.changeStyle   
+        self.changeStyle = cData.changeStyle
         self.showTime = cData.showTime
         self.transitionTime = cData.transitionTime
         self.carouselData = cData.carouselData
-      }     
+      }
     },
     addPictureEvent: function () {
-      let self = this    
-      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {        
+      let self = this
+      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {
         self.carouselData.push({
           imgurl: data,
           clickurl: '',
@@ -153,13 +153,13 @@ export default {
           urlRoute: '',
           imgW: imgSize.w,
           imgh: imgSize.h
-        })        
+        })
       })
     },
     updatePictureEvent: function (index) {
-      let self = this 
-      self.index = index   
-      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {        
+      let self = this
+      self.index = index
+      self.that.$refs.myimages.show('carousel', self, function (self, data, imgSize) {
         self.carouselData[self.index]['imgurl'] = data
         self.carouselData[self.index]['imgW'] = imgSize.w
         self.carouselData[self.index]['imgh'] = imgSize.h
@@ -178,8 +178,8 @@ export default {
           type: 'warning'
         })
         return false
-      } 
-      
+      }
+
       let maxW = 0 // 最大值
       let maxH = 0 // 最大值
       let maxI = 0
@@ -191,22 +191,26 @@ export default {
           maxH = parseInt(item.imgh)
           maxI = i
         }
-        barHtm += '<li></li>'
+        if (self.carouselData[i].auditionid){
+          barHtm += '<li  auditionid="' + self.carouselData[i].auditionid + '"></liauditionid>'
+        }else{
+          barHtm += '<li></li>'
+        }
+
       }
-      console.log(maxH)
       self.element.find('.barbox').html(barHtm)
       if (maxW > 0) {
-        self.element.css({         
+        self.element.css({
           height: (maxH / maxW) * 10 + 'rem'
         })
-        
+
         self.element.find('.img_li').css({
            width: '10rem',
            height: (maxH / maxW) * 10 + 'rem'
         })
         self.element.find('.resizeBox').css({
            height: (maxH / maxW) * 10 + 'rem'
-        })        
+        })
       }
 
       let obj = {
@@ -219,8 +223,8 @@ export default {
       self.dialogCarousel = false
       self.element.find('img').attr('src', self.carouselData[maxI].imgurl)
       self.element.show()
-      self.element.attr('carouselData', str)      
-    },     
+      self.element.attr('carouselData', str)
+    },
     beforePictureUpload: function (file) { // 上传图片验证
       let self = this
       if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
@@ -244,39 +248,43 @@ export default {
       let item = self.carouselData.splice(index, 1)
       self.carouselData.splice(index + 1, 0, item[0])
     },
-    carouselDeleteEvent: function (index) { // 删除     
+    carouselDeleteEvent: function (index) { // 删除
       let self = this;
-      self.carouselData[index].clickurl = ''       
+      self.carouselData[index].clickurl = ''
+      self.carouselData[index].urlType = ''
+      self.carouselData[index].urlRoute = ''
+      self.carouselData[index].auditionid = ''
     },
     carouselChangeEvent: function (index) { // 设置跳转链接
-      let self = this    
+      let self = this
       self.index = index
       self.that.$refs.hrefdialogp.show('carousel', self, function (self, data, linkType) {
         let urlType = ''
         let urlHref = ''
         let urlRoute = ''
-        let navcm             
+        let auditionid = ''
+        let navcm
         switch(linkType){
           case 'online':
-            urlType = '外部链接'            
+            urlType = '外部链接'
             urlRoute = data.href
             urlHref = data.href
             break
           case 'news':
             urlType = '资讯'
             switch (data.active) {
-              case 1:      
+              case 1:
                 switch (data.newscode) {
                   case 'news':
                     urlHref = '/dyinformation.html'
                   break
                   default:
-                    navcm = data.newscode.split('n')[1]  
+                    navcm = data.newscode.split('n')[1]
                     urlHref = '/navcm/' + navcm + '.html'
-                }              
+                }
                 urlRoute = data.news.label
                 break
-              case 2: 
+              case 2:
                 let w = data.newscode.indexOf("s");
                 navcm = data.newscode.substring(0,w).split('n')[1]
                 let ns = data.newscode.split('s')[1]
@@ -284,14 +292,14 @@ export default {
                   urlHref = '/navcm/' + navcm + '.html?s=' + ns
                 } else {
                   urlHref = '/navcm/' + navcm + '.html'
-                }               
+                }
                 urlRoute = data.news.label + '/' + data.news.label1
                 break
               case 3:
                 urlHref = '/dyinformation/' + data.newscode + '.html'
                 urlRoute = data.news.label1 != '' ? data.news.label + '/' + data.news.label1 + '/' + data.newsTitle : data.news.label + '/' + data.newsTitle
                 break
-            }             
+            }
             break
           case 'course':
             switch (data.course) {
@@ -307,7 +315,7 @@ export default {
                 break
               case 3:
                 urlType = '课程主类'
-                urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname     
+                urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname
                 if(data.sid == 0){
                   urlHref ='/platform-1-0-0.html?pid='+ data.pid
                 } else {
@@ -322,13 +330,19 @@ export default {
               case 5:
                 urlType = '课件'
                 urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname + ' / ' + data.foldername + ' / ' + data.cwname
-                if(data.cwpay == '1'){
-                  urlHref = '/ibuy.html?cwid=' + data.cwid
+
+                if (data.cwidtype == '2'){
+                  urlHref = '/course/' + data.cwid + '.html'
+                  auditionid = data.cwid
                 }else{
-                  urlHref = '/courseinfo/' + data.itemid + '.html'
+                  if(data.cwpay == '1'){
+                    urlHref = '/ibuy.html?cwid=' + data.cwid
+                  }else{
+                    urlHref = '/courseinfo/' + data.itemid + '.html'
+                  }
                 }
                 break
-            }            
+            }
             break
           case 'teacher':
             urlType = '教师主页'
@@ -337,7 +351,7 @@ export default {
             break
           case 'onlineschool':
             let origin = window.location.origin
-            urlType = '网校应用'                
+            urlType = '网校应用'
             switch (data.oneinlineschool) {
               case 'summary':
                 urlRoute = '网校简介'
@@ -350,11 +364,11 @@ export default {
               case 'contact':
                 urlRoute = '联系我们'
                 urlHref = '/contacts.html'
-              break              
+              break
               case 'password':
                 urlRoute = '忘记密码'
-                urlHref = '/forget.html' 
-              break              
+                urlHref = '/forget.html'
+              break
               case 'QQ':
                 urlRoute = '第三方QQ登录'
                 urlHref =  'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin
@@ -365,19 +379,19 @@ export default {
               break
               case 'WeChat':
                 urlRoute = '第三方微信登录'
-                urlHref = 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin    
+                urlHref = 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin
               break
-              case 'register':               
+              case 'register':
                 urlRoute = '注册'
                 urlHref = 'registerEvent'
               break
               case 'username':
                 urlRoute = '获取用户名'
-                urlHref = 'getUserNameEvent'             
+                urlHref = 'getUserNameEvent'
               break
               case 'login':
                 urlRoute = '登录弹框'
-                urlHref = 'loginEvent'             
+                urlHref = 'loginEvent'
               break
               case 'login1':
                 urlRoute = '登录弹框'
@@ -389,15 +403,16 @@ export default {
         self.carouselData[self.index]['urlType'] = urlType
         self.carouselData[self.index]['urlRoute'] = urlRoute
         self.carouselData[self.index]['clickurl'] = urlHref
+        self.carouselData[self.index]['auditionid'] = auditionid
       })
       // self.carouselData[index].clickurl = val
     },
-    beforeCloseEvent: function () { // 关闭弹框前的回调     
-      let self = this      
+    beforeCloseEvent: function () { // 关闭弹框前的回调
+      let self = this
       if (self.carouselData.length < 1) {
         let parent = self.element.parent()
         self.that.tool.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
-        self.element.remove()        
+        self.element.remove()
         self.that.tool.tool.carryLayerEvent(self.that, parent) // 更新图层
       }
     }
@@ -416,7 +431,7 @@ export default {
     #carousel .el-dialog__header{
       border-bottom: 1px solid #CECECE;
       height: 30px;
-    } 
+    }
     #carousel .el-dialog--carousel{
       width: 660px;
     }
@@ -427,14 +442,14 @@ export default {
       margin-top: 10px;
       height: 360px;
       overflow-y:auto;
-      border: 1px solid #d1dbe5;      
+      border: 1px solid #d1dbe5;
     }
     .selectBox span {
       font-size: 14px;
       line-height: 30px;
     }
     .diaimg_li {
-      position:relative;    
+      position:relative;
       width: 100%;
       height: 80px;
       border-bottom: 1px solid #e3e3e3;
@@ -496,7 +511,7 @@ export default {
       width: 420px;
       height:70px;
       float: left;
-    }    
+    }
     .handleList .el-col{
       text-align: left;
       cursor: pointer;
@@ -506,7 +521,7 @@ export default {
       width: 100%;
       height: 100%;
       color: #20a0ff;
-    }    
+    }
     .handleList .el-col .ban{
       color: #ccc;
       cursor: not-allowed;
@@ -525,13 +540,13 @@ export default {
     }
     .handleList .urlRoute{
       width: 330px;
-      display: inline-block;     
+      display: inline-block;
       font-size: 14px;
       line-height: 16px;
       padding-left: 5px;
       color: #666;
       height: 34px;
-      overflow: hidden;     
+      overflow: hidden;
     }
     .spanUrl{
       text-align: left;
@@ -548,19 +563,19 @@ export default {
     .carousel-uploader{
       height: 100%;
     }
-    .carousel-uploader .el-upload--text{    
+    .carousel-uploader .el-upload--text{
       display: block;
       margin:0 auto;
       transform:translateY(30px);
       -ms-transform:translateY(30px);   /* IE 9 */
       -moz-transform:translateY(30px);  /* Firefox */
       -webkit-transform:translateY(30px); /* Safari 和 Chrome */
-      -o-transform:translateY(30px); 
+      -o-transform:translateY(30px);
     }
     .carousel-uploader .el-icon-plus{
       font-size: 24px;
       color: #e3e3e3;
-    }  
+    }
     .scrollBox .el-row{
       margin-bottom: 5px;
     }
@@ -573,8 +588,8 @@ export default {
     .editBox .screenBox .img_ul{
       left: 50%;
       transform: translateX(-50%);
-      -ms-transform:translateX(-50%);  
-      -moz-transform:translateX(-50%); 
+      -ms-transform:translateX(-50%);
+      -moz-transform:translateX(-50%);
       -webkit-transform:translateX(-50%);
       -o-transform:translateX(-50%);
     }

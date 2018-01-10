@@ -1492,8 +1492,9 @@ var tool = {
                           + '</div>'
                           + '</div>'
                           + '<div class="courseTit">'+ data.foldername +'</div>'
+                          console.log(data)
             if (dataarray.checkedTeacher) {
-              courseHtm += '<div class="speak">讲师:</div>'
+              courseHtm += '<div class="speak">讲师姓名</div>'
             }              
             if (dataarray.checkedTime) {
               courseHtm += '<div class="popularity"><i></i>'+ data.coursewarenum+'</div>'
@@ -1517,7 +1518,7 @@ var tool = {
             let dataarray = me.$.parseJSON(element.attr('dataarray'))                 
             let auditionHtm = '<img src="'+ data.logo +'"><div class="audiTit">'+ data.cwname +'</div>'
             if (dataarray.checkedTeacher) {
-              auditionHtm += '<div class="speak">讲师:' + data.speaker + '</div>'
+              auditionHtm += '<div class="speak">' + data.speaker + '</div>'
             }
             if (dataarray.checkedPopul) {
               auditionHtm += '<div class="number"><i></i>'+ data.viewnum +'</div>'
