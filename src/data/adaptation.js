@@ -4,6 +4,28 @@
 
     })
   }
+  exports.toolSliderEvent = function (self, me) { // top Slider 事件
+    let thumb = me.$('.scroll-thumb')
+    let sliderbar = me.$('.sliderbar')
+    thumb.on('mousedown', function (e) {
+      let x = e.pageX
+      let opacity = self.inp_opacity
+      sliderbar.mousemove(function (e) {
+        let movex = e.pageX - x
+        let opacityVal = opacity + movex 
+        if (opacityVal > 100) {
+          opacityVal = 100
+        } else if (opacityVal < 0) {
+          opacityVal = 0
+        }
+        me.carryModuleOperationEvent(self, 'opacity', opacityVal)
+        self.inp_opacity = opacityVal     
+      })
+      sliderbar.mouseup(function (e) {
+        sliderbar.unbind('mousemove mouseup')
+      })
+    })
+  }
 // ----------------- 模块菜单 ---------------------------------------
   exports.renderMenu = function (self, me) {  // 渲染模块菜单
     let group = self.datahtml.toallGroup

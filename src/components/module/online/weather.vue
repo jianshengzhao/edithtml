@@ -2,8 +2,7 @@
   <div class="weather">
     <el-dialog
         title="天气"
-        :visible.sync="dialogweather"
-        size="myweather"
+        :visible.sync="dialogweather"       
         :close-on-click-modal="false"
         :before-close="beforeclose">
           <div style="margin-top: 10px;">

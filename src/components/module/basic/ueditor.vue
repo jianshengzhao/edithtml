@@ -3,7 +3,7 @@
     <el-dialog
       title="文本"
       :visible.sync="dialogEditor"
-      size="small" class="ueditor">
+       class="ueditor el-dialog--small">
       <div ref="ueditor" class='editorC'></div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogEditor = false">取 消</el-button>
@@ -217,7 +217,7 @@ export default {
   .el-dialog__footer {
     padding: 10px 10px 15px;
   }
-  .el-dialog--small{
+  .el-dialog--small .el-dialog{
     width: 1000px;
   }
   .ueditor .el-dialog__body{

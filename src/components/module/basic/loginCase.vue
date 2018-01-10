@@ -4,7 +4,7 @@
       title="编辑文本"
       :visible.sync="dialogedittext"
       :close-on-click-modal="false"
-      size="edittext">
+      class="el-dialog--edittext">
       <el-row>
         <el-col>
           <el-input v-model="logintext"></el-input>
@@ -143,7 +143,7 @@ export default {
 }
 </script>
 <style >
-  .el-dialog--edittext{
+  .el-dialog--edittext .el-dialog{
     width: 500px;
   }
 </style>

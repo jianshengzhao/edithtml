@@ -132,11 +132,16 @@
           </div> 
          </li>       
       </div>
-      <div class="opacityLi">
+      <div class="opacityLi" :class="disabled?'opacityDisabled':''">
         <li class="con-pli">
           <span class="tit">透明度：</span>
           <el-input v-model="inp_opacity" type='number' :disabled='disabled' :step="1" :min='0' :max='100' @change='changeOpacity'></el-input>
-           <el-slider v-model="slider_opacity"></el-slider>
+          <div class="sliderbar">
+            <div class="scroll-track">
+              <div class="slider-track" :style="'width:' + inp_opacity +'px;'"></div>
+              <div class="scroll-thumb" :style="'left:' + inp_opacity +'px;'"></div>
+            </div>
+          </div>
         </li>
       </div>
       <div class="shadowLi">
@@ -971,7 +976,7 @@
         let self = this
         tool.cleanSignEvent(self)
         $('.setInfo').remove()
-        self.$router.push('preview')
+        self.$router.push('preview?did=' + self.did)
         $('.resizeBox').remove()
         $('.supendTools').remove()
         $('.on_module').parent().css('outline','0')
@@ -1045,7 +1050,7 @@
           return false
         }
         let footArray = $('.c_foot').html()
-        let audition = $('.audition ')
+        let audition = $('[auditionid]')
         let auditions = ''
         let auditionArr = {}
         for (let i = 0, len = audition.length; i < len; i++) {
@@ -1081,7 +1086,8 @@
             status: 0,
             auditions: auditions,
             vedioids: vedioids,
-            clientType:0
+            clientType:0,
+            did: self.did
           },
           fun: function (response) {
             let body = response.body
@@ -1677,6 +1683,7 @@
       }
     /*opacityLi*/
       .opacityLi{
+        position: relative;
         float: left;
         margin-right: -1px;
         padding-top: 4px;
@@ -1700,6 +1707,52 @@
       .opacityLi li .el-input.is-disabled .el-input__inner{
         background-color: #f6f7f7;
         border-bottom: 1px solid #ccc;
+      }
+      .opacityLi:hover .sliderbar{
+        display: block;
+      }
+      .opacityLi.opacityDisabled:hover .sliderbar{
+        display: none;
+      }
+      .sliderbar{
+        display: none;
+        position: absolute;
+        top: 30px;
+        left: 0px;
+        width: 112px;
+        height: 18px;
+        background-color: #fff;
+        box-shadow: 1px 2px 5px #888888;
+      }
+      .scroll-track{
+        position: relative;
+        width: 100px;
+        height: 2px;
+        background-color: #ccc;
+        margin: 8px auto;
+      }
+      .slider-track{
+        width: 50%;
+        height: 2px;
+        background-color: #333;
+      }
+      .scroll-thumb{
+        position: absolute;
+        left: 50px;
+        top: -3px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #fff;
+        box-shadow: 1px 1px 4px #333;
+        cursor: pointer;
+      }
+      .scroll-thumb:hover{scale(x,y)
+        transform:scale(1.4);
+        -ms-transform:scale(1.4);   /* IE 9 */
+        -moz-transform:scale(1.4);  /* Firefox */
+        -webkit-transform:scale(1.4); /* Safari 和 Chrome */
+        -o-transform:scale(1.4); 
       }
     /*shadowLi*/
       .shadowLi{
