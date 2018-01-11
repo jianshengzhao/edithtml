@@ -44,6 +44,7 @@
     /*background-color: #fff;*/
     z-index: 49;
     box-sizing: border-box;
+    border-color: #333;
   }
   #app .module{
     overflow: visible;
@@ -2183,6 +2184,8 @@
   .square img{
     width: auto!important;
     height: auto;
+    min-height: 100%;
+    min-width: 100%;
     margin: 50% 0 0 50%;
     transform:translate(-50%,-50%);
     -ms-transform:translate(-50%,-50%);   /* IE 9 */
@@ -2251,6 +2254,8 @@
   .round img{
     width: auto!important;
     height: auto;
+    min-width: 100%;
+    min-height: 100%;
     margin: 50% 0 0 50%;
     transform:translate(-50%,-50%) ;
     -ms-transform:translate(-50%,-50%);   /* IE 9 */

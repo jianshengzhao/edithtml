@@ -82,6 +82,18 @@ export default {
           class: 'st-waiter'
         },
         public: []
+      }, 
+      AddModuleRule: function (box) { // 添加模块的限制
+        if (box.hasClass('c_body')){
+          self.$notify({
+            title: '警告',
+            message: '客服只能添加在公共选区(页头和页尾)',
+            type: 'warning'
+          })
+          return false
+        } else {
+          return true
+        } 
       },
       createEvent: function (self, element, me) {
         self.$refs.waiter.show(self, element)

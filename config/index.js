@@ -35,6 +35,13 @@ module.exports = {
         pathRewrite: {
           '^/uploadv2/ueditor.html': '/uploadv2/ueditor.html'
         }
+      },
+      '/room/albums/addphotos.html':{
+        target: 'http://ss.ebh.net/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/room/albums/addphotos.html': '/room/albums/addphotos.html'
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

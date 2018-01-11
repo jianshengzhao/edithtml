@@ -54,7 +54,7 @@
         //   //   resizeBox.hide();
         //   // }
         // },
-        // attributeChange: function (self, type, element) { // 右边属性栏手动改变值时的回调，回调参数:self指向主实例, type将要改变的属性, element当前选中的模块
+        // attributeChange: function (self, type, element) { // 属性栏手动改变值时的回调，回调参数:self指向主实例, type将要改变的属性, element当前选中的模块
         //   // if (type == 'width' || type == 'height') {
         //   //   let resizeBox = element.find('.resizeBox')
         //   //   if (element.hasClass('picture')) {            

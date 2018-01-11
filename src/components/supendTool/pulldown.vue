@@ -9,52 +9,72 @@
           <el-button @click="dialoghref" type="primary">添加链接</el-button>
         </el-col>
         <el-col>
-          <el-table
-            :data="pulldowndata"
-            @cell-mouse-enter="enteredit"
-            @cell-mouse-leave="leaveedit"
-            style="width: 100%">
-            <el-table-column
-              label="启用"
-              width="60">
-              <template slot-scope="scope">
-                <el-checkbox v-model="scope.row.on"></el-checkbox>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="备注名"
-              width="180">
-              <template slot-scope="scope">
-                <el-row>
-                  <el-col :span="20">
-                    <span :title="scope.row.name" style="width: 140px;line-height: 34px;display:block;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;" v-if="!scope.row.edit">&nbsp;{{scope.row.name}}</span>
-                    <el-input :maxlength="10" style="width: 140px;"  v-if="scope.row.edit" v-model="scope.row.editname" size="small"></el-input>
-                  </el-col>
-                  <el-col :span="4">
-                    <el-button style="margin-left: 5px" @click="editname(scope.$index)" type="text" v-if="scope.row.hoveredit && !scope.row.edit">编辑</el-button>
-                    <el-button style="margin-left: 5px" @click="quedname(scope.$index)" type="text" v-if="scope.row.hoverqued && scope.row.edit">确定</el-button>
-                  </el-col>
-                </el-row>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="地址"
-              width="200">
-              <template slot-scope="scope">
-                <p>{{scope.row.mainclass}}</p>
-                <p style="color: #999999">{{scope.row.sonclass}}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="操作">
-              <template slot-scope="scope">
-                <el-button type="text" @click="pulldownedit(scope.$index)" >编辑</el-button>
-                <el-button style="color: #ff0000" type="text" @click="pulldowndel(scope.$index)" >删除</el-button>
-                <el-button v-if="scope.$index > 0" type="text" @click="pulldownup(scope.$index)" >上移</el-button>
-                <el-button v-if="pulldowndata.length > scope.$index +1" type="text" @click="pulldowndown(scope.$index)" >下移</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition" style="width: 100%;">
+            <div class="el-table__header-wrapper">
+              <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 620px;">
+                <thead class="has-gutter">
+                  <tr>
+                    <th colspan="1" rowspan="1" class="el-table_1_column_1     is-leaf">
+                      <div class="cell">启用</div>
+                    </th>
+                    <th colspan="1" rowspan="1" class="el-table_1_column_2     is-leaf">
+                      <div class="cell">备注名</div>
+                    </th>
+                    <th colspan="1" rowspan="1" class="el-table_1_column_3     is-leaf">
+                      <div class="cell">地址</div>
+                    </th>
+                    <th colspan="1" rowspan="1" class="el-table_1_column_4     is-leaf">
+                      <div class="cell">操作</div>
+                    </th>
+                    <th class="gutter" style="width: 0px;">
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="el-table__body-wrapper is-scroll-left">
+              <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 620px;">
+                <tbody>
+                  <tr class="el-table__row" v-for="(item, index) in pulldowndata" :key="item.name">
+                    <td class="el-table_1_column_1  ">
+                      <div class="cell">
+                        <el-checkbox v-model="item.on"></el-checkbox>                       
+                      </div>
+                    </td>
+                    <td class="el-table_1_column_2  ">
+                      <div class="cell">
+                        <div class="el-row">
+                          <div class="el-col el-col-20">
+                            <span :title="item.name" style="width: 140px; line-height: 34px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" v-if="!item.edit">{{item.name}}
+                            </span>
+                            <el-input :maxlength="10" v-if="item.edit" v-model="item.editname" size="small"></el-input>
+                          </div>
+                          <div class="el-col el-col-4"> <!-- v-if="item.hoveredit && !item.edit" --><!-- v-if="item.hoverqued && item.edit" -->
+                            <el-button style="margin-left: 5px" @click="editname(index)" type="text" v-if="!item.edit" class="editbutton">编辑</el-button>
+                            <el-button style="margin-left: 5px" @click="quedname(index)" type="text" v-if="item.edit">确定</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="el-table_1_column_3  ">
+                      <div class="cell">
+                        <p>{{item.mainclass}}</p>
+                        <p style="color: rgb(153, 153, 153);">{{item.sonclass}}</p>
+                      </div>
+                    </td>
+                    <td class="el-table_1_column_4  ">
+                      <div class="cell">
+                        <el-button type="text" @click="pulldownedit(index)" >编辑</el-button>
+                        <el-button style="color: #ff0000" type="text" @click="pulldowndel(index)" >删除</el-button>
+                        <el-button v-if="index > 0" type="text" @click="pulldownup(index)" >上移</el-button>
+                        <el-button v-if="pulldowndata.length > index +1" type="text" @click="pulldowndown(index)" >下移</el-button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
@@ -148,6 +168,7 @@ export default {
     },
     pulldownedit:function (index) {
       let self = this
+     console.log(index)
       self.that.$refs.hrefdialogp.show('pulldown',self.that,function () {},index)
     },
     handleClick:function () {
@@ -264,6 +285,12 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+  .editbutton{
+    display: none;
+  }
+  .cell:hover .editbutton{
+    display: block;
+  }
   .el-dialog--pulldown .el-dialog{
     width: 660px;
   }

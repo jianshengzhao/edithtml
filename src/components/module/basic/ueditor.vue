@@ -118,7 +118,7 @@ export default {
         }
         resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
       },
-      attributeChange: function (self, type, element) { // 属性变化时间
+      attributeChange: function (self, type, element, val) { // 属性变化事件
         if (type == 'width' || type == 'height') { 
           let resizeBox = element.find('.resizeBox')
           if (element.hasClass('picture')) {            
@@ -136,6 +136,54 @@ export default {
           }          
           resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
         }
+        if (type.indexOf('boxShadow') > -1) {
+          element.css('boxShadow', 'none')
+          let picBox = element.find('.picBox')
+          switch (type) {
+            case 'boxShadow':
+              if (!val) {
+                picBox.css('boxShadow', 'none')
+              } else {
+                self.inp_weight_x = 1
+                self.inp_weight_y = 1
+                self.inp_blur = 1
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+              }
+              break
+            case 'boxShadowX':
+              picBox.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)              
+              break
+            case 'boxShadowY':
+              picBox.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+              break
+            case 'boxShadowBlur':
+              picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
+              break
+            case 'boxShadowColor':
+              picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
+              break
+          }
+        }
+      },
+      beforeSelecting: function (self, element, me) { // 选中元素的回调，回调参数:self指向主实例, element当前要操作的模块, me指向tool.js
+        clearTimeout(self.beforeTime)        
+        self.beforeTime = setTimeout(function() {
+          let picBox = element.find('.picBox')          
+          if (picBox.css('boxShadow') == 'none') {
+            self.check_shadow = false
+            self.inp_weight_x = ''
+            self.inp_weight_y = ''
+            self.inp_blur = ''
+            self.bw_color = '#ccc'
+          } else {
+            let shadowArr = picBox.css('boxShadow').split(' ')
+            self.check_shadow = true
+            self.inp_weight_x = shadowArr[3].split('p')[0]
+            self.inp_weight_y = shadowArr[4].split('p')[0]
+            self.inp_blur = shadowArr[5].split('p')[0]
+            self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
+          }          
+        },0)
       },
       html: '<div class="picture module addmodule"  datatext="图片"><a class="picBox"><img src="http://static.ebanhui.com/ebh/tpl/default/images/folderimgs/course_cover_default_243_144.jpg"></a></div>'
     }

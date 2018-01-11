@@ -684,7 +684,7 @@
         let cname = $this.attr('class').split(' ')[0] 
         let attributeChange = self.datahtml[cname].attributeChange
         if (attributeChange) {
-          attributeChange(self, type, $this)
+          attributeChange(self, type, $this, val)
         }        
       })
       if (type == 'delete' || type == 'shear') {

@@ -140,6 +140,70 @@
             self.$refs.information.createqr_logo(element)
           }
         },
+        resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调
+          let picimg = parent.find('img')
+          let picBox = parent.find('.picBox')  
+          if (picBox.hasClass('round')||picBox.hasClass('square')) {
+            if(self.inp_h < self.inp_w) {
+              picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+            } else {
+              picBox.css({'width': self.inp_w + 'px','height': self.inp_w + 'px'})
+            }
+          } else {
+            picimg.css('width', self.inp_w)
+          }
+          resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+        },
+        attributeChange: function (self, type, element, val) { // 属性变化事件         
+          if (type.indexOf('boxShadow') > -1) {
+            element.css('boxShadow', 'none')
+            let picBox = element.find('.picBox')
+            switch (type) {
+              case 'boxShadow':
+                if (!val) {
+                  picBox.css('boxShadow', 'none')
+                } else {
+                  self.inp_weight_x = 1
+                  self.inp_weight_y = 1
+                  self.inp_blur = 1
+                  picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+                }
+                break
+              case 'boxShadowX':
+                picBox.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)              
+                break
+              case 'boxShadowY':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+                break
+              case 'boxShadowBlur':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
+                break
+              case 'boxShadowColor':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
+                break
+            }
+          }
+        },
+        beforeSelecting: function (self, element, me) { // 选中元素的回调，回调参数:self指向主实例, element当前要操作的模块, me指向tool.js
+          clearTimeout(self.beforeTime)        
+          self.beforeTime = setTimeout(function() {
+            let picBox = element.find('.picBox')          
+            if (picBox.css('boxShadow') == 'none') {
+              self.check_shadow = false
+              self.inp_weight_x = ''
+              self.inp_weight_y = ''
+              self.inp_blur = ''
+              self.bw_color = '#ccc'
+            } else {
+              let shadowArr = picBox.css('boxShadow').split(' ')
+              self.check_shadow = true
+              self.inp_weight_x = shadowArr[3].split('p')[0]
+              self.inp_weight_y = shadowArr[4].split('p')[0]
+              self.inp_blur = shadowArr[5].split('p')[0]
+              self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
+            }          
+          },0)
+        },
         html: '<div class="schoollogo picture module addmodule"  datatext="网校LOGO"><a class="picBox"><img src="" /></a></div>'
       }    
     // ----------------------- 二维码 ----------------------------
@@ -160,6 +224,70 @@
         },
         createEvent: function (self, element) {
           self.$refs.information.createqr_logo(element)
+        },
+        resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调
+          let picimg = parent.find('img')
+          let picBox = parent.find('.picBox')  
+          if (picBox.hasClass('round')||picBox.hasClass('square')) {
+            if(self.inp_h < self.inp_w) {
+              picBox.css({'width': self.inp_h + 'px','height': self.inp_h + 'px'})
+            } else {
+              picBox.css({'width': self.inp_w + 'px','height': self.inp_w + 'px'})
+            }
+          } else {
+            picimg.css('width', self.inp_w)
+          }
+          resizeBox.css({'width': self.inp_w + 'px','height': self.inp_h + 'px'})
+        },
+        attributeChange: function (self, type, element, val) { // 属性变化事件          
+          if (type.indexOf('boxShadow') > -1) {
+            element.css('boxShadow', 'none')
+            let picBox = element.find('.picBox')
+            switch (type) {
+              case 'boxShadow':
+                if (!val) {
+                  picBox.css('boxShadow', 'none')
+                } else {
+                  self.inp_weight_x = 1
+                  self.inp_weight_y = 1
+                  self.inp_blur = 1
+                  picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+                }
+                break
+              case 'boxShadowX':
+                picBox.css('boxShadow', val + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + self.bw_color)              
+                break
+              case 'boxShadowY':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + val + 'px ' + self.inp_blur + 'px ' + self.bw_color)
+                break
+              case 'boxShadowBlur':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + val + 'px ' + self.bw_color)
+                break
+              case 'boxShadowColor':
+                picBox.css('boxShadow', self.inp_weight_x + 'px ' + self.inp_weight_y + 'px ' + self.inp_blur + 'px ' + val)
+                break
+            }
+          }
+        },
+        beforeSelecting: function (self, element, me) { // 选中元素的回调，回调参数:self指向主实例, element当前要操作的模块, me指向tool.js
+          clearTimeout(self.beforeTime)        
+          self.beforeTime = setTimeout(function() {
+            let picBox = element.find('.picBox')          
+            if (picBox.css('boxShadow') == 'none') {
+              self.check_shadow = false
+              self.inp_weight_x = ''
+              self.inp_weight_y = ''
+              self.inp_blur = ''
+              self.bw_color = '#ccc'
+            } else {
+              let shadowArr = picBox.css('boxShadow').split(' ')
+              self.check_shadow = true
+              self.inp_weight_x = shadowArr[3].split('p')[0]
+              self.inp_weight_y = shadowArr[4].split('p')[0]
+              self.inp_blur = shadowArr[5].split('p')[0]
+              self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
+            }          
+          },0)
         },
         html: '<div class="schoolqr picture module addmodule"  datatext="二维码"><a class="picBox"><img class="schoolqrimg" src="" /></a></div>'
       }

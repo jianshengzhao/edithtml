@@ -439,6 +439,7 @@
   import $ from 'jquery'
   import configData from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
+  import colorPicker from '@/components/colorPicker'
   // ------------ main界面模块 ------------
   import board from '@/components/mainPage/board'
   import layer from '@/components/mainPage/layer'
@@ -474,7 +475,8 @@
   let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
-    components: {    
+    components: {
+      colorPicker,
       // -------------
       board,
       layer,
@@ -2667,6 +2669,7 @@
       background-color: #fff;
       white-space: nowrap;
       cursor: default;
+      font-family: "微软雅黑"
     }
     .supendTools li {
       display: inline-block;

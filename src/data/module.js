@@ -100,7 +100,7 @@
       self.br_style = 'solid'
     }
     self.br_color = element.css('border-left-color')
-    self.inp_opacity = parseInt(element.css('opacity') * 100)   
+    self.inp_opacity = parseInt(element.css('opacity') * 100)
     if (element.css('boxShadow') == 'none') {
       self.check_shadow = false
       self.inp_weight_x = ''
@@ -140,7 +140,7 @@
     if (element.length) {
       let cName = element.attr('class').split(' ')[0]
       let eleConfig = self.datahtml[cName] 
-      if (eleConfig.beforeSelecting) { // 选中元素节点时的回调函数
+      if (eleConfig.cancelSelect) { // 选中元素节点时的回调函数
         eleConfig.cancelSelect(self, element, me)
         me.carryUpdateElementStorageEvent(self, element.parent(), element)
       }
@@ -692,6 +692,27 @@
         if (dataCon.createEvent) {
           dataCon.createEvent(self, AddElement, me)
         }
+      // ------------ 切换到当前的选项卡 --------------------------------
+      // curr-li tabs-li layer
+      let $layer = me.$('#layers')
+      let tabsLl = $layer.find('.tabs-li')
+      let currLi = $layer.find('.curr-li')
+      let libOls = $layer.find('.lib_ol')
+      currLi.removeClass('curr-li')
+      libOls.hide()
+      let elementHead = me.$('.elementHead')
+      let elementMain = me.$('.elementMain')
+      let elementTail = me.$('.elementTail')
+      if (storageBox.hasClass('c_top')) {        
+        tabsLl.eq(0).addClass('curr-li')
+        elementHead.show()
+      } else if (storageBox.hasClass('c_body')) {
+        tabsLl.eq(1).addClass('curr-li')
+        elementMain.show() 
+      } else if (storageBox.hasClass('c_foot')) {
+        tabsLl.eq(2).addClass('curr-li')
+        elementTail.show()
+      }
       // ------------ 清除添加记录 --------------------------------------
         me.$('.addmodule').removeClass('addmodule') // 清除添加记录
       // ------------ 区域存储 -----------------------------------------
