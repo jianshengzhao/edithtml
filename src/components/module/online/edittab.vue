@@ -24,7 +24,7 @@
               </div>
             </el-form-item>
             <el-form-item label="选择颜色：">
-              <colorPicker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></colorPicker>
+              <el-color-picker class="propertycolor" v-model="color_font" :disabled='disabled' @change='changeColorFont'></el-color-picker>
             </el-form-item>
             <el-form-item label="标签位置：">
               <el-radio-group v-model="radio_position">
@@ -73,12 +73,8 @@
 <script>
 
 import $ from 'jquery'
-import colorPicker from '@/components/colorPicker'
 export default {
-  name: 'edittab',
-  components: {
-    colorPicker
-  },
+  name: 'edittab',  
   data () {
     return {
       dialogedittab: false,

@@ -439,7 +439,6 @@
   import $ from 'jquery'
   import configData from '@/data/datahtml.js'
   import tool from '@/data/tool.js'
-  import colorPicker from '@/components/colorPicker'
   // ------------ main界面模块 ------------
   import board from '@/components/mainPage/board'
   import layer from '@/components/mainPage/layer'
@@ -475,8 +474,7 @@
   let config = configData.config.config
   export default { // todo: 本地操作保存
     name: 'app',
-    components: {
-      colorPicker,
+    components: {    
       // -------------
       board,
       layer,

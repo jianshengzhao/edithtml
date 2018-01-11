@@ -538,10 +538,10 @@
         createqr_logo:function(html){
           let self = this
           if(html.hasClass("schoolqr")){           
-            let wechatimg = window.roominfo.wechatimg || 'http://static.ebanhui.com/design/wapdesign/image/noqrcode.jpg'
+            let wechatimg = window.roominfo.wechatimg || 'http://static.ebanhui.com/ebh/tpl/newschoolindex/images/qcode.jpg'
             html.find("img").attr("src", wechatimg)
           }else{
-            let cface = window.roominfo.cface || 'http://static.ebanhui.com/design/wapdesign/image/noLogo.jpg'
+            let cface = window.roominfo.cface || 'http://static.ebanhui.com/ebh/tpl/2012/images/face/2.jpg'
             html.find("img").attr("src", cface)
           }
         },

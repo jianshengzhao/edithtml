@@ -17,14 +17,14 @@
             <el-table-column
               label="启用"
               width="60">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-checkbox v-model="scope.row.on"></el-checkbox>
               </template>
             </el-table-column>
             <el-table-column
               label="备注名"
               width="180">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-row>
                   <el-col :span="20">
                     <span :title="scope.row.name" style="width: 140px;line-height: 34px;display:block;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;" v-if="!scope.row.edit">&nbsp;{{scope.row.name}}</span>
@@ -40,14 +40,14 @@
             <el-table-column
               label="地址"
               width="200">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <p>{{scope.row.mainclass}}</p>
                 <p style="color: #999999">{{scope.row.sonclass}}</p>
               </template>
             </el-table-column>
             <el-table-column
               label="操作">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-button type="text" @click="pulldownedit(scope.$index)" >编辑</el-button>
                 <el-button style="color: #ff0000" type="text" @click="pulldowndel(scope.$index)" >删除</el-button>
                 <el-button v-if="scope.$index > 0" type="text" @click="pulldownup(scope.$index)" >上移</el-button>
