@@ -1228,14 +1228,26 @@
       },
       changHShadow: function (val) { // 水平偏移阴影
         var self = this
+        if (val > 10)  {
+          self.inp_weight_x = 10
+          return false
+        }
         tool.carryModuleOperationEvent(self, 'boxShadowX', val)
       },
       changVShadow: function (val) { // 垂直偏移阴影
         var self = this
+        if (val > 10) {
+          self.inp_weight_y = 10
+          return false
+        }
         tool.carryModuleOperationEvent(self, 'boxShadowY', val)
       },
       changBlurShadow: function (val) { // 阴影模糊
         var self = this
+        if (val > 10) {
+          self.inp_blur = 10
+          return false
+        }
         tool.carryModuleOperationEvent(self, 'boxShadowBlur', val)
       },
       changColorShadow: function (val) { // 阴影颜色
@@ -2669,7 +2681,10 @@
       background-color: #fff;
       white-space: nowrap;
       cursor: default;
-      font-family: "微软雅黑"
+      font-family: "微软雅黑";
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: none;
     }
     .supendTools li {
       display: inline-block;

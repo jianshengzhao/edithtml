@@ -9,7 +9,7 @@
       <el-row>
         <el-col :span="4" class="right">单行显示：</el-col>
         <el-col :span="18">
-          <el-input-number size="small" v-model="col_num" :min="1" :max="8"></el-input-number>个<span>（建议最大值不超过{{type=="audition" ? '6' : '4'}}个）</span>
+          <el-input-number size="small" v-model="col_num" :min="1" :max="max_num"></el-input-number>个<span>（最大值不超过{{type=="audition" ? '6' : '4'}}个）</span>
         </el-col>
       </el-row>
       <el-row>
@@ -34,6 +34,7 @@ export default {
       title:'',
       col_num:1,
       row_num:1,
+      max_num: 6,
       type:'',
       dialogCourse: false
     }
@@ -180,16 +181,19 @@ export default {
         case 'course':
           self.title = '课程'
           self.col_num = 4
+          self.max_num = 4
           self.row_num = 3
           break
         case 'audition':
           self.title = '试听'
           self.col_num = 6
+          self.max_num = 6
           self.row_num = 3
           break
         case 'teacher':
           self.title = '教师'
           self.col_num = 4
+          self.max_num = 4
           self.row_num = 3
           break
       }

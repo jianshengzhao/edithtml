@@ -47,7 +47,7 @@
                 <span class="newsonembx"><a @click="indexinit()">资讯</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newstwombx" style="display: none;"><a @click="newsmbxinit(2)" ></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="newsthreembx"  style="display: none;"><a></a></span>
-                <el-input icon="search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" :on-icon-click="handleIconClick"></el-input>
+                <el-input suffix-icon="el-icon-search" class="newsseaq" style="width: 200px;margin-right:10px;float: right;display: none;" type="text" size="small" placeholder="请输入资讯标题" v-model="newsq" @change="handleIconClick"></el-input>
               </div>
               <div class="newscont">
                 <form class="oneselnews">
@@ -103,8 +103,8 @@
                 <span class="coursethreembx"  style="display: none;"><a  @click="coursebxinit(3)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefourmbx" style="display: none;"><a  @click="coursebxinit(4)"></a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
                 <span class="coursefivembx"  style="display: none;"><a  @click="coursebxinit(5)"></a></span>
-                <el-input  icon="search" v-if="seaqshow == 1" :on-icon-click="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
-                <el-input  icon="search" v-if="seaqshow == 2" :on-icon-click="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
+                <el-input  suffix-icon="el-icon-search" v-if="seaqshow == 1" @change="handleIconfolderClick" class="folderseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课程名称" v-model="folderq"></el-input>
+                <el-input  suffix-icon="el-icon-search" v-if="seaqshow == 2" @change="handleIconcwClick"  class="cwseaq" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入课件名称" v-model="cwq"></el-input>
               </div>
               <div class="coursecont" style="max-height: 450px; overflow-x: hidden;">
                 <form class="oneselcourse">
@@ -211,7 +211,7 @@
             <div class="tab-content">
               <div class="teambx mbx">
                 <span class="teaonembx"><a @click="indexinit()">教师</a> <span style="margin: 0 8px;color: #bfcbd9;">/</span></span>
-                <el-input  icon="search" :on-icon-click="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
+                <el-input  suffix-icon="el-icon-search" @change="handleIconteaClick" style="width: 200px;float: right;margin-right: 10px; " type="text" size="small" placeholder="请输入教师姓名" v-model="hrefteaq"></el-input>
               </div>
               <div class="teacont">
                 <el-col class="teaflowx" style="height: 450px;overflow-x: hidden;">

@@ -34,11 +34,11 @@
 					</el-upload>
 
 		     		<el-input
-					  icon="search"
+					  suffix-icon="el-icon-search"
 					  v-model="searchMypic"
 					  name="searchpic"
 					  :placeholder="placeholder"
-					  :on-icon-click="searchMypicClick">
+					 @change="searchMypicClick">
 					</el-input>
 				</div>
 				<!--最外层文件-->

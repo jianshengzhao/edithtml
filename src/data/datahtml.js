@@ -3,7 +3,7 @@ var configHtml = {
     stretchLimit: false, // 是否开启module拉伸限制
     moveLimit: false, // 是否开启module移动限制
     paddingtop: 36, // top栏高度
-    paddingleft: 133, // left栏高度
+    paddingleft: 100, // left栏高度
     postop: 80, // editbox  top值
     posleft: 1000, // editbox  left值
     fuzzyVal: 6,// 模糊度

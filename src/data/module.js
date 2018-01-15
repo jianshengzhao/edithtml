@@ -82,14 +82,20 @@
     let fontWeight = parseInt(element.css('fontWeight'))
     if (fontWeight > 400) {
       fontp.eq(0).addClass('on')      
+    } else {
+      fontp.eq(0).removeClass('on')
     }
     let fontStyle = element.css('fontStyle')
     if (fontStyle != 'normal') {     
       fontp.eq(1).addClass('on')      
+    } else {
+      fontp.eq(1).removeClass('on')
     }
     let textDecoration = element.css('textDecoration').split(' ')[0]
     if (textDecoration == 'underline') {     
       fontp.eq(2).addClass('on')      
+    } else {
+      fontp.eq(2).removeClass('on')
     }
     self.color_font = element.css('color')
     let bgcolor = element.css('backgroundColor')

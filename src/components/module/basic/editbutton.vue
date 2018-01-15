@@ -1,5 +1,5 @@
 <template>
-  <div class="editbutton">
+  <div class="editbuttondia">
     <el-dialog
       title="设置样式"
       :visible.sync="dialogeditbutton"     
@@ -48,7 +48,7 @@
 
 import $ from 'jquery'
 export default {
-  name: 'editbutton',
+  name: 'editbuttondia',
   data () {
     return {
       activeName: 'first',
@@ -180,6 +180,12 @@ export default {
 <style >
   .el-dialog-editbutton .el-dialog{
     width: 600px;
+  }
+  .el-dialog-editbutton .el-dialog__header{
+    border-bottom:1px solid #ccc; 
+  }
+  .el-dialog-editbutton .el-dialog__body{
+    padding: 10px 20px;
   }
   .el-dialog-editbutton .editbuttonlist{
     width: 162px;
