@@ -74,7 +74,7 @@
 
 import $ from 'jquery'
 export default {
-  name: 'edittab',  
+  name: 'edittab',
   data () {
     return {
       dialogedittab: false,
@@ -92,7 +92,119 @@ export default {
           name1 : '标签2',
           edit:0
         }
-      ]
+      ],
+      tab:function (cls) { //tab标签页
+        let self = this
+        let obj = $(cls)
+
+        obj.each(function () {
+          let color = $(this).find('.tab_header').attr('color')
+          let type =  $(this).find('.tab_header').attr('type')
+          let ev =  $(this).find('.tab_header').attr('ev')
+          if (color){
+            if (type == 'padd'){
+              $(this).find('.tab_header li.active').css('backgroundColor','#'+color)
+            }else{
+              $(this).find('.tab_header li.active').css('backgroundColor','')
+              $(this).find('.tab_header li.active').css('color','#'+color)
+            }
+          }
+          $(this).find('.tab_header li').unbind();
+          $(this).find('.tab_header li').bind('click',function (e) {
+            let color = $(this).parent().attr('color')
+            let type =  $(this).parent().attr('type')
+            let i = $(this).index();
+            $(this).parent().find('li').removeClass('active')
+            $(this).addClass('active')
+            $(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
+            $(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
+            if (color){
+              if (type == 'padd'){
+                $(this).parent().find('li').css('color','#999999')
+                $(this).parent().find('li').css('backgroundColor','')
+                $(this).css('color','#ffffff')
+                $(this).css('backgroundColor','#'+color)
+              }else{
+                $(this).parent().find('li.active').css('color','#'+color)
+                $(this).parent().find('li').css('color','')
+                $(this).css('color','#'+color)
+              }
+            }
+          })
+          if(ev == 'click'){
+            $(this).find('.tab_header li').bind('click',function (e) {
+              let color = $(this).parent().attr('color')
+              let type =  $(this).parent().attr('type')
+              var i = $(this).index();
+              $(this).parent().find('li').removeClass('active')
+              $(this).addClass('active')
+              $(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
+              $(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
+              if (color){
+                if (type == 'padd'){
+                  $(this).parent().find('li').css('color','#999999')
+                  $(this).parent().find('li').css('backgroundColor','')
+                  $(this).css('color','#ffffff')
+                  $(this).css('backgroundColor','#'+color)
+                }else{
+                  $(this).parent().find('li.active').css('color','#'+color)
+                  $(this).parent().find('li').css('color','')
+                  $(this).css('color','#'+color)
+                }
+              }
+            })
+
+            $(this).find('.tab_header li').bind('mouseenter',function () {
+              let color = $(this).parent().attr('color')
+              let type =  $(this).parent().attr('type')
+              if (color){
+                if (type == 'padd'){
+                  $(this).css('backgroundColor','#' + color);
+                  $(this).css('color','#ffffff');
+                }else{
+                  $(this).css('color','#' + color);
+                }
+              }
+            })
+            $(this).find('.tab_header li').bind('mouseleave',function () {
+              let color = $(this).parent().attr('color')
+              let type =  $(this).parent().attr('type')
+              if (type == 'padd'){
+                $(this).parent().find('li').css('backgroundColor','')
+                $(this).parent().find('li').css('color','#999999')
+                $(this).parent().find('li.active').css('backgroundColor','#'+color)
+                $(this).parent().find('li.active').css('color','#ffffff')
+              }else{
+                $(this).css('color','');
+                $(this).parent().find('li.active').css('color','#'+color)
+              }
+            })
+          }else{
+            $(this).find('.tab_header li').bind('mouseenter',function () {
+              let color = $(this).parent().attr('color')
+              let type =  $(this).parent().attr('type')
+              var i = $(this).index();
+              $(this).parent().find('li').removeClass('active')
+              $(this).addClass('active')
+              $(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
+              $(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
+              if (color){
+                if (type == 'padd'){
+                  $(this).parent().find('li').css('backgroundColor','')
+                  $(this).parent().find('li').css('color','#999999')
+                  $(this).css('backgroundColor','#' + color);
+                  $(this).css('color','#ffffff');
+                }else{
+                  $(this).parent().find('li').css('color','#999999')
+                  $(this).css('color','#' + color);
+                }
+
+              }
+            })
+          }
+
+        })
+      }
     }
   },
   created: function () {
@@ -105,7 +217,7 @@ export default {
       text: '标签页'
     })
     // 配置模块参数
-    moduleData['addtab'] = { 
+    moduleData['addtab'] = {
       style: 'width: 430px; height: 260px',
       tool: {
         private: {
@@ -119,7 +231,7 @@ export default {
       containerOffset: { // 实际容器与容器父模块的相对位置
         y: 28,
         x: 0
-      }, 
+      },
       AddModuleRule: function (box) { // 添加模块的限制
         if (box.attr('class') == 'active cont' || box.attr('class') == 'cont active'){
           self.$notify({
@@ -130,25 +242,25 @@ export default {
           return false
         } else {
           return true
-        } 
+        }
       },
       // resize: undifend, // 拉伸方向: 默认为空,自由拉伸
       // resizeMousemove: function (self, parent, resizeBox) { // 拉伸时的回调
       // },
-      // beforeSelecting: function (self, element, me) { // 选中元素要执行的特殊操作 
-      // },       
-      createEvent: function (self, element, me) { // 模块创建事件        
+      // beforeSelecting: function (self, element, me) { // 选中元素要执行的特殊操作
+      // },
+      createEvent: function (self, element, me) { // 模块创建事件
       },
       html: '<div class="addtab module addmodule" datatext="标签页"><div class="tab"><ul class="tab_header" text="left" color="409eff" type="text" ev="click"><li class="active"><span>标签一</span></li><li><span>标签二</span></li></ul><ul class="tab_content"> <li class="active cont"></li> <li class="cont"></li></ul></div></div>'
-    } 
+    }
   },
   methods: {
     show: function (that, element, me) {
       let self = this
       self.that = that
       self.me = me
-      self.tab = element
-      let tabData = self.tab.attr('tabData')
+      self.tabhtml = element
+      let tabData = self.tabhtml.attr('tabData')
       if (tabData){
         let jsontabData = $.parseJSON(tabData)
         self.type = jsontabData.type
@@ -263,7 +375,7 @@ export default {
       let str = JSON.stringify(obj)
       $('.on_module').attr('tabData', str)
       self.dialogedittab = false
-      self.me.tab('.tab')
+      self.tab('.tab')
     }
   }
 }

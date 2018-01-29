@@ -21,7 +21,7 @@ var configHtml = {
     c: ['st-shape', '图片形状'],// 图片形状
     d: ['st-animate', '动画效果'],// 动画效果
     e: ['st-link', '链接'],// 链接
-    f: ['st-pulldown', '下拉框'],// 下拉框
+    f: ['st-pulldown', '菜单'],// 菜单
   }
 }
 exports.config = configHtml

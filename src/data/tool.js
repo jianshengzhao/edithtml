@@ -44,8 +44,8 @@
       me.onlineBox = me.$('.onlineBox')
       me.todoBox = me.$('.todoBox')
       me.familyBox = me.$('.familyBox')
-      adaptation.resizeToolBar(self, me) 
-      adaptation.toolSliderEvent(self, me) 
+      adaptation.resizeToolBar(self, me)
+      adaptation.toolSliderEvent(self, me)
       adaptation.renderMenu(self, me)
       adaptation.computeLineHeight(me)
       me.libBox = me.$('.lib_box')
@@ -61,45 +61,52 @@
       let me = this
       module.getSign(self, element , me)
     },
+    carryCtrlEvent: function (self, element, onModule) { // Ctrl标记模块并属性初始化
+      let me = this
+      module.ctrlSign(self, element, me, onModule)
+    },
     cleanSignEvent: function (self, element) { // 标记模块并属性还原默认值 注：禁止了图片拉伸
       let me = this
-      module.cleanSign(self, me)     
+      module.cleanSign(self, me)
     },
     carryLayerEvent: function (self, parent) { // 图层更新
       let me = this
       adaptation.renderLayer(self, parent)
     },
-    carryAddElementStorageEvent: function (self, parent, AddElement, y, x, son) { // 区域存储(多选)   
+    carryAddElementStorageEvent: function (self, parent, AddElement, y, x, son) { // 区域存储(多选)
       let me = this
       storage.addStorage(self, parent, AddElement, y, x, this, son)
     },
     carryUpdateElementStorageEvent: function (self, parent, elements, deleteEle) { // 更新区域存储(多选)
       let me = this
-      storage.updateStorage(self, parent, elements, deleteEle, me)  
+      storage.updateStorage(self, parent, elements, deleteEle, me)
     },
     carryRegionChoiceEvent: function (self, e) { // 区域选中事件(多选)
-      let me = this    
+      let me = this
       storage.drawingRegion(self, me, e)
     },
-    carryRegionChoiceSignEvent: function (self, element, elementX) { // 标记模块并属性初始化 (多选模块)
+    carryRegionChoiceSignEvent: function (self, element, elementX, elementR, elementB) { // 标记模块并属性初始化 (多选模块)
       let me = this
-      storage.getRegionSign(self, element, elementX, me)      
+      storage.getRegionSign(self, element, elementX, elementR, elementB, me)
     },
     carryFuzzyCalibrationEvent: function (self, parentClass, id, left, top, height, width, ele) { // 模糊校准
-      let me = this     
+      let me = this
       storage.fuzzyCalibration(self, parentClass, id, left, top, height, width, ele, me)
     },
     carryModuleOperationEvent: function (self, type, val) { // 属性栏模块操作事件集合 注：禁止了图片拉伸
-      let me = this        
+      let me = this
       let onModules = me.$(".on_module")
       let $this
       let part
       let left
       let top
+      let virtualRegion
       if (type!== 'paste' && self.moduleElement) {
         self.original = self.moduleElement.parent()
       }
-
+      if (onModules.length > 1) {
+        virtualRegion = me.$('.virtualRegion')
+      }
       switch (type) {
       // -------------- css属性 -----------------
         case 'zIndex':
@@ -247,23 +254,23 @@
           }
           break
         case 'fontFamily':
-          part = function (ele) {            
-            ele.css('fontFamily', val)           
+          part = function (ele) {
+            ele.css('fontFamily', val)
           }
           break
         case 'fontWeight':
-          part = function (ele) {            
-            ele.css('fontWeight', val)               
+          part = function (ele) {
+            ele.css('fontWeight', val)
           }
           break
         case 'fontStyle':
-          part = function (ele) {            
-            ele.css('fontStyle', val)           
+          part = function (ele) {
+            ele.css('fontStyle', val)
           }
           break
         case 'textDecoration':
-          part = function (ele) {            
-            ele.css('textDecoration', val)           
+          part = function (ele) {
+            ele.css('textDecoration', val)
           }
           break
         case 'backgroundColor':
@@ -277,7 +284,7 @@
           break
         case 'borderWidth':
           part = function (ele) {
-            ele.css('borderWidth', val)            
+            ele.css('borderWidth', val)
             if (ele.css('borderStyle') == 'none') {
               ele.css('borderStyle', 'solid')
             }
@@ -306,7 +313,7 @@
           }
           break
         case 'opacity':
-          part = function (ele) {          
+          part = function (ele) {
             ele.css('opacity', val/100)
             self.inp_opacity = parseInt(val)
           }
@@ -348,7 +355,7 @@
       // ------------- 快捷工具 -----------------
         case 'topAlign':
           if (onModules.length > 1) {
-            let topY = parseInt(self.moduleElementY.css('top'))
+            let topY = parseInt(virtualRegion.css('top'))
             part = function (ele) {
               ele.css('top',topY)
             }
@@ -361,8 +368,8 @@
           break
         case 'bottomAlign':
           if (onModules.length > 1) {
-            self.inp_y = parseInt(self.moduleElementB.css('top'))
-            let bottomY = self.inp_y + parseInt(self.moduleElementB.css('height'))
+            // self.inp_y = parseInt(self.moduleElementB.css('top'))
+            let bottomY = parseInt(virtualRegion.css('top')) + parseInt(virtualRegion.css('height'))
             part = function (ele) {
               ele.css('top', bottomY - parseInt(ele.css('height')))
             }
@@ -376,7 +383,7 @@
           break
         case 'leftAlign':
           if (onModules.length > 1) {
-            let leftX = parseInt(self.moduleElementX.css('left'))
+            let leftX = parseInt(virtualRegion.css('left'))
             part = function (ele) {
               ele.css('left', leftX)
             }
@@ -389,8 +396,8 @@
           break
         case 'rightAlign':
           if (onModules.length > 1) {
-            self.inp_x = parseInt(self.moduleElementR.css('left'))
-            let rightX = self.inp_x + parseInt(self.moduleElementB.css('width'))
+            // self.inp_x = parseInt(self.moduleElementR.css('left'))
+            let rightX = parseInt(virtualRegion.css('left')) + parseInt(virtualRegion.css('width'))
             part = function (ele) {
               ele.css('left', rightX - parseInt(ele.css('width')))
             }
@@ -419,8 +426,9 @@
           break
         case 'middleAlign': // 垂直居中原则，(最上的模块top + 最下的模块top + 最下的模块height) / 2 为居中准线
           if (onModules.length > 1) {
-            let midY = (parseInt(self.moduleElementY.css('top')) + parseInt(self.moduleElementB.css('top')) + parseInt(self.moduleElementB.css('height'))) / 2
-            self.inp_y = midY - (parseInt(self.moduleElementY.css('height'))/2)
+            // let midY = (parseInt(self.moduleElementY.css('top')) + parseInt(self.moduleElementB.css('top')) + parseInt(self.moduleElementB.css('height'))) / 2
+            // self.inp_y = midY - (parseInt(self.moduleElementY.css('height'))/2)
+            let midY = parseInt(virtualRegion.css('top')) + (parseInt(virtualRegion.css('height')) / 2)
             part = function (ele) {
               let mid = midY - (parseInt(ele.css('height')) / 2)
               ele.css('top', mid)
@@ -590,12 +598,12 @@
             if (val == 'ctrl+V') { // ctrl+V粘贴
               menuY = self.mousePageY
               menuX = self.mousePageX
-              switch (self.original.attr('class')) {              
+              switch (self.original.attr('class')) {
                 case 'c_body':
-                  menuY = menuY - parseInt(me.$('.c_top').css('height'))                 
+                  menuY = menuY - parseInt(me.$('.c_top').css('height'))
                   break
                 case 'c_foot':
-                  menuY = menuY - parseInt(me.$('.c_top').css('height')) - parseInt($('.c_body').css('height'))             
+                  menuY = menuY - parseInt(me.$('.c_top').css('height')) - parseInt($('.c_body').css('height'))
                   break
               }
             } else {
@@ -680,24 +688,27 @@
       }
       onModules.each(function (i,e) { // 更新多选元素集合
         $this = me.$(this)
-        part($this,i)      
-        let cname = $this.attr('class').split(' ')[0] 
+        part($this,i)
+        let cname = $this.attr('class').split(' ')[0]
         let attributeChange = self.datahtml[cname].attributeChange
         if (attributeChange) {
           attributeChange(self, type, $this, val)
-        }        
+        }
       })
       if (type == 'delete' || type == 'shear') {
         me.carryUpdateElementStorageEvent(self, self.original, onModules, 'delete')
-      } else {       
+      } else {
         me.carryUpdateElementStorageEvent(self, self.original, onModules)
+      }
+      if (type == 'centerSpacing' || type == 'middleSpacing') {
+        storage.screenElement(self, me)
       }
       adaptation.renderLayer(self, self.original)
       me.contextmenu.hide()
     },
     bindEvent: function (self) { // 绑定选中模块绑定事件事件
       let me = this
-      adaptation.bindElDialogMousemoveEvent(me) // 弹框拖拽 
+      adaptation.bindElDialogMousemoveEvent(me) // 弹框拖拽
       adaptation.bindHoverbarMousemoveEvent(self, me) // 页头页尾调整
       adaptation.bindMenuEvent(self, me) // 模块菜单 收缩事件
       adaptation.bindFontFamily(self, me) // 字体列表
@@ -708,142 +719,10 @@
       module.bindOnModulesMousedownEvent(self, me) // 选中模块拖拽事件
       module.bindEditBoxMousedownEvent(self, me)  // 点击模块之外时，还原默认值
       module.bindAddModuleMousedownEvent(self, me) // 模块列表操作事件,添加模块，拖动，取消
-      module.bindModuleDblclickEvent(self, me) // 模块双击操作  
+      module.bindModuleDblclickEvent(self, me) // 模块双击操作
       storage.bindMultiBoxMousemoveEvent(self, me)  // 多选事件拖拽事件
-      tools.bindKeydownEvent(self, me) // 键盘按下事件, 快捷工具    
-      tools.bindContextmenuEvent(self, me) // 右键菜单栏 
-    },
-    tab:function (cls) { //tab标签页
-      let me = this
-      let obj = me.$(cls)
-
-      obj.each(function () {
-        let color = me.$(this).find('.tab_header').attr('color')
-        let type =  me.$(this).find('.tab_header').attr('type')
-        let ev =  me.$(this).find('.tab_header').attr('ev')
-        if (color){
-          if (type == 'padd'){
-            me.$(this).find('.tab_header li.active').css('backgroundColor','#'+color)
-          }else{
-            me.$(this).find('.tab_header li.active').css('backgroundColor','')
-            me.$(this).find('.tab_header li.active').css('color','#'+color)
-          }
-        }
-        me.$(this).find('.tab_header li').unbind();
-        me.$(this).find('.tab_header li').bind('click',function (e) {
-          let color = me.$(this).parent().attr('color')
-          let type =  me.$(this).parent().attr('type')
-          let i = me.$(this).index();
-          me.$(this).parent().find('li').removeClass('active')
-          me.$(this).addClass('active')
-          me.$(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
-          me.$(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
-          if (color){
-            if (type == 'padd'){
-              me.$(this).parent().find('li').css('color','#999999')
-              me.$(this).parent().find('li').css('backgroundColor','')
-              me.$(this).css('color','#ffffff')
-              me.$(this).css('backgroundColor','#'+color)
-            }else{
-              me.$(this).parent().find('li.active').css('color','#'+color)
-              me.$(this).parent().find('li').css('color','')
-              me.$(this).css('color','#'+color)
-            }
-          }
-        })
-        if(ev == 'click'){
-          me.$(this).find('.tab_header li').bind('click',function (e) {
-            let color = me.$(this).parent().attr('color')
-            let type =  me.$(this).parent().attr('type')
-            var i = me.$(this).index();
-            me.$(this).parent().find('li').removeClass('active')
-            me.$(this).addClass('active')
-            me.$(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
-            me.$(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
-            if (color){
-              if (type == 'padd'){
-                me.$(this).parent().find('li').css('color','#999999')
-                me.$(this).parent().find('li').css('backgroundColor','')
-                me.$(this).css('color','#ffffff')
-                me.$(this).css('backgroundColor','#'+color)
-              }else{
-                me.$(this).parent().find('li.active').css('color','#'+color)
-                me.$(this).parent().find('li').css('color','')
-                me.$(this).css('color','#'+color)
-              }
-            }
-          })
-
-          me.$(this).find('.tab_header li').bind('mouseenter',function () {
-            let color = me.$(this).parent().attr('color')
-            let type =  me.$(this).parent().attr('type')
-            if (color){
-              if (type == 'padd'){
-                me.$(this).css('backgroundColor','#' + color);
-                me.$(this).css('color','#ffffff');
-              }else{
-                me.$(this).css('color','#' + color);
-              }
-            }
-          })
-          me.$(this).find('.tab_header li').bind('mouseleave',function () {
-            let color = me.$(this).parent().attr('color')
-            let type =  me.$(this).parent().attr('type')
-            if (type == 'padd'){
-              me.$(this).parent().find('li').css('backgroundColor','')
-              me.$(this).parent().find('li').css('color','#999999')
-              me.$(this).parent().find('li.active').css('backgroundColor','#'+color)
-              me.$(this).parent().find('li.active').css('color','#ffffff')
-            }else{
-              me.$(this).css('color','');
-              me.$(this).parent().find('li.active').css('color','#'+color)
-            }
-          })
-        }else{
-          me.$(this).find('.tab_header li').bind('mouseenter',function () {
-            let color = me.$(this).parent().attr('color')
-            let type =  me.$(this).parent().attr('type')
-            var i = me.$(this).index();
-            me.$(this).parent().find('li').removeClass('active')
-            me.$(this).addClass('active')
-            me.$(this).parent().siblings('.tab_content').find('li.cont').removeClass('active')
-            me.$(this).parent().siblings('.tab_content').find('li.cont').eq(i).addClass('active')
-            if (color){
-              if (type == 'padd'){
-                me.$(this).parent().find('li').css('backgroundColor','')
-                me.$(this).parent().find('li').css('color','#999999')
-                me.$(this).css('backgroundColor','#' + color);
-                me.$(this).css('color','#ffffff');
-              }else{
-                me.$(this).parent().find('li').css('color','#999999')
-                me.$(this).css('color','#' + color);
-              }
-
-            }
-          })
-        }
-
-      })
-    },
-    up_downhover:function (cls) {
-      let me = this
-      let obj = me.$(cls)
-      obj.each(function () {
-        me.$(this).hover(function () {
-          me.$(this).find('.el-icon-arrow-up').show()
-          me.$(this).find('.el-icon-arrow-down').hide()
-        },function () {
-          me.$(this).find('.el-icon-arrow-up').hide()
-          me.$(this).find('.el-icon-arrow-down').show()
-        })
-      }
-      )
-    },
-    editBoxmouseup:function (self,type) {
-      let me = this
-    },
-    suspendfixed:function (cls) {
-
+      tools.bindKeydownEvent(self, me) // 键盘按下事件, 快捷工具
+      tools.bindContextmenuEvent(self, me) // 右键菜单栏
     }
   }
 export default tool

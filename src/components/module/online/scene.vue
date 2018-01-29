@@ -138,6 +138,26 @@
                   case "阵雪":
                     src="quick_snow.png";
                     src1="quick_snow2.png";
+                  break;                  
+                  case "小雪":
+                    src="small_snow.png";
+                    src1="small_snow2.png";
+                  break;
+                  case "小到中雪":
+                    src="small_snow.png";
+                    src1="small_snow2.png";
+                  break;
+                  case "中雪":
+                    src="mid_snow.png";
+                    src1="mid_snow2.png";
+                  break;
+                  case "中到大雪":
+                    src="mid_big_snow.png";
+                    src1="mid_big_snow2.png";
+                  break;
+                  case "大到暴雪":
+                    src="big_snow.png";
+                    src1="big_snow2.png";
                   break;
                   case "雾":
                     src="fog.png";

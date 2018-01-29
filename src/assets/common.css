@@ -1,11 +1,11 @@
 /* common */
   *{
-    font-size: 12px;
     margin:0;
     padding:0;
+    font-size: 12px;
    /* font-family: "Microsoft YaHei";   */
   }
-  html,body{
+  html,body{   
     font-family: "Microsoft YaHei";
   }
   a:-webkit-any-link{
@@ -88,4 +88,10 @@
     width: 9px;
     height: 100%;
     margin-left: -5px;
+  }
+  .el-input-number .el-icon-minus{
+    font-size: inherit;
+  }
+  .el-input-number .el-icon-plus{
+    font-size: inherit;
   }

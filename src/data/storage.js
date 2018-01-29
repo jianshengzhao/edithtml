@@ -56,7 +56,7 @@
       let id = item.attr('id')        
       if (deleteEle == 'delete') {
         delete parentO[id]
-      } else {
+      } else if (id) {
         let son = false
         let iTop = parseInt(item.css('top'))   
         let iLeft = parseInt(item.css('left'))
@@ -90,12 +90,12 @@
 
 // ----------------------------- 多选 ----------------------------------------------  
 
-  exports.getRegionSign = function (self, element, elementX, me) { // 多选模块并属性初始化
+  exports.getRegionSign = function (self, element, elementX, elementR, elementB, me) { // 多选模块并属性初始化
     self.inp_z = parseInt(element.css('zIndex')) || ''
     self.inp_x = parseInt(elementX.css('left'))
     self.inp_y = parseInt(element.css('top'))
-    self.inp_w = parseInt(element.css('width'))
-    self.inp_h = parseInt(element.css('height'))
+    self.inp_w = parseInt(elementR.css('width')) + parseInt(elementR.css('left')) - parseInt(elementX.css('left'))
+    self.inp_h = parseInt(elementB.css('height')) + parseInt(elementB.css('top')) - parseInt(element.css('top'))
     self.inp_size = parseInt(element.css('fontSize'))
     self.inp_line = parseInt(element.css('lineHeight'))
     self.color_font = element.css('color')
@@ -106,20 +106,21 @@
     self.inp_opacity = parseInt(element.css('opacity') * 100)
     if (element.css('boxShadow') == 'none') {
       self.check_shadow = false
-      self.inp_weight_x = ''
-      self.inp_weight_y = ''
-      self.inp_blur = ''
+      self.inp_weight_x = 0
+      self.inp_weight_y = 0
+      self.inp_blur = 0
       self.bw_color = '#ccc'
     } else {
       let shadowArr = element.css('boxShadow').split(' ')
       self.check_shadow = true
-      self.inp_weight_x = shadowArr[3].split('p')[0]
-      self.inp_weight_y = shadowArr[4].split('p')[0]
-      self.inp_blur = shadowArr[5].split('p')[0]
+      self.inp_weight_x = parseInt(shadowArr[3].split('p')[0])
+      self.inp_weight_y = parseInt(shadowArr[4].split('p')[0])
+      self.inp_blur = parseInt(shadowArr[5].split('p')[0])
       self.bw_color = shadowArr[0] + shadowArr[1] + shadowArr[2]
     }
     self.disabled = false
     self.selectBloo = true
+    self.getRegionBloo = true
     element.parent().css('outline', '1px solid rgba(64, 158, 255, 0.7)')
     me.mod.removeClass('tl_li_Disable')
     me.brmod.removeClass('br-disable')
@@ -244,7 +245,6 @@
       let item = obj[i]
       if (self.choiceCon) { // 判断选择条件         
         if ((gx + gw > item.xt && item.xb > gx && gy + gh > item.yt && item.yb > gy)) {
-
           item.ele.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
         }
       }else {
@@ -269,22 +269,33 @@
     screenElement(self, me)
   }
 
+  exports.screenElement = function (self, me) {
+    screenElement(self, me)
+  }
+
   function screenElement (self, me) { // 筛选特殊元素
+    me.$('.virtualRegion').remove()
     let onModule = me.$('.on_module')
     let getElementY = onModule.eq(0)
     let getElementX = onModule.eq(0)
     let getElementR = onModule.eq(0)
     let getElementB = onModule.eq(0)
-    for(let i = 1,len = onModule.length; i < len; i ++) { // 选出特殊用途的元素
+    let maxY = parseInt(getElementY.css('top'))
+    let maxR = parseInt(getElementR.css('left')) + parseInt(getElementR.css('width'))
+    let maxL = parseInt(getElementX.css('left'))
+    let maxB = parseInt(getElementB.css('top')) + parseInt(getElementB.css('height'))
+    for (let i = 1, len = onModule.length; i < len; i ++) { // 选出特殊用途的元素
       let item = onModule.eq(i)
       let itemTop = parseInt(item.css('top'))
       let eleTop = parseInt(getElementY.css('top'))
       if (eleTop >= itemTop) { // 最上边的元素
         if (eleTop == itemTop) {
           if (parseInt(getElementY.css('left')) > parseInt(item.css('left'))) {
+            maxY = itemTop
             getElementY = item
           }
         } else {
+          maxY = itemTop
           getElementY = item
         }
       }
@@ -292,18 +303,21 @@
       let itemBottom = parseInt(item.css('top')) + parseInt(item.css('height'))
       let eleBottom = parseInt(getElementB.css('top')) + parseInt(getElementB.css('height'))
       if (itemBottom >= eleBottom) { // 最下边的元素
+        maxB = itemBottom
         getElementB = item
       }
 
       let itemLeft = parseInt(item.css('left'))
       let eleLeft = parseInt(getElementX.css('left'))
       if (eleLeft >= itemLeft) { // 最左边的元素
+        maxL = itemLeft
         getElementX = item
       }
 
       let itemRight = parseInt(item.css('left')) + parseInt(item.css('width'))
       let eleRight = parseInt(getElementR.css('left')) + parseInt(getElementR.css('width'))
       if (itemRight >= eleRight) { // 最右边的元素
+        maxR = itemRight
         getElementR = item
       }
     }
@@ -312,19 +326,106 @@
     self.moduleElementX = getElementX
     self.moduleElementR = getElementR
     self.moduleElementB = getElementB 
-    if (onModule.length == 1){
+    if (onModule.length == 1) {
       me.$('.multiBox').remove()
       me.carrySignEvent(self, getElementY)
-    } else if(onModule.length > 1){     
-      me.carryRegionChoiceSignEvent(self, getElementY, getElementX) 
+    } else if (onModule.length > 1) { 
+      screenRegion(onModule, maxY, maxL, maxR, maxB)
+      me.carryRegionChoiceSignEvent(self, getElementY, getElementX, getElementR, getElementB) 
     }
   }
   
-  exports.screenElement = function (self, me) {
-    screenElement(self, me)
+  function screenRegion (onModule, maxY, maxL, maxR, maxB) { // 构建虚线选区
+    if (maxR && maxB) {
+      let parentBox = onModule.parent()
+      if (parentBox.hasClass('c_top') || parentBox.hasClass('c_body') || parentBox.hasClass('c_foot')) {
+        parentBox.append('<div class="rectangle virtualRegion on_module " style="top:' + maxY + 'px;left:' + maxL + 'px;width:' + (maxR - maxL) + 'px;height:' + (maxB - maxY) + 'px;"></div>')
+      }
+    }
+  }
+
+  function CtrlfuzzyCalibration (self, left, top, me) {
+    me.$('.fuzzybox').remove()
+    me.line.hide()
+    let ele = me.$('.virtualRegion')
+    let parentClass = ele.parent().attr('class')
+    let height = parseInt(ele.css('height'))
+    let width = parseInt(ele.css('width'))
+    switch (parentClass) {
+      case 'c_top':
+        me.warp = 0
+        break
+      case 'c_body':
+        me.warp = parseInt(me.top.css('height'))
+        break
+      case 'c_foot':
+        me.warp = parseInt(me.top.css('height')) + parseInt(me.body.css('height'))
+        break
+    }
+    let obj = self.elementStorage[parentClass]    
+    let yT = top
+    let yB = top + height
+    let xL = left
+    let xR = left + width    
+    let fv = self.fuzzyVal    
+    let fyzzyHtml = '<div class="fuzzybox"></div>'
+    let onModule = me.$('.on_module')
+    let ids = {}
+    for(let i = 0, len = onModule.length; i < len; i++) {
+      let id = onModule.eq(i).attr('id')
+      if (id) {
+        ids[id] = true
+      }      
+    }
+    for (let i in obj) {
+      let item = obj[i]
+      if (!ids[i] && !item.son) {
+        if (Math.abs(item.xt - xL) <= fv) {
+          self.inp_x = item.xt
+          me.carryModuleOperationEvent(self, 'left', item.xt)
+        }
+        if (Math.abs(item.xt - xR) <= fv) {
+          let fLeftR = item.xt - width
+          self.inp_x = fLeftR
+          me.carryModuleOperationEvent(self, 'left', fLeftR)
+        }
+        if (Math.abs(item.xb - xR) <= fv) {
+          let fLeft = item.xb - width
+          self.inp_x = fLeft
+          me.carryModuleOperationEvent(self, 'left', fLeft)
+        }
+        if (Math.abs(item.xb - xL) <= fv) {
+          self.inp_x = item.xb
+          me.carryModuleOperationEvent(self, 'left', item.xb)
+        }
+        if (Math.abs(item.yt - yT) <= fv) {
+          self.inp_y = item.yt
+          me.carryModuleOperationEvent(self, 'top', item.yt)
+        }
+        if (Math.abs(item.yt - yB) <= fv) {
+          let fTopB = item.yt - height
+          self.inp_y = fTopB
+          me.carryModuleOperationEvent(self, 'top', fTopB)
+        }
+        if (Math.abs(item.yb - yB) <= fv) {
+          let fTop = item.yb - height
+          self.inp_y = fTop
+          me.carryModuleOperationEvent(self, 'top', fTop)
+        }
+        if (Math.abs(item.yb - yT) <= fv) {
+          self.inp_y = item.yb
+          me.carryModuleOperationEvent(self, 'top', item.yb)
+        }
+        if (Math.abs(item.xt - xL) <= fv || Math.abs(item.xt - xR) <= fv || Math.abs(item.xb - xR) <= fv || Math.abs(item.xb - xL) <= fv || Math.abs(item.yt - yT) <= fv || Math.abs(item.yt - yB) <= fv || Math.abs(item.yb - yB) <= fv || Math.abs(item.yb - yT) <= fv) {
+          me.adaptation.computeLinePosition(self, me) // todolist
+          me.carryUpdateElementStorageEvent(self, ele.parent(), ele)
+          item.ele.append('<div class="fuzzybox" style="width:' + (item.xb - item.xt) + 'px;height:' + (item.yb - item.yt) + 'px;left:-' + item.br + 'px;top:-' + item.br + 'px;"></div>')
+        }
+      }
+    }
   }
 // ----------------- bindEvent ---------------------------------------
-  exports.bindMultiBoxMousemoveEvent = function (self, me) { // 多选模块拖拽
+  exports.bindMultiBoxMousemoveEvent = function (self, me) { // 多选模块拖拽 todolist: 校准
     me.editBox.on('mousedown', '.multiBox', function (e) {
       let x = e.pageX
       let y = e.pageY
@@ -335,11 +436,13 @@
         let top = ys + e.pageY - y
         me.carryModuleOperationEvent(self, 'left', left)
         me.carryModuleOperationEvent(self, 'top', top)
+        CtrlfuzzyCalibration(self, self.inp_x, self.inp_y, me)
         return false
       })
       me.editBox.mouseup(function () {
         me.editBox.unbind('mousemove mouseup')
-        // me.line.hide()
+         me.$('.fuzzybox').remove()
+        me.line.hide()
         // me.$('.touch_module').removeClass('touch_module')
         // me.carryLayerEvent(self, $this.parent())
         return false

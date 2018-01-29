@@ -133,11 +133,11 @@
           if (top < 0) { // 最小值
             top = 0
           }
-          if (left < -edW/2) {
-            left = -edW/2
-          } else if ((left + edW/2) > bW) {
-            left = bW - edW/2
-          }
+          // if (left < -edW/2) {
+          //   left = -edW/2
+          // } else if ((left + edW/2) > bW) {
+          //   left = bW - edW/2
+          // }
 
           elDialog.css({'left': left, 'top': top})
         })

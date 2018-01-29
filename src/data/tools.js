@@ -1,6 +1,6 @@
   
   exports.bindKeydownEvent = function (self, me) { // 键盘按下事件》》快捷操作
-    me.doc.unbind('keydown')
+    me.doc.unbind('keydown keyup')
     me.doc.keydown(function (e) { // 键盘方向键微调移动模块事件
       let module = me.$('.on_module')
       let len = module.length
@@ -26,7 +26,9 @@
           }
         }        
       }
+      me.ctrlKey = false
       if(e.ctrlKey){
+        me.ctrlKey = true
         if (me.$(e.target)[0].nodeName != 'INPUT') {
           switch (e.keyCode) {
             case 67: //  ctrl + C 复制
@@ -57,18 +59,11 @@
               me.storage.screenElement(self, me)          
               break
           }
-        }        
-      }
-      /*if(e.ctrlKey){ // ctrl 点击选中
-        me.editBox.on('mousedown', '.module', function (e) { // 点击选中模块事件
-          e.preventDefault();
-          me.cleanSignEvent(self)
-          let $this = me.$(this)
-          me.carryRegionChoiceEvent(self,'','ctrlKey')
-          //me.$()
-          return false
-        })
-      }*/
+        }
+      } 
+    })
+    me.doc.keyup(function(e) {
+      me.ctrlKey = false     
     })
   }
 

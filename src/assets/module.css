@@ -2644,7 +2644,7 @@
 		height: 139px;
 		width: 100%;
 	}
-	
+
 	/*有图的样式*/
 	.information .infor-img-a{
 		float: left;
@@ -2658,7 +2658,7 @@
 		height: 128px;
 		border: 0 none;
 	}
-	
+
 	.information .infor-txt-p{
 		width: 942px;
 		height: 128px;
@@ -2711,7 +2711,7 @@
 		line-height: 24px!important;
 	}
 	/*无图样式*/
-	
+
 	/*纯文字*/
 	.infor-wrap-txt{
 		width: 100%!important;
@@ -2746,7 +2746,7 @@
 		text-overflow:ellipsis;
 		white-space: nowrap;
 	}
-	
+
 	/*滚动资讯*/
 	.infor-wrap-scroll{
 		width: 100%;
@@ -2772,7 +2772,7 @@
 		float: left;
 		margin: 0 5px;
 		height:40px;
-	}	
+	}
 	.infor-li-scroll .infor-icon-scroll{
 		float: left;
 		width:20px;
@@ -2784,8 +2784,8 @@
 		text-decoration: none!important;
 		float: left;
 		height:40px;
-	}		
-	
+	}
+
   /*资讯样式*/
 /*introduce*/
 	.introduce{
@@ -3007,9 +3007,9 @@
     text-align: center;
     color: #0af;
     background-color: #fff;
-  }  
-  .calendar .worldDate{ 
-    margin-top: 5px;  
+  }
+  .calendar .worldDate{
+    margin-top: 5px;
     font-size: 14px;
     color: #666;
   }
@@ -3020,7 +3020,7 @@
     font-family: Arial;
     color: inherit;
   }
-  .calendar .chinaDay{   
+  .calendar .chinaDay{
     font-size: 16px;
     font-weight: bolder;
     color: #666;
@@ -3058,8 +3058,8 @@
     height: 18px;
     line-height: 18px;
     text-align: center;
-    padding: 4px 6px;  
-    margin-top: 8px;  
+    padding: 4px 6px;
+    margin-top: 8px;
     margin-right: 11px;
     margin-left: 5px;
     background-color: #65bf10;
@@ -3082,7 +3082,7 @@
   .scene-date{
     display: block;
     height: 24px;
-    line-height: 24px;    
+    line-height: 24px;
   }
   .scene-icon{
     display: block;
@@ -3380,34 +3380,114 @@
     background-color: #ffffff;
   }
 
-  /*下拉框*/
+  /*菜单*/
   .pulldown_position{
     position: absolute;
-    bottom:-20px;
+    bottom: -120px;
+    left: 0;
+    background: #fff;
     display: none;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
   }
-  .pulldown_position .triangle-up {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 10px solid #ffffff;
-    margin-left: 10px;
+  .pulldown_position[classacutoffrule=show] .menu_one_a{
+    border-bottom: 1px solid #999999;
   }
-  .pulldown_position .pulldown_list{
-    background: #ffffff;
-    padding: 0px 5px;
+  .pulldown_position[classbcutoffrule=show] .menu_two_a{
+    border-bottom: 1px solid #999999;
   }
-  .pulldown_position .pulldown_list a{
-    display: block;
-    cursor: pointer;
-    line-height: 28px;
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    color: #333;
+  .pulldown_position[classacutoffrule=show] .menu_box:last-child  .menu_one_a{
+    border-bottom: none;
+  }
+  .pulldown_position[classbcutoffrule=show]  .menu_box .menu_two_a:last-child{
+    border-bottom: none;
   }
   .button:hover .pulldown_position,.picture:hover .pulldown_position,.editor:hover .pulldown_position,.radius:hover .pulldown_position,.rectangle:hover .pulldown_position{
+    display: block;
+  }
+  .pulldown_position .menu_box{
+    position: relative;
+    /*padding-right: 10px;*/
+  }
+  .pulldown_position .menu_box .menu_one_a{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: block;
+    padding-right: 26px;
+    position: relative;
+  }
+  .pulldown_position .menu_box  .up_icon{
+    position: absolute;
+    width: 26px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background: url(http://static.ebanhui.com/design/image/menuup_icon.png) center center no-repeat;
+  }
+  .pulldown_position .menu_box  .down_icon{
+    position: absolute;
+    width: 26px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background: url(http://static.ebanhui.com/design/image/menudown_icon.png) center center no-repeat;
+  }
+  .pulldown_position .menu_box  .right_icon{
+    position: absolute;
+    width: 26px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background: url(http://static.ebanhui.com/design/image/menuright_icon.png) center center no-repeat;
+  }
+  .pulldown_position .menu_box .menu_one_a a{
+    height: 100%;
+    font-size: 16px;
+    font-family: 微软雅黑;
+    color: #000000;
+    display: block;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pulldown_position .menu_box .menu_one_box:hover{
+    background: #ccc
+  }
+
+  .pulldown_position .menu_box .menu_two_box{
+    box-sizing: border-box;
+    display: none;
+  }
+  .pulldown_position .menu_box[showtype=right] .menu_two_box{
+    position: absolute;
+    right: -250px;
+    top: -1px;
+    border: 1px solid #cccccc;
+  }
+  .pulldown_position .menu_box[showtype=bottom] .menu_two_box{
+    width: 100%;
+  }
+  .pulldown_position .menu_box .menu_two_box .menu_two_a{
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+  }
+  .pulldown_position .menu_box[showtype=bottom] .menu_two_box .menu_two_a{
+    width: 100%!important;
+  }
+  .pulldown_position .menu_box .menu_two_box .menu_two_a a{
+    height: 100%;
+    display: block;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: #000000;
+  }
+  .pulldown_position .on .menu_two_box{
     display: block;
   }
   /*搜索框*/

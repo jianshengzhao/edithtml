@@ -9,7 +9,7 @@
         <div class="tl_li" style="margin-left:50px;" @click="saveEvent">
           <i class="tImgicon icon-save"></i>
           <span>保存</span>
-        </div>        
+        </div>
       </div>
   <!--   </div> -->
     <div class="content">
@@ -255,6 +255,60 @@
               $('.login .denser').empty().append(onlogin)
             }
           })
+        },
+        pulldowninit:function () {
+          var menu_one_a = $('.menu_one_a')
+          var menu_two_a = $('.menu_two_a')
+          var h
+          $('.pulldown_position .on').removeClass('on')
+          menu_two_a.each(function () {
+            $(this).off('mouseenter')
+            $(this).off('mouseleave')
+            var bbg  =  $(this).parents('.pulldown_position').attr('bbg')
+            var bhover  =  $(this).parents('.pulldown_position').attr('bhover')
+            $(this).on('mouseenter',function () {
+              $(this).css('backgroundColor',bhover)
+            })
+            $(this).on('mouseleave',function () {
+              $(this).css('backgroundColor',bbg)
+            })
+          })
+          menu_one_a.each(function () {
+            var menu_box = $(this).parent('.menu_box')
+            h = '-' + (menu_box.parents('.pulldown_position').height() + 2) + 'px'
+            menu_box.parents('.pulldown_position').css('bottom', h)
+            $(this).off('click')
+            $(this).off('mouseenter')
+            $(this).off('mouseleave')
+            var abg = $(this).parents('.pulldown_position').attr('abg')
+            var ahover = $(this).parents('.pulldown_position').attr('ahover')
+            $(this).on('mouseenter', function () {
+              $(this).css('backgroundColor', ahover)
+            })
+            $(this).on('mouseleave', function () {
+              $(this).css('backgroundColor', abg)
+            })
+            $(this).on('click', function () {
+
+              if (menu_box.find('.menu_two_box').length) {
+
+                if (menu_box.hasClass('on')) {
+                  menu_box.removeClass('on')
+                  menu_box.find('.down_icon').removeClass('down_icon').addClass('up_icon')
+                } else {
+                  menu_box.addClass('on')
+                  menu_box.find('.up_icon').removeClass('up_icon').addClass('down_icon')
+                }
+                h = '-' + (menu_box.parents('.pulldown_position').height() + 2) + 'px'
+                menu_box.parents('.pulldown_position').css('bottom', h)
+                if (menu_box.attr('showtype') == 'right') {
+                  var w =  Math.ceil(menu_box.find('.menu_two_box').outerWidth())
+                  menu_box.find('.menu_two_box').css('right', '-' + w + 'px')
+                  menu_box.siblings().removeClass('on')
+                }
+              }
+            })
+          })
         }
       }
     },
@@ -301,6 +355,7 @@
         // self.getnews(newscarouseldata)
         self.switchPwd()
         self.userlogin()
+        self.pulldowninit()
       })
     },
     methods: {

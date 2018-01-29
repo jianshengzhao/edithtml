@@ -2,7 +2,7 @@
   <div class="editbuttondia">
     <el-dialog
       title="设置样式"
-      :visible.sync="dialogeditbutton"     
+      :visible.sync="dialogeditbutton"
       class="el-dialog-editbutton">
       <el-tabs v-model="activeName">
         <el-tab-pane label="样式" name="first">
@@ -36,7 +36,7 @@
           <el-input v-model="inpBtnText" placeholder="请输入按钮文字"></el-input>
         </el-tab-pane>
       </el-tabs>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogeditbutton = false">取 消</el-button>
         <el-button type="primary" @click="dialogEditorEvent">确 定</el-button>
       </span>
@@ -54,7 +54,7 @@ export default {
       activeName: 'first',
       dialogeditbutton: false,
       buttontype: '',
-      inpBtnText: ''     
+      inpBtnText: ''
     }
   },
   created: function () {
@@ -67,7 +67,7 @@ export default {
       text: '按钮'
     })
     // 配置模块参数
-    moduleData['button'] = { 
+    moduleData['button'] = {
       style: 'width:80px; height:30px',
       tool: {
         private: {
@@ -75,7 +75,7 @@ export default {
           class: 'st-style'
         },
         public: ['f','e']
-      },      
+      },
       html: '<div class="button module addmodule"  datatext="按钮"><a target="_blank">按钮</a></div>'
     }
   // ------------------- taxonomy ------------------
@@ -84,7 +84,7 @@ export default {
       icon: 'imgicon icon-classify',
       text: '分类'
     })
-    moduleData['taxonomy'] = { 
+    moduleData['taxonomy'] = {
       style: 'width:1200px;',
       tool: {
         private: {
@@ -96,17 +96,17 @@ export default {
       createEvent: function (self, element, me) { // 入参: self指向主文件上下文, element生成的元素集合。// 生成模块时所触发的事件
         self.$refs.editbutton.getcoursecategorys(element)
       },
-      html: '<div class="taxonomy module addmodule" datatext="分类"><div class="click-taxonomy"></div><div class="taxonomycont"><ul class="fl allson"></ul><ul class="fl allsondouble"></ul><div style="clear: both;"></div></div></div>'  
+      html: '<div class="taxonomy module addmodule" datatext="分类"><div class="click-taxonomy"></div><div class="taxonomycont"><ul class="fl allson"></ul><ul class="fl allsondouble"></ul><div style="clear: both;"></div></div></div>'
     }
   },
-  methods: { 
+  methods: {
     show: function () {
       let self = this
       let a =  $('.on_module');
       let buttontype = a.attr('buttontype')
       self.buttontype = buttontype || '';
       self.dialogeditbutton = true
-      self.inpBtnText = a.find('a').text()
+      self.inpBtnText = a.find('a').eq(0).text()
     },
     editbutton: function (val){
       let self = this
@@ -123,8 +123,8 @@ export default {
       a.addClass(self.buttontype);
       a.attr('buttontype',self.buttontype)
       self.dialogeditbutton = false
-      a.find('a').text(self.inpBtnText)
-    },        
+      a.find('a').eq(0).text(self.inpBtnText)
+    },
     getcoursecategorys: function (html) {
       let self = this
       self.$http.get(window.host + '/room/design/getcoursecategorys.html', {
@@ -156,7 +156,7 @@ export default {
             }
           }
           let allson = html.find('.allson')
-          let allsondouble = html.find('.allsondouble')             
+          let allsondouble = html.find('.allsondouble')
           allson.html(packageshtml)
           allsondouble.html(sortshtml)
           let awidth = allson.css('width')
@@ -171,7 +171,7 @@ export default {
       })
     },
     handleClick: function (){
-    
+
     }
   }
 }
@@ -182,7 +182,7 @@ export default {
     width: 600px;
   }
   .el-dialog-editbutton .el-dialog__header{
-    border-bottom:1px solid #ccc; 
+    border-bottom:1px solid #ccc;
   }
   .el-dialog-editbutton .el-dialog__body{
     padding: 10px 20px;

@@ -508,7 +508,7 @@
           self.currentEle_info.attr('rowspacing', self.rowspacing)
           self.currentEle_info.find(".inforCon").empty();
           
-          self.$http.post(window.host + "/aroomv3/news/getnewslists.html",
+          self.$http.post(window.host + "/room/design/getnewslists.html",
           {
           begin:self.num1,
           last:self.num2,

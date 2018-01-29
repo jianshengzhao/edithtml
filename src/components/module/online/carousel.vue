@@ -436,7 +436,11 @@ export default {
                 urlRoute = (data.name || '本校课程') + ' / ' + data.pname + ' / ' + data.sname + ' / ' + data.foldername + ' / ' + data.cwname
                 urltitle = '课件：'+ data.cwname
                 if (data.cwidtype == '2'){
-                  urlHref = '/course/' + data.cwid + '.html'
+                  if (data.islive == '1'){
+                    urlHref = '/course/' + data.cwid + '.html?flag=1'
+                  }else{
+                    urlHref = '/course/' + data.cwid + '.html'
+                  }
                   auditionid = data.cwid
                 }else{
                   if(data.cwpay == '1'){
@@ -538,7 +542,7 @@ export default {
     .carousel .el-dialog__header {
       border-bottom: 1px solid #CECECE;
       height: 40px;
-    }   
+    }
     .el-dialog--carousel .el-dialog{
       width: 980px;
     }

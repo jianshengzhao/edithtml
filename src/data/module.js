@@ -8,6 +8,7 @@
       eleConfig.beforeSelecting(self, element, me)
     }
     self.selectBloo = true
+    self.getRegionBloo = false
 
     resizeBox(self, element, me, eleConfig) // 插入resizeBox 和 悬浮工具栏
   
@@ -82,20 +83,14 @@
     let fontWeight = parseInt(element.css('fontWeight'))
     if (fontWeight > 400) {
       fontp.eq(0).addClass('on')      
-    } else {
-      fontp.eq(0).removeClass('on')
     }
     let fontStyle = element.css('fontStyle')
     if (fontStyle != 'normal') {     
       fontp.eq(1).addClass('on')      
-    } else {
-      fontp.eq(1).removeClass('on')
     }
     let textDecoration = element.css('textDecoration').split(' ')[0]
     if (textDecoration == 'underline') {     
       fontp.eq(2).addClass('on')      
-    } else {
-      fontp.eq(2).removeClass('on')
     }
     self.color_font = element.css('color')
     let bgcolor = element.css('backgroundColor')
@@ -136,11 +131,12 @@
         break
     }
   }
-
-  // -------------------- getSign ------------------------------  
+  // -------------------- cleanSign ----------------------------
   exports.cleanSign = function (self, me) { // 取消选中，清除默认值
-    me.$('.resizeBox').remove()
-    me.$('.supendTools').remove()   
+    me.$('.fuzzybox').remove()
+    me.$('.resizeBox').remove() // 去除选中的resizeBox
+    me.$('.supendTools').remove() // 去除选中的悬浮工具栏
+    me.$('.virtualRegion').remove()  // 去除多选虚线框
     let element = me.$('.on_module') 
      element.parent().css('outline', '0px')
     if (element.length) {
@@ -182,6 +178,40 @@
     me.brmod.addClass('br-disable')
     self.moduleElementY = false
     self.moduleElementX = false
+  }
+  // -------------------- Ctrl 选中 ----------------------------
+  exports.ctrlSign = function (self, element, me, onModule) {
+    let topHover = me.$('.c_top .hoverbar')
+    let footHover = me.$('.c_foot .hoverbar')
+    let parent = ''
+    if (topHover.is(":hidden") && footHover.is(":hidden")) {
+      parent = 'c_body'
+    } else if (!topHover.is(":hidden") && footHover.is(":hidden")) {
+      parent = 'c_top'
+    } else if (topHover.is(":hidden") && !footHover.is(":hidden")) {
+      parent = 'c_foot'
+    }
+    // 父级为容器模块的情况
+    element.parent().css('outline', '1px solid rgba(64, 158, 255, 0.7)')  
+    self.selectBloo = true
+    let obj = self.elementStorage[parent]
+    cleanResizeBox(self, onModule, obj)
+    if (!element.hasClass('virtualRegion')) { 
+      let id = element.attr('id')
+      let item = obj[id]
+      element.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
+    }
+    me.storage.screenElement(self, me)
+  }
+
+  function cleanResizeBox(self, onModule, obj) { // 第一个单选转换为多选
+    if (onModule.length < 2) {
+      onModule.find('.resizeBox').remove()
+      onModule.find('.supendTools').remove()
+      let id = onModule.attr('id')
+      let item = obj[id]
+      onModule.addClass('on_module').append('<div class="multiBox" style="width:' + (item.xb - item.xt)+ 'px;height:' + (item.yb - item.yt) + 'px;top: -' + item.br + 'px;left:-' + item.br + 'px"></div>')
+    }
   }
   // -------------------- bindEvent ----------------------------
   exports.bindResizeDrawingEvent =  function (self, me) {  // 选中小圆点按钮拉伸容器事件
@@ -503,8 +533,18 @@
           })
           break
         case 'st-left st-audition':
+          // self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {
+          //   let auditionHtm = '<a href ="/course/' + data.cwid + '.html" target="_blank"><img src="'+ (data.cover ||data.logo) +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+          //   element.attr('auditionid', data.cwid)
+          //   element.find('.editAdd').html(auditionHtm)
+          // })
           self.$refs.hrefdialogp.show('coursecw', me.$('.on_module'), function (element, data) {
-            let auditionHtm = '<a href ="/course/' + data.cwid + '.html" target="_blank"><img src="'+ (data.cover ||data.logo) +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+            let auditionHtm = ''
+            if (data.islive == '1'){
+              auditionHtm = '<a href ="/course/' + data.cwid + '.html?flag=1" target="_blank"><img src="'+ (data.cover ||data.logo) +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+            }else{
+              auditionHtm = '<a href ="/course/' + data.cwid + '.html" target="_blank"><img src="'+ (data.cover ||data.logo) +'"><div class="audiTit">'+ data.cwname +'</div></a>'
+            }
             element.attr('auditionid', data.cwid)
             element.find('.editAdd').html(auditionHtm)
           })
@@ -538,20 +578,41 @@
   }
 
   exports.bindModuleAClickEvent = function (self, me) { // 去除a标签默认事件
-    me.editBox.on('click', '.module a', function (e) {      
-      e.preventDefault()
-    })    
+    me.editBox.on('click', '.module a', function (e) {
+      if (e && e.preventDefault) {
+        e.preventDefault() 
+      } else {       
+        window.event.returnValue = false; 
+      }
+    })
   }
 
   exports.bindOnModulesMousedownEvent = function (self, me) { // 选中模块拖拽事件
-    me.editBox.on('click', '.module', function (e) { // 点击选中模块事件
-      let $this = me.$(this)      
-      if(!$this.hasClass('on_module')&&!($this.find('.on_module').length > 0)) { // 判断是否已选中或者有子元素被选中
-        me.carrySignEvent(self, $this)
+    me.editBox.on('click', '.module', function (e) { // 点击选中模块事件    
+      let $this = me.$(this)
+       let onModule = me.$('.on_module')   
+      if(!$this.hasClass('on_module') && !($this.find('.on_module').length > 0)) { // 判断是否已选中或者有子元素被选中            
+        if(me.ctrlKey && onModule.length && onModule.parent().attr('class') == $this.parent().attr('class')) { // ctrl多选 if（ 按住ctrl键 && 是否大于1 && 是否跨容器）
+          me.carryCtrlEvent(self,  $this, onModule)
+        } else {
+          me.cleanSignEvent(self)
+          me.carrySignEvent(self, $this)
+        }        
         return false
+      } else {       
+        if(me.ctrlKey) { // ctrl取消选中 todolist: 
+          if(onModule.length < 2) {
+            me.cleanSignEvent(self)
+          } else {            
+            $this.removeClass('on_module')
+            $this.find('.multiBox').remove()
+            me.carryCtrlEvent(self, me.$('.virtualRegion'), me.$('.on_module'))
+          }
+          return false
+        }
       }
     })
-    me.editBox.on('mousedown', '.on_module', function (e) {
+    me.editBox.on('mousedown', '.on_module', function (e) {      
       let x = e.pageX
       let y = e.pageY
       let xs = self.inp_x
@@ -587,7 +648,7 @@
       self.mousePageX = e.pageX - self.paddingleft + me.space.scrollLeft() - parseInt(me.canvas.css('left'))
       self.mousePageY = e.pageY - self.paddingtop + me.space.scrollTop() - parseInt(me.canvas.css('top'))
       let target = me.$(e.target)
-      if (!target.hasClass('resizeBox') && !target.hasClass('multiBox')) {
+      if (!target.hasClass('resizeBox') && !target.hasClass('multiBox') && (!me.ctrlKey || target.hasClass('virtualRegion'))) {
         me.cleanSignEvent(self) // 清除属性栏的值
         me.carryRegionChoiceEvent(self, e)  // 添加选区绘制原点
       }      

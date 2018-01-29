@@ -8,19 +8,19 @@
       <el-row>
         <div id="tabs-vertical" class="tabs-vertical" >
           <ul class="tabsul">
-            <li v-if="!parameter||parameter.linktype =='online'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'||parameter.thatName == 'pulldown'">
+            <li v-if="!parameter||parameter.linktype =='online'||parameter.thatName == 'advert'||parameter.thatName == 'carousel' || parameter.thatName == 'pulldown'">
               <a class="tab-active" type="online" data-index="0" >链接</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='news'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'||parameter.thatName == 'pulldown'">
+            <li v-if="!parameter||parameter.linktype =='news'||parameter.thatName == 'advert'||parameter.thatName == 'carousel' || parameter.thatName == 'pulldown'">
               <a data-index="1"  type="news" >资讯</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='course'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'||parameter.thatName == 'pulldown'">
+            <li v-if="!parameter||parameter.linktype =='course'||parameter.thatName == 'advert'||parameter.thatName == 'carousel' || parameter.thatName == 'pulldown'">
               <a data-index="2"  type="course">课程</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='teacher'||parameter.thatName == 'advert'||parameter.thatName == 'carousel'||parameter.thatName == 'pulldown'">
+            <li v-if="!parameter||parameter.linktype =='teacher'||parameter.thatName == 'advert'||parameter.thatName == 'carousel' || parameter.thatName == 'pulldown'">
               <a data-index="3"  type="teacher">教师</a>
             </li>
-            <li v-if="!parameter||parameter.linktype =='onlineschool'||parameter.thatName == 'advert'||parameter.thatName == 'pulldown'">
+            <li v-if="!parameter||parameter.linktype =='onlineschool'||parameter.thatName == 'advert' || parameter.thatName == 'pulldown'">
               <a data-index="4"  type="onlineschool" >网校</a>
             </li>
           </ul>
@@ -181,8 +181,8 @@
                   <el-col v-for="(item,index) in cwlist" :key="item.sname">
                     <h3>{{item.sname}}</h3>
                     <label  class="courselist" v-for="(items,indexs) in item.cwlist" :key="items.cwid" >
-                      <input :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :cover="items.cover" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="items.ism3u8=='1'? false:true"/>
-                      <a class="vc-font2" :style="items.ism3u8=='1'? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
+                      <input :cwid="items.cwid" :cwname="items.title" :cwpay="items.cwpay"  name="fivecourse" type="radio" :thumb="items.thumb" :cwsize="items.cwsize" :logo="items.logo" :cover="items.cover" :summary="items.summary" :viewnum="items.viewnum" value="" :disabled="items.ism3u8=='1'|| items.islive=='1'? false:true"/>
+                      <a class="vc-font2" :style="items.ism3u8=='1' || items.islive=='1'? '':'opacity:0.5;cursor:not-allowed;border:0!important;'">
                         <img :src="items.logo" ><br/>
                         <h3 :title="items.title">{{items.title}}</h3>
                       </a>
@@ -304,10 +304,9 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="!pulldown && !addsearch" @click="indexinit(1)">重 置</el-button>
-        <el-button v-if="!addcoursetype && !pulldown && !addsearch" type="primary" @click="dialogEvent" >确 定</el-button>
-        <el-button v-if="pulldown || addsearch" @click="visdialog = false" >取 消</el-button>
-        <el-button v-if="pulldown" type="primary" @click="dialogpulldown" >确 定</el-button>
+        <el-button v-if="!addsearch" @click="indexinit(1)">重 置</el-button>
+        <el-button v-if="!addcoursetype && !addsearch" type="primary" @click="dialogEvent" >确 定</el-button>
+        <el-button v-if="addsearch" @click="visdialog = false" >取 消</el-button>
         <el-button v-if="addcoursetype" type="primary" @click="dialogaddcourse" >确 定</el-button>
         <el-button v-if="addsearch" type="primary" @click="dialogaddsearch" >确 定</el-button>
       </span>
@@ -323,7 +322,6 @@
         cwidon:false,
         cwidtype:'1',
         addcoursetype:false,
-        pulldown:false,
         addsearch:false,
         formVue: '',
         parameter:'',
@@ -781,10 +779,9 @@
       this.geschsource()
     },
     methods:{
-      show: function(thatName, thatSelf, Callback,pulldownindex) {
+      show: function(thatName, thatSelf, Callback) {
         let self = this;
         self.visdialog = true;
-        self.pulldown = false;
         self.addcoursetype = false;
         self.addsearch =false;
         self.$nextTick( () => {
@@ -805,19 +802,8 @@
                 self.indexinit()
                 break
               case 'pulldown':
-                saveparam = false
-                tCP.addClass('inputpulldown')
-                self.pulldown = true
-                self.addcoursetype = false
-                let index = pulldownindex
-                saveparam = false
-                if(index != '空'){
-                  linktype = thatSelf.$refs.pulldown.pulldowndata[index]['linkType']
-                  linkobj =  thatSelf.$refs.pulldown.pulldowndata[index]['obj']
-                  self.parameter = {thatName : 'pulldown',linktype: '',thatSelf: thatSelf,index:index}
-                }else{
-                  self.parameter = {thatName : 'pulldown',linktype: '',thatSelf: thatSelf}
-                }
+                saveparam = true
+                linkobj = {}
                 self.indexinit()
                 break
               case 'addsearch':
@@ -825,7 +811,6 @@
                 saveparam = false
                 tCP.addClass('inputaddsearch')
                 self.addsearch = true
-                self.pulldown = false
                 self.addcoursetype = false
                 let editsearch = thatName.split('|')[1]
                 if(editsearch == 'edit'){
@@ -842,7 +827,6 @@
                 tCP.addClass('inputAddcoursetype')
                 self.indexinit()
                 self.addcoursetype = true
-                self.pulldown = false
                 self.addsearch = false
                 let index1 = parseInt(thatName.split('|')[1])
                 saveparam = false
@@ -856,7 +840,6 @@
                 linktype = 'course'
                 saveparam = true
                 self.formVue = thatName.split('|')[1]
-
                 tCP.addClass('inputCwlist')
                 break
               case 'teacher':
@@ -1013,6 +996,9 @@
         let parameter = self.parameter
         if (parameter && parameter.thatName!='advert'&& parameter.thatName!='carousel') {
           linkType = parameter.linktype
+          if (parameter.thatName == 'pulldown'){
+            linkType = $('a.tab-active').attr('type')
+          }
         } else {
           origin = window.location.origin
           a = $('.on_module').find('a').eq(0);
@@ -1021,6 +1007,7 @@
           a.removeClass('getUserNameEvent')
           a.removeAttr('auditionid')
         }
+
         // ----------- update end------------
         switch (linkType) {
           case 'none':
@@ -1115,7 +1102,8 @@
                 news : self.newsobj,
                 pagesize : self.newspagesize,
                 page: self.newspage,
-                q : self.newsq
+                q : self.newsq,
+                url: url
               }
             }else{
               if(num == 1){
@@ -1123,7 +1111,8 @@
                   active : num,
                   newscode : news,
                   news : self.newsobj,
-                  newschoolactive : self.showtype1
+                  newschoolactive : self.showtype1,
+                  url: url
                 }
                 if(self.showtype1 == '1'){
                   a.removeAttr('target')
@@ -1134,13 +1123,17 @@
                 obj = {
                   active : num,
                   newscode : news,
-                  news : self.newsobj
+                  news : self.newsobj,
+                  url: url
                 }
               }
 
             }
-            a.attr('linkobj', JSON.stringify(obj))
-            a.attr('href', url)
+            if (!parameter) {
+              a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href', url)
+            }
+
             break
           case 'onlineschool':
             let oneinlineschool;
@@ -1159,67 +1152,72 @@
               })
               return false
             }
-
-            switch (oneinlineschool) {
-              case 'summary':
-                a.attr('href', '/introduce.html')
-                break
-              case 'course':
-                a.attr('href', '/platform.html')
-                break
-              case 'contact':
-                a.attr('href', '/contacts.html')
-                break
-              case 'register':
-                a.removeAttr('href')
-                a.addClass('registerEvent')
-                break
-              case 'password':
-                a.attr('href', '/forget.html')
-                break
-              case 'username':
-                a.removeAttr('href')
-                a.addClass('getUserNameEvent')
-                break
-              case 'login':
-                a.removeAttr('href')
-                a.addClass('loginEvent')
-                break
-              case 'login1':
-                a.removeAttr('href')
-                a.addClass('loginEvent')
-                break
-              case 'QQ':
-                a.attr('href', 'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin)
-                break
-              case 'weibo':
-                a.attr('href', 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin)
-                break
-              case 'WeChat':
-                a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)
-                break
-              case 'index':
-                a.attr('href', 'http://'+ window.roominfo.domain)
-                break
+            if (!parameter) {
+              switch (oneinlineschool) {
+                case 'summary':
+                  a.attr('href', '/introduce.html')
+                  break
+                case 'course':
+                  a.attr('href', '/platform.html')
+                  break
+                case 'contact':
+                  a.attr('href', '/contacts.html')
+                  break
+                case 'register':
+                  a.removeAttr('href')
+                  a.addClass('registerEvent')
+                  break
+                case 'password':
+                  a.attr('href', '/forget.html')
+                  break
+                case 'username':
+                  a.removeAttr('href')
+                  a.addClass('getUserNameEvent')
+                  break
+                case 'login':
+                  a.removeAttr('href')
+                  a.addClass('loginEvent')
+                  break
+                case 'login1':
+                  a.removeAttr('href')
+                  a.addClass('loginEvent')
+                  break
+                case 'QQ':
+                  a.attr('href', 'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin)
+                  break
+                case 'weibo':
+                  a.attr('href', 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin)
+                  break
+                case 'WeChat':
+                  a.attr('href', 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin)
+                  break
+                case 'index':
+                  a.attr('href', 'http://' + window.roominfo.domain)
+                  break
+              }
             }
             if(oneinlineschool == 'summary' || oneinlineschool == 'course'  || oneinlineschool == 'contact'  || oneinlineschool == 'index' ){
               obj = {
                 oneinlineschool : oneinlineschool,
                 newschoolactive : self.showtype1
               }
-              if(self.showtype1 == '1'){
-                a.removeAttr('target')
-              }else{
-                a.attr('target', '_blank')
+              if (!parameter) {
+                if (self.showtype1 == '1') {
+                  a.removeAttr('target')
+                } else {
+                  a.attr('target', '_blank')
+                }
               }
             }else{
               obj = {
                 oneinlineschool : oneinlineschool
               }
             }
+            if (!parameter) {
+              a.attr('linkobj', JSON.stringify(obj))
+              a.attr('href', url)
+            }
 
-            a.attr('linkobj', JSON.stringify(obj))
-            a.attr('href', url)
             break
           case 'teacher':
             let face = $("input[name='teacher']:checked").attr('face');
@@ -1275,8 +1273,10 @@
                 name : sourcename
 
               }
-              a.attr('linkobj', JSON.stringify(obj))
-              a.attr('href','/platform.html')
+              if (!parameter) {
+                a.attr('linkobj', JSON.stringify(obj))
+                a.attr('href','/platform.html')
+              }
             } else if (!twocourse) {
               let twocourseradio = $("input[name='twocourse']:checked").attr('pid');
               let pname = $("input[name='twocourse']:checked").attr('pname');
@@ -1293,12 +1293,15 @@
               obj = {
                 course : 2,
                 sourceid: self.sourceid,
-                name : $("input[sourceid='"+self.sourceid+"']").attr('sourcename'),
+                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
                 pid: twocourseradio,
                 pname : pname
               }
-              a.attr('linkobj', JSON.stringify(obj))
-              a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio)
+              if (!parameter) {
+                a.attr('linkobj', JSON.stringify(obj))
+                a.attr('href','/platform-1-0-0.html?pid='+ twocourseradio)
+              }
+
             } else if (!threecourse) {
               let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
               let sname = $("input[name='threecourse']:checked").attr('sname');
@@ -1321,12 +1324,15 @@
                 pid : self.pid,
                 pname : $("input[pid='"+self.pid+"']").attr('pname')
               }
-              a.attr('linkobj', JSON.stringify(obj))
-              if(threecourseradio == 0){
-                a.attr('href','/platform-1-0-0.html?pid='+ self.pid)
-              }else{
-                a.attr('href','/platform-1-0-0.html?pid='+ self.pid + '&sid=' + threecourseradio)
+              if (!parameter) {
+                a.attr('linkobj', JSON.stringify(obj))
+                if(threecourseradio == 0){
+                  a.attr('href','/platform-1-0-0.html?pid='+ self.pid)
+                }else{
+                  a.attr('href','/platform-1-0-0.html?pid='+ self.pid + '&sid=' + threecourseradio)
+                }
               }
+
             } else if (!fourcourse) {
               let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
               let itemid = $("input[name='fourcourse']:checked").attr('itemid');
@@ -1419,7 +1425,11 @@
               if (!parameter) {
                 a.attr('linkobj', JSON.stringify(obj))
                 if (self.cwidtype == '2'){
-                  a.attr('href','/course/' + fivecourseradio + '.html')
+                  if($("input[cwid='"+fivecourseradio+"']").attr('islive') == '1'){
+                    a.attr('href','/course/' + fivecourseradio + '.html?flag=1')
+                  }else{
+                    a.attr('href','/course/' + fivecourseradio + '.html')
+                  }
                   a.attr('auditionid',fivecourseradio)
                 }else{
                   if(cwpay == '1'){
@@ -1549,560 +1559,6 @@
             break
         }
 
-        self.visdialog = false
-      },
-      // -------------------
-      dialogpulldown(){  //下拉菜单链接
-        let self = this
-        let obj
-        let url
-        let linkType
-        let a
-        let cls
-        let origin
-
-        // ----------- update start------------
-        let parameter = self.parameter
-        linkType = $('a.tab-active').attr('type')
-        origin = window.location.origin
-        let index = parameter.index
-        // ----------- update end------------
-        switch (linkType) {
-          case 'none':
-            a.removeAttr('href')
-            break
-          case 'online':
-            let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
-            if (reg.test(self.edithref)) {
-              obj = {
-                href : self.edithref,
-                opentype : self.showtype
-              }
-              url = self.edithref
-
-              // ----------- update end------------
-            } else {
-              self.$notify({
-                title: '警告',
-                message: '请输入正确完整的跳转链接',
-                type: 'warning'
-              })
-              return
-            }
-            break
-          case 'news':
-            let news;
-            let num = 0;
-            let newsTitle = ''
-            let onenews = $('.oneselnews').is(':hidden');
-            let twonews = $('.twoselnews').is(':hidden');
-            let threenews = $('.threeselnews').is(':hidden');
-            if(!onenews){
-              let onenewsChecked = $("input[name='onenews']:checked")
-              news = onenewsChecked.attr('code');
-              self.newsobj['label'] = onenewsChecked.attr('newsname')
-              num = 1;
-            }else if(!twonews){
-              let twonewsChecked = $("input[name='twonews']:checked")
-              news = twonewsChecked.attr('code');
-              self.newsobj['label1'] = twonewsChecked.attr('newsname')
-              num = 2;
-            }else if(!threenews){
-              news = self.threenewsradio;
-              for (let i = 0, len = self.newslist.length; i < len; i++) {
-                let itemNews = self.newslist[i]
-                if (itemNews.itemid == self.threenewsradio) {
-                  newsTitle = itemNews.subject
-                }
-              }
-              num = 3;
-            }
-            if(news == undefined || news == 'undefined' || !news) {
-              this.$notify({
-                title: '警告',
-                message: '请选择资讯',
-                type: 'warning'
-              })
-              return false
-            }
-            if(num == 1){
-              let navcm = news.split('n')[1]
-              switch (news) {
-                case 'news':
-                  url = '/dyinformation.html'
-                  break
-                default:
-                  url = '/navcm/' + navcm + '.html'
-              }
-            }else if(num == 2){
-              let w = news.indexOf("s");
-              let navcm = news.substring(0,w).split('n')[1]
-              let ns = news.split('s')[1]
-              if (ns) {
-                url = '/navcm/' + navcm + '.html?s=' + ns
-              } else {
-                url = '/navcm/' + navcm + '.html'
-              }
-            }else if(num == 3){
-              url = '/dyinformation/' + news + '.html'
-
-            }
-            if(num == 3){
-              obj = {
-                active : num,
-                newsTitle: newsTitle,
-                newscode : news,
-                news : self.newsobj,
-                pagesize : self.newspagesize,
-                page: self.newspage,
-                q : self.newsq
-              }
-            }else{
-              if(num == 1){
-                obj = {
-                  active : num,
-                  newscode : news,
-                  news : self.newsobj,
-                  newschoolactive : self.showtype1
-                }
-              }else{
-                obj = {
-                  active : num,
-                  newscode : news,
-                  news : self.newsobj
-                }
-              }
-
-            }
-            break
-          case 'onlineschool':
-            let oneinlineschool;
-            let oneschool = $('.oneselinlineschool').is(':hidden');
-            let twoschool = $('.twoselinlineschool').is(':hidden');
-            if(!oneschool){
-              oneinlineschool =  $("input[name='oneinlineschool']:checked").attr('code');
-            }else if(!twoschool){
-              oneinlineschool =  $("input[name='logintype']:checked").attr('code');
-            }
-            if(oneinlineschool == undefined ||  oneinlineschool == 'undefined' || !oneinlineschool) {
-              this.$notify({
-                title: '警告',
-                message: '请选择网校功能',
-                type: 'warning'
-              })
-              return false
-            }
-
-            switch (oneinlineschool) {
-              case 'summary':
-                url = '/introduce.html'
-                break
-              case 'course':
-                url = '/platform.html'
-                break
-              case 'contact':
-                url = '/contacts.html'
-                break
-              case 'register':
-                cls = 'registerEvent'
-                break
-              case 'password':
-                url = '/forget.html'
-                break
-              case 'username':
-                cls = 'getUserNameEvent'
-                break
-              case 'login':
-                cls = 'loginEvent'
-                break
-              case 'login1':
-                cls = 'loginEvent'
-                break
-              case 'QQ':
-                url = 'http://www.ebh.net/otherlogin/qq.html?returnurl=' + origin
-                break
-              case 'weibo':
-                url = 'http://www.ebh.net/otherlogin/sina.html?returnurl=' + origin
-                break
-              case 'WeChat':
-                url = 'http://www.ebh.net/otherlogin/wx.html?returnurl=' + origin
-                break
-              case 'index':
-                url = 'http://'+ window.roominfo.domain
-
-                break
-            }
-            if(oneinlineschool == 'summary' || oneinlineschool == 'course'  || oneinlineschool == 'contact'  || oneinlineschool == 'index' ){
-              obj = {
-                oneinlineschool : oneinlineschool,
-                newschoolactive : self.showtype1
-              }
-            }else{
-              obj = {
-                oneinlineschool : oneinlineschool
-              }
-            }
-            break
-          case 'teacher':
-            let face = $("input[name='teacher']:checked").attr('face');
-            let teauid = $("input[name='teacher']:checked").attr('code');
-            let profile = $("input[name='teacher']:checked").attr('profile');
-            let realname = $("input[name='teacher']:checked").attr('realname');
-            let professionaltitle = $("input[name='teacher']:checked").attr('professionaltitle');
-            if(teauid == undefined || teauid == 'undefined' || !teauid) {
-              this.$notify({
-                title: '警告',
-                message: '请选择教师',
-                type: 'warning'
-              })
-              return false
-            }
-            obj = {
-              teauid: teauid,
-              face: face,
-              profile: profile,
-              realname: realname,
-              professionaltitle: professionaltitle,
-              q :self.hrefteaq
-            }
-            url = '/master/'+teauid+'.html'
-            break
-          case 'course':
-            let courseactive;
-            let onecourse = $('.oneselcourse').is(':hidden');
-            let twocourse = $('.twoselcourse').is(':hidden');
-            let threecourse = $('.threeselcourse').is(':hidden');
-            let fourcourse = $('.fourselcourse').is(':hidden');
-            let fivecourse = $('.fiveselcourse').is(':hidden');
-            if (!onecourse) {
-              let onecourseradio = $("input[name='onecourse']:checked").attr('sourceid');
-              let sourcename = $("input[name='onecourse']:checked").attr('sourcename');
-              if(onecourseradio == undefined || onecourseradio == '' || onecourseradio == 'undefined'){
-                this.$notify({
-                  title: '警告',
-                  message: '请选择网校分类',
-                  type: 'warning'
-                })
-                return false
-              }
-              courseactive = 1;
-              obj = {
-                course : 1,
-                sourceid: onecourseradio,
-                name : sourcename
-
-              }
-              url = '/platform.html'
-            } else if (!twocourse) {
-              let twocourseradio = $("input[name='twocourse']:checked").attr('pid');
-              let pname = $("input[name='twocourse']:checked").attr('pname');
-              if(twocourseradio == undefined ||twocourseradio == 'undefined' || twocourseradio == ''){
-                this.$notify({
-                  title: '警告',
-                  message: '请选择课程主类',
-                  type: 'warning'
-                })
-                return false
-              }
-              courseactive = 2;
-              let sourceid = self.sourceid?self.sourceid:'0';
-              obj = {
-                course : 2,
-                sourceid: self.sourceid,
-                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
-                pid: twocourseradio,
-                pname : pname
-              }
-              url = '/platform-1-0-0.html?pid='+ twocourseradio
-            } else if (!threecourse) {
-              let threecourseradio = $("input[name='threecourse']:checked").attr('sid');
-              let sname = $("input[name='threecourse']:checked").attr('sname');
-              if(threecourseradio == undefined ||threecourseradio == 'undefined' || threecourseradio == ''){
-                this.$notify({
-                  title: '警告',
-                  message: '请选择课程子类',
-                  type: 'warning'
-                })
-                return false
-              }
-              courseactive = 3;
-              let sourceid = self.sourceid?self.sourceid:'0';
-              obj = {
-                course : 3,
-                sourceid: self.sourceid,
-                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
-                sid: threecourseradio,
-                sname : sname,
-                pid : self.pid,
-                pname : $("input[pid='"+self.pid+"']").attr('pname')
-              }
-              if(threecourseradio == 0){
-                url = '/platform-1-0-0.html?pid='+ self.pid
-              }else{
-                url = '/platform-1-0-0.html?pid='+ self.pid + '&sid=' + threecourseradio
-              }
-            } else if (!fourcourse) {
-              let fourcourseradio = $("input[name='fourcourse']:checked").attr('folderid');
-              let itemid = $("input[name='fourcourse']:checked").attr('itemid');
-
-              if(fourcourseradio == undefined ||fourcourseradio == 'undefined' || fourcourseradio == ''){
-                this.$notify({
-                  title: '警告',
-                  message: '请选择课程',
-                  type: 'warning'
-                })
-                return false
-              }
-              courseactive = 4;
-              let sourceid = self.sourceid?self.sourceid:'0';
-              let sid = self.sid?self.sid:'0';
-              obj = {
-                course : 4,
-                sourceid: self.sourceid,
-                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
-                sid: self.sid || '0',
-                sname : $("input[sid='"+sid+"']").attr('sname'),
-                pid : self.pid,
-                pname : $("input[pid='"+self.pid+"']").attr('pname'),
-                folderid : fourcourseradio,
-                itemid : itemid,
-                foldername : $("input[folderid='"+fourcourseradio+"']").attr('foldername'),
-                // ----------- update start------------
-                summary: $("input[folderid='"+fourcourseradio+"']").attr('summary'),
-                img: $("input[folderid='"+fourcourseradio+"']").attr('img'),
-                studynum: $("input[folderid='"+fourcourseradio+"']").attr('studynum'),
-                viewnum: $("input[folderid='"+fourcourseradio+"']").attr('viewnum'),
-                // ----------- update end------------
-                folderq : self.folderq,
-                folderpage : self.folderpage,
-                folderpagesize: self.folderpagesize
-              }
-              url = '/courseinfo/' + itemid + '.html'
-            } else if (!fivecourse) {
-              let fivecourseradio = $("input[name='fivecourse']:checked").attr('cwid');
-              let cwpay = $("input[name='fivecourse']:checked").attr('cwpay');
-              if (fivecourseradio == undefined || fivecourseradio == 'undefined' || fivecourseradio == '') {
-                this.$notify({
-                  title: '警告',
-                  message: '请选择课件',
-                  type: 'warning'
-                })
-                return false
-              }
-              courseactive = 5;
-              let sourceid = self.sourceid?self.sourceid:'0';
-              let sid = self.sid?self.sid:'0';
-              obj = {
-                course : 5,
-                sourceid: self.sourceid,
-                name : $("input[sourceid='"+sourceid+"']").attr('sourcename'),
-                sid: self.sid || '0',
-                sname : $("input[sid='"+sid+"']").attr('sname'),
-                pid : self.pid,
-                pname : $("input[pid='"+self.pid+"']").attr('pname'),
-                folderid : self.folderid,
-                itemid : self.itemid,
-                foldername : $("input[folderid='"+self.folderid+"']").attr('foldername'),
-                folderq : self.folderq,
-                fprice : self.fprice,
-                folderpage : self.folderpage,
-                folderpagesize: self.folderpagesize,
-                cwid:fivecourseradio,
-                // ----------- update start------------
-                cwpay: cwpay,
-                thumb: $("input[cwid='"+fivecourseradio+"']").attr('thumb'),
-                cwsize: $("input[cwid='"+fivecourseradio+"']").attr('cwsize'),
-                logo: $("input[cwid='"+fivecourseradio+"']").attr('logo'),
-                viewnum: $("input[cwid='"+fivecourseradio+"']").attr('viewnum'),
-                summary: $("input[cwid='"+fivecourseradio+"']").attr('summary'),
-                // ----------- update end------------
-                cwname : $("input[cwid='"+fivecourseradio+"']").attr('cwname'),
-                cwq : self.cwq,
-                cwpage : self.cwpage,
-                cwpagesize : self.cwpagesize,
-                cwidtype : self.cwidtype
-              }
-
-              // ----------- update start------------
-              if (self.cwidtype == '2'){
-                url = '/course/' + fivecourseradio + '.html'
-              }else{
-                if(cwpay == '1'){
-                  url = '/ibuy.html?cwid='+fivecourseradio
-                }else{
-                  url = '/courseinfo/' + self.itemid + '.html'
-                }
-              }
-              //url = '/course/' + fivecourseradio + '.html'
-              /*a.attr('href','/course/' + fivecourseradio + '.html')
-              a.attr('target','_blank')
-              if(cwpay == '1'){
-                url = '/ibuy.html?cwid='+fivecourseradio
-              }else{
-                url = '/courseinfo/' + self.itemid + '.html'
-              }*/
-              // ----------- update end------------
-            }
-            break
-        }
-        // ----------- update start------------
-        let pulldowndata = self.parameter.thatSelf.$refs.pulldown.pulldowndata
-        let len =  pulldowndata.length;
-        let mbxstr =  $('.tab-content-active .mbx').text().replace(/\s/g,'')
-        let name
-        let editname
-        let mainclass
-        let sonclass
-        switch (linkType){
-          case 'online':
-            sonclass = url
-            name= '外部链接'
-            editname= '外部链接'
-            mainclass = '链接'
-            sonclass = '链接'
-            break
-          case 'news':
-            sonclass = url
-            mainclass = '资讯'
-            if (obj.course == 1){
-              name= obj.news.label
-              editname= obj.news.label
-              sonclass = obj.news.label
-            }else if (obj.active == 2){
-              name= obj.news.label1
-              editname= obj.news.label1
-              sonclass = obj.news.label +'/'+ obj.news.label1
-            }else if (obj.active == 3){
-              name= obj.newsTitle
-              editname= obj.newsTitle
-              sonclass = obj.news.label +'/'+ obj.news.label1 + '/'+obj.newsTitle
-            }
-            //name = obj.
-
-            break
-          case 'course':
-            sonclass = url
-            mainclass = '课程'
-            if (obj.course == 1){
-              name= obj.name
-              editname= obj.name
-              sonclass = obj.name
-            }else if (obj.course == 2){
-              name= obj.pname
-              editname= obj.pname
-              sonclass = obj.name +'/'+ obj.pname
-            }else if (obj.course == 3){
-              name= obj.sname
-              editname= obj.sname
-              sonclass = obj.name +'/'+ obj.pname +'/'+obj.sname
-            }else if (obj.course == 4){
-              name= obj.foldername
-              editname= obj.foldername
-              sonclass = obj.name +'/'+ obj.pname +'/'+obj.sname + '/'+obj.foldername
-            }else if (obj.course == 5){
-              mainclass = '课件'
-              name= obj.cwname
-              editname= obj.cwname
-              sonclass = obj.name +'/'+ obj.pname +'/'+obj.sname + '/'+obj.foldername +'/'+obj.cwname
-
-            }
-
-            break
-          case 'teacher':
-            sonclass = url
-            name = obj.realname
-            editname= obj.realname
-            mainclass= '教师'
-            sonclass = obj.realname
-            break
-          case 'onlineschool':
-            sonclass = url
-            mainclass= '功能'
-
-            switch (obj.oneinlineschool) {
-              case 'summary':
-                name= '网校简介'
-                editname= '网校简介'
-                sonclass = '网校简介'
-                break
-              case 'course':
-                name= '选课中心'
-                editname= '选课中心'
-                sonclass = '选课中心'
-                break
-              case 'contact':
-                name= '联系我们'
-                editname= '联系我们'
-                sonclass = '联系我们'
-                break
-              case 'register':
-                name= '注册'
-                editname= '注册'
-                sonclass = '注册'
-                break
-              case 'password':
-                name= '获取密码'
-                editname= '获取密码'
-                sonclass = '获取密码'
-                break
-              case 'username':
-                name= '获取用户名'
-                editname= '获取用户名'
-                sonclass = '获取用户名'
-                break
-              case 'login':
-                name= '登录'
-                editname= '登录'
-                sonclass = '登录'
-                break
-              case 'login1':
-                name= '登录'
-                editname= '登录'
-                sonclass = '登录'
-                break
-              case 'QQ':
-                name= 'QQ登录'
-                editname= 'QQ登录'
-                sonclass = 'QQ登录'
-                break
-              case 'weibo':
-                name= '微博登录'
-                editname= '微博登录'
-                sonclass = '微博登录'
-                break
-              case 'WeChat':
-                name= '微信登录'
-                editname= '微信登录'
-                sonclass = '微信登录'
-                break
-              case 'index':
-                name= '首页'
-                editname= '首页'
-                sonclass = '首页'
-                break
-            }
-            break
-        }
-        let objall = {
-          obj : obj,
-          url : url,
-          cls : cls,
-          on : true,
-          edit : 0,
-          editname:editname,
-          name : name,
-          hoveredit:0,
-          hoverqued:0,
-          linkType : linkType,
-          mainclass :mainclass,
-          sonclass :sonclass
-        }
-        if (index != undefined ){
-          pulldowndata.splice(parseInt(index),1,objall)
-        }else{
-          pulldowndata.push(objall)
-        }
-        // ----------- update end------------
         self.visdialog = false
       },
       // -------------------
@@ -2746,7 +2202,7 @@
         $('.oneselcourse,.twoselcourse,.threeselcourse,.fourselcourse').hide();
         $('.fiveselcourse').show();
         self.seaqshow = 2;
-        if (self.parameter.thatName == 'coursecw'){
+        if (self.parameter.thatName == 'coursecw' || self.parameter.thatName == 'coursecw|player'){
           self.cwidon = false
           self.cwidtype = '2'
         }else{

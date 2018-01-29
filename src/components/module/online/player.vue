@@ -33,10 +33,10 @@
       </el-row>
       <el-row>
         <el-col :span="4" class="right">播放方式：</el-col>
-        <el-col :span="18">          
+        <el-col :span="18">
           <el-radio class="radio" v-model="playerWay" label="0">点击播放</el-radio>
           <el-radio class="radio" v-model="playerWay" label="1">直接播放</el-radio>
-        </el-col>       
+        </el-col>
       </el-row>
       <el-row v-if="selectStyle!==''" style="margin-bottom: 10px;">
         <el-col style="text-indent: 13px;">添加视频：<span style="color: #999;">（最多添加10个视频）</span></el-col>
@@ -47,7 +47,7 @@
             <img :src="item.pic">
             <div class="update" @click="updatePlayerEvent(index)">修改</div>
             <div class="cwTlt">{{item.title}}</div>
-            <div class="cwDesc">{{item.desc}}</div>           
+            <div class="cwDesc">{{item.desc}}</div>
             <div class="delete" @click="deletePlayerEvent(index)">删除</div>
           </div>
           <div class="add-vo-li" v-if="selectStyle == 'single'? playerData.length > 0 ? false : true : playerData.length > 9 ? false: true" @click="addPlayerEvent">
@@ -56,7 +56,7 @@
           </div>
         </div>
       </el-row>
-      <span slot="footer" class="dialog-footer">        
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPlayer = false">取 消</el-button>
         <el-button type="primary" @click="dialogPlayerEvent">确 定</el-button>
       </span>
@@ -80,20 +80,20 @@ export default {
           value: 'multiple'
         }
       ],
-      playerWay: '0',      
+      playerWay: '0',
       dialogPlayer: false,
       playerData: []
     }
   },
-  created: function () {  
+  created: function () {
     let self = this
-    let moduleData = self.$parent.datahtml  
+    let moduleData = self.$parent.datahtml
     moduleData['toallGroup']['online'].push({
       name: 'player',
       icon: 'imgicon icon-player',
       text: '播放器'
-    })   
-    moduleData['player'] = { 
+    })
+    moduleData['player'] = {
       style: 'width:940px; height:562px',
       tool: {
         private: {
@@ -115,15 +115,15 @@ export default {
         }
       },
       html: '<div class="player module addmodule" datatext="播放器"><div class="editPlayer"><img class="cover"></div><div class="rightMenu"></div></div>'
-    } 
+    }
   },
-  methods: { 
+  methods: {
     show: function (that, element, me) { // 初始化调用弹出框
       let self = this
       self.that = that
       self.element = element
       self.me = me
-      self.dialogPlayer = true      
+      self.dialogPlayer = true
       self.playerData = []
       let playerData = self.element.attr('playerData')
       if(playerData) {
@@ -145,12 +145,12 @@ export default {
           pic: data.logo,
           cwid: data.cwid,
           styleNum: data.viewnum
-        })        
-      }) 
+        })
+      })
     },
     updatePlayerEvent: function (index) { // 修改视频
       let self = this
-      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {       
+      self.that.$refs.hrefdialogp.show('coursecw|player', self, function (self, data) {
         self.playerData.splice(index,1,{
           title: data.cwname,
           desc: data.summary,
@@ -160,12 +160,12 @@ export default {
           cwid: data.cwid,
           styleNum: data.viewnum
         })
-      })       
+      })
     },
     deletePlayerEvent: function (index) { // 删除视频
       let self = this
       self.playerData.splice(index,1)
-    },   
+    },
     dialogPlayerEvent: function () { // 确定
       let self = this
       if (self.playerData.length < 1) {
@@ -175,9 +175,9 @@ export default {
           type: 'warning'
         })
         return false
-      }      
-      self.dialogPlayer = false   
-      self.element.show()   
+      }
+      self.dialogPlayer = false
+      self.element.show()
       let rightMenu = self.element.find('.rightMenu')
       let html = ""
 
@@ -188,29 +188,29 @@ export default {
         for (let i = 0, len = self.playerData.length; i < len; i++) {
           let item = self.playerData[i]
           html += '<li><img src="'+ item.pic +'"><div class="title">'+ item.title +'</div><div class="studyNum">'+item.styleNum+'次学习</div></li>'
-        }        
+        }
         rightMenu.show()
         rightMenu.html(html)
         rightMenu.find('li').eq(0).addClass('on')
-      } 
+      }
 
       let cover = self.element.find('.editPlayer').find('img')
       cover.attr('src', self.playerData[0].thumb)
 
       let obj = {
-        selectStyle: self.selectStyle, 
-        playerWay: self.playerWay,      
+        selectStyle: self.selectStyle,
+        playerWay: self.playerWay,
         playerData: self.playerData
       }
       let str = window.JSON.stringify(obj)
       self.element.attr('playerData', str)
     },
-    beforeCloseEvent: function () { // 关闭弹框前的回调     
-      let self = this      
+    beforeCloseEvent: function () { // 关闭弹框前的回调
+      let self = this
       if (self.playerData.length < 1) {
         let parent = self.element.parent()
         self.that.tool.carryUpdateElementStorageEvent(self.that, parent, self.element, self.element) // 更新选区
-        self.element.remove()        
+        self.element.remove()
         self.that.tool.carryLayerEvent(self.that, parent) // 更新图层
       }
     }
@@ -270,7 +270,7 @@ export default {
     margin: 0 auto;
   }
   #player .videoList .vo-li {
-    margin-top: 10px;   
+    margin-top: 10px;
     overflow: hidden;
   }
   .vo-li img{
@@ -325,9 +325,9 @@ export default {
     margin-right:10px;
     border-radius: 0;
     border: 0;
-    box-shadow: none; 
-    border: 1px solid #999999;  
-    box-sizing: content-box;   
+    box-shadow: none;
+    border: 1px solid #999999;
+    box-sizing: content-box;
   }
   #player .is-active .el-radio-button__inner {
     border: 1px solid #20a0ff;
@@ -336,7 +336,7 @@ export default {
     color: #20a0ff;
   }
   #player .el-radio-button__inner img{
-    display: block;   
+    display: block;
     width: 90px;
     height: 60px;
   }
